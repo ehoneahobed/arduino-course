@@ -215,6 +215,24 @@ a{color:var(--accent-ink)}
 .ptype.practice{color:var(--accent); border-color:var(--accent); background:transparent}
 .ptype.stretch{color:var(--copper); border-color:var(--copper); background:transparent}
 .ptype.identify{color:var(--muted); border-color:var(--line); background:transparent}
+.ptype.ship{color:var(--b7); border-color:var(--b7); background:transparent}
+.ptype.bench{color:var(--b8); border-color:var(--b8); background:transparent}
+
+/* ---- ship it: the evidence, put where somebody can see it ---- */
+.ship{
+  background:var(--surface); border:1px solid var(--line); border-left:4px solid var(--b7);
+  border-radius:0 3px 3px 0; padding:1.3rem 1.5rem; margin:2rem 0; max-width:var(--wide);
+}
+.ship h2{font-family:"Archivo",sans-serif; font-size:1.02rem; font-weight:700;
+  letter-spacing:.02em; margin:0 0 .5rem; color:var(--b7)}
+.ship p{margin:0 0 .7rem; max-width:var(--measure)}
+.ship p:last-child{margin-bottom:0}
+.ship ol{margin:.7rem 0; padding-left:1.15rem; max-width:var(--measure)}
+.ship li{margin-bottom:.35rem}
+.ship .cam{background:var(--surface-2); border-radius:3px; padding:.7rem .9rem; margin:.7rem 0;
+  font-size:.95em; max-width:var(--measure)}
+.ship code{font-size:.9em}
+
 
 .projmeta{display:grid; gap:.55rem; margin:1.3rem 0 0; max-width:var(--measure);
   background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:1rem 1.15rem}
