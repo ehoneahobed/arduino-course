@@ -1,5 +1,5 @@
 ==================================================================
-  ARDUINO SKETCHES  -  ALL 53 FILES
+  ARDUINO SKETCHES  -  ALL 54 FILES
   Bands 0 to 8, plus the project sketches
   Bozoma Innovation Hub, Aiyinasi
 ==================================================================
@@ -13,7 +13,7 @@
   sketch sits next to the band it belongs to: b1_05 comes right
   after b1_04, and so on. Only the two id_ files sort last.
 
-  53 files in all. Every one was compiled and linked for the
+  54 files in all. Every one was compiled and linked for the
   ATmega328P chip before it was given to you.
 
   SEVEN of them misbehave ON PURPOSE, and the course tells you
@@ -44,6 +44,8 @@
   started, not a replacement for it. The page for each says what
   it swaps out and what you still owe the band.
 
+    bench_voltmeter.ino        the board as a voltmeter, for
+                               the Bench lessons in band 1
     id_01_which_buzzer.ino     which buzzer am I holding
     id_02_which_rgb.ino        which RGB light am I holding
     b1_05_traffic_module.ino   band 1, the traffic light module

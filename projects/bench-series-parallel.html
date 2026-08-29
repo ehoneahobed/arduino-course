@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en" data-band="1">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Series and parallel · Bench · Arduino Ladder</title>
+  <meta name="description" content="The two ways to join anything to anything. One of them is what every build in this course already is, and nobody has said so until now.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+  <link rel="stylesheet" href="../assets/course.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the project</a>
+<div class="topbar">
+  <a class="home" href="../index.html">Arduino Ladder <span>· Bozoma Innovation Hub</span></a>
+  <nav class="bandlinks" aria-label="Bands"><a href="../bands/band-0.html">0</a><a href="../bands/band-1.html" aria-current="page">1</a><a href="../bands/band-2.html">2</a><a href="../bands/band-3.html">3</a><a href="../bands/band-4.html">4</a><a href="../bands/band-5.html">5</a><a href="../bands/band-6.html">6</a><a href="../bands/band-7.html">7</a><a href="../bands/band-8.html">8</a></nav>
+</div>
+<div class="wrap" id="main">
+<header style="padding:2.6rem 0 1rem">
+  <p class="eyebrow">Band 1 &nbsp;·&nbsp; Signal Tower</p>
+  <h1 style="margin:.7rem 0 .5rem"><span class="ptype bench">Bench</span> &nbsp;Series and parallel</h1>
+  <p class="col sub" style="font-size:1.06em">The two ways to join anything to anything. One of them is what every build in this course already is, and nobody has said so until now.</p>
+  <dl class="projmeta">
+    <div><dt>Time</dt><dd>75 min</dd></div>
+    <div><dt>You need</dt><dd>3 LEDs, 2&#8211;3 resistors, 6 jumper wires. No sketch: this one runs from the 5V pin.</dd></div>
+    <div><dt>At once</dt><dd>Everybody at once</dd></div>
+    <div><dt>Before this</dt><dd>Do <code>bench-ohms-law</code> first. You need <code>I = V &#247; R</code> to explain what you are about to see.</dd></div>
+  </dl>
+</header>
+
+<section class="sketchbox">
+  <h2>Sketches for this project</h2>
+  <ul></ul>
+  <p>Every file opens with a plain-English header saying what it does and how to wire it, hole by hole.</p>
+</section>
+<section class="part">
+  <div class="parthead"><span class="tag">Why</span><h2>You have been building one of these all along and nobody said which</h2></div>
+  <div class="col stack">
+    <p>Your signal tower has three lights. Each one has its own resistor, its own pin, and its own wire back to the same &#8722; rail.</p>
+    <p><strong>That arrangement has a name, and this course has never once used it.</strong> Which is a real gap, because it is the arrangement of almost everything you will ever build, and the other arrangement behaves so differently that mixing them up wastes an afternoon.</p>
+    <p>There are exactly two ways to put two components in a circuit. Two. That is the whole subject.</p>
+
+    <div class="callout">
+      <h5>Predict first, and write it down</h5>
+      <p>Two red lights, one battery, and no maths yet. Just say what you think.</p>
+      <ol class="num">
+        <li>You wire them <strong>one after the other in a line</strong>, so all the current goes through the first and then through the second. Are they brighter, dimmer, or the same as one light on its own?</li>
+        <li>You wire them <strong>side by side</strong>, each with its own path back. Brighter, dimmer, or the same?</li>
+        <li>In which of the two does taking one light out leave the other still lit?</li>
+      </ol>
+      <p class="note">Answer all three on paper now. You are about to build both, and the value of this lesson is almost entirely in whether your guess was right.</p>
+    </div>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Build</span><h2>One after the other: a series circuit</h2><span class="mins">30 min</span></div>
+  <div class="col stack">
+    <div class="ifnot" style="margin-bottom:.4rem"><b>Before you start</b>USB unplugged. <b>This lesson has no sketch in it at all.</b> Every circuit here runs from the 5V pin, because electricity does not need a program and this is about the electricity.<br><br><b>Which rails and which half.</b> Everything sits in rows <code>a</code> to <code>e</code>, so use the pair of rails along the <b>bottom</b> edge, nearest row <code>a</code>. That leaves Band 1's tower undisturbed in the top half if it is still there. Wire the <b>+ rail to the 5V pin</b> and the <b>&#8722; rail to a GND pin</b>. Then check by eye before you plug in: <b>no wire runs from the + rail to a GND pin, and no wire runs from the &#8722; rail to 5V.</b> Joining 5V straight to GND is the one mistake that damages the board. Getting the two rails the other way round, on the other hand, does no harm at all: nothing will simply light.</div>
+
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Part</th><th>Holes</th><th>Note</th></tr></thead>
+        <tbody>
+          <tr><td>Power in</td><td>wire <code>a5</code> to the + rail</td><td></td></tr>
+          <tr><td>First LED</td><td>long leg <code>b5</code>, short leg <code>b7</code></td><td></td></tr>
+          <tr><td>Second LED</td><td>long leg <code>a7</code>, short leg <code>b9</code></td><td><b>This is the whole idea.</b> Its long leg is in column 7, the same column as the first LED's short leg, so the two are joined underneath. Different hole, same column.</td></tr>
+          <tr><td>Resistor</td><td><code>a9</code> to <code>a11</code></td><td>One resistor for the pair, and one is right here</td></tr>
+          <tr><td>Back to ground</td><td>wire <code>b11</code> to the &#8722; rail</td><td><code>b11</code>, not <code>a11</code>: the resistor leg is there</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="steps">
+      <div class="step"><div class="body">
+        <p><strong>Check the direction of both LEDs before you plug in.</strong> Long leg towards the + rail, short leg towards the &#8722; rail, all the way down the line. In a series circuit they all point the same way, like people queueing.</p>
+        <div class="ifnot"><b>One of them backwards and nothing lights at all</b>Not &#8220;one lights&#8221;. <em>Nothing</em>, because the current has to get through both and a backwards LED stops it dead. That is your first clue about how a series circuit behaves.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Plug in the USB.</strong></p>
+        <div class="see"><b>You should see</b>Both lights on, and <strong>both noticeably dimmer</strong> than the single light you built in Band 1. Compare them with the one you remember, not with one on the board: the 5V pin is already feeding your rail, and with no sketch running there is nothing to light a pin.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Now work out why, with the sum you already have.</strong></p>
+        <p style="font-family:'IBM Plex Mono',monospace; background:var(--code-bg); padding:.9rem 1.1rem; border-radius:3px">
+        Two red LEDs take about 2 V each &nbsp;=&nbsp; 4 V gone<br>
+        5 &#8722; 4 &nbsp;=&nbsp; <b>1 V left for the resistor</b><br><br>
+        I = 1 &#247; 220 &nbsp;=&nbsp; 0.0045 A &nbsp;=&nbsp; <b>4.5 mA</b><br><br>
+        Against 13.6 mA for one light. <b>A third of the current.</b></p>
+        <div class="see"><b>You should see</b>The arithmetic matching your eyes. The lights are dimmer because there is genuinely less current, and there is less current because the two LEDs between them ate four of the five volts and left almost nothing to push with.</div>
+        <div class="ifnot"><b>That 4.5 is a rougher answer than the 13.6 was</b>And for an interesting reason. With only one volt left over, a small error in the two-volts-per-LED guess moves the answer a long way: guess 1.85 volts each instead and you get six milliamps, which is a third more. When the leftover is large, the guess hardly matters. When it is small, it matters enormously. Treat this one as &#8220;a few milliamps, far less than before&#8221; rather than a number to defend.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Unplug the USB, then take one LED out.</strong> Pull the second one straight up, both legs. Plug back in.</p>
+        <div class="see"><b>You should see</b>The other one goes out too. There is one path and you have broken it.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Put it back, and now add a third. Unplug the USB first, and do these four moves in this order</strong>, because the holes the third LED needs are currently full:</p>
+        <ol class="num">
+          <li>Take the resistor out of <code>a9</code> and <code>a11</code>.</li>
+          <li>Take the &#8722; rail wire out of <code>b11</code>.</li>
+          <li>Now put the third LED in: long leg <code>a9</code>, short leg <code>b11</code>.</li>
+          <li>Put the resistor back, <code>a11</code> to <code>a13</code>, and the &#8722; rail wire in <code>b13</code>. Plug in.</li>
+        </ol>
+        <div class="see"><b>You should see</b><strong>Almost nothing.</strong> A dim glow at best, and on some LEDs nothing you can see at all. Three red LEDs want about six volts between them and you have five, so there is barely any push left over.</div>
+        <div class="ifnot"><b>Whatever glow you do see is worth understanding</b>Two volts per LED was never a fixed fact. It is the figure at normal brightness. With almost nothing flowing, each LED drops nearer one and a half volts, three of those just about fit inside five, and a trickle gets through. <strong>The numbers in this course describe parts doing their normal job</strong>, and they drift once a part is working far outside that.</div>
+        <div class="ifnot"><b>This is the most useful thing in the lesson</b>A series circuit has a ceiling. Add one part too many and you do not get &#8220;a bit dimmer&#8221;, you fall off a cliff: a useless trickle, with no warning and nothing broken. Remember it when somebody tells you to wire lights in a line to save resistors.</div>
+      </div></div>
+    </div>
+
+    <div class="callout">
+      <h5>The three rules of a series circuit</h5>
+      <ul class="plain">
+        <li><strong>The current is the same everywhere.</strong> One path, one flow. You saw this in Band 1 with the rope: squeeze anywhere and the marker slows everywhere at once.</li>
+        <li><strong>The voltages add up to the total.</strong> 2 + 2 + 1 = 5. Each part takes a share and the shares must come to what you started with.</li>
+        <li><strong>The resistances add up.</strong> Two 220s in a line behave as one 440.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Build</span><h2>Side by side: a parallel circuit</h2><span class="mins">25 min</span></div>
+  <div class="col stack">
+    <div class="ifnot" style="margin-bottom:.4rem"><b>Start clean</b>Unplug the USB and take the whole series circuit off the board, both ends of every wire. You are building something with the same parts and a completely different shape.</div>
+
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Part</th><th>Holes</th><th>Note</th></tr></thead>
+        <tbody>
+          <tr><td>First LED</td><td>long <code>b5</code>, short <code>b7</code>. Resistor <code>a7</code> to <code>a9</code>. Wire <code>a5</code> to the + rail, wire <code>b9</code> to the &#8722; rail.</td><td>A complete loop on its own</td></tr>
+          <tr><td>Second LED</td><td>long <code>b15</code>, short <code>b17</code>. Resistor <code>a17</code> to <code>a19</code>. Wire <code>a15</code> to the + rail, wire <code>b19</code> to the &#8722; rail.</td><td>Another complete loop, sharing only the rails</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note"><strong>Its own resistor each.</strong> That is not tidiness and it is not optional; the last part of this lesson is about what goes wrong when people share one.</p>
+
+    <div class="steps">
+      <div class="step"><div class="body">
+        <p><strong>Plug in.</strong></p>
+        <div class="see"><b>You should see</b>Both lights at <strong>full brightness</strong>, each looking like the single light from Band 1. Not dimmer than each other, and not dimmer than one on its own. If you want a third to compare against, wire it on its own branch from the same two rails: <code>b25</code> long, <code>b27</code> short, resistor <code>a27</code> to <code>a29</code>, wire <code>a25</code> to the + rail and <code>b29</code> to the &#8722; rail. All three stay bright.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Take one out.</strong></p>
+        <div class="see"><b>You should see</b>The other one carrying on, completely unbothered. Two separate loops that happen to start and end in the same place.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Work out the current.</strong> Each loop has the full 5 volts across it, so each one is exactly the circuit you did on paper in the last lesson: 13.6 mA. Two of them.</p>
+        <p style="font-family:'IBM Plex Mono',monospace; background:var(--code-bg); padding:.9rem 1.1rem; border-radius:3px">
+        Each branch: &nbsp; 13.6 mA<br>
+        Coming out of the 5V pin: &nbsp; 13.6 + 13.6 = <b>27.2 mA</b></p>
+        <div class="see"><b>You should see</b>Why they stayed bright: nothing was shared out. <strong>The voltage is shared in series and the current is shared in parallel</strong>, and that one sentence is most of what this lesson is for.</div>
+      </div></div>
+    </div>
+
+    <div class="callout danger">
+      <h5>The number in that sum is a warning, and it is about your Arduino</h5>
+      <p>27 milliamps. An Arduino <em>pin</em> is rated for 20.</p>
+      <p>You are safe here because you took power from the <strong>5V pin</strong>, which supplies the whole board and can give hundreds of milliamps. But hang two lights off one <em>digital pin</em> in parallel and you have asked that pin for 27, which is over its limit, quietly, with everything looking perfectly normal.</p>
+      <p><strong>This is why Band 1's tower gives each light its own pin.</strong> Not for the code's convenience. Because three lights on one pin would be 41 milliamps and would slowly damage the chip.</p>
+    </div>
+
+    <div class="callout">
+      <h5>The three rules of a parallel circuit</h5>
+      <ul class="plain">
+        <li><strong>The voltage is the same across every branch.</strong> Each one gets the full push.</li>
+        <li><strong>The currents add up.</strong> The source has to supply the lot.</li>
+        <li><strong>Taking one branch out leaves the others working.</strong> Which is why almost everything real is wired this way.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Look closer</span><h2>Now go and look at what you have already built</h2><span class="mins">20 min</span></div>
+  <div class="col stack">
+    <p>With those two shapes in your head, three things you have already done stop being arbitrary.</p>
+
+    <h3>Your signal tower is parallel</h3>
+    <p>Three lights, three resistors, three pins, one shared &#8722; rail. Each light is its own loop from its own pin back to the same ground. That is why you can light any one without the others, why they are all equally bright, and why a dead LED in the middle does not take the other two with it.</p>
+    <p><strong>Every build in this course from Band 1 onward puts its branches in parallel.</strong> The four buttons, the two lights of the night guard, the lights and the buzzer of the lock. All of them: separate branches sharing the rails, and each branch with its own parts in series inside it. The two shapes are not rivals. Real circuits are made of both, nested.</p>
+
+    <h3 style="margin-top:.8rem">Why the RGB LED needs three resistors and not one</h3>
+    <p>Band 2 warns you not to put a single resistor on the shared leg. It gives the symptom, which is that the brightness drifts as the colour changes. Now you can say why.</p>
+    <p>The three colours are three parallel branches. Put one resistor on the leg they all share and that resistor <strong>fixes the total</strong>: about 13.6 milliamps, however many colours are lit. So the colours have to share one allowance between them.</p>
+    <p>One colour on and it gets the lot. Two on and they split it. Three on and each gets roughly a third. <strong>Every colour dims the moment you add another one</strong>, which is the drift the Band 2 page warns you about.</p>
+    <p>And they do not split it evenly. Red needs the least push of the three, so red takes more than its share and blue takes less. Your white ends up warm and yellowish rather than white, and <strong>nothing you can change in the code will fix it</strong>, because the fault is a missing resistor rather than a wrong number.</p>
+    <div class="see"><b>Try it, since it costs nothing</b>Unplug the USB. Rebuild the two parallel lights with the resistors taken out: LED1 long <code>b5</code> short <code>b7</code>, LED2 long <code>b15</code> short <code>b17</code>, wire <code>a5</code> and <code>a15</code> both to the + rail. Now join the two short legs with a wire from <code>a7</code> to <code>a17</code>, and give the pair <strong>one</strong> resistor from <code>c17</code> to <code>c19</code>, with a single wire <code>a19</code> to the &#8722; rail. Plug in. Both light, dimmer than before. <strong>Now pull one out and watch the other get brighter.</strong> That is the fault, in your hands, in thirty seconds.</div>
+
+    <h3 style="margin-top:.8rem">Where series is the right answer</h3>
+    <p>Series is not the wrong shape, it is the shape for a different job. The resistor and the LED in every build you have made are <em>in series with each other</em>: that is the whole point, because you want the same current through both and you want the resistor to take a share of the voltage.</p>
+    <p>Series is also how a torch stacks its batteries: three 1.5 V cells in a line make 4.5 V, because in series the voltages add. In Band 6 you will be handed a battery pack with four cells in a line, 1.5 volts each, six volts out. <strong>It is a series circuit with a lid on it</strong>, and when that six volts starts mattering very much, you will already know where it came from.</p>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Done</span><h2>What to keep</h2></div>
+  <div class="col stack">
+    <ul class="plain">
+      <li>Your three predictions from the start of the lesson, and which ones were wrong</li>
+      <li>What happened with three LEDs in a line, in your own words</li>
+      <li>The two sentences: <em>voltage is shared in series, current is shared in parallel</em>, and <em>27 milliamps is more than a pin should give</em></li>
+      <li>Your answer to this: your Band 5 game has four lights and a buzzer. If they were all on at once, on four pins and one buzzer pin, is that a problem? Work it out.</li>
+    </ul>
+    <div class="ifnot"><b>The answer to that last one, once you have tried it</b>Four lights at 13.6 mA each is 54 mA, but on <em>four separate pins</em>, so 13.6 each, which is fine. The limit is per pin, not per light. There is a second limit for the whole chip added together, around 200 mA, and four lights and a buzzer is nowhere near it. <strong>Knowing which limit applies is the skill</strong>, and it is the sort of question you can now answer instead of guess.</div>
+  </div>
+</section>
+
+<section class="ship">
+  <h2>Ship it</h2>
+  <p><b>This one is a measurement, so post the measurement.</b> A photograph of your meter
+  showing what your 220 ohm resistor <em>actually</em> reads, or your table with the predictions
+  you got wrong still visible, is a better post than a finished build. Almost nobody publishes
+  the part where they checked.</p>
+  <p><b>The five lines still work.</b> What you measured, what you expected, the gap between
+  them, the number itself, and what you will do differently now you know.</p>
+  <p><a href="show-your-work.html">Show your work</a> has the template. Tag it <code>#BozomaBuilds</code>.</p>
+</section>
+
+<nav class="pager" aria-label="Back">
+  <a href="../bands/band-1.html">Back to Band 1</a>
+</nav>
+
+<footer>
+  <p>Bozoma Innovation Hub &nbsp;·&nbsp; Aiyinasi, Ellembelle District. Bench project. Every sketch used here was compiled and tested before it reached you.</p>
+</footer>
+
+</div>
+</body>
+</html>

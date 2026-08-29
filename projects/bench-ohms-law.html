@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en" data-band="1">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ohm's law, and checking this course · Bench · Arduino Ladder</title>
+  <meta name="description" content="One line of arithmetic that turns four of this course's warnings from rules you believe into results you can check.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+  <link rel="stylesheet" href="../assets/course.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the project</a>
+<div class="topbar">
+  <a class="home" href="../index.html">Arduino Ladder <span>· Bozoma Innovation Hub</span></a>
+  <nav class="bandlinks" aria-label="Bands"><a href="../bands/band-0.html">0</a><a href="../bands/band-1.html" aria-current="page">1</a><a href="../bands/band-2.html">2</a><a href="../bands/band-3.html">3</a><a href="../bands/band-4.html">4</a><a href="../bands/band-5.html">5</a><a href="../bands/band-6.html">6</a><a href="../bands/band-7.html">7</a><a href="../bands/band-8.html">8</a></nav>
+</div>
+<div class="wrap" id="main">
+<header style="padding:2.6rem 0 1rem">
+  <p class="eyebrow">Band 1 &nbsp;·&nbsp; Signal Tower</p>
+  <h1 style="margin:.7rem 0 .5rem"><span class="ptype bench">Bench</span> &nbsp;Ohm's law, and checking this course</h1>
+  <p class="col sub" style="font-size:1.06em">One line of arithmetic that turns four of this course's warnings from rules you believe into results you can check.</p>
+  <dl class="projmeta">
+    <div><dt>Time</dt><dd>70 min</dd></div>
+    <div><dt>You need</dt><dd>A pen. Then your breadboard, 1 LED, 4 jumper wires, and resistors of 220&#8486;, 330&#8486;, 1k&#8486; and 10k&#8486; for the table. (The 100&#8486; row is worked on paper only, and the lesson says why.)</dd></div>
+    <div><dt>At once</dt><dd>Everybody at once</dd></div>
+    <div><dt>Before this</dt><dd>Do <code>bench-multimeter</code> first, or at least know the three voltages across your own light.</dd></div>
+  </dl>
+</header>
+
+<section class="sketchbox">
+  <h2>Sketches for this project</h2>
+  <ul></ul>
+  <p>Every file opens with a plain-English header saying what it does and how to wire it, hole by hole.</p>
+</section>
+<section class="part">
+  <div class="parthead"><span class="tag">Why</span><h2>Every warning in this course is a sum you have not been shown</h2></div>
+  <div class="col stack">
+    <p>Count how many times this course hands you a number and asks you to trust it. Some of these you have met already. The rest are waiting for you.</p>
+    <ul class="plain">
+      <li>Use a 220 ohm resistor. <span class="mono">(Band 1, already)</span></li>
+      <li>An Arduino pin can give about twenty thousandths of an amp before it is damaged. <span class="mono">(Band 1, already)</span></li>
+      <li>That module's resistor is 100 ohms, which is over the line. <span class="mono">(Band 1's traffic module)</span></li>
+      <li>An RGB module's three resistors may be different values from each other, on purpose. <span class="mono">(Band 2)</span></li>
+      <li>Use 220 on the transistor's base, not 1k, or the switch never fully closes. <span class="mono">(Band 6)</span></li>
+    </ul>
+    <p>Every one of those is true, and not one of them is anything you can check. <strong>That leaves you believing this course rather than reading it</strong>, which is a weak position to learn from and an easy one to get out of.</p>
+    <p>This lesson is one line of arithmetic. With it, every one of those sentences stops being a rule and becomes a result, and you can work out the next one yourself when nobody has written it down for you. <strong>Come back to this page when you reach Band 2 and Band 6</strong>, because the numbers on those pages are worked out here.</p>
+    <p class="note">There is no wiring in this part and no sketch. Get a pen.</p>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Think first</span><h2>Back to the rope</h2><span class="mins">15 min</span></div>
+  <div class="col stack">
+    <p>In Band 1 you made a loop of rope and pulled it round, and three things were happening at once. Band 1's glossary gave you their names and then the course got on with building things. Here is what they actually mean.</p>
+
+    <div class="scroll">
+      <table>
+        <thead><tr><th>In the rope</th><th>Its name</th><th>Measured in</th><th>What it really is</th></tr></thead>
+        <tbody>
+          <tr><td>How hard you pull</td><td><b>Voltage</b></td><td>volts, <code>V</code></td><td>The push. Always a difference between two places, never a thing one place has on its own.</td></tr>
+          <tr><td>How fast the rope moves</td><td><b>Current</b></td><td>amps, <code>A</code></td><td>The flow. The same everywhere round one loop, which you saw: squeeze anywhere and the marker slows everywhere at once.</td></tr>
+          <tr><td>How tightly a hand grips</td><td><b>Resistance</b></td><td>ohms, <code>&#8486;</code></td><td>The narrowness. How hard it is for the flow to get through that part.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>You already know from the rope how they affect each other. Pull harder and it moves faster. Squeeze tighter and it moves slower. That is the whole of it, and this is that sentence written down:</p>
+
+    <div class="callout">
+      <h5>Volts = amps &#215; ohms</h5>
+      <p style="font-family:'IBM Plex Mono',monospace; font-size:1.15em; text-align:center; margin:.5rem 0">V = I &#215; R</p>
+      <p><code>I</code> is the letter for current, for historical reasons nobody needs. Rearranged the two ways you will actually use:</p>
+      <p style="font-family:'IBM Plex Mono',monospace; font-size:1.05em; text-align:center; margin:.5rem 0">
+      I = V &#247; R &nbsp;&nbsp;&nbsp; and &nbsp;&nbsp;&nbsp; R = V &#247; I</p>
+      <p><strong>The first one is the one you will use ninety per cent of the time</strong>, because it answers the question that matters: <em>how much is going to flow through this, and is that too much?</em></p>
+    </div>
+
+    <div class="ifnot"><b>The unit trap that catches everybody once</b>Amps are big. Everything in this course is thousandths of an amp, written <code>mA</code> and said &#8220;milliamps&#8221;. <b>20 mA is 0.02 A.</b> If you put 20 into the sum where it wants 0.02, your answer comes out a thousand times wrong and looks reasonable. Divide by a thousand going in, multiply by a thousand coming out, or work in volts and ohms and remember the answer arrives in amps.</div>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Look closer</span><h2>Your own light, on paper</h2><span class="mins">25 min</span></div>
+  <div class="col stack">
+    <p>Take the three voltages you wrote down in the multimeter lesson. If you have not done that one, the numbers are about 5, about 3 and about 2.</p>
+
+    <div class="callout">
+      <h5>The step everybody misses</h5>
+      <p>You might expect to put 5 volts and 220 ohms into the sum. <strong>Do not.</strong> The 5 volts is not across the resistor. It is across the resistor <em>and the LED together</em>, and they are sharing it.</p>
+      <p>An LED is a strange component: it takes a fixed bite out of the voltage and hands the rest on. A red one takes about two volts and it takes that whether the current is large or small. So:</p>
+      <p style="font-family:'IBM Plex Mono',monospace; text-align:center; margin:.6rem 0">
+      5 V total &#8722; 2 V for the LED = <b>3 V left for the resistor</b></p>
+      <p>That 3 is the number the sum wants, because the sum is about the resistor.</p>
+    </div>
+
+    <p>Now do it:</p>
+    <p style="font-family:'IBM Plex Mono',monospace; font-size:1.02em; background:var(--code-bg); padding:1rem 1.1rem; border-radius:3px">
+    I = V &#247; R<br>
+    I = 3 &#247; 220<br>
+    I = 0.0136 amps<br>
+    I = <b>13.6 thousandths of an amp</b>
+    </p>
+
+    <div class="see"><b>Compare that with what your meter said</b>Somewhere around 13 or 14. <strong>You just predicted a measurement.</strong> Not read it off a page, not been told it: worked it out from two numbers and a rearranged sum, and the world agreed with you.</div>
+
+    <div class="ifnot"><b>If your numbers are a little apart</b>They should be. Your resistor is not exactly 220, you rounded the LED to exactly 2 volts, and the board's 5V is probably 4.9. Three small honest gaps. Being within one milliamp is a good agreement, and knowing <em>why</em> the last decimal disagrees is worth more than making it agree.</div>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Change it</span><h2>Now check the course</h2><span class="mins">30 min</span></div>
+  <div class="col stack">
+    <p>This is the part that pays for the lesson. Same sum, four of this course's warnings, and now you can see for yourself whether each one is true. Two of them belong to bands you have not reached yet, and that is fine: do the arithmetic now and you will recognise the number when the page hands it to you.</p>
+
+    <h3>1. The module resistor we told you to worry about</h3>
+    <p>Band 1's traffic light module page says that if the tiny resistors on the back read <code>101</code>, that is 100 ohms and it is over the line. Check it.</p>
+    <p style="font-family:'IBM Plex Mono',monospace; background:var(--code-bg); padding:.9rem 1.1rem; border-radius:3px">
+    3 &#247; 100 = 0.030 A = <b>30 mA</b> &nbsp; against a pin rated for 20</p>
+    <div class="see"><b>You should see</b>That the page was right, and that you did not need the page. Half as much resistance lets through twice as much current, every time.</div>
+
+    <h3 style="margin-top:.8rem">2. The transistor base in Band 6</h3>
+    <p>The fan page insists on 220 ohms rather than 1k, and says 1k gives &#8220;about four&#8221; milliamps. A transistor's base takes about <b>0.7 V</b> and hands on the rest, the same way an LED does.</p>
+    <p style="font-family:'IBM Plex Mono',monospace; background:var(--code-bg); padding:.9rem 1.1rem; border-radius:3px">
+    5 &#8722; 0.7 = 4.3 V across the resistor<br><br>
+    with 220&#8486;: &nbsp; 4.3 &#247; 220 &nbsp;= 0.0195 A = <b>19.5 mA</b> &nbsp; just inside the limit<br>
+    with 1k: &nbsp;&nbsp;&nbsp;&nbsp; 4.3 &#247; 1000 = 0.0043 A = <b>4.3 mA</b> &nbsp; a fifth of that</p>
+    <div class="see"><b>You should see</b>Both numbers in the page falling straight out of the sum. Nothing there was a matter of opinion.</div>
+
+    <h3 style="margin-top:.8rem">3. Fill this in yourself</h3>
+    <p>A red LED, 5 volts, and each resistor in turn. Work out the current, <strong>predict the brightness in words before you build anything</strong>, then build three of the five rows and see.</p>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Resistor</th><th>Volts across it</th><th>Current, mA</th><th>Your prediction</th><th>What you saw</th></tr></thead>
+        <tbody>
+          <tr><td class="n">100 &#8486;</td><td class="n">3</td><td></td><td></td><td></td></tr>
+          <tr><td class="n">220 &#8486;</td><td class="n">3</td><td></td><td></td><td></td></tr>
+          <tr><td class="n">330 &#8486;</td><td class="n">3</td><td></td><td></td><td></td></tr>
+          <tr><td class="n">1 k&#8486;</td><td class="n">3</td><td></td><td></td><td></td></tr>
+          <tr><td class="n">10 k&#8486;</td><td class="n">3</td><td></td><td></td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="ifnot"><b>Build these from the 5V pin, not a digital pin</b>Move the wire out of the Arduino pin and into <b>5V</b>, as you did for the multimeter lesson. Then no sketch is running and nothing can confuse the result.<br><br><b>Do not build the 100 ohm row at all</b>, from a pin or from 5V. Thirty milliamps is over the pin's twenty and it is also over the <em>LED's</em> own twenty: an ordinary 5&nbsp;mm LED is a 20&nbsp;mA part, so that row would damage the light as well as the pin. Work it out on paper and build three of the other four. <strong>Noticing that a number breaks two limits rather than one is the skill this table is really teaching.</strong></div>
+    <div class="see"><b>You should see</b>Something that surprises most people. Between 220 and 1k the current drops to a fifth, and the light looks perhaps half as bright. <strong>Your eye is nothing like a straight line</strong>, which is why Band 2's fade needs so many steps at the dim end and why a photograph of two LEDs never shows what you saw.</div>
+
+    <h3 style="margin-top:.8rem">4. The one that explains something we never explained</h3>
+    <p>Band 2's RGB module page tells you the three resistors on the board may be <em>different values from each other</em>, and calls it a deliberate design decision. Here is the reason, and it is this lesson.</p>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Colour</th><th>Takes about</th><th>Leaves for a 220&#8486;</th><th>So the current is</th></tr></thead>
+        <tbody>
+          <tr><td>Red</td><td class="n">2.0 V</td><td class="n">3.0 V</td><td class="n">13.6 mA</td></tr>
+          <tr><td>Green</td><td class="n">2.2 V, and varies a lot by make</td><td class="n">2.8 V</td><td class="n">12.7 mA</td></tr>
+          <tr><td>Blue or white</td><td class="n">3.0 V</td><td class="n">2.0 V</td><td class="n">9.1 mA</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="see"><b>You should see</b>Blue getting a third less current than red through the same resistor. Give all three the same 220 and the blue is the weakest of the three, so your white comes out warm and yellowish rather than white. <strong>Different resistors are how the designer evens them up</strong>, and now you know what to look for on the back of any module you meet.</div>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Done</span><h2>What this changes</h2></div>
+  <div class="col stack">
+    <p>From here on, a resistor value is a decision you can make rather than a number you copy. When a page tells you to use 220 you can work out what happens if you use 470, and decide.</p>
+    <p>Keep in your build log:</p>
+    <ul class="plain">
+      <li>Your predicted current for your own light, next to what the meter said</li>
+      <li>The completed five-row table, predictions included, especially the ones you got wrong</li>
+      <li>One sentence: what would happen to your light if the resistor were half the value, and why</li>
+    </ul>
+    <div class="callout">
+      <h5>The question to carry into the next lesson</h5>
+      <p>Everything here has been one loop, one component at a time. But the tower you built in Band 1 has <strong>three</strong> lights on it, and Band 5's game has four.</p>
+      <p>Are those three lights sharing the current, or does each get its own? Does adding the third light dim the other two? <strong>Write down what you think before you turn the page.</strong> Most people guess wrong, and the guess is the useful part.</p>
+    </div>
+  </div>
+</section>
+
+<section class="ship">
+  <h2>Ship it</h2>
+  <p><b>This one is a measurement, so post the measurement.</b> A photograph of your meter
+  showing what your 220 ohm resistor <em>actually</em> reads, or your table with the predictions
+  you got wrong still visible, is a better post than a finished build. Almost nobody publishes
+  the part where they checked.</p>
+  <p><b>The five lines still work.</b> What you measured, what you expected, the gap between
+  them, the number itself, and what you will do differently now you know.</p>
+  <p><a href="show-your-work.html">Show your work</a> has the template. Tag it <code>#BozomaBuilds</code>.</p>
+</section>
+
+<nav class="pager" aria-label="Back">
+  <a href="../bands/band-1.html">Back to Band 1</a>
+</nav>
+
+<footer>
+  <p>Bozoma Innovation Hub &nbsp;·&nbsp; Aiyinasi, Ellembelle District. Bench project. Every sketch used here was compiled and tested before it reached you.</p>
+</footer>
+
+</div>
+</body>
+</html>
