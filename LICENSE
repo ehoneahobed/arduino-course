@@ -1,0 +1,62 @@
+The Arduino Ladder
+Bozoma Innovation Hub, Aiyinasi, Ghana
+
+This repository is released under two licences.
+
+
+==================================================================
+1. COURSE CONTENT
+==================================================================
+
+Everything that is teaching material - the lesson pages in bands/,
+index.html, guide.html, the diagrams inside them, and the sketch
+header comments - is licensed under
+
+    Creative Commons Attribution-ShareAlike 4.0 International
+    (CC BY-SA 4.0)
+
+You are free to share and adapt this material, including commercially,
+provided that you:
+
+  - give appropriate credit to Bozoma Innovation Hub, link to the
+    licence, and indicate if changes were made; and
+
+  - distribute your contributions under the same licence if you remix,
+    transform or build upon the material.
+
+The full licence text is at:
+    https://creativecommons.org/licenses/by-sa/4.0/legalcode
+
+A plain-language summary is at:
+    https://creativecommons.org/licenses/by-sa/4.0/
+
+
+==================================================================
+2. SKETCHES AND SITE CODE
+==================================================================
+
+The Arduino sketches in sketches/ and the stylesheet in assets/ are
+licensed under the MIT licence.
+
+MIT License
+
+Copyright (c) 2026 Bozoma Innovation Hub
+
+Permission is hereby granted, free of charge, to any person obtaining a
+copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be included
+in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.

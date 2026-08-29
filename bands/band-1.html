@@ -1,0 +1,963 @@
+<!doctype html>
+<html lang="en" data-band="1">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Band 1: Signal Tower · Arduino Ladder</title>
+  <meta name="description" content="Your first real circuit. How a breadboard works, how to wire a light so it does not burn out, and how to run three lights in an order you designed.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+  <link rel="stylesheet" href="../assets/course.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the lesson</a>
+<div class="topbar">
+  <a class="home" href="../index.html">Arduino Ladder <span>· Bozoma Innovation Hub</span></a>
+  <nav class="bandlinks" aria-label="Bands"><a href="../bands/band-0.html">0</a><a href="../bands/band-1.html" aria-current="page">1</a><a href="../bands/band-2.html">2</a><a href="../bands/band-3.html">3</a><a href="../bands/band-4.html">4</a><a href="../bands/band-5.html">5</a></nav>
+</div>
+<div class="wrap" id="main">
+<nav aria-label="Sections">
+  <a href="#start">Start here</a>
+  <a href="#electricity">Electricity</a>
+  <a href="#breadboard">The breadboard</a>
+  <a href="#parts">LED and resistor</a>
+  <a href="#read">Read the code</a>
+  <a href="#build1">Build one light</a>
+  <a href="#build3">Build three</a>
+  <a href="#closer">Look closer</a>
+  <a href="#change">Change it</a>
+  <a href="#make">Make yours</a>
+  <a href="#check">Check yourself</a>
+  <a href="#problems">Problems</a>
+</nav>
+
+<header style="padding:3rem 0 1rem">
+  <p class="eyebrow">Bozoma Innovation Hub &nbsp;·&nbsp; Arduino Ladder &nbsp;·&nbsp; Band 1</p>
+  <h1 style="margin:.8rem 0">Signal Tower</h1>
+  <p class="col sub" style="font-size:1.1em">Your first real circuit. You will learn how a breadboard works, wire up three lights, and build a signal that someone else can understand without you explaining it.</p>
+  <p class="col note" style="margin-top:.8rem">About 6 hours. Take it in pieces. Finish Band 0 first, because this band assumes you can already upload a sketch.</p>
+</header>
+
+<section class="sketchbox">
+  <h2>Sketches for this band</h2>
+  <ul><li><a href="../sketches/b1_01_one_led_given.ino">b1_01_one_led_given.ino</a></li><li><a href="../sketches/b1_02_signal_hardcoded.ino">b1_02_signal_hardcoded.ino</a></li><li><a href="../sketches/b1_03_signal_variables.ino">b1_03_signal_variables.ino</a></li><li><a href="../sketches/b1_04_buggy_silent.ino">b1_04_buggy_silent.ino</a></li></ul>
+  <p>Click one to save it, or get every sketch at once from <a href="../downloads/arduino-ladder-sketches.zip" style="border:0;background:none;padding:0">the downloads page</a>. Each file opens with a plain-English header telling you what it does and how to wire it.</p>
+</section>
+
+
+<section class="part" id="start">
+  <div class="parthead"><span class="tag">Start here</span><h2>What this band is for</h2></div>
+  <div class="col stack">
+    <p>In Band 0 the light was already built into the board. Here you build the light yourself, out of separate parts, on a breadboard. That is a much bigger step than it sounds, because now things can go wrong in two places instead of one: the code, or the wiring.</p>
+    <p>Most of the time in this band, it will be the wiring. That is normal. There is a checklist at the end that finds nearly every wiring fault, and you should learn to use it before you start guessing.</p>
+
+    <h3 style="margin-top:.5rem">What you need</h3>
+    <ul class="plain">
+      <li>Your Arduino board and USB cable</li>
+      <li>The breadboard from your kit</li>
+      <li>Three LEDs: red, yellow and green if you have them. Any three colours will do.</li>
+      <li>Three resistors of 220 ohms</li>
+      <li>About six jumper wires</li>
+      <li>Card, scissors and tape for the housing at the end</li>
+    </ul>
+
+    <h3 style="margin-top:.5rem">By the end you will be able to</h3>
+    <ul class="plain">
+      <li>Explain what a breadboard does and which holes are joined to which</li>
+      <li>Build a working light circuit and say why the resistor has to be there</li>
+      <li>Tell the two legs of an LED apart and know which way round it goes</li>
+      <li>Control three pins in an order you designed</li>
+      <li>Use names instead of numbers in your code, and say what that gets you</li>
+      <li>Find a fault in code that has no error message at all</li>
+    </ul>
+
+    <div class="callout" style="margin-top:.6rem">
+      <h5>The rule that matters most in this band</h5>
+      <p><strong>Unplug the USB cable before you change any wiring. Plug it back in when you are done.</strong> Build it, look at it, then give it power. Every single time. It costs you four seconds and it is the difference between a mistake and a dead board.</p>
+    </div>
+  </div>
+</section>
+
+<section class="part" id="electricity">
+  <div class="parthead"><span class="tag">Part 1</span><h2>What electricity is doing, in plain words</h2><span class="mins">15 min</span></div>
+  <div class="col stack">
+    <p>You do not need physics for this course. You need one correct picture in your head. Get this picture right now and half the confusion later never happens.</p>
+
+    <h3>The rope activity</h3>
+    <p><strong>If you have people with you:</strong> take a piece of rope or string and tie it into a loop. Three or more of you hold the loop. Everyone pulls it round, hand over hand, all in the same direction, so the rope keeps moving in a circle.</p>
+    <p><strong>If you are on your own:</strong> tie the loop, hang it over the back of a chair, and pull it round with both hands so it keeps moving.</p>
+    <p>Now try these three things and watch what happens each time.</p>
+    <ol class="num">
+      <li><strong>Keep it moving normally.</strong> The moving rope is what electricity does in a circuit. We call that movement <strong>current</strong>. Notice that no rope disappears. It goes round and comes back.</li>
+      <li><strong>Grip the rope lightly so it drags.</strong> Everything slows down. That is <strong>resistance</strong>: something making it harder for the current to move.</li>
+      <li><strong>Let go of the rope completely at one point.</strong> Everything stops. That is a <strong>broken circuit</strong>. If the loop is not complete anywhere, nothing moves anywhere.</li>
+    </ol>
+
+    <div class="callout">
+      <h5>Answer this before you go on. It is the whole point of the activity.</h5>
+      <p>When one person gripped the rope and slowed it down, did the rope slow down <em>only after</em> that person, or did the whole loop slow down at the same time?</p>
+    </div>
+    <details><summary>The answer, and why it matters so much</summary><div class="inner">
+      <p>The whole loop slowed down at the same time. There is no "before" and "after" in a loop.</p>
+      <p>Nearly everybody starts out believing that electricity gets used up as it travels. They think there is less of it after the light than before it. That belief leads straight to a wrong conclusion: that the resistor must come <em>before</em> the light in order to protect it.</p>
+      <p>It does not. The current is the same everywhere in a simple loop. You will prove this to yourself later in this band by swapping the resistor to the other side and watching nothing change.</p>
+    </div></details>
+
+    <h3 style="margin-top:.8rem">The second activity: read your own badge</h3>
+    <p>Your band colour is brown. Brown is the code for the number 1, and Band 1 is where you are. That is not a coincidence. Resistors carry their value written on them in coloured stripes, and the nine bands of this course are named after the first nine colours of that code.</p>
+    <p>Find the 220 ohm resistors in your kit. Look at the stripes. On most 220 ohm resistors you will see <strong>red, red, brown</strong>, then a gap, then a gold stripe. Some kits use a five-stripe version which reads <strong>red, red, black, black, brown</strong>.</p>
+    <p>Write down the stripe colours you actually see on yours. From now on, find resistors by reading them rather than by guessing from the size, because all resistors look almost the same.</p>
+    <p class="note">If your kit came with a paper listing the parts, it will usually say which packet is which. Use it to check that you picked the right ones.</p>
+
+    <div class="words">
+      <h5>Words to know</h5>
+      <dl>
+        <dt>circuit</dt><dd>A complete loop that electricity can travel round. If the loop is broken anywhere, nothing works.</dd>
+        <dt>current</dt><dd>Electricity moving round the loop. It is not used up. The same amount passes every point.</dd>
+        <dt>resistance</dt><dd>How much something slows the current down.</dd>
+        <dt>ohm</dt><dd>The unit resistance is measured in. Written &#8486;. A 220 ohm resistor is written 220 &#8486;.</dd>
+        <dt>ground</dt><dd>The end of the loop, where current returns to the board. The pins marked GND.</dd>
+        <dt>short circuit</dt><dd>When current finds a way back to ground without passing through anything that slows it down. This is the dangerous one. It is what happens if you join 5V straight to GND.</dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section class="part" id="breadboard">
+  <div class="parthead"><span class="tag">Part 2</span><h2>How a breadboard works</h2><span class="mins">20 min</span></div>
+  <div class="col stack">
+    <p>A breadboard is a plastic block full of small holes. Inside it, some of those holes are already joined together by metal strips you cannot see.</p>
+    <p>That is the entire idea. You push component legs and wires into holes, and any two things in the same joined group are now connected to each other. No soldering, no glue, and you can pull it apart and start again.</p>
+    <p>The only thing you have to learn is <strong>which holes are joined to which</strong>. Get that wrong and nothing works, and nothing looks wrong either.</p>
+
+    <figure>
+      <svg viewBox="0 0 640 460" role="img" aria-label="Diagram of a breadboard showing that each group of five holes in a column is joined together, that the long lines at the top and bottom edges are joined along their whole length, and that nothing crosses the channel down the middle.">
+<defs><circle id="h" r="4.2" fill="none" stroke="currentColor" stroke-width="1.1" opacity="0.75"/></defs>
+<rect x="46" y="20" width="480" height="424" rx="8" fill="none" stroke="currentColor" stroke-width="1.5"/>
+<rect x="46" y="222" width="480" height="30" fill="currentColor" opacity="0.07"/>
+<line x1="46" y1="222" x2="526" y2="222" stroke="currentColor" stroke-width="1" opacity="0.4"/>
+<line x1="46" y1="252" x2="526" y2="252" stroke="currentColor" stroke-width="1" opacity="0.4"/>
+<text x="56" y="45" font-size="13" fill="#E0563C" font-family="Archivo, Arial, sans-serif">+</text>
+<text x="56" y="67" font-size="13" fill="#6C9BE0" font-family="Archivo, Arial, sans-serif">&#8722;</text>
+<text x="56" y="407" font-size="13" fill="#6C9BE0" font-family="Archivo, Arial, sans-serif">&#8722;</text>
+<text x="56" y="429" font-size="13" fill="#E0563C" font-family="Archivo, Arial, sans-serif">+</text>
+<g>
+<use href="#h" x="70" y="40"/>
+<use href="#h" x="96" y="40"/>
+<use href="#h" x="122" y="40"/>
+<use href="#h" x="148" y="40"/>
+<use href="#h" x="174" y="40"/>
+<use href="#h" x="200" y="40"/>
+<use href="#h" x="226" y="40"/>
+<use href="#h" x="252" y="40"/>
+<use href="#h" x="278" y="40"/>
+<use href="#h" x="304" y="40"/>
+<use href="#h" x="330" y="40"/>
+<use href="#h" x="356" y="40"/>
+<use href="#h" x="382" y="40"/>
+<use href="#h" x="408" y="40"/>
+<use href="#h" x="434" y="40"/>
+<use href="#h" x="460" y="40"/>
+<use href="#h" x="70" y="62"/>
+<use href="#h" x="96" y="62"/>
+<use href="#h" x="122" y="62"/>
+<use href="#h" x="148" y="62"/>
+<use href="#h" x="174" y="62"/>
+<use href="#h" x="200" y="62"/>
+<use href="#h" x="226" y="62"/>
+<use href="#h" x="252" y="62"/>
+<use href="#h" x="278" y="62"/>
+<use href="#h" x="304" y="62"/>
+<use href="#h" x="330" y="62"/>
+<use href="#h" x="356" y="62"/>
+<use href="#h" x="382" y="62"/>
+<use href="#h" x="408" y="62"/>
+<use href="#h" x="434" y="62"/>
+<use href="#h" x="460" y="62"/>
+<use href="#h" x="70" y="402"/>
+<use href="#h" x="96" y="402"/>
+<use href="#h" x="122" y="402"/>
+<use href="#h" x="148" y="402"/>
+<use href="#h" x="174" y="402"/>
+<use href="#h" x="200" y="402"/>
+<use href="#h" x="226" y="402"/>
+<use href="#h" x="252" y="402"/>
+<use href="#h" x="278" y="402"/>
+<use href="#h" x="304" y="402"/>
+<use href="#h" x="330" y="402"/>
+<use href="#h" x="356" y="402"/>
+<use href="#h" x="382" y="402"/>
+<use href="#h" x="408" y="402"/>
+<use href="#h" x="434" y="402"/>
+<use href="#h" x="460" y="402"/>
+<use href="#h" x="70" y="424"/>
+<use href="#h" x="96" y="424"/>
+<use href="#h" x="122" y="424"/>
+<use href="#h" x="148" y="424"/>
+<use href="#h" x="174" y="424"/>
+<use href="#h" x="200" y="424"/>
+<use href="#h" x="226" y="424"/>
+<use href="#h" x="252" y="424"/>
+<use href="#h" x="278" y="424"/>
+<use href="#h" x="304" y="424"/>
+<use href="#h" x="330" y="424"/>
+<use href="#h" x="356" y="424"/>
+<use href="#h" x="382" y="424"/>
+<use href="#h" x="408" y="424"/>
+<use href="#h" x="434" y="424"/>
+<use href="#h" x="460" y="424"/>
+<use href="#h" x="70" y="110"/>
+<use href="#h" x="96" y="110"/>
+<use href="#h" x="122" y="110"/>
+<use href="#h" x="148" y="110"/>
+<use href="#h" x="174" y="110"/>
+<use href="#h" x="200" y="110"/>
+<use href="#h" x="226" y="110"/>
+<use href="#h" x="252" y="110"/>
+<use href="#h" x="278" y="110"/>
+<use href="#h" x="304" y="110"/>
+<use href="#h" x="330" y="110"/>
+<use href="#h" x="356" y="110"/>
+<use href="#h" x="382" y="110"/>
+<use href="#h" x="408" y="110"/>
+<use href="#h" x="434" y="110"/>
+<use href="#h" x="460" y="110"/>
+<use href="#h" x="70" y="134"/>
+<use href="#h" x="96" y="134"/>
+<use href="#h" x="122" y="134"/>
+<use href="#h" x="148" y="134"/>
+<use href="#h" x="174" y="134"/>
+<use href="#h" x="200" y="134"/>
+<use href="#h" x="226" y="134"/>
+<use href="#h" x="252" y="134"/>
+<use href="#h" x="278" y="134"/>
+<use href="#h" x="304" y="134"/>
+<use href="#h" x="330" y="134"/>
+<use href="#h" x="356" y="134"/>
+<use href="#h" x="382" y="134"/>
+<use href="#h" x="408" y="134"/>
+<use href="#h" x="434" y="134"/>
+<use href="#h" x="460" y="134"/>
+<use href="#h" x="70" y="158"/>
+<use href="#h" x="96" y="158"/>
+<use href="#h" x="122" y="158"/>
+<use href="#h" x="148" y="158"/>
+<use href="#h" x="174" y="158"/>
+<use href="#h" x="200" y="158"/>
+<use href="#h" x="226" y="158"/>
+<use href="#h" x="252" y="158"/>
+<use href="#h" x="278" y="158"/>
+<use href="#h" x="304" y="158"/>
+<use href="#h" x="330" y="158"/>
+<use href="#h" x="356" y="158"/>
+<use href="#h" x="382" y="158"/>
+<use href="#h" x="408" y="158"/>
+<use href="#h" x="434" y="158"/>
+<use href="#h" x="460" y="158"/>
+<use href="#h" x="70" y="182"/>
+<use href="#h" x="96" y="182"/>
+<use href="#h" x="122" y="182"/>
+<use href="#h" x="148" y="182"/>
+<use href="#h" x="174" y="182"/>
+<use href="#h" x="200" y="182"/>
+<use href="#h" x="226" y="182"/>
+<use href="#h" x="252" y="182"/>
+<use href="#h" x="278" y="182"/>
+<use href="#h" x="304" y="182"/>
+<use href="#h" x="330" y="182"/>
+<use href="#h" x="356" y="182"/>
+<use href="#h" x="382" y="182"/>
+<use href="#h" x="408" y="182"/>
+<use href="#h" x="434" y="182"/>
+<use href="#h" x="460" y="182"/>
+<use href="#h" x="70" y="206"/>
+<use href="#h" x="96" y="206"/>
+<use href="#h" x="122" y="206"/>
+<use href="#h" x="148" y="206"/>
+<use href="#h" x="174" y="206"/>
+<use href="#h" x="200" y="206"/>
+<use href="#h" x="226" y="206"/>
+<use href="#h" x="252" y="206"/>
+<use href="#h" x="278" y="206"/>
+<use href="#h" x="304" y="206"/>
+<use href="#h" x="330" y="206"/>
+<use href="#h" x="356" y="206"/>
+<use href="#h" x="382" y="206"/>
+<use href="#h" x="408" y="206"/>
+<use href="#h" x="434" y="206"/>
+<use href="#h" x="460" y="206"/>
+<use href="#h" x="70" y="258"/>
+<use href="#h" x="96" y="258"/>
+<use href="#h" x="122" y="258"/>
+<use href="#h" x="148" y="258"/>
+<use href="#h" x="174" y="258"/>
+<use href="#h" x="200" y="258"/>
+<use href="#h" x="226" y="258"/>
+<use href="#h" x="252" y="258"/>
+<use href="#h" x="278" y="258"/>
+<use href="#h" x="304" y="258"/>
+<use href="#h" x="330" y="258"/>
+<use href="#h" x="356" y="258"/>
+<use href="#h" x="382" y="258"/>
+<use href="#h" x="408" y="258"/>
+<use href="#h" x="434" y="258"/>
+<use href="#h" x="460" y="258"/>
+<use href="#h" x="70" y="282"/>
+<use href="#h" x="96" y="282"/>
+<use href="#h" x="122" y="282"/>
+<use href="#h" x="148" y="282"/>
+<use href="#h" x="174" y="282"/>
+<use href="#h" x="200" y="282"/>
+<use href="#h" x="226" y="282"/>
+<use href="#h" x="252" y="282"/>
+<use href="#h" x="278" y="282"/>
+<use href="#h" x="304" y="282"/>
+<use href="#h" x="330" y="282"/>
+<use href="#h" x="356" y="282"/>
+<use href="#h" x="382" y="282"/>
+<use href="#h" x="408" y="282"/>
+<use href="#h" x="434" y="282"/>
+<use href="#h" x="460" y="282"/>
+<use href="#h" x="70" y="306"/>
+<use href="#h" x="96" y="306"/>
+<use href="#h" x="122" y="306"/>
+<use href="#h" x="148" y="306"/>
+<use href="#h" x="174" y="306"/>
+<use href="#h" x="200" y="306"/>
+<use href="#h" x="226" y="306"/>
+<use href="#h" x="252" y="306"/>
+<use href="#h" x="278" y="306"/>
+<use href="#h" x="304" y="306"/>
+<use href="#h" x="330" y="306"/>
+<use href="#h" x="356" y="306"/>
+<use href="#h" x="382" y="306"/>
+<use href="#h" x="408" y="306"/>
+<use href="#h" x="434" y="306"/>
+<use href="#h" x="460" y="306"/>
+<use href="#h" x="70" y="330"/>
+<use href="#h" x="96" y="330"/>
+<use href="#h" x="122" y="330"/>
+<use href="#h" x="148" y="330"/>
+<use href="#h" x="174" y="330"/>
+<use href="#h" x="200" y="330"/>
+<use href="#h" x="226" y="330"/>
+<use href="#h" x="252" y="330"/>
+<use href="#h" x="278" y="330"/>
+<use href="#h" x="304" y="330"/>
+<use href="#h" x="330" y="330"/>
+<use href="#h" x="356" y="330"/>
+<use href="#h" x="382" y="330"/>
+<use href="#h" x="408" y="330"/>
+<use href="#h" x="434" y="330"/>
+<use href="#h" x="460" y="330"/>
+<use href="#h" x="70" y="354"/>
+<use href="#h" x="96" y="354"/>
+<use href="#h" x="122" y="354"/>
+<use href="#h" x="148" y="354"/>
+<use href="#h" x="174" y="354"/>
+<use href="#h" x="200" y="354"/>
+<use href="#h" x="226" y="354"/>
+<use href="#h" x="252" y="354"/>
+<use href="#h" x="278" y="354"/>
+<use href="#h" x="304" y="354"/>
+<use href="#h" x="330" y="354"/>
+<use href="#h" x="356" y="354"/>
+<use href="#h" x="382" y="354"/>
+<use href="#h" x="408" y="354"/>
+<use href="#h" x="434" y="354"/>
+<use href="#h" x="460" y="354"/>
+</g>
+<g font-size="11" fill="currentColor" opacity="0.6" font-family="IBM Plex Mono, monospace" text-anchor="middle">
+<text x="54" y="114">j</text>
+<text x="54" y="138">i</text>
+<text x="54" y="162">h</text>
+<text x="54" y="186">g</text>
+<text x="54" y="210">f</text>
+<text x="54" y="262">e</text>
+<text x="54" y="286">d</text>
+<text x="54" y="310">c</text>
+<text x="54" y="334">b</text>
+<text x="54" y="358">a</text>
+</g>
+<g font-size="10" fill="currentColor" opacity="0.5" font-family="IBM Plex Mono, monospace" text-anchor="middle">
+<text x="70" y="100">1</text>
+<text x="174" y="100">5</text>
+<text x="304" y="100">10</text>
+<text x="434" y="100">15</text>
+</g>
+<rect x="189" y="99" width="22" height="118" rx="10" fill="none" stroke="currentColor" stroke-width="2.5"/>
+<line x1="213" y1="158" x2="548" y2="158" stroke="currentColor" stroke-width="1.4"/>
+<rect x="58" y="29" width="424" height="22" rx="11" fill="none" stroke="currentColor" stroke-width="2.5" stroke-dasharray="6 4"/>
+<line x1="484" y1="40" x2="548" y2="40" stroke="currentColor" stroke-width="1.4"/>
+<line x1="528" y1="237" x2="548" y2="237" stroke="currentColor" stroke-width="1.2" opacity="0.6"/>
+<g font-size="13" fill="currentColor" font-family="Archivo, Arial, sans-serif">
+<text x="554" y="30">This whole line is</text><text x="554" y="46">joined, end to end</text><text x="554" y="62" opacity="0.7">(called a rail)</text>
+<text x="554" y="152">These five holes</text><text x="554" y="168">are joined</text>
+<text x="554" y="233">Nothing crosses</text><text x="554" y="249">this gap</text>
+</g>
+</svg>
+      <figcaption>The three rules of a breadboard. Groups of five holes going up and down are joined to each other. The two long lines at the top and bottom edges are joined all the way along. Nothing crosses the channel down the middle.</figcaption>
+    </figure>
+
+    <h3 style="margin-top:.4rem">The three rules</h3>
+    <ol class="num">
+      <li><strong>Five holes in a column are joined.</strong> Look at the middle of the board. The holes are arranged in columns. In each column, the group of five holes on one side of the middle channel is joined together. If you put a wire in one of those five and a leg in another, they are connected.</li>
+      <li><strong>The long lines at the edges are joined all the way along.</strong> These are called the <strong>rails</strong>. There is usually a red line with a <code>+</code> beside one and a blue or black line with a <code>&#8722;</code> beside the other. Every hole along one rail is joined to every other hole in the same rail. Rails are for things that many parts need to share, like ground.</li>
+      <li><strong>Nothing crosses the middle channel.</strong> The gap down the centre is a wall. The group of five above it and the group of five below it are separate, even though they look like they are in a line.</li>
+    </ol>
+
+    <h3 style="margin-top:.6rem">How we will describe holes</h3>
+    <p>The columns are numbered along the edge: 1, 2, 3 and so on. The rows are lettered down the side: <code>j i h g f</code> above the channel, and <code>e d c b a</code> below it.</p>
+    <p>So <strong>hole f5</strong> means row f, column 5. And because f, g, h, i and j in column 5 are all one joined group, putting something in <code>f5</code> is the same as putting it in <code>j5</code>. They are the same connection.</p>
+    <p class="note">Not every breadboard prints the letters and numbers, and some print them the other way up. If yours does not match, do not worry. What matters is the pattern, not the labels. Every instruction in this band also says what is connecting to what, so you can follow it either way.</p>
+
+    <div class="callout">
+      <h5>Check you have understood, before you build anything</h5>
+      <p>Answer these three on paper.</p>
+      <ol class="num">
+        <li>Are holes <code>f5</code> and <code>h5</code> joined?</li>
+        <li>Are holes <code>f5</code> and <code>f6</code> joined?</li>
+        <li>Are holes <code>e5</code> and <code>f5</code> joined?</li>
+      </ol>
+    </div>
+    <details><summary>Answers</summary><div class="inner">
+      <p><strong>1. Yes.</strong> Same column, same side of the channel, so they are in the same group of five.</p>
+      <p><strong>2. No.</strong> Different columns. Column 5 and column 6 are separate groups.</p>
+      <p><strong>3. No.</strong> This is the one that catches people. They are in the same column and they look like they are in a line, but the channel runs between them. Row e is below the channel and row f is above it.</p>
+      <p>If you got any of these wrong, read the three rules again now. Almost every wiring problem in this course comes back to them.</p>
+    </div></details>
+  </div>
+</section>
+
+<section class="part" id="parts">
+  <div class="parthead"><span class="tag">Part 3</span><h2>The two parts you are about to use</h2><span class="mins">15 min</span></div>
+  <div class="col stack">
+    <h3>The LED</h3>
+    <p>LED stands for light emitting diode. It is a small light. The important thing about it is that <strong>it only works one way round</strong>. Put it in backwards and nothing happens at all. It does not break, it just does not light.</p>
+    <p>You can tell which way round it goes in two ways.</p>
+
+    <figure>
+      <svg viewBox="0 0 560 260" role="img" aria-label="Diagram of an LED showing the long leg is the positive side and goes towards the pin, and the short leg on the flat side of the rim is the negative side and goes towards ground.">
+<g fill="none" stroke="currentColor" stroke-width="1.6">
+  <path d="M170 120 A40 40 0 0 1 250 120 L250 150 L170 150 Z"/>
+  <line x1="164" y1="150" x2="256" y2="150"/>
+  <line x1="250" y1="150" x2="250" y2="162"/>
+  <line x1="186" y1="162" x2="186" y2="238"/>
+  <line x1="234" y1="162" x2="234" y2="200"/>
+</g>
+<line x1="250" y1="140" x2="256" y2="140" stroke="currentColor" stroke-width="3"/>
+<g stroke="currentColor" stroke-width="1" opacity="0.55">
+  <line x1="186" y1="228" x2="120" y2="228"/>
+  <line x1="234" y1="196" x2="330" y2="196"/>
+  <line x1="256" y1="143" x2="330" y2="120"/>
+</g>
+<g font-size="13" fill="currentColor" font-family="Archivo, Arial, sans-serif">
+  <text x="114" y="224" text-anchor="end">Long leg</text>
+  <text x="114" y="242" text-anchor="end">goes towards the pin</text>
+  <text x="336" y="192">Short leg</text>
+  <text x="336" y="210">goes towards GND</text>
+  <text x="336" y="116">The rim is flat on this side</text>
+  <text x="336" y="134">next to the short leg</text>
+</g>
+</svg>
+      <figcaption>How to tell an LED's legs apart. The long leg goes towards the pin. The short leg, next to the flat part of the rim, goes towards ground.</figcaption>
+    </figure>
+
+    <ul class="plain">
+      <li><strong>The legs are different lengths.</strong> The <strong>long leg</strong> is the side electricity goes in. It faces the pin. The <strong>short leg</strong> is where electricity comes out. It faces ground.</li>
+      <li><strong>The rim is flat on one side.</strong> Look at the bottom edge of the plastic dome. One side is flat rather than round. The flat side is next to the short leg. This is useful because sometimes someone has already trimmed the legs to the same length.</li>
+    </ul>
+    <p class="note">A quick way to remember it: long leg, long journey. It goes in first. Also remember that this is the single most common mistake in this band, so if a light does not come on, turn the LED round before you do anything else.</p>
+
+    <h3 style="margin-top:.8rem">The resistor</h3>
+    <p>A resistor slows the current down. It has no direction, so you can put it in either way round.</p>
+    <p><strong>Why an LED needs one:</strong> an LED will take as much current as it can get. If you connect it straight to a pin with nothing to slow it down, it takes far more than it can handle, gets hot, and burns out in seconds. The resistor limits how much can get through, and the LED lives.</p>
+    <p><strong>Never connect an LED without a resistor.</strong> Not even for a quick test.</p>
+    <p>Why 220 ohms in particular? A rough answer is enough for now. The board supplies 5 volts. An LED is comfortable with about 15 thousandths of an amp. Working out what resistance gives you roughly that amount lands you somewhere between 200 and 330 ohms, and 220 is a common value that sits nicely in that range. You will do this arithmetic properly at Band 4 when you meet Ohm's law as a tool you actually need.</p>
+
+    <div class="words">
+      <h5>Words to know</h5>
+      <dl>
+        <dt>LED</dt><dd>A small light that only works one way round.</dd>
+        <dt>long leg</dt><dd>The leg of an LED that faces the pin. Electricity goes in here.</dd>
+        <dt>short leg</dt><dd>The leg of an LED that faces ground. Electricity comes out here. The rim is flat on this side.</dd>
+        <dt>resistor</dt><dd>A part that slows current down, so the LED is not destroyed. Works either way round.</dd>
+        <dt>jumper wire</dt><dd>A short wire with a stiff end at each side, for joining holes on the breadboard to pins on the board.</dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section class="part" id="read">
+  <div class="parthead"><span class="tag">Part 4</span><h2>Read the code before you build</h2><span class="mins">8 min</span></div>
+  <div class="col stack">
+    <p>Here is the sketch for the first circuit. Read it and answer the questions before you touch anything.</p>
+    <span class="filename">b1_01_one_led_given.ino</span>
+    <pre><code>int lampPin = 8;
+
+void setup() {
+  pinMode(lampPin, OUTPUT);
+}
+
+void loop() {
+  digitalWrite(lampPin, HIGH);
+  delay(400);
+  digitalWrite(lampPin, LOW);
+  delay(1600);
+}</code></pre>
+    <p>Everything here you met in Band 0, except the first line, which you saw in the worked example. <code>int lampPin = 8;</code> makes a name called <code>lampPin</code> and puts the number 8 in it. Everywhere below, <code>lampPin</code> means 8.</p>
+
+    <div class="callout">
+      <h5>Write your answers down first</h5>
+      <ol class="num">
+        <li>How long is the light on for? How long is it off for?</li>
+        <li>Out of every full round, what fraction of the time is it lit? A quarter? A half? Something else?</li>
+        <li>The circuit will be: pin 8, then the resistor, then the LED, then ground. If you moved the resistor so it sat between the LED and ground instead, what would change?</li>
+        <li>The sketch would work exactly the same if you deleted <code>lampPin</code> and just wrote 8 everywhere. So why is it there?</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section class="part" id="build1">
+  <div class="parthead"><span class="tag">Part 5</span><h2>Build one light</h2><span class="mins">30 min</span></div>
+  <div class="col stack">
+    <p>Here is what you are building. Follow the picture first, then the steps.</p>
+
+    <figure>
+      <svg viewBox="0 0 700 210" role="img" aria-label="Diagram of one LED circuit: pin 8 goes through a 220 ohm resistor to the long leg of the LED, out of the short leg to the minus rail on the breadboard, and from the rail back to a GND pin on the board.">
+<defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker></defs>
+<rect x="30" y="42" width="86" height="36" rx="5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+<text x="73" y="65" text-anchor="middle" font-size="13" fill="currentColor" font-family="Archivo, Arial, sans-serif">Pin 8</text>
+<line x1="116" y1="60" x2="176" y2="60" stroke="currentColor" stroke-width="1.6"/>
+<polyline points="176,60 184,50 200,70 216,50 232,70 240,60" fill="none" stroke="currentColor" stroke-width="1.6"/>
+<text x="208" y="40" text-anchor="middle" font-size="11.5" fill="currentColor" opacity="0.8" font-family="IBM Plex Mono, monospace">220 &#8486;</text>
+<line x1="240" y1="60" x2="300" y2="60" stroke="currentColor" stroke-width="1.6"/>
+<polygon points="300,47 300,73 326,60" fill="none" stroke="#E0563C" stroke-width="1.8"/>
+<line x1="326" y1="47" x2="326" y2="73" stroke="#E0563C" stroke-width="2.4"/>
+<text x="313" y="94" text-anchor="middle" font-size="11.5" fill="currentColor" opacity="0.8" font-family="Archivo, Arial, sans-serif">LED</text>
+<text x="292" y="40" text-anchor="middle" font-size="10.5" fill="currentColor" opacity="0.65" font-family="Archivo, Arial, sans-serif">long</text>
+<text x="336" y="40" text-anchor="middle" font-size="10.5" fill="currentColor" opacity="0.65" font-family="Archivo, Arial, sans-serif">short</text>
+<line x1="326" y1="60" x2="470" y2="60" stroke="currentColor" stroke-width="1.6" marker-end="url(#ar)"/>
+<line x1="474" y1="34" x2="474" y2="86" stroke="currentColor" stroke-width="2.6"/>
+<text x="486" y="28" font-size="12.5" fill="currentColor" font-family="Archivo, Arial, sans-serif">the &#8722; rail on the breadboard</text>
+<line x1="474" y1="60" x2="580" y2="60" stroke="currentColor" stroke-width="1.6" marker-end="url(#ar)"/>
+<rect x="580" y="42" width="86" height="36" rx="5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+<text x="623" y="65" text-anchor="middle" font-size="13" fill="currentColor" font-family="Archivo, Arial, sans-serif">GND pin</text>
+<text x="623" y="98" text-anchor="middle" font-size="11.5" fill="currentColor" opacity="0.75" font-family="Archivo, Arial, sans-serif">one wire only</text>
+</svg>
+      <figcaption>One light circuit. Electricity leaves pin 8, is slowed by the resistor, passes through the LED from its long leg to its short leg, returns along the minus rail, and goes back into a GND pin. It is a complete loop.</figcaption>
+    </figure>
+
+    <div class="ifnot" style="margin-bottom:.4rem"><b>Before you start</b>Unplug the USB cable. Build the whole thing with no power. Check it. Then plug in.</div>
+
+    <div class="steps">
+      <div class="step"><div class="body">
+        <p><strong>Put the LED in.</strong> Long leg into hole <code>f5</code>. Short leg into hole <code>f6</code>.</p>
+        <p class="note">The two legs must be in different columns. If both legs end up in the same column they are joined to each other, the current skips the LED entirely, and it will never light.</p>
+      </div></div>
+
+      <div class="step"><div class="body">
+        <p><strong>Put the resistor in.</strong> One leg into hole <code>j5</code>. The other leg into hole <code>j3</code>.</p>
+        <p class="note">Hole <code>j5</code> is in the same column as <code>f5</code>, so the resistor is now joined to the LED's long leg. That is the connection you want. Either way round is fine for a resistor.</p>
+      </div></div>
+
+      <div class="step"><div class="body">
+        <p><strong>Wire from the board to the resistor.</strong> One end of a jumper wire into hole <code>j3</code>, the other end into <strong>digital pin 8</strong> on the Arduino.</p>
+      </div></div>
+
+      <div class="step"><div class="body">
+        <p><strong>Wire from the LED to the rail.</strong> One end of a jumper wire into hole <code>j6</code>, the other end into any hole on the <strong>&#8722; rail</strong>, the long line down the edge.</p>
+        <p class="note">Hole <code>j6</code> is in the same column as <code>f6</code>, so this connects the LED's short leg to the rail.</p>
+      </div></div>
+
+      <div class="step"><div class="body">
+        <p><strong>Wire from the rail to the board.</strong> One end into any other hole on the same <strong>&#8722; rail</strong>, the other end into a <strong>GND</strong> pin on the Arduino.</p>
+        <p class="note">There is more than one GND pin. Any of them works. This wire is what closes the loop.</p>
+      </div></div>
+
+      <div class="step"><div class="body">
+        <p><strong>Check it before you plug in.</strong> Look at the whole thing and say each connection out loud: pin 8, to resistor, to LED long leg, out of short leg, to rail, to GND.</p>
+      </div></div>
+
+      <div class="step"><div class="body">
+        <p><strong>Plug in the USB cable. Open <code>b1_01_one_led_given.ino</code>. Upload it.</strong></p>
+        <div class="see"><b>You should see</b>The LED comes on for a short flash, then stays off for a longer time, over and over.</div>
+        <div class="ifnot"><b>If nothing lights</b>Do not start pulling wires out. Go to Part 11 at the bottom of this page and work down the checklist in order. Pulling things out at random turns one fault into three, and it is the single biggest waste of time in this whole course.</div>
+      </div></div>
+
+      <div class="step"><div class="body">
+        <p><strong>Check your four answers from Part 4.</strong> Mark each right or wrong.</p>
+      </div></div>
+    </div>
+
+    <h3 style="margin-top:1rem">Now test the thing you were asked to predict</h3>
+    <p>Question 3 asked what would change if the resistor were on the other side of the LED. Find out.</p>
+    <p>Unplug the USB. Move the resistor so it now sits between the LED's short leg and the rail instead of between the pin and the LED's long leg. Plug back in.</p>
+    <details><summary>What you should have found</summary><div class="inner">
+      <p>Nothing changes. The light behaves exactly the same.</p>
+      <p>This is the rope activity again. The current is the same all the way round the loop, so it does not matter where in the loop you put the thing that slows it down. Anywhere in the loop protects the LED equally.</p>
+      <p>Put the resistor back where it was before you carry on, so the rest of the instructions match your board.</p>
+    </div></details>
+  </div>
+</section>
+
+<section class="part" id="build3">
+  <div class="parthead"><span class="tag">Part 6</span><h2>Build all three</h2><span class="mins">45 min</span></div>
+  <div class="col stack">
+    <p>Same idea, three times over. The one new idea is that all three lights share a single return path back to the board.</p>
+
+    <figure>
+      <svg viewBox="0 0 700 390" role="img" aria-label="Diagram of three LED circuits side by side: pin 9, pin 8 and pin 7 each go through their own 220 ohm resistor to their own LED, and all three LEDs return to the same minus rail, which connects to one GND pin.">
+<defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker></defs>
+<rect x="30" y="42" width="86" height="36" rx="5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+<text x="73" y="65" text-anchor="middle" font-size="13" fill="currentColor" font-family="Archivo, Arial, sans-serif">Pin 9</text>
+<line x1="116" y1="60" x2="176" y2="60" stroke="currentColor" stroke-width="1.6"/>
+<polyline points="176,60 184,50 200,70 216,50 232,70 240,60" fill="none" stroke="currentColor" stroke-width="1.6"/>
+<text x="208" y="40" text-anchor="middle" font-size="11.5" fill="currentColor" opacity="0.8" font-family="IBM Plex Mono, monospace">220 &#8486;</text>
+<line x1="240" y1="60" x2="300" y2="60" stroke="currentColor" stroke-width="1.6"/>
+<polygon points="300,47 300,73 326,60" fill="none" stroke="#E0563C" stroke-width="1.8"/>
+<line x1="326" y1="47" x2="326" y2="73" stroke="#E0563C" stroke-width="2.4"/>
+<text x="313" y="94" text-anchor="middle" font-size="11.5" fill="currentColor" opacity="0.8" font-family="Archivo, Arial, sans-serif">LED</text>
+<text x="292" y="40" text-anchor="middle" font-size="10.5" fill="currentColor" opacity="0.65" font-family="Archivo, Arial, sans-serif">long</text>
+<text x="336" y="40" text-anchor="middle" font-size="10.5" fill="currentColor" opacity="0.65" font-family="Archivo, Arial, sans-serif">short</text>
+<line x1="326" y1="60" x2="470" y2="60" stroke="currentColor" stroke-width="1.6" marker-end="url(#ar)"/>
+<rect x="30" y="132" width="86" height="36" rx="5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+<text x="73" y="155" text-anchor="middle" font-size="13" fill="currentColor" font-family="Archivo, Arial, sans-serif">Pin 8</text>
+<line x1="116" y1="150" x2="176" y2="150" stroke="currentColor" stroke-width="1.6"/>
+<polyline points="176,150 184,140 200,160 216,140 232,160 240,150" fill="none" stroke="currentColor" stroke-width="1.6"/>
+<text x="208" y="130" text-anchor="middle" font-size="11.5" fill="currentColor" opacity="0.8" font-family="IBM Plex Mono, monospace">220 &#8486;</text>
+<line x1="240" y1="150" x2="300" y2="150" stroke="currentColor" stroke-width="1.6"/>
+<polygon points="300,137 300,163 326,150" fill="none" stroke="#E0A054" stroke-width="1.8"/>
+<line x1="326" y1="137" x2="326" y2="163" stroke="#E0A054" stroke-width="2.4"/>
+<text x="313" y="184" text-anchor="middle" font-size="11.5" fill="currentColor" opacity="0.8" font-family="Archivo, Arial, sans-serif">LED</text>
+<text x="292" y="130" text-anchor="middle" font-size="10.5" fill="currentColor" opacity="0.65" font-family="Archivo, Arial, sans-serif">long</text>
+<text x="336" y="130" text-anchor="middle" font-size="10.5" fill="currentColor" opacity="0.65" font-family="Archivo, Arial, sans-serif">short</text>
+<line x1="326" y1="150" x2="470" y2="150" stroke="currentColor" stroke-width="1.6" marker-end="url(#ar)"/>
+<rect x="30" y="222" width="86" height="36" rx="5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+<text x="73" y="245" text-anchor="middle" font-size="13" fill="currentColor" font-family="Archivo, Arial, sans-serif">Pin 7</text>
+<line x1="116" y1="240" x2="176" y2="240" stroke="currentColor" stroke-width="1.6"/>
+<polyline points="176,240 184,230 200,250 216,230 232,250 240,240" fill="none" stroke="currentColor" stroke-width="1.6"/>
+<text x="208" y="220" text-anchor="middle" font-size="11.5" fill="currentColor" opacity="0.8" font-family="IBM Plex Mono, monospace">220 &#8486;</text>
+<line x1="240" y1="240" x2="300" y2="240" stroke="currentColor" stroke-width="1.6"/>
+<polygon points="300,227 300,253 326,240" fill="none" stroke="#5FB878" stroke-width="1.8"/>
+<line x1="326" y1="227" x2="326" y2="253" stroke="#5FB878" stroke-width="2.4"/>
+<text x="313" y="274" text-anchor="middle" font-size="11.5" fill="currentColor" opacity="0.8" font-family="Archivo, Arial, sans-serif">LED</text>
+<text x="292" y="220" text-anchor="middle" font-size="10.5" fill="currentColor" opacity="0.65" font-family="Archivo, Arial, sans-serif">long</text>
+<text x="336" y="220" text-anchor="middle" font-size="10.5" fill="currentColor" opacity="0.65" font-family="Archivo, Arial, sans-serif">short</text>
+<line x1="326" y1="240" x2="470" y2="240" stroke="currentColor" stroke-width="1.6" marker-end="url(#ar)"/>
+<line x1="474" y1="34" x2="474" y2="266" stroke="currentColor" stroke-width="2.6"/>
+<text x="486" y="28" font-size="12.5" fill="currentColor" font-family="Archivo, Arial, sans-serif">the &#8722; rail on the breadboard</text>
+<line x1="474" y1="150" x2="580" y2="150" stroke="currentColor" stroke-width="1.6" marker-end="url(#ar)"/>
+<rect x="580" y="132" width="86" height="36" rx="5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+<text x="623" y="155" text-anchor="middle" font-size="13" fill="currentColor" font-family="Archivo, Arial, sans-serif">GND pin</text>
+<text x="623" y="188" text-anchor="middle" font-size="11.5" fill="currentColor" opacity="0.75" font-family="Archivo, Arial, sans-serif">one wire only</text>
+</svg>
+      <figcaption>Three light circuits sharing one ground. Each light has its own pin and its own resistor. All three return to the same minus rail, and one wire takes the rail back to a single GND pin.</figcaption>
+    </figure>
+
+    <div class="callout">
+      <h5>Two rules that will save you an hour</h5>
+      <ul class="plain">
+        <li><strong>Every LED needs its own resistor.</strong> Not one resistor shared between them. Three LEDs, three resistors.</li>
+        <li><strong>They all share one ground.</strong> Every short leg goes to the same &#8722; rail, and one single wire takes that rail to one GND pin. You do not need three ground wires.</li>
+      </ul>
+    </div>
+
+    <div class="ifnot" style="margin-bottom:.4rem"><b>Before you start</b>USB unplugged.</div>
+
+    <div class="steps">
+      <div class="step"><div class="body">
+        <p><strong>Start from what you already built.</strong> Your Part 5 light is already in the right holes to become the red one. Leave the LED at <code>f5</code> and <code>f6</code>, and its resistor at <code>j5</code> to <code>j3</code>. <strong>Move the wire from pin 8 to pin 9</strong>, and leave the ground wires where they are.</p>
+        <p class="note">If you have already taken it apart, no problem. Just build the red light from scratch with the next step.</p>
+      </div></div>
+
+      <div class="step"><div class="body">
+        <p><strong>Red light.</strong> LED long leg into <code>f5</code>, short leg into <code>f6</code>. Resistor from <code>j5</code> to <code>j3</code>. Wire from <code>j3</code> to <strong>pin 9</strong>. Wire from <code>j6</code> to the <strong>&#8722; rail</strong>.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Yellow light.</strong> LED long leg into <code>f10</code>, short leg into <code>f11</code>. Resistor from <code>j10</code> to <code>j8</code>. Wire from <code>j8</code> to <strong>pin 8</strong>. Wire from <code>j11</code> to the <strong>&#8722; rail</strong>.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Green light.</strong> LED long leg into <code>f15</code>, short leg into <code>f16</code>. Resistor from <code>j15</code> to <code>j13</code>. Wire from <code>j13</code> to <strong>pin 7</strong>. Wire from <code>j16</code> to the <strong>&#8722; rail</strong>.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>One ground wire.</strong> From any hole on the <strong>&#8722; rail</strong> to a <strong>GND</strong> pin on the Arduino.</p>
+        <div class="ifnot"><b>If none of the three lights work</b>This wire is almost always the reason. One missing wire here kills all three at once, and everything else looks perfect. Check it before you check anything else.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Check every connection out loud</strong>, then plug in the USB cable.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Open <code>b1_02_signal_hardcoded.ino</code> and upload it.</strong></p>
+        <div class="see"><b>You should see</b>Red on its own for 5 seconds. Then red and yellow together for 1.5 seconds. Then green on its own for 5 seconds. Then yellow on its own for 1.5 seconds. Then it starts again.</div>
+      </div></div>
+    </div>
+
+    <h3 style="margin-top:1rem">Now read the sketch you just ran</h3>
+    <span class="filename">b1_02_signal_hardcoded.ino</span>
+    <pre><code>void setup() {
+  pinMode(9, OUTPUT);
+  pinMode(8, OUTPUT);
+  pinMode(7, OUTPUT);
+}
+
+void loop() {
+  digitalWrite(9, HIGH);
+  digitalWrite(8, LOW);
+  digitalWrite(7, LOW);
+  delay(5000);
+
+  digitalWrite(9, HIGH);
+  digitalWrite(8, HIGH);
+  digitalWrite(7, LOW);
+  delay(1500);
+
+  digitalWrite(9, LOW);
+  digitalWrite(8, LOW);
+  digitalWrite(7, HIGH);
+  delay(5000);
+
+  digitalWrite(9, LOW);
+  digitalWrite(8, HIGH);
+  digitalWrite(7, LOW);
+  delay(1500);
+}</code></pre>
+
+    <p>Look at the shape of it. There are four blocks, and every block has exactly the same form: three <code>digitalWrite</code> lines, then one <code>delay</code>.</p>
+    <p>Each block is one <strong>state</strong>. A state is one complete situation: what all three lights are doing, and for how long.</p>
+    <p>Notice that every block says something about <em>all three</em> lights, including the ones that should be off. That looks like extra typing. It is deliberate, and there is a question about it in the next part.</p>
+
+    <div class="words">
+      <h5>Words to know</h5>
+      <dl>
+        <dt>state</dt><dd>One complete situation the whole circuit can be in. This signal has four states.</dd>
+        <dt>shared ground</dt><dd>One return path back to GND that several parts all use.</dd>
+        <dt>rail</dt><dd>One of the long lines along the edge of the breadboard, joined all the way along.</dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section class="part" id="closer">
+  <div class="parthead"><span class="tag">Part 7</span><h2>Look closer</h2><span class="mins">25 min</span></div>
+  <div class="col stack">
+    <h3>a. Follow the code by hand</h3>
+    <p>Copy this table onto paper and fill it in for one full round of <code>b1_02</code>. Then add up the four times and say how long a complete round takes.</p>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>State</th><th>Red</th><th>Yellow</th><th>Green</th><th>How long</th><th>What it means</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>on</td><td>off</td><td>off</td><td>5000 ms</td><td>stop</td></tr>
+          <tr><td>2</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+          <tr><td>3</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+          <tr><td>4</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <details><summary>Check your table</summary><div class="inner">
+      <p>State 2: red on, yellow on, green off, 1500 ms, get ready. State 3: red off, yellow off, green on, 5000 ms, go. State 4: red off, yellow on, green off, 1500 ms, about to stop.</p>
+      <p>A full round takes 5000 + 1500 + 5000 + 1500 = 13000 milliseconds, which is 13 seconds.</p>
+    </div></details>
+
+    <h3 style="margin-top:.8rem">b. Find a fault with no error message</h3>
+    <p>Open <code>b1_04_buggy_silent.ino</code> and upload it. It will compile with no error. It will upload with no error. The wiring is correct. And the green light never comes on.</p>
+    <p>Here is the third block of its <code>loop</code>:</p>
+    <span class="filename">b1_04_buggy_silent.ino</span>
+    <pre><code>  digitalWrite(6, HIGH);
+  delay(1000);
+  digitalWrite(6, LOW);</code></pre>
+    <p><strong>Find the fault by reading. Do not touch the breadboard.</strong> Look at the top of the sketch where the names are made, and compare.</p>
+    <details><summary>Answer</summary><div class="inner">
+      <p>At the top the sketch says <code>int greenPin = 7;</code> and <code>setup</code> sets up pin 7 properly. But this block writes to <strong>pin 6</strong>, which has nothing connected to it.</p>
+      <p>Nothing is against the rules about that. Pin 6 is a real pin. The computer has no way of knowing you did not mean it. So it says nothing and does exactly what you asked.</p>
+      <p><strong>The lesson: a program that compiles is a program with no spelling mistakes. It is not the same as a program that is right.</strong> This is your first fault the computer cannot help you find, and there will be many more. From here on, when something behaves wrongly but shows no error, suspect a number.</p>
+    </div></details>
+
+    <h3 style="margin-top:.8rem">c. Put the states in order</h3>
+    <p>Imagine the four state blocks of <code>b1_02</code> have been cut out and shuffled. Put them back into an order that would be safe at a real road crossing, and write one sentence saying why you chose that order.</p>
+    <p>There is more than one reasonable answer. The sentence is the part that counts.</p>
+
+    <h3 style="margin-top:.8rem">d. Explain one line</h3>
+    <p>In state 1, there is a line that says <code>digitalWrite(8, LOW);</code>. It switches off the yellow light. But in state 1 the yellow light is already off. So why is that line there at all?</p>
+    <details><summary>Answer</summary><div class="inner">
+      <p>On the very first round it does nothing, exactly as you noticed.</p>
+      <p>On every round after that, it is the line that turns the yellow light off after state 4 left it on.</p>
+      <p>Here is the idea underneath, and it is important: <strong>a pin stays however you last set it.</strong> It holds that setting for as long as the board has power. Nothing resets when <code>loop</code> comes round again. If you never tell a pin to go off, it stays on forever.</p>
+      <p>Writing out all three lights in every state, even the ones that are already correct, is a habit that prevents a whole family of bugs. People who only write the changes meet those bugs at Band 3 and lose an evening to them.</p>
+    </div></details>
+  </div>
+</section>
+
+<section class="part" id="change">
+  <div class="parthead"><span class="tag">Part 8</span><h2>Change it, and measure the difference</h2><span class="mins">30 min</span></div>
+  <div class="col stack">
+    <p>This part contains the most useful thing in the whole band, and it is disguised as a boring task. Do it properly.</p>
+
+    <dl class="tier">
+      <dt>Bronze</dt><dd>Move the yellow light from pin 8 to pin 6. Do it in <code>b1_02</code> first. <strong>Count every line you had to edit, and write the number down.</strong> Then do exactly the same job in <code>b1_03_signal_variables.ino</code> and <strong>write that number down too.</strong> Move the wire on your board from pin 8 to pin 6 as well, so the tower still works.</dd>
+      <dt>Silver</dt><dd>Add a warning state at the very start: all three lights on together for one second, then carry on into the normal sequence.</dd>
+      <dt>Gold</dt><dd>Make the yellow light blink three times during state 2 instead of staying on solidly, without changing how long state 2 lasts in total.</dd>
+    </dl>
+
+    <p style="margin-top:.4rem">Here is the top of the second sketch. Everything below it is the same as <code>b1_02</code>, except that it uses these names instead of the numbers.</p>
+    <span class="filename">b1_03_signal_variables.ino</span>
+    <pre><code>int redPin = 9;
+int yellowPin = 8;
+int greenPin = 7;
+
+int stopTime = 5000;
+int changeTime = 1500;
+int goTime = 5000;</code></pre>
+
+    <div class="callout">
+      <h5>Your two numbers from Bronze are the lesson</h5>
+      <p>In <code>b1_02</code> the number 8 appears <strong>five times</strong>: once in <code>setup</code>, and once in every one of the four states. Miss a single one and the sequence breaks in a way that is very hard to spot, because three of the four states still look right.</p>
+      <p>In <code>b1_03</code> it appears <strong>once</strong>, at the top, next to a name that says what it is for.</p>
+      <p>Five edits against one. Nobody has to tell you why giving your numbers names is worth the typing, because you counted it yourself.</p>
+      <p>Write both numbers in your build log, along with one sentence saying which version you would rather be handed in six months' time when you have forgotten how it works.</p>
+    </div>
+
+    <details><summary>A hint for Gold, if you are stuck</summary><div class="inner">
+      <p>State 2 lasts 1500 milliseconds in total. If the yellow light needs to blink three times inside that, work out how long each on and each off can be so that they add up to 1500.</p>
+      <p>Three blinks means three on periods and three off periods, so six pieces in total. 1500 divided by 6 is 250. So: yellow on for 250, off for 250, and repeat that three times. Remember the red light must stay on the whole way through.</p>
+    </div></details>
+  </div>
+</section>
+
+<section class="part" id="make">
+  <div class="parthead"><span class="tag">Part 9</span><h2>Make: a signal somebody actually needs</h2><span class="mins">120 min</span></div>
+  <div class="col stack">
+    <div class="brief">
+      <h5>What to build</h5>
+      <p>A three-light signal for a real situation you can point at. Choose one of these, or bring your own idea:</p>
+      <ul class="plain">
+        <li>A crossing outside a school</li>
+        <li>A borehole pump light: off, starting, running</li>
+        <li>An exam hall timer: plenty of time, five minutes left, stop writing</li>
+        <li>A clinic queue light: wait, next patient, closed</li>
+        <li>A phone charging kiosk: free, busy, full</li>
+      </ul>
+      <h5 style="margin-top:.3rem">It is finished when all of these are true</h5>
+      <ul class="plain">
+        <li>It has three states that a stranger can work out without you explaining them</li>
+        <li>You can say in one sentence why each timing is the length it is. Why five seconds and not two?</li>
+        <li>Every timing and every pin number is held in a name at the top of the sketch, not written into the middle of the code</li>
+        <li>It is housed in a card tower that stands up on its own</li>
+        <li>It still works after you carry it across the room</li>
+      </ul>
+    </div>
+
+    <h3>Building the housing</h3>
+    <p>You do not need anything fancy. A cereal box or a piece of stiff card is enough. Cut three holes for the lights, push the LEDs through from behind, and tape the breadboard to the back. Make sure the wires are not pulling on anything, because a wire pulled half out is the most annoying fault there is: it works when you press it and fails when you let go.</p>
+
+    <h3 style="margin-top:.6rem">Test it on somebody</h3>
+    <p>Find one person who was not there while you built it. Do not tell them what it is. Show it to them and ask: <em>what do you think this is telling you?</em></p>
+    <p>Write down <strong>what they actually said</strong>, in their words, not what you were hoping they would say.</p>
+    <p>If they got it wrong, that is not a failure. That is a finding, and it is worth more than a working build. Write down what you would change, and if you have time, change it and test again.</p>
+    <div class="ifnot"><b>If you cannot find anyone today</b>Record a video and send it to someone. Or ask anybody at all: a family member, a neighbour, a friend from school. They do not need to know anything about electronics, and it is better if they do not. If you truly cannot reach anyone, leave it for a day, look at it fresh, and write down what you think a stranger would guess. Say in your log which one you did.</div>
+
+    <h3 style="margin-top:.6rem">Show your work</h3>
+    <p>Post a photo of the tower, a video of the full sequence, and the sentence your tester said. Then look at one other person's sketch and leave them one useful comment: something you would have done differently, and why.</p>
+  </div>
+</section>
+
+<section class="part" id="check">
+  <div class="parthead"><span class="tag">Part 10</span><h2>Check yourself</h2><span class="mins">15 min</span></div>
+  <div class="col stack">
+    <p>Code you have not seen. Answer from reading only.</p>
+    <pre><code>int a = 10;
+int b = 11;
+int wait = 300;
+
+void setup() {
+  pinMode(a, OUTPUT);
+  pinMode(b, OUTPUT);
+}
+
+void loop() {
+  digitalWrite(a, HIGH);
+  digitalWrite(b, LOW);
+  delay(wait);
+  digitalWrite(a, LOW);
+  digitalWrite(b, HIGH);
+  delay(wait);
+}</code></pre>
+    <ol class="num">
+      <li>Two LEDs are wired to pins 10 and 11. Describe in one sentence what someone watching them would see.</li>
+      <li>Is there ever a moment when both are lit? How can you tell from the code alone?</li>
+      <li>Change one line so that LED <code>a</code> stays on twice as long as LED <code>b</code>. Which line, and what does it become?</li>
+      <li><code>wait</code> is used in two places. Name one good thing about that and one bad thing about it.</li>
+      <li>Somebody deletes the line <code>pinMode(b, OUTPUT);</code>. What are you likely to see, and why is this harder to work out than an error message?</li>
+      <li>Both LEDs have been put in with their long legs towards GND. What will you see, and why is this not a problem with the code?</li>
+    </ol>
+    <details><summary>Answers</summary><div class="inner">
+      <p><strong>1.</strong> The two lights take it in turns, changing about three times a second, and one of them is always on.</p>
+      <p><strong>2.</strong> To someone watching, no. Each block switches one on and the other off with nothing in between. Strictly, there is a moment: on every round after the first, <code>a</code> is switched on while <code>b</code> is still on from last time, until the next line switches <code>b</code> off a few millionths of a second later. That is the same pin-holds-its-setting idea from Part 7d. Either answer is fine. The better answer reasons from what the pins are holding rather than from what the eye can see.</p>
+      <p><strong>3.</strong> Change the first <code>delay(wait);</code> to <code>delay(wait * 2);</code>. Or make a second name with a different value. Both are good. The strongest answer notices that using <code>wait</code> for both delays is exactly what makes this awkward, which is question 4.</p>
+      <p><strong>4.</strong> Good: one edit changes the whole rhythm at once. Bad: the two timings are now stuck together and you cannot change one without changing the other. Deciding what to give a name to is really a decision about what should move together.</p>
+      <p><strong>5.</strong> The LED on pin 11 will be off, or glowing very faintly. Without <code>pinMode</code> the pin is still an input, and switching on an input pin does something different: it turns on a small resistor inside the chip that lets through only a tiny trickle. It is harder than an error message because nothing tells you anything at all. It looks exactly like a dead LED or a loose wire, so people rewire a perfectly good circuit for twenty minutes.</p>
+      <p><strong>6.</strong> Neither light comes on. An LED only works one way round and both are now backwards. It is not a code problem because the code is doing exactly what it says. <em>This is the question that matters most in this band. If your first instinct was to go and look at the sketch, that instinct is what this question is testing. In this band, most faults are physical.</em></p>
+    </div></details>
+  </div>
+</section>
+
+<section class="part" id="problems">
+  <div class="parthead"><span class="tag">Part 11</span><h2>When a light will not come on</h2></div>
+  <div class="col stack">
+    <p><strong>Work down this list in order. Do not skip and do not guess.</strong> Six of the seven faults below can be seen in a photograph, which is why the first thing to do when you are stuck is photograph your board.</p>
+  </div>
+  <div class="scroll">
+    <table>
+      <thead><tr><th>Check</th><th>What is wrong</th><th>How to tell</th></tr></thead>
+      <tbody>
+        <tr><td>1. Which way round is the LED?</td><td>Long leg must be on the pin side, short leg towards GND</td><td>By far the most common fault. Turn it round before you do anything else. It costs nothing to try.</td></tr>
+        <tr><td>2. Are both LED legs in the same column?</td><td>They are joined to each other, so the current skips the LED</td><td>The light will never come on and nothing looks wrong. The legs must be in two different columns.</td></tr>
+        <tr><td>3. Are any bare legs touching?</td><td>Two metal legs in contact behave as one connection</td><td>Look for crossed legs lying against each other, especially where they bend over near the board edge.</td></tr>
+        <tr><td>4. Is anything across the middle channel?</td><td>Two holes that look next to each other but sit on opposite sides of the channel</td><td>Look along the channel from the side. Row e and row f are not connected.</td></tr>
+        <tr><td>5. Does the &#8722; rail reach a GND pin?</td><td>Everything returns to the rail, but the rail goes nowhere</td><td>One missing wire stops all the lights at once. If nothing at all works, check this before anything else.</td></tr>
+        <tr><td>6. Is every leg pushed fully in?</td><td>A bent leg resting in a hole instead of gripped by it</td><td>It works when you press it and stops when you let go. Push every leg all the way home.</td></tr>
+        <tr><td>7. Only now, look at the code</td><td>Wrong pin number, a missing <code>pinMode</code>, or a state you forgot to write</td><td>Look at the sketch last. In this band, most faults are in the wiring.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="col stack" style="margin-top:1.2rem">
+    <div class="callout">
+      <h5>Still stuck after 30 minutes?</h5>
+      <p>Stop. Take a photo of the breadboard from directly above, in good light, with the whole board in the picture. Post the photo, your sketch, and one sentence saying what you expected and what happened instead.</p>
+      <p><strong>Do not rebuild it before you ask.</strong> A rebuilt board has thrown away the evidence, and now nobody can help you.</p>
+    </div>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Done</span><h2>What you know now</h2></div>
+  <div class="col stack">
+    <p>You can read a breadboard. You can build a circuit that works and explain why each part is in it. You have met a bug that the computer could not find for you, and you found it by reading. And you have measured for yourself why naming your numbers is worth the effort.</p>
+    <h3 style="margin-top:.6rem">Before you move on, make sure you have</h3>
+    <ul class="plain">
+      <li>Your signal tower, working and housed, with a video of the full sequence</li>
+      <li>The sentence your tester said, in their words</li>
+      <li>Your two numbers from Bronze</li>
+      <li>Your completed state table from Part 7a</li>
+      <li>Your build log for this band</li>
+      <li>Five or six correct answers in Part 10, including question 6</li>
+    </ul>
+    <p style="margin-top:.6rem"><strong>Next is Band 2: Mood Lamp.</strong> So far your lights have only been fully on or fully off. Next you get everything in between, and colour.</p>
+  </div>
+</section>
+
+
+<nav class="pager" aria-label="Bands">
+<a href="band-0.html"><span class="dir">Previous</span><span class="name">Band 0: Bench Ready</span></a>
+<a class="next" href="band-2.html"><span class="dir">Next</span><span class="name">Band 2: Mood Lamp &rarr;</span></a>
+</nav>
+
+<footer>
+  <p>Bozoma Innovation Hub &nbsp;·&nbsp; Aiyinasi, Ellembelle District. Band 1 of nine. Every sketch used here was compiled and tested before it reached you.</p>
+</footer>
+
+</div>
+</body>
+</html>

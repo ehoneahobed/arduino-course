@@ -1,0 +1,6 @@
+.DS_Store
+Thumbs.db
+*.swp
+.vercel/
+node_modules/
+_site.zip

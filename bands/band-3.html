@@ -1,0 +1,996 @@
+<!doctype html>
+<html lang="en" data-band="3">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Band 3: Combination Lock · Arduino Ladder</title>
+  <meta name="description" content="Buttons, and why they are stranger than they look. Floating pins, the serial monitor, and teaching the board to remember.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+  <link rel="stylesheet" href="../assets/course.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the lesson</a>
+<div class="topbar">
+  <a class="home" href="../index.html">Arduino Ladder <span>· Bozoma Innovation Hub</span></a>
+  <nav class="bandlinks" aria-label="Bands"><a href="../bands/band-0.html">0</a><a href="../bands/band-1.html">1</a><a href="../bands/band-2.html">2</a><a href="../bands/band-3.html" aria-current="page">3</a><a href="../bands/band-4.html">4</a><a href="../bands/band-5.html">5</a></nav>
+</div>
+<div class="wrap" id="main">
+<nav aria-label="Sections">
+  <a href="#start">Start here</a>
+  <a href="#door">Think first</a>
+  <a href="#button">What a button is</a>
+  <a href="#serial">Serial monitor</a>
+  <a href="#pullup">Floating pins</a>
+  <a href="#read">Read the code</a>
+  <a href="#build1">Build one button</a>
+  <a href="#ifelse">if and else</a>
+  <a href="#remember">Remembering</a>
+  <a href="#bounce">One press, many counts</a>
+  <a href="#arrays">Arrays</a>
+  <a href="#lock">Build the lock</a>
+  <a href="#closer">Look closer</a>
+  <a href="#change">Change it</a>
+  <a href="#make">Make yours</a>
+  <a href="#check">Check yourself</a>
+  <a href="#problems">Problems</a>
+</nav>
+
+<header style="padding:3rem 0 1rem">
+  <p class="eyebrow">Bozoma Innovation Hub &nbsp;·&nbsp; Arduino Ladder &nbsp;·&nbsp; Band 3</p>
+  <h1 style="margin:.8rem 0">Combination Lock</h1>
+  <p class="col sub" style="font-size:1.1em">So far the board has only ever talked. Now it starts listening. You will find out that a button is much stranger than it looks, and you will build a lock that only opens for the right secret.</p>
+  <p class="col note" style="margin-top:.8rem">About 7 hours. This is the longest band so far and the ideas are close together. Take it in three or four sittings rather than one.</p>
+</header>
+
+<section class="sketchbox">
+  <h2>Sketches for this band</h2>
+  <ul><li><a href="../sketches/b3_01_button_light_given.ino">b3_01_button_light_given.ino</a></li><li><a href="../sketches/b3_02_serial_watch.ino">b3_02_serial_watch.ino</a></li><li><a href="../sketches/b3_03_toggle_buggy.ino">b3_03_toggle_buggy.ino</a></li><li><a href="../sketches/b3_04_toggle_fixed.ino">b3_04_toggle_fixed.ino</a></li><li><a href="../sketches/b3_05_lock_worked.ino">b3_05_lock_worked.ino</a></li></ul>
+  <p>Click one to save it, or get every sketch at once from <a href="../downloads/arduino-ladder-sketches.zip" style="border:0;background:none;padding:0">the downloads page</a>. Each file opens with a plain-English header telling you what it does and how to wire it.</p>
+</section>
+
+
+<section class="part" id="start">
+  <div class="parthead"><span class="tag">Start here</span><h2>What this band is for</h2></div>
+  <div class="col stack">
+    <p>Everything you have built so far runs on its own and ignores you. This band changes that. By the end, your board will wait for you, notice what you do, remember it, and decide what to do about it.</p>
+    <p>Four new ideas do all the work:</p>
+    <ul class="plain">
+      <li><strong>Reading a pin</strong> instead of writing to it.</li>
+      <li><strong>Deciding</strong>, with <code>if</code> and <code>else</code>.</li>
+      <li><strong>Remembering</strong>, by keeping a value in a name between one round and the next.</li>
+      <li><strong>Storing a list</strong> of things in one name, which is called an array.</li>
+    </ul>
+    <p>You also get a new tool: the <strong>serial monitor</strong>. It lets you see numbers from inside your program while it is running. Once you have it, most problems in this course become findable instead of mysterious.</p>
+
+    <h3 style="margin-top:.5rem">What you need</h3>
+    <ul class="plain">
+      <li>Your board, USB cable and breadboard</li>
+      <li>Four push buttons, the small square kind with four legs</li>
+      <li>Two LEDs, ideally one green and one red</li>
+      <li>Two resistors of 220 ohms</li>
+      <li>An active buzzer, the kind with a solid black cover on the bottom</li>
+      <li>About sixteen jumper wires</li>
+    </ul>
+    <p class="note">No resistors are needed for the buttons. You will find out why in Part 4, and it is one of the more useful things you will learn this band.</p>
+
+    <h3 style="margin-top:.5rem">By the end you will be able to</h3>
+    <ul class="plain">
+      <li>Say which legs of a push button are joined to which, and why that matters</li>
+      <li>Explain what a floating pin is and why it lies to you</li>
+      <li>Use the serial monitor to see what your program is really doing</li>
+      <li>Write <code>if</code> and <code>else</code> to make the board choose</li>
+      <li>Make the board remember something between one round and the next</li>
+      <li>Count one press as one press, instead of forty</li>
+      <li>Keep a list of numbers in one name</li>
+    </ul>
+  </div>
+</section>
+
+<section class="part" id="door">
+  <div class="parthead"><span class="tag">Part 1</span><h2>Think first: the door and the spring</h2><span class="mins">10 min</span></div>
+  <div class="col stack">
+    <p>Find a door. Any door will do. This takes five minutes and it will save you an hour of confusion later.</p>
+
+    <ol class="num">
+      <li><strong>Push the door until it is half open, then let go.</strong> Do not touch it again. Now stand back and watch it for a minute. Does it stay exactly where you left it? Does a draught move it? If someone walks past, does it swing?</li>
+      <li><strong>Now think about a door with a spring on it</strong>, the kind that pulls itself shut. A shop door, or a gate with a spring. If you let go of that one, where does it end up? Every time?</li>
+    </ol>
+
+    <div class="callout">
+      <h5>Write these down before you go on</h5>
+      <ol class="num">
+        <li>With the ordinary door, could you tell from across the room whether it was "open" or "shut"? Or was it somewhere in between and moving?</li>
+        <li>With the spring door, if you look at it and it is open, what do you know for certain?</li>
+      </ol>
+    </div>
+
+    <p>That is the whole idea of the next few parts, and it is the thing most beginners get wrong.</p>
+    <p>A pin on the Arduino that has nothing holding it is like the ordinary door. It is not at 1 and it is not at 0. It drifts, and it moves when anything happens nearby. You cannot trust what it tells you.</p>
+    <p>A pin with a <strong>spring on it</strong> is different. It always sits at one value unless something is actively pushing it to the other. And that is exactly what you are going to switch on.</p>
+    <p class="note">Keep hold of the spring door. When you meet the word <code>INPUT_PULLUP</code> in Part 4, it means: put a spring on this pin.</p>
+  </div>
+</section>
+
+<section class="part" id="button">
+  <div class="parthead"><span class="tag">Part 2</span><h2>What a push button really is</h2><span class="mins">15 min</span></div>
+  <div class="col stack">
+    <p>Take one of the small square buttons out of your kit and look at it. It has <strong>four legs</strong>, not two.</p>
+    <p>That surprises people. A button has one job, so why four legs?</p>
+    <p>The answer is that the four legs are really two pairs, and the pairs are already joined together inside.</p>
+
+    <figure>
+      <svg viewBox="0 0 640 370" role="img" aria-label="Diagram of the inside of a push button. The two legs on the left are permanently joined to each other, and the two on the right are permanently joined to each other. Pressing the button joins the left side to the right side.">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker></defs>
+<g fill="none" stroke="currentColor" stroke-width="1.6">
+  <rect x="250" y="110" width="140" height="120" rx="6"/>
+  <line x1="270" y1="110" x2="270" y2="62"/>
+  <line x1="370" y1="110" x2="370" y2="62"/>
+  <line x1="270" y1="230" x2="270" y2="278"/>
+  <line x1="370" y1="230" x2="370" y2="278"/>
+</g>
+<g fill="none" stroke="currentColor" stroke-width="3.4">
+  <line x1="270" y1="112" x2="270" y2="228"/>
+  <line x1="370" y1="112" x2="370" y2="228"/>
+</g>
+<circle cx="320" cy="110" r="15" fill="none" stroke="currentColor" stroke-width="1.6"/>
+<g stroke="currentColor" stroke-width="1.6" stroke-dasharray="5 4" fill="none">
+  <line x1="320" y1="125" x2="320" y2="170"/>
+  <line x1="272" y1="170" x2="368" y2="170"/>
+</g>
+<g stroke="currentColor" stroke-width="1" opacity="0.55">
+  <line x1="246" y1="170" x2="196" y2="170"/>
+  <line x1="394" y1="170" x2="444" y2="170"/>
+  <line x1="320" y1="80" x2="320" y2="60"/>
+</g>
+<g fill="currentColor" font-size="13" font-family="Archivo, Arial, sans-serif">
+  <text x="190" y="166" text-anchor="end">These two legs are</text>
+  <text x="190" y="183" text-anchor="end">always joined</text>
+  <text x="450" y="166">These two are</text>
+  <text x="450" y="183">always joined too</text>
+  <text x="320" y="52" text-anchor="middle">Pressing joins the left side to the right side</text>
+  <text x="320" y="330" text-anchor="middle">So you only ever use ONE leg from the left and ONE from the right</text>
+</g>
+<g fill="currentColor" font-size="11" opacity="0.7" font-family="IBM Plex Mono, monospace">
+  <text x="270" y="52" text-anchor="middle">leg</text>
+  <text x="370" y="52" text-anchor="middle">leg</text>
+  <text x="270" y="296" text-anchor="middle">leg</text>
+  <text x="370" y="296" text-anchor="middle">leg</text>
+</g>
+</svg>
+      <figcaption>Inside a push button. The two legs on one side are permanently joined to each other, and so are the two on the other side. Pressing the button closes the gap in the middle, joining the two sides together.</figcaption>
+    </figure>
+
+    <p>So the button is not a device with four separate connections. It is a device with <strong>two</strong> connections, each of which has been given two legs so that it sits firmly in a board.</p>
+    <p>When you press it, a metal disc inside is pushed down and touches both sides at once. That closes the circuit. Let go and a small spring lifts the disc away, and the circuit is broken again.</p>
+
+    <div class="callout">
+      <h5>The rule that saves you every time</h5>
+      <p>You only need two of the four legs. <strong>Use two legs that are diagonally opposite each other</strong>: one at the top left and one at the bottom right, or the other diagonal.</p>
+      <p>Diagonal legs are always one from each side. So they are always a switching pair, whichever way round you happen to push the button into the board. You never have to work out which way it is facing.</p>
+    </div>
+
+    <div class="ifnot"><b>Why this matters</b>If you pick two legs from the <em>same</em> side by mistake, they are already joined. Your circuit will behave as though the button is being held down forever, and pressing it will change nothing. It is a very confusing fault, and the diagonal rule prevents it completely.</div>
+
+    <div class="words">
+      <h5>Words to know</h5>
+      <dl>
+        <dt>push button</dt><dd>A switch that only connects while you are holding it down. Also called a momentary switch.</dd>
+        <dt>input</dt><dd>A pin used for reading something coming in, rather than sending something out.</dd>
+        <dt>output</dt><dd>A pin used for sending electricity out. All your pins have been outputs until now.</dd>
+        <dt>diagonal rule</dt><dd>Use two legs of a button that are diagonally opposite. They are always a switching pair.</dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section class="part" id="serial">
+  <div class="parthead"><span class="tag">Part 3</span><h2>The serial monitor: your new eyes</h2><span class="mins">20 min</span></div>
+  <div class="col stack">
+    <p>Until now, the only way your program could tell you anything was by switching a light on. That is a very small window. From here on you get a much bigger one.</p>
+    <p>The <strong>serial monitor</strong> is a window in the Arduino IDE that shows text and numbers sent by the board, while the board is running. Your program can say things to you.</p>
+
+    <h3 style="margin-top:.4rem">Three lines make it work</h3>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Line</th><th>What it does</th></tr></thead>
+        <tbody>
+          <tr><td><code>Serial.begin(9600);</code></td><td>Goes in <code>setup</code>. Starts the conversation. The 9600 is how fast the two sides agree to talk. It must match the number in the corner of the serial monitor window.</td></tr>
+          <tr><td><code>Serial.print(x);</code></td><td>Sends <code>x</code> to the window and stays on the same line.</td></tr>
+          <tr><td><code>Serial.println(x);</code></td><td>The same, but then moves to a new line. The extra "ln" means "line".</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>You can send a number, or you can send words by putting them in double quotation marks: <code>Serial.println("hello");</code></p>
+
+    <h3 style="margin-top:.6rem">Wire one button and try it</h3>
+    <p>This is the simplest circuit in the whole course. There is no resistor at all.</p>
+
+    <figure>
+      <svg viewBox="0 0 660 170" role="img" aria-label="Wiring for one button. The pin connects to one leg of the button, the leg on the opposite side connects to the minus rail, and one wire takes the rail to a GND pin. No resistor is needed.">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker></defs>
+<g fill="none" stroke="currentColor" stroke-width="1.6">
+  <rect x="30" y="62" width="86" height="36" rx="5"/>
+  <line x1="116" y1="80" x2="250" y2="80"/>
+  <rect x="250" y="56" width="70" height="48" rx="5"/>
+  <line x1="320" y1="80" x2="470" y2="80" marker-end="url(#a)"/>
+  <line x1="474" y1="46" x2="474" y2="114"/>
+  <line x1="474" y1="80" x2="560" y2="80" marker-end="url(#a)"/>
+  <rect x="562" y="62" width="80" height="36" rx="5"/>
+</g>
+<g fill="currentColor" font-size="13" font-family="Archivo, Arial, sans-serif">
+  <text x="73" y="85" text-anchor="middle">Pin 2</text>
+  <text x="285" y="85" text-anchor="middle">button</text>
+  <text x="602" y="85" text-anchor="middle">GND pin</text>
+  <text x="474" y="36" text-anchor="middle" font-size="12">the &#8722; rail</text>
+</g>
+<text x="330" y="140" font-size="12.5" fill="currentColor" opacity="0.8" font-family="Archivo, Arial, sans-serif">No resistor. INPUT_PULLUP uses the one inside the chip.</text>
+</svg>
+      <figcaption>How one button is wired. Pin 2 goes to one leg of the button. A leg diagonally opposite goes to the minus rail, and one wire takes that rail to a GND pin.</figcaption>
+    </figure>
+
+    <div class="ifnot" style="margin-bottom:.4rem"><b>Before you start</b>USB unplugged.</div>
+
+    <div class="steps">
+      <div class="step"><div class="body">
+        <p><strong>Push the button into the board across the middle channel</strong>, so two legs are above the gap and two are below it. Push until it sits flat. It should take a firm press and then stay put.</p>
+        <p class="note">Buttons are made to straddle the gap. If it will not go in, turn it a quarter turn and try again. The legs only line up one way round.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Pick two diagonal legs.</strong> Say the button is in columns 1 and 3. Take the leg at <code>f1</code>, above the gap, and the leg at <code>e3</code>, below the gap. Those two are diagonally opposite.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Wire from <code>j1</code> to digital pin 2.</strong> Hole <code>j1</code> is the same column as <code>f1</code>, so it is joined to that leg.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Wire from <code>a3</code> to the &#8722; rail</strong> along the bottom edge, and one more wire from that <strong>&#8722; rail to a GND pin</strong>.</p>
+        <p class="note">Hole <code>a3</code> is the same column as <code>e3</code>, so it is joined to the other leg.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Plug in and upload <code>b3_02_serial_watch.ino</code>.</strong></p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Open the serial monitor.</strong> Click <strong>Tools</strong> then <strong>Serial Monitor</strong>. A new panel opens.</p>
+        <p>Look at the bottom right corner of that panel for a number with "baud" next to it. Make sure it says <strong>9600</strong>. If it says something else, change it.</p>
+        <div class="see"><b>You should see</b>A column of <code>1</code>s scrolling down the window, about five a second. Press and hold the button. They change to <code>0</code>. Let go and they go back to <code>1</code>.</div>
+        <div class="ifnot"><b>If you see strange symbols instead of numbers</b>The baud number does not match. Set the serial monitor to 9600.</div>
+        <div class="ifnot"><b>If nothing appears at all</b>Check that <code>Serial.begin(9600);</code> is in your sketch, and that the board is still on the right Port under Tools.</div>
+        <div class="ifnot"><b>If it always shows 0, even when you are not pressing</b>You have picked two legs from the same side of the button, so they are permanently joined. Use the diagonal rule from Part 2.</div>
+      </div></div>
+    </div>
+
+    <div class="warnbox" style="background:var(--copper-soft); border-radius:6px; padding:.7rem .95rem; font-size:.93em">
+      <strong>One thing that catches everybody:</strong> you usually have to close the serial monitor before you can upload a new sketch. If an upload suddenly fails and it worked a minute ago, close the serial monitor and try again.
+    </div>
+  </div>
+</section>
+
+<section class="part" id="pullup">
+  <div class="parthead"><span class="tag">Part 4</span><h2>Why pressed means 0</h2><span class="mins">25 min</span></div>
+  <div class="col stack">
+    <p>You have just seen something that feels backwards. Not pressed gives <strong>1</strong>. Pressed gives <strong>0</strong>.</p>
+    <p>Most people expect the opposite, and it is worth understanding properly rather than just memorising, because it comes back in every band from here on.</p>
+
+    <h3 style="margin-top:.4rem">First, see the problem for yourself</h3>
+    <p>In your sketch, find this line:</p>
+    <pre><code>pinMode(buttonPin, INPUT_PULLUP);</code></pre>
+    <p>Change it to this, and upload again:</p>
+    <pre><code>pinMode(buttonPin, INPUT);</code></pre>
+    <div class="steps">
+      <div class="step"><div class="body">
+        <p><strong>Watch the serial monitor without touching anything.</strong></p>
+        <div class="see"><b>You should see</b>The numbers jumping about between 0 and 1 with no pattern. Nobody is pressing anything.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Now wave your hand near the wire, or touch the wire with a finger.</strong> The numbers change even more.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Change it back to <code>INPUT_PULLUP</code></strong> and upload again. Steady 1s return.</p>
+      </div></div>
+    </div>
+
+    <p>That jumping is a <strong>floating pin</strong>. It is your ordinary door from Part 1, swinging in the draught.</p>
+
+    <figure>
+      <svg viewBox="0 0 700 360" role="img" aria-label="Two circuits compared. On the left, a pin set to INPUT with a button to ground has nothing holding it, so when the button is not pressed the pin reads randomly. On the right, a pin set to INPUT_PULLUP has a resistor inside the chip pulling it up to five volts, so it reads HIGH when the button is not pressed and LOW when it is.">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker></defs>
+<g stroke="currentColor" stroke-width="1" opacity="0.35" fill="none"><line x1="350" y1="40" x2="350" y2="330"/></g>
+
+<text x="30" y="34" font-size="13.5" fill="currentColor" font-family="IBM Plex Mono, monospace">pinMode(pin, INPUT)</text>
+<g fill="none" stroke="currentColor" stroke-width="1.6">
+  <rect x="30" y="90" width="80" height="34" rx="5"/>
+  <line x1="110" y1="107" x2="200" y2="107"/>
+  <line x1="200" y1="107" x2="200" y2="170"/>
+  <line x1="180" y1="170" x2="220" y2="170"/>
+  <line x1="200" y1="192" x2="200" y2="250"/>
+  <line x1="180" y1="250" x2="220" y2="250"/>
+  <line x1="188" y1="258" x2="212" y2="258"/>
+  <line x1="194" y1="266" x2="206" y2="266"/>
+</g>
+<g stroke="currentColor" stroke-width="1.6" stroke-dasharray="4 3" fill="none"><line x1="200" y1="170" x2="200" y2="192"/></g>
+<text x="70" y="112" text-anchor="middle" font-size="12.5" fill="currentColor" font-family="Archivo, Arial, sans-serif">pin 2</text>
+<text x="232" y="186" font-size="11.5" fill="currentColor" opacity="0.8" font-family="Archivo, Arial, sans-serif">button</text>
+<text x="200" y="288" text-anchor="middle" font-size="11.5" fill="currentColor" opacity="0.8" font-family="Archivo, Arial, sans-serif">GND</text>
+<text x="30" y="322" font-size="12.5" fill="currentColor" font-family="Archivo, Arial, sans-serif">Not pressed: nothing holds the pin.</text>
+<text x="30" y="340" font-size="12.5" fill="currentColor" font-family="Archivo, Arial, sans-serif">It reads 1 or 0 at random.</text>
+
+<text x="380" y="34" font-size="13.5" fill="currentColor" font-family="IBM Plex Mono, monospace">pinMode(pin, INPUT_PULLUP)</text>
+<g fill="none" stroke="currentColor" stroke-width="1.6">
+  <rect x="380" y="90" width="80" height="34" rx="5"/>
+  <line x1="460" y1="107" x2="560" y2="107"/>
+  <line x1="560" y1="107" x2="560" y2="80"/>
+  <polyline points="560,80 552,72 568,60 552,48 568,36 560,28"/>
+  <line x1="560" y1="28" x2="560" y2="16"/>
+  <line x1="540" y1="16" x2="580" y2="16"/>
+  <line x1="560" y1="107" x2="560" y2="170"/>
+  <line x1="540" y1="170" x2="580" y2="170"/>
+  <line x1="560" y1="192" x2="560" y2="250"/>
+  <line x1="540" y1="250" x2="580" y2="250"/>
+  <line x1="548" y1="258" x2="572" y2="258"/>
+  <line x1="554" y1="266" x2="566" y2="266"/>
+</g>
+<g stroke="currentColor" stroke-width="1.6" stroke-dasharray="4 3" fill="none"><line x1="560" y1="170" x2="560" y2="192"/></g>
+<text x="420" y="112" text-anchor="middle" font-size="12.5" fill="currentColor" font-family="Archivo, Arial, sans-serif">pin 2</text>
+<text x="592" y="62" font-size="11.5" fill="currentColor" opacity="0.85" font-family="Archivo, Arial, sans-serif">resistor inside</text>
+<text x="592" y="78" font-size="11.5" fill="currentColor" opacity="0.85" font-family="Archivo, Arial, sans-serif">the chip</text>
+<text x="560" y="10" text-anchor="middle" font-size="11.5" fill="currentColor" opacity="0.85" font-family="Archivo, Arial, sans-serif">5V</text>
+<text x="592" y="186" font-size="11.5" fill="currentColor" opacity="0.8" font-family="Archivo, Arial, sans-serif">button</text>
+<text x="560" y="288" text-anchor="middle" font-size="11.5" fill="currentColor" opacity="0.8" font-family="Archivo, Arial, sans-serif">GND</text>
+<text x="380" y="322" font-size="12.5" fill="currentColor" font-weight="600" font-family="Archivo, Arial, sans-serif">Not pressed: reads HIGH (1).</text>
+<text x="380" y="340" font-size="12.5" fill="currentColor" font-weight="600" font-family="Archivo, Arial, sans-serif">Pressed: reads LOW (0).</text>
+</svg>
+      <figcaption>Why the two settings behave differently. With plain INPUT nothing holds the pin, so it reports whatever it feels like. With INPUT_PULLUP a resistor inside the chip gently holds the pin up at 5 volts, and pressing the button pulls it down to ground.</figcaption>
+    </figure>
+
+    <h3 style="margin-top:.5rem">What <code>INPUT_PULLUP</code> actually switches on</h3>
+    <p>Inside the chip there is a resistor connected to 5 volts. Normally it is disconnected. Writing <code>INPUT_PULLUP</code> connects it to your pin.</p>
+    <p>Now trace what happens:</p>
+    <ul class="plain">
+      <li><strong>Button not pressed.</strong> The only thing touching the pin is that resistor, which is joined to 5 volts. So the pin sits at 5 volts. The board reports <strong>HIGH</strong>, which is <strong>1</strong>.</li>
+      <li><strong>Button pressed.</strong> Now the pin also has a direct path to GND through the button. A direct path wins easily against a resistor. The pin drops to 0 volts. The board reports <strong>LOW</strong>, which is <strong>0</strong>.</li>
+    </ul>
+    <p>So the reading is not backwards at all. It is telling you the truth about the voltage. The spring holds the door shut, and pressing the button pulls it open.</p>
+
+    <div class="callout">
+      <h5>The sentence to remember</h5>
+      <p><strong>With <code>INPUT_PULLUP</code>: not pressed is 1, pressed is 0.</strong></p>
+      <p>Say it out loud twice. Write it at the top of your glossary. You will use it in every band from here to the end of the course, and it is the single most common reason a beginner's button code does the opposite of what they meant.</p>
+    </div>
+
+    <div class="ifnot"><b>Why not just use a resistor of your own?</b>You can, and many older tutorials do. It works the same way and takes an extra resistor and two extra wires per button. Using the one inside the chip is fewer parts, fewer wires, and fewer things to get wrong. With four buttons that saves you four resistors and eight wires.</div>
+
+    <div class="words">
+      <h5>Words to know</h5>
+      <dl>
+        <dt>floating</dt><dd>A pin with nothing holding it at 0 or 5 volts. Its readings cannot be trusted.</dd>
+        <dt>INPUT_PULLUP</dt><dd>A pin setting that switches on a resistor inside the chip, holding the pin at 5 volts until something pulls it down.</dd>
+        <dt>digitalRead</dt><dd>Reads a pin and gives you back HIGH or LOW.</dd>
+        <dt>HIGH and LOW</dt><dd>The two things a digital pin can be. HIGH counts as 1, LOW counts as 0.</dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section class="part" id="read">
+  <div class="parthead"><span class="tag">Part 5</span><h2>Read the code before you run it</h2><span class="mins">8 min</span></div>
+  <div class="col stack">
+    <span class="filename">b3_01_button_light_given.ino</span>
+    <pre><code>int buttonPin = 2;
+int ledPin = 8;
+
+void setup() {
+  pinMode(buttonPin, INPUT_PULLUP);
+  pinMode(ledPin, OUTPUT);
+}
+
+void loop() {
+  if (digitalRead(buttonPin) == LOW) {
+    digitalWrite(ledPin, HIGH);
+  } else {
+    digitalWrite(ledPin, LOW);
+  }
+}</code></pre>
+    <div class="callout">
+      <h5>Write your answers down first</h5>
+      <ol class="num">
+        <li>What do you think happens when you hold the button down?</li>
+        <li>What happens when you let go?</li>
+        <li>Why does the code test for <code>LOW</code> rather than <code>HIGH</code>?</li>
+        <li>There is no <code>delay</code> anywhere in this sketch. How many times a second do you think <code>loop</code> runs? Guess a number, even if you have no idea.</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section class="part" id="build1">
+  <div class="parthead"><span class="tag">Part 6</span><h2>Build it and run it</h2><span class="mins">20 min</span></div>
+  <div class="col stack">
+    <p>Your button is already wired from Part 3. You only need to add one light.</p>
+    <div class="ifnot" style="margin-bottom:.4rem"><b>Before you start</b>USB unplugged.</div>
+    <div class="steps">
+      <div class="step"><div class="body">
+        <p><strong>Add a green LED.</strong> Long leg into <code>b18</code>, short leg into <code>b20</code>.</p>
+        <p class="note">This time the LED goes in the <em>bottom</em> block, rows a to e, because everything in this band shares the bottom &#8722; rail.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Resistor</strong> from <code>a18</code> to <code>a16</code>.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Wire from <code>a16</code> to pin 8.</strong></p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Wire from <code>a20</code> to the &#8722; rail.</strong></p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Plug in and upload <code>b3_01_button_light_given.ino</code>.</strong></p>
+        <div class="see"><b>You should see</b>The light comes on while you hold the button and goes off the moment you let go.</div>
+        <div class="ifnot"><b>If the light is on until you press, and off while you press</b>Your test is the wrong way round, or you used <code>INPUT</code> instead of <code>INPUT_PULLUP</code>. Read Part 4 again.</div>
+        <div class="ifnot"><b>If the light never comes on</b>Check the LED direction first, then the checklist at the bottom of this page.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Check your four answers from Part 5.</strong></p>
+        <p class="note">Question 4 is worth knowing: this <code>loop</code> runs roughly <strong>one hundred thousand times a second</strong>. Almost nobody guesses anywhere near. Hold on to that number, because it explains everything in Part 9.</p>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<section class="part" id="ifelse">
+  <div class="parthead"><span class="tag">Part 7</span><h2><code>if</code> and <code>else</code>, explained slowly</h2><span class="mins">20 min</span></div>
+  <div class="col stack">
+    <p>This is how a program makes a choice. Here is the shape:</p>
+    <pre><code>if (something is true) {
+  do these lines
+} else {
+  do these other lines instead
+}</code></pre>
+    <p>Break it into pieces:</p>
+    <ul class="plain">
+      <li><code>if</code> is the word that starts a choice.</li>
+      <li>The <strong>round brackets</strong> hold the question. The question must have an answer of yes or no. Nothing else.</li>
+      <li>The first pair of <strong>curly brackets</strong> holds what to do if the answer is yes.</li>
+      <li><code>else</code> means "otherwise".</li>
+      <li>The second pair of curly brackets holds what to do if the answer is no.</li>
+    </ul>
+    <p>The <code>else</code> part is optional. Leave it out and, when the answer is no, nothing happens and the program carries on below.</p>
+
+    <h3 style="margin-top:.6rem">Asking the question</h3>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Written</th><th>Means</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td><code>==</code></td><td>is the same as</td><td><code>if (reading == LOW)</code></td></tr>
+          <tr><td><code>!=</code></td><td>is not the same as</td><td><code>if (score != 0)</code></td></tr>
+          <tr><td><code>&lt;</code></td><td>is less than</td><td><code>if (light &lt; 300)</code></td></tr>
+          <tr><td><code>&gt;</code></td><td>is more than</td><td><code>if (count &gt; 10)</code></td></tr>
+          <tr><td><code>&lt;=</code></td><td>is less than or the same as</td><td><code>if (level &lt;= 255)</code></td></tr>
+          <tr><td><code>&amp;&amp;</code></td><td>and. Both must be true.</td><td><code>if (a == LOW &amp;&amp; b == HIGH)</code></td></tr>
+          <tr><td><code>||</code></td><td>or. Either one being true is enough.</td><td><code>if (a == LOW || b == LOW)</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout">
+      <h5>The mistake everybody makes, at least once</h5>
+      <p>One equals sign and two equals signs are completely different things.</p>
+      <p><code>=</code> means <strong>put this value into that name</strong>. You met it in Band 2. <code>level = 5</code> puts 5 into <code>level</code>.</p>
+      <p><code>==</code> means <strong>are these two the same?</strong> It asks a question and gets back yes or no.</p>
+      <p>If you write <code>if (reading = LOW)</code> with one equals sign, you have not asked a question. You have <em>put</em> LOW into <code>reading</code>, thrown away what was there, and then asked the computer to treat the result as an answer. It compiles. It runs. And it behaves very strangely.</p>
+      <p>When an <code>if</code> seems to always go one way, this is the first thing to check.</p>
+    </div>
+
+    <p class="note">You can also chain choices together with <code>else if</code>, which means "otherwise, if this other thing is true". The board tries each one from the top and stops at the first one that is true.</p>
+  </div>
+</section>
+
+<section class="part" id="remember">
+  <div class="parthead"><span class="tag">Part 8</span><h2>Making the board remember</h2><span class="mins">20 min</span></div>
+  <div class="col stack">
+    <p>So far your button only works while you hold it. A real switch is not like that. You press once and the light stays on. Press again and it goes off. That needs <strong>memory</strong>.</p>
+    <p>Here is the idea. Keep a name outside <code>loop</code>, at the top of the sketch. Names declared up there survive from one round of <code>loop</code> to the next. Names declared inside <code>loop</code> are thrown away and made fresh every round.</p>
+    <p>The name we want holds only yes or no, so it uses a new type: <code>bool</code>.</p>
+    <div class="words">
+      <h5>Words to know</h5>
+      <dl>
+        <dt>bool</dt><dd>A type of name that can only hold <code>true</code> or <code>false</code>. Nothing else.</dd>
+        <dt>state</dt><dd>Something the program remembers about the situation right now.</dd>
+      </dl>
+    </div>
+
+    <h3 style="margin-top:.5rem">Try it, and watch it fail</h3>
+    <p>Upload <code>b3_03_toggle_buggy.ino</code>. It is meant to switch the light on with one press and off with the next.</p>
+    <span class="filename">b3_03_toggle_buggy.ino &nbsp;&mdash;&nbsp; the part that matters</span>
+    <pre><code>bool lightIsOn = false;
+
+void loop() {
+  if (digitalRead(buttonPin) == LOW) {
+
+    if (lightIsOn == true) {
+      lightIsOn = false;
+    } else {
+      lightIsOn = true;
+    }
+
+  }
+  ...
+}</code></pre>
+    <p>Read it carefully. The logic looks completely right. If it is on, turn it off. Otherwise turn it on.</p>
+    <div class="steps">
+      <div class="step"><div class="body">
+        <p><strong>Press the button once, quickly, and let go.</strong></p>
+        <div class="see"><b>You should see</b>Something useless. The light flickers madly while you hold the button, and when you let go it lands on whichever state it happened to be in. Press ten times and you cannot predict the result once.</div>
+      </div></div>
+    </div>
+    <p><strong>Do not fix it yet.</strong> First work out why, in Part 9. Write down your best guess now.</p>
+    <p class="note">If your guess involves the number you learned in Part 6, you are already close.</p>
+  </div>
+</section>
+
+<section class="part" id="bounce">
+  <div class="parthead"><span class="tag">Part 9</span><h2>Why one press counts as thousands</h2><span class="mins">25 min</span></div>
+  <div class="col stack">
+    <p>Two separate things are going wrong. They are often confused with each other, so we will take them one at a time.</p>
+
+    <h3>Problem one: the loop is far faster than your finger</h3>
+    <p>Your <code>loop</code> runs around a hundred thousand times a second. Your finger holds the button down for maybe a fifth of a second, even when you press quickly.</p>
+    <p>So the board does not see <em>one</em> press. It sees roughly twenty thousand rounds in a row where the button is down, and it flips the light on every single one of them.</p>
+    <p>The fix is called <strong>edge detection</strong>. Instead of asking "is the button down?", ask "<strong>has the button just gone down?</strong>" That only happens once per press, no matter how long you hold it.</p>
+    <p>To ask that, the board must remember what the button was doing last time round, and compare:</p>
+    <pre><code>int reading = digitalRead(buttonPin);
+
+if (reading == LOW && lastReading == HIGH) {
+  // it was up, and now it is down. This is the moment of the press.
+}
+
+lastReading = reading;</code></pre>
+    <p>Read those three parts:</p>
+    <ol class="num">
+      <li>Take a fresh reading.</li>
+      <li>Act only if it is down <strong>and</strong> it was up last time. That is the exact instant it changed.</li>
+      <li>Remember this reading, so that next round it becomes "last time".</li>
+    </ol>
+    <p class="note">That last line is easy to leave out and the code will not complain. If you forget it, <code>lastReading</code> never changes and nothing works.</p>
+
+    <h3 style="margin-top:.7rem">Problem two: the button itself is not clean</h3>
+    <p>Here is a small experiment. Drop a bottle cap or a coin onto a hard table from a few centimetres up. Listen to it.</p>
+    <p>You dropped it once. How many sounds did you hear?</p>
+    <p>It bounces. Metal hitting metal always does. And the metal inside a push button does exactly the same thing.</p>
+
+    <figure>
+      <svg viewBox="0 0 700 280" role="img" aria-label="A timeline showing that one finger press makes the pin flick between one and zero several times in a few thousandths of a second before it settles, which is why one press can be counted many times.">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker></defs>
+<g stroke="currentColor" stroke-width="1" opacity="0.4" fill="none">
+  <line x1="90" y1="60" x2="90" y2="210"/>
+  <line x1="90" y1="210" x2="660" y2="210" marker-end="url(#a)"/>
+</g>
+<g font-size="11.5" fill="currentColor" opacity="0.7" font-family="IBM Plex Mono, monospace">
+  <text x="82" y="66" text-anchor="end">1</text>
+  <text x="82" y="214" text-anchor="end">0</text>
+  <text x="655" y="234" text-anchor="end">time</text>
+</g>
+<polyline points="90,60 250,60 250,210 262,210 262,60 272,60 272,210 282,210 282,60 288,60 288,210 296,210 296,60 300,60 300,210 600,210"
+          fill="none" stroke="currentColor" stroke-width="2.4"/>
+<g stroke="currentColor" stroke-width="1" opacity="0.5" fill="none">
+  <line x1="250" y1="240" x2="250" y2="220"/>
+  <line x1="250" y1="245" x2="302" y2="245"/>
+  <line x1="302" y1="240" x2="302" y2="220"/>
+</g>
+<text x="276" y="266" text-anchor="middle" font-size="12" fill="currentColor" font-family="Archivo, Arial, sans-serif">about 5 thousandths of a second</text>
+<g stroke="#C0503A" stroke-width="1.6" fill="none"><line x1="250" y1="42" x2="250" y2="30"/></g>
+<text x="256" y="26" font-size="12.5" fill="currentColor" font-family="Archivo, Arial, sans-serif">your finger presses once, here</text>
+<text x="330" y="140" font-size="12.5" fill="currentColor" font-family="Archivo, Arial, sans-serif">but the pin sees five changes</text>
+</svg>
+      <figcaption>What one press really looks like to the pin. Your finger goes down once, but the metal inside the button bounces for a few thousandths of a second before it settles, so the pin sees several separate changes.</figcaption>
+    </figure>
+
+    <p>This is called <strong>bounce</strong>. In those few thousandths of a second, edge detection sees several separate presses, because as far as the pin is concerned there really were several.</p>
+    <p>The fix is called <strong>debouncing</strong>, and the simplest version is almost rude in how easy it is. Once you have accepted a press, wait a moment before looking again:</p>
+    <pre><code>delay(50);</code></pre>
+    <p>Fifty thousandths of a second is much longer than the bounce and far shorter than a human can press twice. By the time the board looks again, the metal has settled.</p>
+
+    <h3 style="margin-top:.6rem">Now fix it</h3>
+    <div class="steps">
+      <div class="step"><div class="body">
+        <p><strong>Upload <code>b3_04_toggle_fixed.ino</code></strong> and compare it line by line with the broken one. Find the three lines that are different.</p>
+        <div class="see"><b>You should see</b>One press, one change. Every time. Hold the button down for ten seconds and nothing extra happens.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Try breaking it on purpose.</strong> Delete the line <code>lastReading = reading;</code> and upload. Watch what happens, then put it back.</p>
+        <p class="note">Breaking working code on purpose, to see what each piece was doing, is one of the fastest ways to learn. It costs you nothing and you can always undo it.</p>
+      </div></div>
+    </div>
+
+    <div class="words">
+      <h5>Words to know</h5>
+      <dl>
+        <dt>edge detection</dt><dd>Noticing the moment something changes, rather than what it is now.</dd>
+        <dt>bounce</dt><dd>The metal inside a button making and breaking contact several times in a few thousandths of a second.</dd>
+        <dt>debounce</dt><dd>Ignoring those extra changes so one press counts as one press.</dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section class="part" id="arrays">
+  <div class="parthead"><span class="tag">Part 10</span><h2>Arrays: many things, one name</h2><span class="mins">20 min</span></div>
+  <div class="col stack">
+    <p>Your lock needs four buttons. Writing out four sets of everything would be long and easy to get wrong. An <strong>array</strong> solves it.</p>
+    <p>An array is one name that holds a whole list of values, side by side.</p>
+    <pre><code>int buttonPins[4] = {2, 3, 4, 5};</code></pre>
+    <p>Piece by piece:</p>
+    <ul class="plain">
+      <li><code>int</code> says these are whole numbers.</li>
+      <li><code>buttonPins</code> is the name.</li>
+      <li><code>[4]</code> says there are four of them.</li>
+      <li><code>{2, 3, 4, 5}</code> are the four values, in order.</li>
+    </ul>
+
+    <h3 style="margin-top:.5rem">Getting one value out</h3>
+    <p>You use square brackets and a position number:</p>
+    <pre><code>buttonPins[0]   is 2
+buttonPins[1]   is 3
+buttonPins[2]   is 4
+buttonPins[3]   is 5</code></pre>
+
+    <div class="callout">
+      <h5>Counting starts at zero</h5>
+      <p>The first thing in an array is at position <strong>0</strong>, not 1. The second is at 1. In a list of four, the last one is at position <strong>3</strong>.</p>
+      <p>This trips up everybody at first. It is worth writing down.</p>
+      <p>And this is the reason for the pain: if you ask for <code>buttonPins[4]</code> in a list of four, there is nothing there. The board does not stop you and does not warn you. It reads whatever happens to be sitting in memory next door and hands you a meaningless number. Bugs like that are miserable to find, so count carefully.</p>
+    </div>
+
+    <h3 style="margin-top:.5rem">Why arrays and <code>for</code> loops belong together</h3>
+    <p>You met <code>for</code> in Band 2 for counting brightness. Here is what it is really for. Instead of this:</p>
+    <pre><code>pinMode(2, INPUT_PULLUP);
+pinMode(3, INPUT_PULLUP);
+pinMode(4, INPUT_PULLUP);
+pinMode(5, INPUT_PULLUP);</code></pre>
+    <p>you write this:</p>
+    <pre><code>for (int i = 0; i &lt; 4; i = i + 1) {
+  pinMode(buttonPins[i], INPUT_PULLUP);
+}</code></pre>
+    <p>The counter <code>i</code> takes the values 0, 1, 2, 3 in turn, and each time round, <code>buttonPins[i]</code> means a different pin.</p>
+    <p>Four lines became three, which does not sound like much. But go to eight buttons and the first version becomes eight lines while the second one stays exactly as it is. You change one number.</p>
+    <p class="note">Notice the test is <code>i &lt; 4</code>, not <code>i &lt;= 4</code>. With four things, the positions are 0, 1, 2 and 3, so you must stop before 4. Using <code>&lt;=</code> here is one of the most common bugs in all of programming.</p>
+  </div>
+</section>
+
+<section class="part" id="lock">
+  <div class="parthead"><span class="tag">Part 11</span><h2>Build the lock</h2><span class="mins">50 min</span></div>
+  <div class="col stack">
+    <p>Everything from this band comes together now. Four buttons, two lights, one buzzer.</p>
+    <p>Build it in three stages and test after each one. Do not wire all of it and hope. If you build the whole thing and it does not work, you have seven things to check instead of two.</p>
+
+    <h3 style="margin-top:.4rem">The pin plan</h3>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Part</th><th>Pin</th><th>Holes</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td>Button 1</td><td>2</td><td>columns 1 and 3</td><td>Wire <code>j1</code> to pin 2, <code>a3</code> to the &#8722; rail</td></tr>
+          <tr><td>Button 2</td><td>3</td><td>columns 5 and 7</td><td>Wire <code>j5</code> to pin 3, <code>a7</code> to the &#8722; rail</td></tr>
+          <tr><td>Button 3</td><td>4</td><td>columns 9 and 11</td><td>Wire <code>j9</code> to pin 4, <code>a11</code> to the &#8722; rail</td></tr>
+          <tr><td>Button 4</td><td>5</td><td>columns 13 and 15</td><td>Wire <code>j13</code> to pin 5, <code>a15</code> to the &#8722; rail</td></tr>
+          <tr><td>Green LED</td><td>8</td><td>long <code>b18</code>, short <code>b20</code></td><td>Resistor <code>a18</code> to <code>a16</code>, wire <code>a16</code> to pin 8, wire <code>a20</code> to the &#8722; rail</td></tr>
+          <tr><td>Red LED</td><td>9</td><td>long <code>b23</code>, short <code>b25</code></td><td>Resistor <code>a23</code> to <code>a21</code>, wire <code>a21</code> to pin 9, wire <code>a25</code> to the &#8722; rail</td></tr>
+          <tr><td>Buzzer</td><td>10</td><td>long <code>b27</code>, short <code>b29</code></td><td>Wire <code>a27</code> to pin 10, wire <code>a29</code> to the &#8722; rail</td></tr>
+          <tr><td>Ground</td><td>GND</td><td>&mdash;</td><td>One wire from the &#8722; rail to a GND pin</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <figure>
+      <svg viewBox="0 0 700 270" role="img" aria-label="Wiring for the two lock lights. Pin 8 goes through a 220 ohm resistor to the green LED and pin 9 to the red LED, and both return to the minus rail and then to one GND pin.">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker></defs>
+<rect x="30" y="37" width="86" height="36" rx="5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+<text x="73" y="60" text-anchor="middle" font-size="13" fill="currentColor" font-family="Archivo, Arial, sans-serif">Pin 8</text>
+<line x1="116" y1="55" x2="176" y2="55" stroke="currentColor" stroke-width="1.6"/>
+<polyline points="176,55 184,45 200,65 216,45 232,65 240,55" fill="none" stroke="currentColor" stroke-width="1.6"/>
+<text x="208" y="35" text-anchor="middle" font-size="11.5" fill="currentColor" opacity="0.8" font-family="IBM Plex Mono, monospace">220 &#8486;</text>
+<line x1="240" y1="55" x2="300" y2="55" stroke="currentColor" stroke-width="1.6"/>
+<polygon points="300,42 300,68 326,55" fill="none" stroke="#3F8A55" stroke-width="1.8"/>
+<line x1="326" y1="42" x2="326" y2="68" stroke="#3F8A55" stroke-width="2.4"/>
+<text x="292" y="35" text-anchor="middle" font-size="10.5" fill="currentColor" opacity="0.65" font-family="Archivo, Arial, sans-serif">long</text>
+<text x="336" y="35" text-anchor="middle" font-size="10.5" fill="currentColor" opacity="0.65" font-family="Archivo, Arial, sans-serif">short</text>
+<line x1="326" y1="55" x2="470" y2="55" stroke="currentColor" stroke-width="1.6" marker-end="url(#a)"/>
+<rect x="30" y="127" width="86" height="36" rx="5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+<text x="73" y="150" text-anchor="middle" font-size="13" fill="currentColor" font-family="Archivo, Arial, sans-serif">Pin 9</text>
+<line x1="116" y1="145" x2="176" y2="145" stroke="currentColor" stroke-width="1.6"/>
+<polyline points="176,145 184,135 200,155 216,135 232,155 240,145" fill="none" stroke="currentColor" stroke-width="1.6"/>
+<text x="208" y="125" text-anchor="middle" font-size="11.5" fill="currentColor" opacity="0.8" font-family="IBM Plex Mono, monospace">220 &#8486;</text>
+<line x1="240" y1="145" x2="300" y2="145" stroke="currentColor" stroke-width="1.6"/>
+<polygon points="300,132 300,158 326,145" fill="none" stroke="#C0503A" stroke-width="1.8"/>
+<line x1="326" y1="132" x2="326" y2="158" stroke="#C0503A" stroke-width="2.4"/>
+<text x="292" y="125" text-anchor="middle" font-size="10.5" fill="currentColor" opacity="0.65" font-family="Archivo, Arial, sans-serif">long</text>
+<text x="336" y="125" text-anchor="middle" font-size="10.5" fill="currentColor" opacity="0.65" font-family="Archivo, Arial, sans-serif">short</text>
+<line x1="326" y1="145" x2="470" y2="145" stroke="currentColor" stroke-width="1.6" marker-end="url(#a)"/>
+<line x1="474" y1="29" x2="474" y2="171" stroke="currentColor" stroke-width="2.6"/>
+<text x="486" y="23" font-size="12.5" fill="currentColor" font-family="Archivo, Arial, sans-serif">the &#8722; rail</text>
+<line x1="474" y1="100" x2="580" y2="100" stroke="currentColor" stroke-width="1.6" marker-end="url(#a)"/>
+<rect x="580" y="82" width="86" height="36" rx="5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+<text x="623" y="105" text-anchor="middle" font-size="13" fill="currentColor" font-family="Archivo, Arial, sans-serif">GND pin</text>
+<text x="623" y="138" text-anchor="middle" font-size="11.5" fill="currentColor" opacity="0.75" font-family="Archivo, Arial, sans-serif">one wire only</text>
+</svg>
+      <figcaption>The two lights. Each has its own resistor and its own pin, and both return to the same minus rail. The buzzer wires the same way but with no resistor.</figcaption>
+    </figure>
+
+    <div class="ifnot" style="margin-bottom:.4rem"><b>Before you start</b>USB unplugged. Every time.</div>
+
+    <div class="steps">
+      <div class="step"><div class="body">
+        <p><strong>Stage one: the four buttons.</strong> Wire all four as in the table. Nothing else yet.</p>
+        <p><strong>Test them.</strong> Change <code>b3_02_serial_watch.ino</code> so <code>buttonPin</code> is 3, upload, and check button 2 gives 0 when pressed. Then try 4, then 5. Four quick tests, and now you know all four buttons work.</p>
+        <div class="ifnot"><b>Do not skip this test</b>Finding one bad button now takes two minutes. Finding it after everything else is wired takes an hour.</div>
+      </div></div>
+
+      <div class="step"><div class="body">
+        <p><strong>Stage two: the two lights.</strong> Wire the green and red LEDs as in the table.</p>
+        <p><strong>Test them</strong> with the Band 1 blink sketch, changed to pin 8, then pin 9.</p>
+        <div class="ifnot"><b>If a light does not come on</b>Turn the LED round first. Then work down the Band 1 checklist: both legs in the same column, legs touching, and whether the &#8722; rail really reaches a GND pin. These lights sit in the bottom block, rows a and b, so their ground goes to the <strong>bottom</strong> rail, not the top one.</div>
+      </div></div>
+
+      <div class="step"><div class="body">
+        <p><strong>Stage three: the buzzer.</strong> The active buzzer has a long leg and a short leg, just like an LED, and it only works one way round. Long leg towards the pin.</p>
+        <p>It needs no resistor. Wire <code>a27</code> to pin 10 and <code>a29</code> to the &#8722; rail.</p>
+        <p><strong>Test it</strong> with the blink sketch on pin 10. It should beep on and off.</p>
+        <div class="ifnot"><b>If it makes no sound</b>Check the long leg is on the pin side. If it still does nothing, you may have a passive buzzer, which is the kind with an exposed green circle underneath rather than a solid black cover. A passive buzzer needs a different instruction, which you meet in Band 5. For now, use the lights alone and carry on. Nothing else is affected.</div>
+      </div></div>
+
+      <div class="step"><div class="body">
+        <p><strong>Now upload <code>b3_05_lock_worked.ino</code></strong> and open the serial monitor.</p>
+        <div class="see"><b>You should see</b><code>Lock ready. Press four buttons.</code> Then, as you press, one line per press telling you which button and how many so far. After the fourth press it tells you <code>UNLOCKED</code> or <code>WRONG</code>.</div>
+        <p>The secret is button 1, then 3, then 3, then 2. Try it. Then get it wrong three times on purpose and watch the lockout.</p>
+      </div></div>
+    </div>
+
+    <h3 style="margin-top:1rem">Reading the lock sketch</h3>
+    <p>It is longer than anything you have read so far, but there is nothing in it you have not met. Here is the map. Open the file and find each piece.</p>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Piece</th><th>What it is doing</th></tr></thead>
+        <tbody>
+          <tr><td>The arrays at the top</td><td><code>buttonPins</code> holds the four pins. <code>secret</code> holds the correct answer. <code>entered</code> holds what you have typed so far.</td></tr>
+          <tr><td><code>lastReading[4]</code></td><td>Edge detection, but four of them. Each button needs to remember its own last state, so it is an array too.</td></tr>
+          <tr><td>The <code>for</code> loop in <code>setup</code></td><td>Sets all four button pins to <code>INPUT_PULLUP</code> in three lines.</td></tr>
+          <tr><td>The <code>for</code> loop in <code>loop</code></td><td>Checks all four buttons every round. Exactly the code from Part 9, run four times with a different <code>i</code>.</td></tr>
+          <tr><td><code>entered[pressCount] = i + 1;</code></td><td>Stores which button was pressed. The <code>+ 1</code> turns position 0 into "button 1", because people count from one even though arrays count from zero.</td></tr>
+          <tr><td><code>if (pressCount == 4)</code></td><td>Only when four presses are in do we check anything.</td></tr>
+          <tr><td>The <code>correct</code> check</td><td>Start by assuming it is right. Look at all four. If any single one does not match, set <code>correct</code> to false. One wrong digit is enough to fail.</td></tr>
+          <tr><td><code>wrongTries</code></td><td>Counts failures. Reset to zero on success. Three failures trigger the lockout.</td></tr>
+          <tr><td><code>pressCount = 0;</code> at the end</td><td>Clears the count so the next attempt starts fresh. Leave this out and the lock jams after one try.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="part" id="closer">
+  <div class="parthead"><span class="tag">Part 12</span><h2>Look closer</h2><span class="mins">25 min</span></div>
+  <div class="col stack">
+    <h3>a. Follow the code by hand</h3>
+    <p>Take the edge detection from <code>b3_04</code>. Fill in this table by hand, for a press that lasts three rounds. Do not run it.</p>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Round</th><th><code>reading</code></th><th><code>lastReading</code> at the start</th><th>Does the <code>if</code> run?</th><th><code>lightIsOn</code> after</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>HIGH</td><td>HIGH</td><td>no</td><td>false</td></tr>
+          <tr><td>2</td><td>LOW</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+          <tr><td>3</td><td>LOW</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+          <tr><td>4</td><td>LOW</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+          <tr><td>5</td><td>HIGH</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <details><summary>Check your table</summary><div class="inner">
+      <p>Round 2: lastReading is HIGH, reading is LOW, so the <code>if</code> <strong>does</strong> run and <code>lightIsOn</code> becomes true.</p>
+      <p>Round 3: lastReading is now LOW, so the test fails. Nothing happens. <code>lightIsOn</code> stays true.</p>
+      <p>Round 4: the same. Nothing happens.</p>
+      <p>Round 5: reading is HIGH and lastReading is LOW. The test needs reading to be LOW, so it fails. Nothing happens on release, which is what we want.</p>
+      <p>One press, one change, no matter how long it was held. That is the whole point of edge detection, and the table proves it without a board.</p>
+    </div></details>
+
+    <h3 style="margin-top:.8rem">b. Break it on purpose</h3>
+    <p>In <code>b3_04</code>, change this line:</p>
+    <pre><code>if (reading == LOW &amp;&amp; lastReading == HIGH) {</code></pre>
+    <p>to this:</p>
+    <pre><code>if (reading == LOW || lastReading == HIGH) {</code></pre>
+    <p>One character changed: <code>&amp;&amp;</code> became <code>||</code>. Upload it. Predict what will happen <em>before</em> you press anything, then find out.</p>
+    <details><summary>Answer</summary><div class="inner">
+      <p><code>||</code> means "or", so now only one of the two needs to be true. When the button is not pressed, <code>lastReading</code> is HIGH, so the condition is true, so the light flips. Every round, whether you touch anything or not.</p>
+      <p>But look at how fast it actually flickers. It is about ten times a second, not thousands, and the reason is worth working out: the <code>delay(50)</code> is <em>inside</em> the <code>if</code>, and the <code>if</code> now runs every round, so that delay runs every round too. It is holding the whole thing back.</p>
+      <p><strong>Now delete that <code>delay(50)</code> as well and upload again.</strong> Nothing holds it back any more, so it flips far too fast to see, and the light simply looks dimly on. That is Band 2's PWM happening by accident.</p>
+      <p>Change both back.</p>
+    </div></details>
+
+    <h3 style="margin-top:.8rem">c. Put the lines back in order</h3>
+    <p>These four lines from the edge detection have been shuffled:</p>
+    <pre><code>lastReading = reading;
+int reading = digitalRead(buttonPin);
+}
+if (reading == LOW &amp;&amp; lastReading == HIGH) {</code></pre>
+    <p>Put them back in a working order. Then say in one sentence what breaks if <code>lastReading = reading;</code> is moved to the top instead of the bottom.</p>
+    <details><summary>Answer</summary><div class="inner">
+      <p>The order is: take the reading, test it, close the <code>if</code>, then remember the reading.</p>
+      <p>If you remember the reading first, then <code>lastReading</code> and <code>reading</code> are always the same by the time you test them, so <code>reading == LOW &amp;&amp; lastReading == HIGH</code> can never be true. Nothing ever happens. The order matters because you have to compare with the <em>old</em> value before you overwrite it.</p>
+    </div></details>
+
+    <h3 style="margin-top:.8rem">d. Explain one line</h3>
+    <p>In <code>b3_05</code>, there is a line near the end of the check:</p>
+    <pre><code>pressCount = 0;</code></pre>
+    <p>Why is it there, and what exactly would go wrong without it?</p>
+    <details><summary>Answer</summary><div class="inner">
+      <p>It clears the count so the next attempt starts from the beginning.</p>
+      <p>Without it, <code>pressCount</code> stays at 4 forever. The check runs again every round of <code>loop</code>, so the lock repeats its answer over and over, roughly once every two seconds because of the delays inside it. And no new attempt is ever possible, because the guard <code>pressCount &lt; 4</code> now refuses every further press. The lock is dead until you reset the board.</p>
+      <p>That guard is worth looking at too. Take <em>it</em> out as well, and your next press would try to store at <code>entered[4]</code>, which is outside a list of four, so it would write into memory belonging to something else.</p>
+      <p>That is worth sitting with. Forgetting one line does not just make the wrong thing happen. It can quietly damage another part of the program, in a way that shows up somewhere completely unrelated.</p>
+    </div></details>
+  </div>
+</section>
+
+<section class="part" id="change">
+  <div class="parthead"><span class="tag">Part 13</span><h2>Change it</h2><span class="mins">35 min</span></div>
+  <div class="col stack">
+    <p>Work on a copy of <code>b3_05_lock_worked.ino</code>. Use <strong>File</strong> then <strong>Save As</strong> first.</p>
+    <dl class="tier">
+      <dt>Bronze</dt><dd>Change the secret to four presses of your own choosing. Then make the code check for a <strong>five</strong> press secret instead of four. Count how many places you had to change the number 4, and write that number down.</dd>
+      <dt>Silver</dt><dd>Make the buzzer beep at a different length for each button, so you could tell which button was pressed with your eyes shut.</dd>
+      <dt>Gold</dt><dd>Add a reset: holding button 1 down for two seconds clears whatever has been entered so far and starts again, without counting as a wrong try. You will need to remember <em>when</em> the press started, which means storing a time.</dd>
+    </dl>
+    <details><summary>A hint for Bronze, after you have tried it</summary><div class="inner">
+      <p>The number 4 appears in several places: the size of two arrays, the test <code>pressCount == 4</code>, and the limit inside the <code>for</code> loops that check the answer.</p>
+      <p>This is Band 1's lesson coming back, one level harder. The tidy answer is to make a name at the top, like <code>int secretLength = 4;</code>, and use it everywhere. Then five presses is one edit.</p>
+      <p>Try it that way and count again. The difference is the point of the exercise.</p>
+    </div></details>
+    <details><summary>A hint for Gold, if you are stuck</summary><div class="inner">
+      <p>There is an instruction called <code>millis()</code> that tells you how many thousandths of a second the board has been running. Record it when the press starts, then compare it with the current value while the button is still held.</p>
+      <p>You meet <code>millis()</code> properly in Band 5. Doing it early here is meant to be hard, which is why it is Gold. If it beats you, write in your log what you tried. That is a perfectly good outcome.</p>
+    </div></details>
+  </div>
+</section>
+
+<section class="part" id="make">
+  <div class="parthead"><span class="tag">Part 14</span><h2>Make: something that guards something</h2><span class="mins">100 min</span></div>
+  <div class="col stack">
+    <div class="brief">
+      <h5>What to build</h5>
+      <p>A device that only does something when the right sequence is entered. Pick one, or bring your own:</p>
+      <ul class="plain">
+        <li>A box lock: the green light means "you may open it", and it stays on for ten seconds</li>
+        <li>A quiz buzzer for two players: first to press locks the other one out until reset</li>
+        <li>A door code for your room, with a different secret for each family member</li>
+        <li>A reaction game: a light comes on at a random moment and you press as fast as you can</li>
+        <li>A phone charger timer: press to start, and it counts down in lights</li>
+      </ul>
+      <h5 style="margin-top:.3rem">It is finished when all of these are true</h5>
+      <ul class="plain">
+        <li>Every press counts once, however long it is held</li>
+        <li>It tells you clearly that it heard you, before it tells you whether you were right</li>
+        <li>Something happens when you get it wrong, not only when you get it right</li>
+        <li>It survives someone pressing buttons at random for thirty seconds without getting stuck</li>
+        <li>Somebody who has never seen it can work out what to do, with one sentence of help</li>
+      </ul>
+    </div>
+
+    <h3>The test that matters most in this band</h3>
+    <p>Hand it to somebody and say only: "this is a lock, the secret is one three three two." Then say nothing else, and watch.</p>
+    <p>Watch their hands, not their face. Do they press too fast? Do they hold too long? Do they know whether a press was heard? Write down every moment they hesitated.</p>
+    <p>Hesitation is the finding. It means your device did not tell them something it should have.</p>
+    <div class="ifnot"><b>If you cannot find anyone today</b>Record a video of your own hands using it and watch it back tomorrow. You will spot the same hesitations, because by then you will have forgotten what you meant. If you can send it to someone, do that too. Say in your log which you did.</div>
+
+    <h3 style="margin-top:.6rem">Show your work</h3>
+    <p>Post a video of a correct entry and a wrong entry, your build log, and the list of hesitations you saw. Then look at one other person's sketch and find one place where a press might be counted twice.</p>
+    <div class="ifnot"><b>If there is nobody else's sketch to look at</b>Do it to your own, but properly. Read <code>b3_05</code> line by line and write down every place a press could be counted twice if one line were removed. There are at least three. Finding them in code you wrote yourself is harder than finding them in somebody else's, so this is a fair substitute.</div>
+  </div>
+</section>
+
+<section class="part" id="check">
+  <div class="parthead"><span class="tag">Part 15</span><h2>Check yourself</h2><span class="mins">15 min</span></div>
+  <div class="col stack">
+    <p>Code you have not seen. Answer from reading only.</p>
+    <pre><code>int buttonPin = 4;
+int ledPin = 7;
+int count = 0;
+int lastReading = HIGH;
+
+void setup() {
+  pinMode(buttonPin, INPUT_PULLUP);
+  pinMode(ledPin, OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  int reading = digitalRead(buttonPin);
+
+  if (reading == LOW &amp;&amp; lastReading == HIGH) {
+    count = count + 1;
+    Serial.println(count);
+  }
+
+  lastReading = reading;
+
+  if (count &gt;= 3) {
+    digitalWrite(ledPin, HIGH);
+  }
+}</code></pre>
+    <ol class="num">
+      <li>What does this do, in one sentence?</li>
+      <li>The button is wired with <code>INPUT_PULLUP</code>. What does <code>digitalRead</code> give when nobody is touching it?</li>
+      <li>Once the light comes on, can anything ever turn it off? Explain.</li>
+      <li>There is no <code>delay</code> for debouncing. What will you actually see in the serial monitor when you press once?</li>
+      <li>Somebody deletes the line <code>lastReading = reading;</code>. Describe exactly what happens then.</li>
+      <li>Somebody changes <code>if (reading == LOW ...)</code> to <code>if (reading = LOW ...)</code>, with one equals sign. It still compiles. What will the program do?</li>
+    </ol>
+    <details><summary>Answers</summary><div class="inner">
+      <p><strong>1.</strong> It counts button presses, prints the running total, and switches a light on permanently once the count reaches three.</p>
+      <p><strong>2.</strong> HIGH, which is 1. The resistor inside the chip holds the pin up at 5 volts until the button pulls it down.</p>
+      <p><strong>3.</strong> No. Nothing in the sketch ever sets <code>ledPin</code> to LOW, and <code>count</code> never goes back down. Once it is on it stays on until the board is reset or unplugged.</p>
+      <p><strong>4.</strong> Usually more than one number. Without a debounce delay, the bounce inside the button produces several separate changes from up to down, and edge detection counts each one. You will often see the count jump by two or three from a single press. It will not be a hundred thousand, because edge detection is working, but it will not reliably be one either. <em>Getting this apart from question 5 is the whole point of Part 9.</em></p>
+      <p><strong>5.</strong> <code>lastReading</code> stays HIGH forever. So the test becomes "is the button down right now", which is true on every round while you hold it. The count races upward far too fast to control, and the light comes on almost instantly. It will not literally be a hundred thousand a second, because printing to the serial monitor is slow and holds the loop back, but it will be tens or hundreds per press and it is completely unusable.</p>
+      <p><strong>6.</strong> One equals sign puts LOW into <code>reading</code> instead of asking a question. LOW is 0, and a result of 0 counts as "no", so the <code>if</code> never runs. The count stays at zero, the light never comes on, and nothing ever gets printed. <em>This is the question that matters most in this band. It compiles, it runs, and it silently does nothing.</em></p>
+    </div></details>
+  </div>
+</section>
+
+<section class="part" id="problems">
+  <div class="parthead"><span class="tag">Part 16</span><h2>When something goes wrong</h2></div>
+  <div class="col stack">
+    <p>Work down this list in order.</p>
+  </div>
+  <div class="scroll">
+    <table>
+      <thead><tr><th>What you see</th><th>What it usually is</th><th>What to do</th></tr></thead>
+      <tbody>
+        <tr><td>The button always reads 0, even untouched</td><td>You used two legs from the same side</td><td>They are permanently joined. Use two diagonally opposite legs.</td></tr>
+        <tr><td>The reading jumps about with nobody touching it</td><td><code>INPUT</code> instead of <code>INPUT_PULLUP</code></td><td>The pin is floating. Change the <code>pinMode</code> line.</td></tr>
+        <tr><td>The button does nothing at all</td><td>A leg not pushed fully in, or the wrong column</td><td>Press the button down hard until it clicks flat. Then check the wire is in the same column as the leg.</td></tr>
+        <tr><td>One press counts as several</td><td>No debounce</td><td>Add <code>delay(50);</code> inside the <code>if</code>, after you accept the press.</td></tr>
+        <tr><td>One press counts as thousands</td><td>No edge detection, or a missing <code>lastReading = reading;</code></td><td>Check both. They are different faults with different fixes. See Part 9.</td></tr>
+        <tr><td>Strange symbols in the serial monitor</td><td>Baud rate mismatch</td><td>Set the serial monitor to 9600, the same as in <code>Serial.begin</code>.</td></tr>
+        <tr><td>Upload suddenly fails and used to work</td><td>The serial monitor is holding the port</td><td>Close the serial monitor and upload again.</td></tr>
+        <tr><td>An <code>if</code> always goes the same way</td><td>One equals sign instead of two</td><td>Search your sketch for <code>=</code> inside round brackets. It should almost always be <code>==</code>.</td></tr>
+        <tr><td>The buzzer makes no sound</td><td>Wrong way round, or it is a passive buzzer</td><td>Long leg to the pin. A passive buzzer needs Band 5's instruction and will stay silent here.</td></tr>
+        <tr><td>The lock works once then jams</td><td><code>pressCount</code> not reset</td><td>See Part 12d.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="col stack" style="margin-top:1.2rem">
+    <div class="callout">
+      <h5>Still stuck after 30 minutes?</h5>
+      <p>Photograph the breadboard from directly above in good light. Post the photo, your sketch, and one sentence saying what you expected and what happened instead. Do not rebuild it first.</p>
+      <p>In this band, also post a few lines copied from your serial monitor. Very often that alone tells someone exactly what is wrong.</p>
+    </div>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Done</span><h2>What you know now</h2></div>
+  <div class="col stack">
+    <p>Your board can listen now. It can decide. It can remember. And you have a window into it, so when it does something odd you can ask it what it thinks is happening instead of guessing.</p>
+    <p>You also met a fault that no error message will ever find for you: code that is perfectly correct English and completely wrong. That is most of real programming.</p>
+    <h3 style="margin-top:.6rem">Before you move on, make sure you have</h3>
+    <ul class="plain">
+      <li>Your lock, working, with a video of a right and a wrong entry</li>
+      <li>Your list of hesitations, from the person who tested it or from watching your own video back</li>
+      <li>Your completed table from Part 12a</li>
+      <li>Your number from Bronze</li>
+      <li>The sentence "not pressed is 1, pressed is 0" in your glossary</li>
+      <li>Your build log for this band</li>
+      <li>Five or six correct answers in Part 15, including question 6</li>
+    </ul>
+    <p style="margin-top:.6rem"><strong>Next is Band 4: Night Guard.</strong> Your buttons only ever say yes or no. Next you meet sensors, which give you a number between 0 and 1023, and you find out that the number means nothing until you decide what it means.</p>
+  </div>
+</section>
+
+
+<nav class="pager" aria-label="Bands">
+<a href="band-2.html"><span class="dir">Previous</span><span class="name">Band 2: Mood Lamp</span></a>
+<a class="next" href="band-4.html"><span class="dir">Next</span><span class="name">Band 4: Night Guard &rarr;</span></a>
+</nav>
+
+<footer>
+  <p>Bozoma Innovation Hub &nbsp;·&nbsp; Aiyinasi, Ellembelle District. Band 3 of nine. Every sketch used here was compiled and tested before it reached you.</p>
+</footer>
+
+</div>
+</body>
+</html>

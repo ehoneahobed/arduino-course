@@ -1,0 +1,689 @@
+<!doctype html>
+<html lang="en" data-band="0">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Band 0: Bench Ready · Arduino Ladder</title>
+  <meta name="description" content="What the board is, what each part does, and how to send it a program. You finish by making it blink a pattern that belongs to you and nobody else.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+  <link rel="stylesheet" href="../assets/course.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the lesson</a>
+<div class="topbar">
+  <a class="home" href="../index.html">Arduino Ladder <span>· Bozoma Innovation Hub</span></a>
+  <nav class="bandlinks" aria-label="Bands"><a href="../bands/band-0.html" aria-current="page">0</a><a href="../bands/band-1.html">1</a><a href="../bands/band-2.html">2</a><a href="../bands/band-3.html">3</a><a href="../bands/band-4.html">4</a><a href="../bands/band-5.html">5</a></nav>
+</div>
+<div class="wrap" id="main">
+<nav aria-label="Sections">
+  <a href="#start">Start here</a>
+  <a href="#what">What is it</a>
+  <a href="#software">Set up</a>
+  <a href="#think">Think first</a>
+  <a href="#read">Read the code</a>
+  <a href="#means">What it means</a>
+  <a href="#run">Run it</a>
+  <a href="#closer">Look closer</a>
+  <a href="#change">Change it</a>
+  <a href="#make">Make yours</a>
+  <a href="#check">Check yourself</a>
+  <a href="#problems">Problems</a>
+</nav>
+
+<header style="padding:3rem 0 1rem">
+  <p class="eyebrow">Bozoma Innovation Hub &nbsp;·&nbsp; Arduino Ladder &nbsp;·&nbsp; Band 0</p>
+  <h1 style="margin:.8rem 0">Bench Ready</h1>
+  <p class="col sub" style="font-size:1.1em">Your first band. You will learn what the board is, get it talking to your computer, and make a light blink in a pattern that belongs to you.</p>
+  <p class="col note" style="margin-top:.8rem">About 3 hours. You do not need to finish it in one sitting. Nothing here uses the breadboard yet.</p>
+</header>
+
+<section class="sketchbox">
+  <h2>Sketches for this band</h2>
+  <ul><li><a href="../sketches/b0_01_blink_given.ino">b0_01_blink_given.ino</a></li><li><a href="../sketches/b0_02_signature_worked.ino">b0_02_signature_worked.ino</a></li><li><a href="../sketches/b0_03_buggy_semicolon.ino">b0_03_buggy_semicolon.ino</a></li></ul>
+  <p>Click one to save it, or get every sketch at once from <a href="../downloads/arduino-ladder-sketches.zip" style="border:0;background:none;padding:0">the downloads page</a>. Each file opens with a plain-English header telling you what it does and how to wire it.</p>
+</section>
+
+
+<section class="part" id="start">
+  <div class="parthead"><span class="tag">Start here</span><h2>What this band is for</h2></div>
+  <div class="col stack">
+    <p>Right now the Arduino board is a strange object. By the end of this band it will be a tool you know how to use. That is the whole job.</p>
+    <p>You will not build a circuit yet. You will not use the breadboard. You will use one small light that is already built into the board, so that if something goes wrong, you know the problem is the computer or the code. It cannot be the wiring, because there is no wiring.</p>
+
+    <h3 style="margin-top:.5rem">What you need in front of you</h3>
+    <ul class="plain">
+      <li>Your Arduino Uno board</li>
+      <li>The USB cable that came with it</li>
+      <li>A laptop or computer</li>
+      <li>Your kit box, unopened is fine for now</li>
+      <li>A pen and something to write on</li>
+    </ul>
+
+    <h3 style="margin-top:.5rem">By the end you will be able to</h3>
+    <ul class="plain">
+      <li>Point at any part of the board and say what it does</li>
+      <li>Send a program from your computer to the board</li>
+      <li>Read a program and say what each line does</li>
+      <li>Change a program and send it again</li>
+      <li>Read an error message and find the line it is talking about</li>
+    </ul>
+
+    <div class="callout" style="margin-top:.6rem">
+      <h5>Three rules for the whole course</h5>
+      <ol class="num">
+        <li>Unplug the USB cable before you change any wiring. Plug it back in after.</li>
+        <li>Never join the 5V pin straight to the GND pin. That is the one mistake that can damage the board.</li>
+        <li>If you are stuck on the same problem for 30 minutes, stop and ask. Take a photo of your board first.</li>
+      </ol>
+      <p class="note">You will not touch wiring in this band, so rules 1 and 2 do not bite yet. Learn them now anyway.</p>
+    </div>
+  </div>
+</section>
+
+<section class="part" id="what">
+  <div class="parthead"><span class="tag">Part 1</span><h2>What is an Arduino?</h2><span class="mins">15 min</span></div>
+  <div class="col stack">
+    <p>An Arduino is a very small computer on one flat board.</p>
+    <p>It is not like a laptop. It has no screen. It has no keyboard. It cannot browse the internet. It does one job: it follows a list of instructions that you give it, and it does that over and over until you unplug it.</p>
+    <p>What makes it useful is that it can control electricity. It can switch a light on. It can turn a small motor. It can read a sensor and find out how bright a room is, or how warm, or how far away something is. Then it can decide what to do about that.</p>
+    <p>The list of instructions you give it is called a <strong>program</strong>. In the Arduino world we call one program a <strong>sketch</strong>. Both words mean the same thing here.</p>
+
+    <h3 style="margin-top:.7rem">Look at your board</h3>
+    <p>Take the board out and hold it. Compare it to the picture below. Find each labelled part on the real board before you read on.</p>
+
+    <figure>
+      <svg viewBox="0 0 760 350" role="img" aria-label="Diagram of an Arduino Uno board with seven parts labelled: USB socket, power socket, digital pins zero to thirteen along the top, power pins and analog pins A0 to A5 along the bottom, the small light marked L, and the main chip in the middle.">
+        <g fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="170" y="90" width="420" height="190" rx="10"/>
+          <rect x="140" y="115" width="34" height="45" rx="3"/>
+          <rect x="140" y="205" width="34" height="42" rx="3"/>
+        </g>
+        <g fill="currentColor" opacity="0.75">
+          <rect x="250" y="92" width="320" height="16" rx="2"/>
+          <rect x="200" y="264" width="150" height="16" rx="2"/>
+          <rect x="380" y="264" width="140" height="16" rx="2"/>
+        </g>
+        <g fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="330" y="170" width="110" height="45" rx="4"/>
+          <circle cx="210" cy="118" r="9"/>
+        </g>
+        <circle cx="555" cy="135" r="7" fill="#E0563C" stroke="none"/>
+        <g stroke="currentColor" stroke-width="1" opacity="0.55">
+          <line x1="410" y1="62" x2="410" y2="88"/>
+          <line x1="275" y1="300" x2="275" y2="284"/>
+          <line x1="450" y1="300" x2="450" y2="284"/>
+          <line x1="133" y1="136" x2="143" y2="138"/>
+          <line x1="133" y1="225" x2="143" y2="227"/>
+          <line x1="564" y1="135" x2="600" y2="130"/>
+          <line x1="442" y1="192" x2="600" y2="192"/>
+        </g>
+        <g fill="currentColor" font-family="Archivo, Arial, sans-serif" font-size="13">
+          <text x="410" y="56" text-anchor="middle">Digital pins (0 to 13)</text>
+          <text x="275" y="316" text-anchor="middle">Power pins</text>
+          <text x="450" y="316" text-anchor="middle">Analog pins (A0 to A5)</text>
+          <text x="128" y="140" text-anchor="end">USB socket</text>
+          <text x="128" y="229" text-anchor="end">Power socket</text>
+          <text x="606" y="134">The light marked L</text>
+          <text x="606" y="196">The main chip</text>
+        </g>
+      </svg>
+      <figcaption>The seven parts of the board you need to know in this band. Your board may look slightly different if it is a copy rather than an original, but every one of these parts will be there somewhere.</figcaption>
+    </figure>
+
+    <h3 style="margin-top:.7rem">What each part does</h3>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Part</th><th>What it does</th></tr></thead>
+        <tbody>
+          <tr><td>USB socket</td><td>Where the cable from your computer plugs in. It carries two things at once: the electricity that powers the board, and the program you are sending it.</td></tr>
+          <tr><td>Power socket</td><td>A second way to give the board electricity, from a wall adapter or a battery. You do not need it while the USB cable is plugged in.</td></tr>
+          <tr><td>Digital pins</td><td>The row of small holes along the top, numbered 0 to 13. Each one can be switched on or off by your program. Wires go into these holes.</td></tr>
+          <tr><td>Analog pins</td><td>The holes marked A0 to A5 along the bottom. These are for reading sensors. You meet them at Band 4.</td></tr>
+          <tr><td>Power pins</td><td>Also along the bottom. The important ones are <strong>5V</strong>, which supplies electricity, and <strong>GND</strong>, which is where electricity returns to. There is more than one GND hole. They all do the same thing.</td></tr>
+          <tr><td>The L light</td><td>A tiny light already built into the board. It is joined to pin 13. This is the light you will blink in this band.</td></tr>
+          <tr><td>The main chip</td><td>The black rectangle in the middle. This is where your program is stored and where it runs.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="words">
+      <h5>Words to know</h5>
+      <dl>
+        <dt>pin</dt><dd>One hole on the edge of the board that a wire can go into. Each pin has a number or a name printed next to it.</dd>
+        <dt>GND</dt><dd>Short for "ground". The hole electricity returns to after it has done its work. Every circuit you build needs one.</dd>
+        <dt>5V</dt><dd>A pin that always supplies electricity at 5 volts, as long as the board has power.</dd>
+        <dt>program</dt><dd>A list of instructions for the board to follow.</dd>
+        <dt>sketch</dt><dd>The Arduino word for one program. A sketch is saved in a file that ends in <code>.ino</code>.</dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section class="part" id="software">
+  <div class="parthead"><span class="tag">Part 2</span><h2>Get your computer ready</h2><span class="mins">25 min</span></div>
+  <div class="col stack">
+    <p>You need one piece of software: the <strong>Arduino IDE</strong>. It is free. It is the program you write in, and it is the program that sends your sketch to the board.</p>
+    <p>IDE is just a name. You do not need to know what the letters stand for.</p>
+
+    <div class="steps">
+      <div class="step"><div class="body">
+        <p><strong>Download it.</strong> Go to <code>arduino.cc/en/software</code> in your web browser. Find the download list. Choose the one that matches your computer: Windows, macOS, or Linux.</p>
+        <div class="ifnot"><b>If the page asks for money</b>It will offer you a chance to donate, with a button that says something like "Just download". Click that. You do not have to pay.</div>
+      </div></div>
+
+      <div class="step"><div class="body">
+        <p><strong>Install it.</strong> Open the file you downloaded and follow what it asks. On Windows it may ask permission to install drivers. Say yes to all of them. Those drivers are what let your computer see the board.</p>
+      </div></div>
+
+      <div class="step"><div class="body">
+        <p><strong>Open it.</strong> Start the Arduino IDE. The first time it opens it may take a minute.</p>
+        <div class="see"><b>You should see</b>A window with a large white area in the middle, a row of buttons at the top left, and a black area at the bottom. In the white area there is already some text, starting with <code>void setup()</code>.</div>
+      </div></div>
+
+      <div class="step"><div class="body">
+        <p><strong>Learn the two buttons you will use most.</strong> At the top left there is a round button with a tick inside it, and next to it a round button with an arrow pointing right.</p>
+        <ul class="plain">
+          <li>The <strong>tick</strong> is called <strong>Verify</strong>. It checks your code for mistakes. It does not touch the board.</li>
+          <li>The <strong>arrow</strong> is called <strong>Upload</strong>. It checks your code and then sends it to the board.</li>
+        </ul>
+        <p class="note">Hover your mouse over each one and the name will appear. Do this now so you are sure which is which.</p>
+      </div></div>
+    </div>
+
+    <h3 style="margin-top:1rem">Now plug in the board</h3>
+
+    <div class="steps">
+      <div class="step"><div class="body">
+        <p><strong>Connect the USB cable</strong> from your computer to the board.</p>
+        <div class="see"><b>You should see</b>A small green light on the board comes on and stays on. It may also start blinking a light on and off, because new boards usually arrive with a blink program already inside them.</div>
+        <div class="ifnot"><b>If no light comes on</b>Try a different USB cable. Some USB cables are made only for charging phones and cannot carry data. They look exactly the same. This is the most common problem people hit in their first week, so try this before you decide anything is broken.</div>
+      </div></div>
+
+      <div class="step"><div class="body">
+        <p><strong>Tell the IDE which board you have.</strong> In the menu at the top, click <strong>Tools</strong>, then <strong>Board</strong>, then choose <strong>Arduino Uno</strong>.</p>
+      </div></div>
+
+      <div class="step"><div class="body">
+        <p><strong>Tell the IDE where the board is.</strong> Click <strong>Tools</strong>, then <strong>Port</strong>. You will see a short list. One of them is your board.</p>
+        <p>If you are not sure which one, do this: unplug the board and look at the list. Note what is there. Plug the board back in and look again. The one that just appeared is your board. Choose it.</p>
+        <div class="ifnot"><b>If the Port menu is empty or greyed out</b>Almost always the cable. Swap it for a different one and try again. If you have already swapped the cable, and you are on Windows with a copy board rather than an original, search the web for "CH340 driver", install it, then restart the IDE.</div>
+      </div></div>
+    </div>
+
+    <div class="words">
+      <h5>Words to know</h5>
+      <dl>
+        <dt>IDE</dt><dd>The Arduino software on your computer. You write sketches in it and send them to the board from it.</dd>
+        <dt>Verify</dt><dd>The tick button. Checks your code for mistakes without touching the board.</dd>
+        <dt>Upload</dt><dd>The arrow button. Sends your code to the board.</dd>
+        <dt>port</dt><dd>The name your computer gives to the socket your board is plugged into. You have to tell the IDE which one to use.</dd>
+        <dt>driver</dt><dd>A small piece of software that teaches your computer how to talk to a device.</dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section class="part" id="think">
+  <div class="parthead"><span class="tag">Part 3</span><h2>Think about it first, away from the computer</h2><span class="mins">10 min</span></div>
+  <div class="col stack">
+    <p>Before you touch any code, do this small activity. It takes ten minutes and it will make the next part much easier to understand.</p>
+
+    <h3>If you have someone with you</h3>
+    <p>Write three instructions on a piece of paper:</p>
+    <div class="card"><p><strong>1.</strong> Stand up. &nbsp; <strong>2.</strong> Say your name. &nbsp; <strong>3.</strong> Sit down.</p></div>
+    <p>Give the paper to the other person and tell them: do instruction 1 one time only. Then do instructions 2 and 3 again and again, without stopping, until I tell you to stop.</p>
+    <p>Let them do it for about a minute. Then, while they are still going, cross out instruction 2 and write something different, like "clap your hands". Watch what happens.</p>
+
+    <h3 style="margin-top:.6rem">If you are on your own</h3>
+    <p>Do the same thing yourself, out loud. Stand up once. Then say your name and sit down, say your name and sit down, over and over, twenty times. Count them.</p>
+    <p>Then stop, change the second instruction on your paper, and start again from the beginning.</p>
+
+    <div class="callout">
+      <h5>Write your answers down before you go on</h5>
+      <ol class="num">
+        <li>Which instruction happened only once? Which ones happened again and again?</li>
+        <li>When the paper changed while the person was still going, did the change happen straight away? What did they actually have to do first?</li>
+        <li>Write down one thing you do once each morning, and one thing you repeat all day.</li>
+      </ol>
+    </div>
+
+    <p>Hold on to what happened in question 2. Stopping, taking the new instructions, and starting again from the top is exactly what the board does every time you press Upload. It cannot change its instructions while it is running them.</p>
+  </div>
+</section>
+
+<section class="part" id="read">
+  <div class="parthead"><span class="tag">Part 4</span><h2>Read the program before you run it</h2><span class="mins">8 min</span></div>
+  <div class="col stack">
+    <p>Here is your first sketch. <strong>Do not upload it yet.</strong> Read it first.</p>
+    <p>It will look strange. That is normal and expected. You are not supposed to understand all of it yet. Read it anyway, guess what it does, and write your guess down. Then we will go through it properly.</p>
+
+    <span class="filename">b0_01_blink_given.ino</span>
+    <pre><code>void setup() {
+  pinMode(13, OUTPUT);
+}
+
+void loop() {
+  digitalWrite(13, HIGH);
+  delay(1000);
+  digitalWrite(13, LOW);
+  delay(1000);
+}</code></pre>
+
+    <div class="callout">
+      <h5>Write down your guesses now, on paper</h5>
+      <ol class="num">
+        <li>How many times do you think the line with <code>pinMode</code> happens?</li>
+        <li>How long do you think the light stays on? How long does it stay off?</li>
+        <li>What do you think happens after the very last line finishes?</li>
+        <li>If you deleted both lines that say <code>delay</code>, what do you think you would see?</li>
+      </ol>
+    </div>
+
+    <p class="note">Do not skip this. Guessing and then finding out you were wrong is the fastest way to learn this material. Nobody is marking your guesses. Question 4 catches nearly everybody, including people who have been doing this for years, so guess anyway.</p>
+  </div>
+</section>
+
+<section class="part" id="means">
+  <div class="parthead"><span class="tag">Part 5</span><h2>What every part of that code means</h2><span class="mins">25 min</span></div>
+  <div class="col stack">
+    <p>Now we go through it slowly. Every symbol. Nothing skipped.</p>
+
+    <h3>The two groups</h3>
+    <p>Look at the sketch again. It has two blocks. Each one starts with a name and a pair of curly brackets.</p>
+    <pre><code>void setup() {
+  ...
+}
+
+void loop() {
+  ...
+}</code></pre>
+    <p>These are two <strong>groups of instructions</strong>. The board treats them very differently:</p>
+    <ul class="plain">
+      <li><strong><code>setup</code></strong> runs <strong>one time</strong>, right at the start, when the board is switched on or has just received a new program.</li>
+      <li><strong><code>loop</code></strong> runs <strong>again and again forever</strong>, from its first line to its last line, then back to its first line, until the board loses power.</li>
+    </ul>
+    <p>This is the same thing that happened in the paper activity. Stand up once. Then say your name and sit down, over and over.</p>
+    <p>Every Arduino sketch must have both of these groups. Even if one of them is empty.</p>
+
+    <h3 style="margin-top:.7rem">The symbols</h3>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Symbol</th><th>What it is doing</th></tr></thead>
+        <tbody>
+          <tr><td><code>void</code></td><td>A word that has to be there before the group name. It is telling the computer that this group does not hand back an answer when it finishes. For now, just accept that groups start with <code>void</code>. You will understand why at Band 5.</td></tr>
+          <tr><td><code>setup</code> and <code>loop</code></td><td>The names of the two groups. These exact names are required. The board looks for them. You cannot call them something else.</td></tr>
+          <tr><td><code>( )</code></td><td>Round brackets. After a group name they are usually empty. After an instruction name they hold the details that instruction needs.</td></tr>
+          <tr><td><code>{ }</code></td><td>Curly brackets. These mark where a group begins and where it ends. Everything between them belongs to that group. Every <code>{</code> must have a matching <code>}</code>.</td></tr>
+          <tr><td><code>;</code></td><td>A semicolon. This is the full stop of code. Every instruction ends with one. Forgetting it is the most common mistake there is, and you will do it many times.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 style="margin-top:.7rem">The instructions, one at a time</h3>
+
+    <h4 style="margin-top:.5rem"><code>pinMode(13, OUTPUT);</code></h4>
+    <p>This says: <em>pin 13 is going to be used for sending electricity out.</em></p>
+    <p>Break it into pieces:</p>
+    <ul class="plain">
+      <li><code>pinMode</code> is the name of the instruction. It means "set up how a pin will be used".</li>
+      <li>Inside the round brackets are two details, separated by a comma.</li>
+      <li><code>13</code> is which pin you are talking about.</li>
+      <li><code>OUTPUT</code> means this pin will <em>send</em> electricity out to something, rather than <em>read</em> something coming in.</li>
+      <li><code>;</code> ends the instruction.</li>
+    </ul>
+    <p>It is in <code>setup</code> because you only need to say this once. The pin does not forget.</p>
+
+    <h4 style="margin-top:.6rem"><code>digitalWrite(13, HIGH);</code></h4>
+    <p>This says: <em>switch pin 13 on.</em></p>
+    <ul class="plain">
+      <li><code>digitalWrite</code> means "switch a pin on or off".</li>
+      <li><code>13</code> is the pin.</li>
+      <li><code>HIGH</code> means on. The pin now puts out 5 volts.</li>
+    </ul>
+    <p>The opposite is <code>digitalWrite(13, LOW);</code> which means <em>switch pin 13 off</em>. The pin drops to 0 volts.</p>
+    <p>There is no in-between. With <code>digitalWrite</code>, a pin is fully on or fully off. Getting in-between brightness is what Band 2 is for.</p>
+
+    <h4 style="margin-top:.6rem"><code>delay(1000);</code></h4>
+    <p>This says: <em>wait here and do nothing.</em></p>
+    <p>The number is in <strong>milliseconds</strong>. A millisecond is one thousandth of a second. So:</p>
+    <ul class="plain">
+      <li><code>delay(1000);</code> waits one second</li>
+      <li><code>delay(500);</code> waits half a second</li>
+      <li><code>delay(2000);</code> waits two seconds</li>
+      <li><code>delay(100);</code> waits one tenth of a second</li>
+    </ul>
+    <p>To turn seconds into the number you need, multiply by 1000.</p>
+
+    <div class="callout">
+      <h5>Why the delays have to be there</h5>
+      <p>The board works through instructions very fast. Millions of them a second. Without the delays it would switch the light on and off so quickly that your eye could not follow it. The light would look like it was on all the time, at about half brightness.</p>
+      <p>That is the answer to guess number 4. Check what you wrote. Were you close?</p>
+    </div>
+
+    <h3 style="margin-top:.8rem">Two rules about typing</h3>
+    <div class="grid-2">
+      <div class="card stack-sm">
+        <h4>Capital letters matter</h4>
+        <p class="note"><code>pinMode</code> is correct. <code>pinmode</code> and <code>PinMode</code> and <code>PINMODE</code> are all wrong and will not work. The same is true for <code>digitalWrite</code>, <code>HIGH</code>, <code>LOW</code> and <code>OUTPUT</code>. Copy the capital letters exactly as you see them.</p>
+      </div>
+      <div class="card stack-sm">
+        <h4>Spaces mostly do not matter</h4>
+        <p class="note">The computer does not care about extra spaces or blank lines. It cares about the words, the brackets and the semicolons. The spaces at the start of the lines inside the curly brackets are there for humans, to make the shape of the code easy to see. Keep them anyway. It is a good habit.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="part" id="run">
+  <div class="parthead"><span class="tag">Part 6</span><h2>Now run it</h2><span class="mins">20 min</span></div>
+  <div class="col stack">
+    <div class="steps">
+      <div class="step"><div class="body">
+        <p><strong>Open the sketch.</strong> In the IDE, click <strong>File</strong>, then <strong>Open</strong>, and find <code>b0_01_blink_given.ino</code>.</p>
+        <div class="ifnot"><b>If the IDE says the file must be in a folder with the same name</b>This is normal. Click yes and let it fix it for you. The Arduino IDE wants every sketch to sit inside a folder named after it.</div>
+      </div></div>
+
+      <div class="step"><div class="body">
+        <p><strong>Press Verify</strong>, the tick button. Wait a few seconds.</p>
+        <div class="see"><b>You should see</b>A message at the bottom saying it is done compiling, and no red text. Nothing happens on the board. That is correct. Verify only checks the code.</div>
+      </div></div>
+
+      <div class="step"><div class="body">
+        <p><strong>Press Upload</strong>, the arrow button.</p>
+        <div class="see"><b>You should see</b>Two very small lights on the board flicker quickly for a second or two while the program crosses the cable. Then a message at the bottom telling you it is done uploading.</div>
+        <div class="ifnot"><b>If you get a red error about a port or being "not in sync"</b>Go back to Tools and check both Board and Port are still set correctly. Unplugging the board can clear the Port setting. If it still fails, unplug the board, plug it back in, choose the Port again, and upload again.</div>
+      </div></div>
+
+      <div class="step"><div class="body">
+        <p><strong>Watch the light marked L.</strong> It is tiny. Find it on the diagram in Part 1 if you are not sure which one it is.</p>
+        <div class="see"><b>You should see</b>It comes on for one second, goes off for one second, and repeats forever.</div>
+        <div class="ifnot"><b>If nothing seems to change</b>You may be watching the wrong light. The green light that stays on all the time is the power light. It is not the one. The one you want blinks. Also check the title bar of the IDE window shows the same file name you think you edited.</div>
+      </div></div>
+
+      <div class="step"><div class="body">
+        <p><strong>Check your four guesses from Part 4.</strong> Mark each one right or wrong. Keep the paper.</p>
+      </div></div>
+    </div>
+
+    <h3 style="margin-top:1rem">Where does the program actually live?</h3>
+    <p>Many people think the program is running on their laptop and being sent to the board bit by bit. It is not. Prove it to yourself.</p>
+
+    <div class="steps">
+      <div class="step"><div class="body">
+        <p><strong>Unplug the USB cable from your computer</strong> while the light is blinking. The board goes dark, because it has lost its electricity.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Plug the board into a phone charger</strong> instead, using the same cable. Any USB charger will do.</p>
+        <div class="see"><b>You should see</b>The light starts blinking again, in exactly the same pattern. Your computer is not involved at all.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Write one sentence</strong> explaining why it kept blinking. Keep that sentence. You will be asked for it when you claim this band.</p>
+      </div></div>
+    </div>
+
+    <div class="callout">
+      <p>When you press Upload, the program is copied into the chip on the board and stays there. It does not need your computer any more. It will still be there tomorrow, and next month, until you upload something different over it.</p>
+    </div>
+
+    <h3 style="margin-top:.8rem">Read the worked example</h3>
+    <p>Now open <code>b0_02_signature_worked.ino</code> and upload it. Watch it first, then read it.</p>
+    <p>This one blinks a <strong>signature</strong>: two short flashes, one long flash, then a rest. It is the kind of thing you will make yourself at the end of this band.</p>
+
+    <span class="filename">b0_02_signature_worked.ino</span>
+    <pre><code>int ledPin = 13;
+int shortFlash = 150;
+int longFlash = 700;
+int gap = 200;
+int rest = 1200;
+
+void setup() {
+  pinMode(ledPin, OUTPUT);
+}
+
+void loop() {
+  digitalWrite(ledPin, HIGH);
+  delay(shortFlash);
+  digitalWrite(ledPin, LOW);
+  delay(gap);
+
+  digitalWrite(ledPin, HIGH);
+  delay(shortFlash);
+  digitalWrite(ledPin, LOW);
+  delay(gap);
+
+  digitalWrite(ledPin, HIGH);
+  delay(longFlash);
+  digitalWrite(ledPin, LOW);
+  delay(rest);
+}</code></pre>
+
+    <p>There is something new here. The five lines at the top give <strong>names to numbers</strong>.</p>
+    <p><code>int shortFlash = 150;</code> means: <em>make a name called <code>shortFlash</code> and put the number 150 in it.</em> After that line, anywhere you write <code>shortFlash</code>, the board reads it as 150.</p>
+    <p>Look at how the rest of the sketch uses those names instead of numbers. <code>delay(shortFlash)</code> instead of <code>delay(150)</code>.</p>
+    <p>Why bother? Two reasons. First, <code>delay(shortFlash)</code> tells you <em>why</em> that delay is there, and <code>delay(150)</code> does not. Second, if you want to change the short flash, you change one line at the top instead of hunting through the sketch for every 150.</p>
+    <p class="note">You do not have to use this yet. Band 1 makes you feel the difference by measuring it, which works far better than being told.</p>
+
+    <div class="words">
+      <h5>Words to know</h5>
+      <dl>
+        <dt>compile</dt><dd>Turning the code you wrote into something the chip can actually run. The Verify button does this.</dd>
+        <dt>upload</dt><dd>Copying the compiled program into the chip on the board.</dd>
+        <dt>millisecond</dt><dd>One thousandth of a second. 1000 milliseconds is 1 second.</dd>
+        <dt>int</dt><dd>The word you write when you are making a name for a whole number. Short for "integer", which means a whole number.</dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section class="part" id="closer">
+  <div class="parthead"><span class="tag">Part 7</span><h2>Look closer</h2><span class="mins">20 min</span></div>
+  <div class="col stack">
+    <p>Three short activities. They look small. They are the part that makes the difference between copying and understanding.</p>
+
+    <h3>a. Follow the code by hand</h3>
+    <p>Go back to <code>b0_01</code>. Number the four lines inside <code>loop()</code> as L1, L2, L3, L4.</p>
+    <p>Copy this table onto paper and fill in the empty boxes. The first row is done for you.</p>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Time</th><th>Which line is running</th><th>What the light is doing</th></tr></thead>
+        <tbody>
+          <tr><td>0 seconds</td><td>L1</td><td>comes on</td></tr>
+          <tr><td>0 to 1 seconds</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+          <tr><td>1 second</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+          <tr><td>1 to 2 seconds</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+          <tr><td>2 seconds</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+          <tr><td>2 to 3 seconds</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <details><summary>Check your table</summary><div class="inner">
+      <p>0 to 1 seconds: L2 is running, light stays on. At 1 second: L3 runs, light goes off. 1 to 2 seconds: L4 is running, light stays off. At 2 seconds: <code>loop</code> has finished, so it starts again from L1, and the light comes on. 2 to 3 seconds: L2 again, light stays on.</p>
+      <p>The important thing to notice: the light is not "waiting to change". The board is sitting inside <code>delay</code> doing nothing at all. That will matter a lot at Band 5.</p>
+    </div></details>
+
+    <h3 style="margin-top:.8rem">b. Meet an error message</h3>
+    <p>Open <code>b0_03_buggy_semicolon.ino</code> and press Verify. It will fail. That is what it is for.</p>
+    <p>Here are lines 22, 23 and 24 of that file:</p>
+    <span class="filename">b0_03_buggy_semicolon.ino, lines 22 to 24</span>
+    <pre><code>void setup() {
+  pinMode(13, OUTPUT)
+}</code></pre>
+    <p>The semicolon at the end of line 23 is missing. Now look at the red message at the bottom of the IDE. It says something close to this:</p>
+    <pre><code>b0_03_buggy_semicolon.ino:24:1: error: expected ';' before '}' token</code></pre>
+    <p>Read that message piece by piece:</p>
+    <ul class="plain">
+      <li><code>b0_03_buggy_semicolon.ino</code> is the file.</li>
+      <li><code>24</code> is the line number it is complaining about.</li>
+      <li><code>expected ';'</code> means it wanted a semicolon.</li>
+      <li><code>before '}' token</code> means it noticed when it reached the curly bracket.</li>
+    </ul>
+    <div class="callout">
+      <h5>Answer this before you fix anything</h5>
+      <p>The message points at line 24. The mistake is on line 23. Why is it pointing at the wrong line?</p>
+    </div>
+    <details><summary>The answer, and it is worth remembering</summary><div class="inner">
+      <p>The computer reads your code from left to right, top to bottom. At the end of line 23 it does not yet know that anything is wrong, because an instruction is allowed to carry on onto the next line. It is still waiting to see the semicolon.</p>
+      <p>Then it reaches the curly bracket on line 24. A curly bracket cannot come next when it is still waiting for a semicolon. That is the first moment it can be sure something is wrong, so that is where it complains.</p>
+      <p><strong>The rule to carry with you for the whole course: the error message tells you where the computer noticed, not where you made the mistake. Always look at the line above the one it names.</strong></p>
+      <p>Now add the semicolon and check that it verifies.</p>
+    </div></details>
+
+    <h3 style="margin-top:.8rem">c. A thinking question</h3>
+    <p>In <code>b0_01</code>, imagine you swapped the two <code>digitalWrite</code> lines around, so that the <code>LOW</code> one came first and the <code>HIGH</code> one came second. Everything else stays the same.</p>
+    <p>Would someone watching the board see any difference? Write one sentence and say why.</p>
+    <details><summary>Answer</summary><div class="inner">
+      <p>After the first second, no difference at all.</p>
+      <p>On, wait, off, wait gives you exactly the same repeating pattern as off, wait, on, wait. Once something is going round and round, it has no beginning any more. The only difference is what happens in the very first second after you upload.</p>
+    </div></details>
+  </div>
+</section>
+
+<section class="part" id="change">
+  <div class="parthead"><span class="tag">Part 8</span><h2>Change it yourself</h2><span class="mins">20 min</span></div>
+  <div class="col stack">
+    <p>Now you change someone else's code before you write your own. This is deliberate. It is much easier than starting from an empty screen, and you learn just as much.</p>
+    <p>Work on a copy of <code>b0_01</code>. Use <strong>File</strong> then <strong>Save As</strong> to make a copy first, so you still have the original. Do all three tasks in order.</p>
+
+    <dl class="tier">
+      <dt>Bronze</dt><dd>Make the light blink twice as fast. Write down which numbers you changed and what you changed them to.</dd>
+      <dt>Silver</dt><dd>Make the time it is on different from the time it is off, so it looks like a heartbeat rather than a steady tick.</dd>
+      <dt>Gold</dt><dd>Make it flash three times quickly, then pause for two seconds, then repeat forever. Count how many lines your answer needed. Then work out how many lines it would take to flash <strong>ten</strong> times, and write that number down too.</dd>
+    </dl>
+
+    <details><summary>A hint for Gold, if you need one</summary><div class="inner">
+      <p>You do not need anything new. One quick flash is four lines: on, short wait, off, short wait. Three quick flashes is those four lines written out three times. Then one long <code>delay</code> at the end for the pause.</p>
+      <p>Yes, that means a lot of copying and pasting. That is the point of the exercise. Keep both of your numbers.</p>
+    </div></details>
+
+    <p class="note">Keep the two numbers from Gold somewhere safe. At Band 2 you will learn a way of doing this same job where going from three flashes to ten costs you one character. Comparing the two ways is how you will understand why that tool exists.</p>
+  </div>
+</section>
+
+<section class="part" id="make">
+  <div class="parthead"><span class="tag">Part 9</span><h2>Make: your own signature</h2><span class="mins">60 min</span></div>
+  <div class="col stack">
+    <div class="brief">
+      <h5>What to build</h5>
+      <p>A blinking pattern that is yours and nobody else's. If six boards were blinking on a dark table, someone who knows your signature should be able to point at yours.</p>
+      <h5 style="margin-top:.3rem">It is finished when all of these are true</h5>
+      <ul class="plain">
+        <li>It uses at least two different flash lengths, for example a short one and a long one</li>
+        <li>There is a clear pause, so a watcher can see where the pattern starts again</li>
+        <li>The whole pattern takes less than five seconds</li>
+        <li>You could tap the rhythm out with your hand <strong>before</strong> you wrote any code</li>
+      </ul>
+    </div>
+
+    <h3>How to go about it</h3>
+    <div class="steps">
+      <div class="step"><div class="body"><p><strong>Tap it first, away from the computer.</strong> Tap a rhythm on the table until you have one you like.</p></div></div>
+      <div class="step"><div class="body"><p><strong>Write it down as marks on paper.</strong> Use a short line for a short flash and a long line for a long flash. Something like: <code>- - ——— (pause)</code></p></div></div>
+      <div class="step"><div class="body"><p><strong>Turn each mark into numbers.</strong> Decide how many milliseconds a short flash is, a long flash is, and the pause is. Write the numbers next to your marks.</p></div></div>
+      <div class="step"><div class="body"><p><strong>Now open the IDE</strong> and turn your marks into lines of code, one mark at a time.</p></div></div>
+      <div class="step"><div class="body"><p><strong>Upload and watch.</strong> Does it match the rhythm you tapped? Adjust the numbers until it does.</p></div></div>
+    </div>
+    <p class="note">Designing away from the keyboard is a habit worth building now, while the hardest thing you can get wrong is one light.</p>
+
+    <h3 style="margin-top:.8rem">Also due this band: your kit list</h3>
+    <p>Open your kit box. Go through it part by part. Write a list with the name of each part and how many of them you have.</p>
+    <p>If you do not know what something is, look at the paper that came with the kit, or search the web for "Arduino starter kit parts" and match the pictures. If anything is missing or broken, report it now. A missing part that you only discover at Band 4 costs you a week of waiting.</p>
+
+    <h3 style="margin-top:.8rem">Show your work</h3>
+    <p>Post a ten second video of your signature blinking, plus your build log for this band. Then look at two other people's signatures and check yours is different from both. If it is not, change yours.</p>
+    <div class="ifnot"><b>If there is nobody else nearby</b>Send your video to someone on your phone and ask them to describe the rhythm back to you. If you cannot do that, leave it for a day, then watch your own video fresh and write down whether you could still pick it out from a group. Say in your log which one you did.</div>
+  </div>
+</section>
+
+<section class="part" id="check">
+  <div class="parthead"><span class="tag">Part 10</span><h2>Check yourself</h2><span class="mins">10 min</span></div>
+  <div class="col stack">
+    <p>This is code you have not seen before. Do not upload it. Answer from reading only. Write your answers down, then check them.</p>
+    <pre><code>void setup() {
+  pinMode(12, OUTPUT);
+  digitalWrite(12, HIGH);
+}
+
+void loop() {
+  delay(2000);
+  digitalWrite(12, LOW);
+}</code></pre>
+    <ol class="num">
+      <li>What does the light do during the first two seconds?</li>
+      <li>What does it do after that?</li>
+      <li>How many times does <code>digitalWrite(12, HIGH)</code> happen in the first minute?</li>
+      <li>Someone says: "the light stopped changing, so <code>loop</code> must have stopped running." Are they right? Explain.</li>
+      <li>Add one line to make the light blink instead. Where does it go, and what is it?</li>
+      <li>Which single line would you delete to make the light never come on at all?</li>
+    </ol>
+    <details><summary>Answers</summary><div class="inner">
+      <p><strong>1.</strong> It is on, and stays on. <code>setup</code> switched it on and nothing turns it off for two seconds.</p>
+      <p><strong>2.</strong> It goes off at two seconds and stays off forever after that.</p>
+      <p><strong>3.</strong> Once. It is inside <code>setup</code>, and <code>setup</code> runs one time only.</p>
+      <p><strong>4.</strong> No, they are wrong. <code>loop</code> is still running, thousands of times. It is just that everything inside it is either waiting, or switching off a light that is already off. A program can be running perfectly and still look like nothing is happening. <em>This is the question that matters most in this band. If you got it wrong, read Part 5 again before you move on.</em></p>
+      <p><strong>5.</strong> You need <code>digitalWrite(12, HIGH);</code> inside <code>loop</code>. A good answer also notices you need a second <code>delay</code> after it, otherwise the light is switched on and off again too fast to see.</p>
+      <p><strong>6.</strong> The <code>digitalWrite(12, HIGH);</code> line in <code>setup</code>. If you said delete <code>pinMode</code> instead, that is a common answer and worth understanding. Without <code>pinMode</code> the pin is still set as an input, and switching an input pin on does something different: it turns on a resistor inside the chip that lets through only a tiny trickle of electricity. Some lights glow very faintly on that, most show nothing. So it is a more confusing result than simply nothing at all.</p>
+    </div></details>
+  </div>
+</section>
+
+<section class="part" id="problems">
+  <div class="parthead"><span class="tag">Part 11</span><h2>When something goes wrong</h2></div>
+  <div class="col stack">
+    <p>Work down this list in order. Do not skip. Most first-week problems are on it.</p>
+  </div>
+  <div class="scroll">
+    <table>
+      <thead><tr><th>What you see</th><th>What it usually is</th><th>What to do</th></tr></thead>
+      <tbody>
+        <tr><td>No Port in the Tools menu, or it is greyed out</td><td>A charging-only USB cable</td><td>Swap the cable for a different one. This looks exactly like a dead board and it is not. Try this first, every time.</td></tr>
+        <tr><td>Red error mentioning "not in sync" or "programmer is not responding"</td><td>Wrong Board or wrong Port chosen</td><td>Go to Tools and set both again. If you are on Windows with a copy board, install the CH340 driver.</td></tr>
+        <tr><td>Upload says it worked, but nothing changed</td><td>Watching the wrong light, or you edited a different copy of the file</td><td>The blinking light is the tiny one marked L. Check the file name at the top of the IDE window is the file you edited.</td></tr>
+        <tr><td>A green light is on but nothing ever blinks</td><td>That green light is the power light</td><td>Nothing is wrong with the board. It is showing you it has electricity. It has nothing to do with your program.</td></tr>
+        <tr><td>Lots of red errors that mention files you never wrote</td><td>A missing semicolon or a missing curly bracket earlier in your sketch</td><td>Read the <strong>first</strong> error, not the last one. Then look at the line above the one it names.</td></tr>
+        <tr><td>The IDE will not let you save, or asks about a folder</td><td>Arduino wants each sketch in a folder with the same name</td><td>Let it create the folder. Say yes.</td></tr>
+        <tr><td>Everything worked yesterday, nothing works today</td><td>The Port changed when you unplugged the board</td><td>Tools, then Port, choose it again.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="col stack" style="margin-top:1.2rem">
+    <div class="callout">
+      <h5>Still stuck after 30 minutes?</h5>
+      <p>Stop working on it. Post three things to the group: a photo of your screen showing the red error, your sketch, and one sentence saying what you expected and what actually happened. Then move on to something else while you wait.</p>
+      <p>Being stuck for half an hour is normal. Being stuck for three hours on your own is not, and it is the point where people give up on the whole course. Ask early.</p>
+    </div>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Done</span><h2>What you know now</h2></div>
+  <div class="col stack">
+    <p>Look back at where you started. You now know what the board is and what each part of it does. You can send a program to it. You can read a program and say what each line does. You can change one and send it again. You have met your first error message and you know the trick for reading it.</p>
+    <p>That is a real skill and you built it in one band.</p>
+    <h3 style="margin-top:.6rem">Before you move on, make sure you have</h3>
+    <ul class="plain">
+      <li>Your working signature, and a video of it</li>
+      <li>Your kit list, with every part named and counted</li>
+      <li>Your build log for this band</li>
+      <li>Your two numbers from the Gold task</li>
+      <li>Your one sentence about why the board kept blinking on the phone charger</li>
+      <li>Five or six correct answers in Part 10, including question 4</li>
+    </ul>
+    <p style="margin-top:.6rem"><strong>Next is Band 1: Signal Tower.</strong> You will open the breadboard, build a real circuit with three lights, and make something a stranger can understand without you standing next to it.</p>
+  </div>
+</section>
+
+
+<nav class="pager" aria-label="Bands">
+<a href="../index.html"><span class="dir">Back to</span><span class="name">Course home</span></a>
+<a class="next" href="band-1.html"><span class="dir">Next</span><span class="name">Band 1: Signal Tower &rarr;</span></a>
+</nav>
+
+<footer>
+  <p>Bozoma Innovation Hub &nbsp;·&nbsp; Aiyinasi, Ellembelle District. Band 0 of nine. Every sketch mentioned here was compiled and tested before it reached you. <code>b0_03_buggy_semicolon.ino</code> fails on purpose, and the error message shown in Part 7 is the one the compiler really produces.</p>
+</footer>
+
+</div>
+</body>
+</html>

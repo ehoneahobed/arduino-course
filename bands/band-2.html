@@ -1,0 +1,748 @@
+<!doctype html>
+<html lang="en" data-band="2">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Band 2: Mood Lamp · Arduino Ladder</title>
+  <meta name="description" content="Brightness, colour, and your first repeating loop. You find out the board cannot really dim a light at all, and you prove it with your own hand.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+  <link rel="stylesheet" href="../assets/course.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the lesson</a>
+<div class="topbar">
+  <a class="home" href="../index.html">Arduino Ladder <span>· Bozoma Innovation Hub</span></a>
+  <nav class="bandlinks" aria-label="Bands"><a href="../bands/band-0.html">0</a><a href="../bands/band-1.html">1</a><a href="../bands/band-2.html" aria-current="page">2</a><a href="../bands/band-3.html">3</a><a href="../bands/band-4.html">4</a><a href="../bands/band-5.html">5</a></nav>
+</div>
+<div class="wrap" id="main">
+<nav aria-label="Sections">
+  <a href="#start">Start here</a>
+  <a href="#torch">The torch test</a>
+  <a href="#pwm">How dimming works</a>
+  <a href="#read">Read the code</a>
+  <a href="#forloop">The for loop</a>
+  <a href="#build">Build and prove it</a>
+  <a href="#colour">Colour</a>
+  <a href="#rgb">Wire the RGB</a>
+  <a href="#closer">Look closer</a>
+  <a href="#change">Change it</a>
+  <a href="#make">Make yours</a>
+  <a href="#check">Check yourself</a>
+  <a href="#problems">Problems</a>
+</nav>
+
+<header style="padding:3rem 0 1rem">
+  <p class="eyebrow">Bozoma Innovation Hub &nbsp;·&nbsp; Arduino Ladder &nbsp;·&nbsp; Band 2</p>
+  <h1 style="margin:.8rem 0">Mood Lamp</h1>
+  <p class="col sub" style="font-size:1.1em">Until now your lights have been fully on or fully off. This band gives you everything in between, gives you colour, and gives you the first tool that lets a program repeat itself without you typing the repetition out by hand.</p>
+  <p class="col note" style="margin-top:.8rem">About 6 hours. Finish Band 1 first. You will need to be comfortable wiring an LED without looking it up.</p>
+</header>
+
+<section class="sketchbox">
+  <h2>Sketches for this band</h2>
+  <ul><li><a href="../sketches/b2_01_fade_given.ino">b2_01_fade_given.ino</a></li><li><a href="../sketches/b2_02_rgb_colours.ino">b2_02_rgb_colours.ino</a></li><li><a href="../sketches/b2_03_colour_story_worked.ino">b2_03_colour_story_worked.ino</a></li><li><a href="../sketches/b2_04_buggy_nonpwm.ino">b2_04_buggy_nonpwm.ino</a></li></ul>
+  <p>Click one to save it, or get every sketch at once from <a href="../downloads/arduino-ladder-sketches.zip" style="border:0;background:none;padding:0">the downloads page</a>. Each file opens with a plain-English header telling you what it does and how to wire it.</p>
+</section>
+
+
+<section class="part" id="start">
+  <div class="parthead"><span class="tag">Start here</span><h2>What this band is for</h2></div>
+  <div class="col stack">
+    <p>Three new things happen here, and each one opens a door.</p>
+    <ul class="plain">
+      <li><strong>Brightness.</strong> You will make a light fade smoothly instead of snapping on and off. You will also find out that the board is lying to you about how it does that, and prove it with your own hand.</li>
+      <li><strong>Colour.</strong> One LED that can be any colour you name, and the reason why mixing coloured light works differently from mixing paint.</li>
+      <li><strong>Repeating.</strong> In Band 0 you copied and pasted the same four lines over and over to get three flashes. Here you learn the tool that does that for you, and going from three to ten costs you one character.</li>
+    </ul>
+
+    <h3 style="margin-top:.5rem">What you need</h3>
+    <ul class="plain">
+      <li>Your board, USB cable and breadboard</li>
+      <li>One ordinary LED and one RGB LED. The RGB one has four legs instead of two.</li>
+      <li>Four resistors of 220 ohms</li>
+      <li>Jumper wires</li>
+      <li>A torch, or your phone light</li>
+      <li>Something to make a diffuser from: a ping pong ball, a plastic sachet-water bottle, or white paper</li>
+    </ul>
+  </div>
+</section>
+
+<section class="part" id="torch">
+  <div class="parthead"><span class="tag">Part 1</span><h2>The torch test, before any code</h2><span class="mins">10 min</span></div>
+  <div class="col stack">
+    <p>Ten minutes with a torch will teach you the main idea of this band better than any explanation.</p>
+    <p>Find a dim room. Point a torch or your phone light at a plain wall. Now cover and uncover the light with your hand, and change how fast you do it.</p>
+    <ol class="num">
+      <li><strong>Once a second.</strong> Watch the wall. It clearly flashes on and off.</li>
+      <li><strong>Twice a second.</strong> Still clearly flashing.</li>
+      <li><strong>As fast as your hand will go.</strong> Keep watching the wall, not your hand.</li>
+    </ol>
+
+    <div class="callout">
+      <h5>Write these down</h5>
+      <ol class="num">
+        <li>At roughly what speed does the wall stop looking like it is flashing, and start looking like a steady but dimmer light?</li>
+        <li>When you cover the light for half of every second, is the wall as bright as when you do not cover it at all? Roughly how bright would you say it is?</li>
+      </ol>
+    </div>
+
+    <p>That change-over point, where fast flashing stops looking like flashing and starts looking like dimness, is the whole trick behind this band.</p>
+    <p><strong>The board cannot make a dim light.</strong> Its pins have only two settings: fully on at 5 volts, or fully off at 0 volts. There is nothing in between. What it can do is switch between them faster than your eye can follow, and let your eye do the averaging for it.</p>
+  </div>
+</section>
+
+<section class="part" id="pwm">
+  <div class="parthead"><span class="tag">Part 2</span><h2>How the board fakes dimming</h2><span class="mins">15 min</span></div>
+  <div class="col stack">
+    <p>The instruction for this is <code>analogWrite</code>. You give it a pin and a number from 0 to 255.</p>
+    <ul class="plain">
+      <li><code>analogWrite(9, 0);</code> means fully off</li>
+      <li><code>analogWrite(9, 255);</code> means fully on</li>
+      <li><code>analogWrite(9, 128);</code> means about half brightness</li>
+      <li><code>analogWrite(9, 64);</code> means about a quarter brightness</li>
+    </ul>
+    <p>But the pin is never actually at half a voltage. Here is what it is really doing.</p>
+
+    <figure>
+      <svg viewBox="0 0 700 300" role="img" aria-label="Three graphs of voltage over time showing that analogWrite 64 keeps the pin on for a quarter of each cycle, analogWrite 128 for half, and analogWrite 191 for three quarters, while the pin is always either fully on at five volts or fully off at zero.">
+<defs><marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker></defs>
+<g stroke="currentColor" stroke-width="1" opacity="0.45">
+  <line x1="150" y1="30" x2="150" y2="270"/>
+  <line x1="150" y1="270" x2="660" y2="270" marker-end="url(#ar2)"/>
+</g>
+<g font-size="11.5" fill="currentColor" opacity="0.7" font-family="IBM Plex Mono, monospace">
+  <text x="142" y="38" text-anchor="end">5V</text>
+  <text x="142" y="274" text-anchor="end">0V</text>
+  <text x="655" y="292" text-anchor="end">time</text>
+</g>
+<g fill="none" stroke="currentColor" stroke-width="2.5">
+  <polyline points="150,60 180,60 180,90 270,90 270,60 300,60 300,90 390,90 390,60 420,60 420,90 510,90 510,60 540,60 540,90 630,90"/>
+  <polyline points="150,140 210,140 210,170 270,170 270,140 330,140 330,170 390,170 390,140 450,140 450,170 510,170 510,140 570,140 570,170 630,170"/>
+  <polyline points="150,220 240,220 240,250 270,250 270,220 360,220 360,250 390,250 390,220 480,220 480,250 510,250 510,220 600,220 600,250 630,250"/>
+</g>
+<g font-size="12.5" fill="currentColor" font-family="Archivo, Arial, sans-serif">
+  <text x="0" y="70">analogWrite(64)</text>
+  <text x="0" y="88" opacity="0.7">on 1/4 of the time</text>
+  <text x="0" y="150">analogWrite(128)</text>
+  <text x="0" y="168" opacity="0.7">on 1/2 of the time</text>
+  <text x="0" y="230">analogWrite(191)</text>
+  <text x="0" y="248" opacity="0.7">on 3/4 of the time</text>
+</g>
+</svg>
+      <figcaption>What the pin is actually doing. In every case it is either fully on at 5 volts or fully off at 0 volts. The number you give <code>analogWrite</code> decides what share of each tiny slice of time it spends switched on. On an Uno this repeats several hundred times every second, far too fast to see.</figcaption>
+    </figure>
+
+    <p>Look at the three lines in the picture. None of them ever sits at a middle height. They are all jumping between the top and the bottom. What changes is <strong>how much of the time is spent at the top</strong>.</p>
+    <p>This has a name: <strong>PWM</strong>. You do not need to remember what the letters stand for. What you need to remember is the idea: fast switching that your eye reads as dimness.</p>
+
+    <div class="callout">
+      <h5>Why 255 and not 100?</h5>
+      <p>It would be easier if the range went 0 to 100, like a percentage. It does not, and the reason is worth knowing.</p>
+      <p>Computers store numbers in fixed-size boxes. The smallest useful box holds 256 different values, which is 0 up to 255. So the board offers you the whole box rather than throwing part of it away.</p>
+      <p>You will meet 255 again and again in this course, and by Band 4 you will meet 1023, which is a bigger box. When you see numbers like that, it is a sign that they came from the size of a box rather than from anything in the real world.</p>
+    </div>
+
+    <h3 style="margin-top:.7rem">Only some pins can do this</h3>
+    <p>This is the single most common trap in this band, so read it twice.</p>
+    <p><strong>On an Arduino Uno, only pins 3, 5, 6, 9, 10 and 11 can do PWM.</strong></p>
+    <p>Look at your board now. Next to those six pin numbers, and only those, there is a small squiggle printed: <code>~</code>. That mark is how the board tells you which pins can dim.</p>
+    <p>Find all six squiggles on your own board before you carry on. Write the six numbers in your glossary.</p>
+    <div class="ifnot"><b>What happens if you use the wrong pin</b>Nothing complains. <code>analogWrite</code> on any other pin is perfectly legal code, so there is no error message. The board simply treats anything below 128 as fully off, and anything from 128 upwards as fully on. Your fade turns into a snap. You will meet this on purpose in Part 8.</div>
+
+    <div class="words">
+      <h5>Words to know</h5>
+      <dl>
+        <dt>analogWrite</dt><dd>Sets a pin to a brightness from 0 to 255 by switching it on and off very fast.</dd>
+        <dt>PWM</dt><dd>The name for that fast switching. Only some pins can do it.</dd>
+        <dt>~</dt><dd>The squiggle printed next to the six pins on an Uno that can do PWM.</dd>
+        <dt>diffuser</dt><dd>Something white or cloudy placed over a light to spread it out, so you see a soft glow instead of a hard bright dot.</dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section class="part" id="read">
+  <div class="parthead"><span class="tag">Part 3</span><h2>Read the code before you run it</h2><span class="mins">10 min</span></div>
+  <div class="col stack">
+    <span class="filename">b2_01_fade_given.ino</span>
+    <pre><code>int lampPin = 9;
+
+void setup() {
+  pinMode(lampPin, OUTPUT);
+}
+
+void loop() {
+  for (int level = 0; level &lt;= 255; level = level + 4) {
+    analogWrite(lampPin, level);
+    delay(20);
+  }
+  for (int level = 255; level &gt;= 0; level = level - 4) {
+    analogWrite(lampPin, level);
+    delay(20);
+  }
+}</code></pre>
+    <p>There is one completely new thing here: the word <code>for</code>. Part 4 explains it fully. Before you read that explanation, make your guesses, even though you do not understand it yet. Guessing first is what makes the explanation stick.</p>
+
+    <div class="callout">
+      <h5>Write your guesses down</h5>
+      <ol class="num">
+        <li>In one sentence, what do you think the light does?</li>
+        <li>How many times do you think the two lines inside the first <code>for</code> happen? Show how you worked it out.</li>
+        <li>How long do you think one complete round takes? Show your arithmetic.</li>
+        <li>What is the largest number you think <code>level</code> ever holds?</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section class="part" id="forloop">
+  <div class="parthead"><span class="tag">Part 4</span><h2>The <code>for</code> loop, explained slowly</h2><span class="mins">25 min</span></div>
+  <div class="col stack">
+    <p>A <code>for</code> loop is a way of saying: <em>do this block of lines over and over, counting as you go, and stop when the count reaches a certain point.</em></p>
+    <p>Here is the first line on its own:</p>
+    <pre><code>for (int level = 0; level &lt;= 255; level = level + 4) {</code></pre>
+    <p>Inside the round brackets there are <strong>three separate parts</strong>, separated by two semicolons. Each one does a different job. Look at them one at a time.</p>
+
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Part</th><th>What it is</th><th>When it happens</th></tr></thead>
+        <tbody>
+          <tr><td><code>int level = 0</code></td><td><strong>The start.</strong> Make a name called <code>level</code> and put 0 in it.</td><td>Once, before anything else. Never again.</td></tr>
+          <tr><td><code>level &lt;= 255</code></td><td><strong>The test.</strong> Is <code>level</code> less than or equal to 255?</td><td>Before every round. If the answer is yes, do the block. If no, stop and move on.</td></tr>
+          <tr><td><code>level = level + 4</code></td><td><strong>The step.</strong> Add 4 to <code>level</code>.</td><td>After every round, just before the test happens again.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 style="margin-top:.7rem">The order things happen in</h3>
+    <p>Read this list slowly. It is the whole machine.</p>
+    <ol class="num">
+      <li><code>level</code> is created and set to 0.</li>
+      <li>Test: is 0 less than or equal to 255? Yes. So run the block.</li>
+      <li>Block runs: <code>analogWrite(lampPin, 0)</code> then <code>delay(20)</code>.</li>
+      <li>Step: <code>level</code> becomes 4.</li>
+      <li>Test: is 4 less than or equal to 255? Yes. Run the block again.</li>
+      <li>Block runs with <code>level</code> now 4. Then step makes it 8. Test passes. And so on.</li>
+      <li>Eventually <code>level</code> becomes 256. Test: is 256 less than or equal to 255? <strong>No.</strong> So the block does not run, and the loop is finished.</li>
+    </ol>
+
+    <div class="callout">
+      <h5>The one line that confuses everybody</h5>
+      <p><code>level = level + 4</code> looks like nonsense. In maths, nothing can equal itself plus four.</p>
+      <p>But <code>=</code> here does not mean "equals". <strong>It means: work out whatever is on the right, then put that answer into the name on the left.</strong></p>
+      <p>So read it as: <em>take the value in <code>level</code>, add 4 to it, and store the answer back in <code>level</code>.</em> If <code>level</code> held 8, it now holds 12.</p>
+      <p>This is one of the biggest differences between code and maths. Once you have it, a great deal of code stops looking strange.</p>
+    </div>
+
+    <h3 style="margin-top:.7rem">Now answer the guesses properly</h3>
+    <p><strong>How many rounds?</strong> <code>level</code> takes the values 0, 4, 8, 12, and so on up to 252. That is 64 different values. So the block runs 64 times.</p>
+    <p>Working it out: the last value is 252, the step is 4, so 252 divided by 4 is 63, plus one more for the very first round at 0, giving 64.</p>
+    <p><strong>How long is one round of <code>loop</code>?</strong> There are two <code>for</code> loops, one going up and one coming down. 64 rounds each is 128 rounds altogether. Each round waits 20 milliseconds. 128 times 20 is 2560 milliseconds, which is about two and a half seconds.</p>
+    <p><strong>What is the largest number <code>level</code> ever holds?</strong> It is <strong>256</strong>, and that surprises most people. On the last round that actually runs, <code>level</code> holds 252. Then the step adds 4, making it 256, and only <em>then</em> does the test fail. So the biggest number it ever holds is one that never reaches the pin. The same thing happens in the second loop coming down, where it ends up holding &minus;1.</p>
+    <p><strong>Why <code>&lt;=</code> and not <code>&lt;</code>?</strong> <code>&lt;=</code> means "less than or equal to". With <code>&lt;</code> the loop would stop before ever reaching the top value. Using <code>&lt;=</code> means 255 itself is allowed. This one character makes a real difference and there is a question about it at the end.</p>
+
+    <div class="words">
+      <h5>Words to know</h5>
+      <dl>
+        <dt>for loop</dt><dd>A way of repeating a block of lines a set number of times, counting as it goes.</dd>
+        <dt>round</dt><dd>One pass through the block. Sometimes called an iteration.</dd>
+        <dt><code>=</code></dt><dd>Put the value on the right into the name on the left. Not the same as "equals".</dd>
+        <dt><code>&lt;=</code></dt><dd>Less than or equal to.</dd>
+        <dt><code>&gt;=</code></dt><dd>Greater than or equal to.</dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section class="part" id="build">
+  <div class="parthead"><span class="tag">Part 5</span><h2>Build it and prove the trick</h2><span class="mins">40 min</span></div>
+  <div class="col stack">
+    <p>The circuit is exactly the same as Band 1, but on pin 9 instead of pin 8, because pin 9 can do PWM and pin 8 cannot.</p>
+
+    <div class="ifnot" style="margin-bottom:.4rem"><b>Before you start</b>USB unplugged.</div>
+
+    <div class="steps">
+      <div class="step"><div class="body">
+        <p><strong>Put the LED in.</strong> Long leg into <code>f5</code>, short leg into <code>f6</code>.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Resistor</strong> from <code>j5</code> to <code>j3</code>.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Wire from <code>j3</code> to pin 9.</strong> Check your board and make sure pin 9 has a <code>~</code> next to it.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Wire from <code>j6</code> to the &#8722; rail</strong>, and another wire from the <strong>&#8722; rail to a GND pin</strong>.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Plug in and upload <code>b2_01_fade_given.ino</code>.</strong></p>
+        <div class="see"><b>You should see</b>The light grows slowly brighter, then slowly dimmer, then repeats. One complete round takes about two and a half seconds.</div>
+        <div class="ifnot"><b>If it snaps on and off instead of fading</b>You are on a pin without a <code>~</code>. Check which pin your wire is really in.</div>
+        <div class="ifnot"><b>If nothing lights at all</b>Go to Part 12 and work down the checklist. It is the same list as Band 1, because it is the same circuit.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Time it.</strong> Use a phone stopwatch. Time ten complete rounds and divide by ten. Compare that with the 2560 milliseconds you calculated.</p>
+        <p class="note">They should agree closely. If they do not, one of the two is wrong, and working out which is the exercise.</p>
+      </div></div>
+    </div>
+
+    <h3 style="margin-top:1rem">Now prove the board is faking it</h3>
+    <p>Three changes. Do them in order and watch carefully each time.</p>
+
+    <div class="steps">
+      <div class="step"><div class="body">
+        <p><strong>Make the steps big and slow.</strong> Change both <code>4</code>s to <code>60</code>, and both <code>delay(20)</code>s to <code>delay(400)</code>. Upload.</p>
+        <div class="see"><b>You should see</b>The light arrives in about five obvious jumps instead of a smooth fade. You can count them out loud. Those jumps were always there. That is what the fade is made of.</div>
+      </div></div>
+
+      <div class="step"><div class="body">
+        <p><strong>Put it back.</strong> Change them back to <code>4</code> and <code>20</code>. Upload.</p>
+        <div class="see"><b>You should see</b>A smooth fade again. There are now 64 steps in each direction and you cannot see a single one. Nothing changed except how fast they go by.</div>
+      </div></div>
+
+      <div class="step"><div class="body">
+        <p><strong>Now the important one.</strong> First click <strong>File</strong> then <strong>Save As</strong> and save a copy under a new name, such as <code>handwave</code>. You need <code>b2_01</code> again in Part 8 and Part 9, so do not change the original.</p>
+        <p>In your copy, delete everything inside <code>loop</code> and put this one line in instead:</p>
+        <pre><code>void loop() {
+  analogWrite(lampPin, 60);
+}</code></pre>
+        <p>Upload it. The light now sits at one steady, dim setting and stays there.</p>
+        <p>Turn the lights down. Now <strong>wave your hand quickly back and forth</strong> in front of the LED. Watch your fingers, not the light.</p>
+        <div class="see"><b>You should see</b>Your fingers appear as a row of separate lit copies, like a series of frozen snapshots, instead of a smooth blur.</div>
+      </div></div>
+    </div>
+
+    <div class="callout">
+      <h5>What you just saw, and why it matters</h5>
+      <p>If the LED were genuinely dim and steady, your moving hand would be a smooth blur, the way it is in ordinary light. It is not. You see separate copies.</p>
+      <p>That is because the light is not dim at all. It is <strong>fully on and fully off, hundreds of times a second</strong>, and your moving hand is catching it at different positions during each flash. Your hand has just measured something too fast to see.</p>
+      <p>Write one sentence describing what you saw. Keep it. You will be asked for it when you claim this band.</p>
+    </div>
+  </div>
+</section>
+
+<section class="part" id="colour">
+  <div class="parthead"><span class="tag">Part 6</span><h2>Colour works differently than you think</h2><span class="mins">15 min</span></div>
+  <div class="col stack">
+    <p>Another short activity before any code.</p>
+    <p>You need red, green and blue light on a white wall. Three ways to get it: coloured torches, a torch with coloured sweet wrappers or plastic over it, or three phones each showing a full screen of one pure colour.</p>
+    <div class="ifnot"><b>If you only have one light</b>Use a screen instead. Open any drawing or painting app on a phone or a computer and find the colour picker with three sliders marked red, green and blue. Set red to 255, green to 255 and blue to 0, and look at the colour that appears. Then try the other pairs. It is the same experiment, and the answers below still apply.</div>
+    <p>Shine them on the wall and overlap them two at a time. Write down what colour you get each time.</p>
+    <ul class="plain">
+      <li>Red and green together</li>
+      <li>Red and blue together</li>
+      <li>Green and blue together</li>
+      <li>All three together</li>
+    </ul>
+
+    <details><summary>What you should have got, and why it feels wrong</summary><div class="inner">
+      <p>Red and green make <strong>yellow</strong>. Red and blue make <strong>pink or magenta</strong>. Green and blue make <strong>light blue or cyan</strong>. All three together make <strong>white</strong>.</p>
+      <p>Nearly everybody finds red and green making yellow surprising, because we all learned colour from paint and crayons. Mixing red and green paint gives you a muddy brown.</p>
+      <p>Here is the difference. <strong>Paint takes colour away.</strong> A white wall is already reflecting all colours; red paint absorbs everything except red. Add another paint and you absorb even more, so mixing paints always heads towards dark.</p>
+      <p><strong>Light adds.</strong> You start with darkness and put light into it. Every colour you add makes it brighter, so mixing light always heads towards white.</p>
+      <p>Screens and LEDs make light. So the rules that apply to them are the adding rules, and that is why every colour on a computer is described by three numbers: how much red, how much green, how much blue.</p>
+    </div></details>
+
+    <p>That is exactly what you are about to control. An RGB LED takes three numbers, each from 0 to 255, and mixes that much red, green and blue light.</p>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Colour</th><th>Red</th><th>Green</th><th>Blue</th></tr></thead>
+        <tbody>
+          <tr><td>Red</td><td>255</td><td>0</td><td>0</td></tr>
+          <tr><td>Green</td><td>0</td><td>255</td><td>0</td></tr>
+          <tr><td>Blue</td><td>0</td><td>0</td><td>255</td></tr>
+          <tr><td>Yellow</td><td>255</td><td>255</td><td>0</td></tr>
+          <tr><td>Orange</td><td>255</td><td>120</td><td>0</td></tr>
+          <tr><td>Pink</td><td>255</td><td>105</td><td>180</td></tr>
+          <tr><td>White</td><td>255</td><td>255</td><td>255</td></tr>
+          <tr><td>Off</td><td>0</td><td>0</td><td>0</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">To find the three numbers for any other colour, search the web for the colour name followed by "RGB value". You will get three numbers in that order.</p>
+  </div>
+</section>
+
+<section class="part" id="rgb">
+  <div class="parthead"><span class="tag">Part 7</span><h2>Wire the RGB LED</h2><span class="mins">35 min</span></div>
+  <div class="col stack">
+    <p>An RGB LED looks like one light but it is really <strong>three lights inside one plastic case</strong>: a red one, a green one and a blue one, sitting right next to each other so their light mixes.</p>
+    <p>That is why it has four legs. Three of them are the three lights. The fourth is the shared return path that all three use.</p>
+    <p><strong>Because it is three lights, it needs three resistors.</strong> Not one. This is the second most common mistake in this band.</p>
+
+    <figure>
+      <svg viewBox="0 0 700 400" role="img" aria-label="Diagram of an RGB LED. It is one package with four legs. The red, green and blue legs each go through their own 220 ohm resistor to pins 9, 10 and 11. The single long leg is shared by all three colours and goes to the minus rail and then to one GND pin.">
+<defs><marker id="ar3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker></defs>
+<path d="M470 120 A46 46 0 0 1 562 120 L562 190 L470 190 Z" fill="none" stroke="currentColor" stroke-width="1.8"/>
+<line x1="464" y1="190" x2="568" y2="190" stroke="currentColor" stroke-width="1.8"/>
+<text x="516" y="105" text-anchor="middle" font-size="12.5" fill="currentColor" font-family="Archivo, Arial, sans-serif">one package,</text>
+<text x="516" y="88" text-anchor="middle" font-size="12.5" fill="currentColor" font-family="Archivo, Arial, sans-serif">three lights inside</text>
+<line x1="486" y1="190" x2="486" y2="250" stroke="currentColor" stroke-width="1.6"/>
+<text x="486" y="266" text-anchor="middle" font-size="11" fill="currentColor" opacity="0.75" font-family="IBM Plex Mono, monospace">f5</text>
+<line x1="506" y1="190" x2="506" y2="300" stroke="currentColor" stroke-width="1.6"/>
+<text x="506" y="316" text-anchor="middle" font-size="11" fill="currentColor" opacity="0.75" font-family="IBM Plex Mono, monospace">f6</text>
+<line x1="526" y1="190" x2="526" y2="250" stroke="currentColor" stroke-width="1.6"/>
+<text x="526" y="266" text-anchor="middle" font-size="11" fill="currentColor" opacity="0.75" font-family="IBM Plex Mono, monospace">f7</text>
+<line x1="546" y1="190" x2="546" y2="250" stroke="currentColor" stroke-width="1.6"/>
+<text x="546" y="266" text-anchor="middle" font-size="11" fill="currentColor" opacity="0.75" font-family="IBM Plex Mono, monospace">f8</text>
+<text x="506" y="336" text-anchor="middle" font-size="12" fill="currentColor" font-family="Archivo, Arial, sans-serif">the LONG leg</text>
+<text x="506" y="352" text-anchor="middle" font-size="12" fill="currentColor" font-family="Archivo, Arial, sans-serif">is the shared one</text>
+<line x1="486" y1="250" x2="486" y2="60" stroke="#E0563C" stroke-width="0" />
+<polyline points="486,250 486,94 300,94" fill="none" stroke="#E0563C" stroke-width="1.8"/>
+<polyline points="300,94 292,84 276,104 260,84 244,104 236,94" fill="none" stroke="currentColor" stroke-width="1.6"/>
+<text x="268" y="74" text-anchor="middle" font-size="11" fill="currentColor" opacity="0.8" font-family="IBM Plex Mono, monospace">220 &#8486;</text>
+<line x1="236" y1="94" x2="130" y2="94" stroke="#E0563C" stroke-width="1.8" marker-end="url(#ar3)"/>
+<rect x="40" y="76" width="86" height="36" rx="5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+<text x="83" y="99" text-anchor="middle" font-size="13" fill="currentColor" font-family="Archivo, Arial, sans-serif">Pin 9</text>
+<text x="494" y="90" font-size="11" fill="currentColor" opacity="0.75" font-family="Archivo, Arial, sans-serif">red</text>
+<line x1="526" y1="250" x2="526" y2="130" stroke="#5FB878" stroke-width="0" />
+<polyline points="526,250 526,164 300,164" fill="none" stroke="#5FB878" stroke-width="1.8"/>
+<polyline points="300,164 292,154 276,174 260,154 244,174 236,164" fill="none" stroke="currentColor" stroke-width="1.6"/>
+<text x="268" y="144" text-anchor="middle" font-size="11" fill="currentColor" opacity="0.8" font-family="IBM Plex Mono, monospace">220 &#8486;</text>
+<line x1="236" y1="164" x2="130" y2="164" stroke="#5FB878" stroke-width="1.8" marker-end="url(#ar3)"/>
+<rect x="40" y="146" width="86" height="36" rx="5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+<text x="83" y="169" text-anchor="middle" font-size="13" fill="currentColor" font-family="Archivo, Arial, sans-serif">Pin 10</text>
+<text x="534" y="160" font-size="11" fill="currentColor" opacity="0.75" font-family="Archivo, Arial, sans-serif">green</text>
+<line x1="546" y1="250" x2="546" y2="200" stroke="#6C9BE0" stroke-width="0" />
+<polyline points="546,250 546,234 300,234" fill="none" stroke="#6C9BE0" stroke-width="1.8"/>
+<polyline points="300,234 292,224 276,244 260,224 244,244 236,234" fill="none" stroke="currentColor" stroke-width="1.6"/>
+<text x="268" y="214" text-anchor="middle" font-size="11" fill="currentColor" opacity="0.8" font-family="IBM Plex Mono, monospace">220 &#8486;</text>
+<line x1="236" y1="234" x2="130" y2="234" stroke="#6C9BE0" stroke-width="1.8" marker-end="url(#ar3)"/>
+<rect x="40" y="216" width="86" height="36" rx="5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+<text x="83" y="239" text-anchor="middle" font-size="13" fill="currentColor" font-family="Archivo, Arial, sans-serif">Pin 11</text>
+<text x="554" y="230" font-size="11" fill="currentColor" opacity="0.75" font-family="Archivo, Arial, sans-serif">blue</text>
+<polyline points="506,300 640,300" fill="none" stroke="currentColor" stroke-width="1.8"/>
+<line x1="644" y1="250" x2="644" y2="350" stroke="currentColor" stroke-width="2.6"/>
+<text x="640" y="240" text-anchor="end" font-size="12" fill="currentColor" font-family="Archivo, Arial, sans-serif">the &#8722; rail</text>
+<polyline points="644,340 664,340" fill="none" stroke="currentColor" stroke-width="1.6" marker-end="url(#ar3)"/>
+<text x="668" y="344" font-size="12.5" fill="currentColor" font-family="Archivo, Arial, sans-serif">GND</text>
+<text x="668" y="362" font-size="11" fill="currentColor" opacity="0.75" font-family="Archivo, Arial, sans-serif">one wire</text>
+</svg>
+      <figcaption>An RGB LED is three separate light circuits sharing one return path. Each colour gets its own pin and its own resistor. The single longest leg goes to the minus rail, and one wire takes the rail back to GND.</figcaption>
+    </figure>
+
+    <h3 style="margin-top:.4rem">Finding the legs</h3>
+    <p>Hold the LED with the four legs pointing down. <strong>One leg is clearly longer than the other three.</strong> That is the shared one, and it goes to ground.</p>
+    <p>The longest leg is the second one in from one end. So the order along the row is: one leg, then the long leg, then two more legs. Those three shorter legs are red, green and blue in that order.</p>
+    <div class="ifnot"><b>If you cannot tell which end is which</b>It does not matter yet. Wire it up, run the test sketch, and see which colour appears when. If they come out in a different order, just swap the wires until red is on pin 9. Nothing is damaged by getting this wrong, as long as each leg has its resistor.</div>
+
+    <div class="ifnot" style="margin-top:.6rem"><b>Before you start</b>USB unplugged.</div>
+
+    <div class="steps">
+      <div class="step"><div class="body">
+        <p><strong>Push the LED into the board</strong> so its four legs land in <code>f5</code>, <code>f6</code>, <code>f7</code> and <code>f8</code>, with the <strong>long leg in <code>f6</code></strong>.</p>
+        <p class="note">So: red leg in <code>f5</code>, long leg in <code>f6</code>, green leg in <code>f7</code>, blue leg in <code>f8</code>.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Ground first.</strong> Wire from <code>j6</code> to the <strong>&#8722; rail</strong>. Then a wire from the <strong>&#8722; rail to a GND pin</strong>.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Red.</strong> Resistor from <code>j5</code> to <code>j2</code>. Wire from <code>j2</code> to <strong>pin 9</strong>.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Green.</strong> Resistor from <code>j7</code> to <code>j10</code>. Wire from <code>j10</code> to <strong>pin 10</strong>.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Blue.</strong> Resistor from <code>j8</code> to <code>j12</code>. Wire from <code>j12</code> to <strong>pin 11</strong>.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Check:</strong> three resistors, three wires to pins 9, 10 and 11, one wire from the long leg to the rail, one wire from the rail to GND. Eight connections in all. Then plug in.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Upload <code>b2_02_rgb_colours.ino</code>.</strong></p>
+        <div class="see"><b>You should see</b>Red for a second, then green, then blue, then orange, then white, then off, then it starts again.</div>
+        <div class="ifnot"><b>If the colours come out in the wrong order</b>Your legs are not in the order this page assumed. Swap the wires at the pin end until red appears when the sketch says red. Nothing is broken.</div>
+        <div class="ifnot"><b>If everything is bright when the sketch says off, and dark when it says white</b>You have the other kind of RGB LED, where the shared leg goes to 5V instead of ground. Move the wire that goes from <code>j6</code> to the &#8722; rail so it goes to the <code>+</code> rail instead, and run a wire from the <code>+</code> rail to the <strong>5V</strong> pin. Everything then works, but your numbers are backwards: 0 is bright and 255 is off. Note this in your log, because it affects every sketch in this band.</div>
+      </div></div>
+    </div>
+
+    <h3 style="margin-top:1rem">Read the sketch you just ran</h3>
+    <span class="filename">b2_02_rgb_colours.ino</span>
+    <pre><code>int redPin = 9;
+int greenPin = 10;
+int bluePin = 11;
+
+void showColour(int r, int g, int b) {
+  analogWrite(redPin, r);
+  analogWrite(greenPin, g);
+  analogWrite(bluePin, b);
+}
+
+void setup() {
+  pinMode(redPin, OUTPUT);
+  pinMode(greenPin, OUTPUT);
+  pinMode(bluePin, OUTPUT);
+}
+
+void loop() {
+  showColour(255, 0, 0);
+  delay(1000);
+
+  showColour(0, 255, 0);
+  delay(1000);
+
+  showColour(0, 0, 255);
+  delay(1000);
+
+  showColour(255, 120, 0);
+  delay(1000);
+
+  showColour(255, 255, 255);
+  delay(1000);
+
+  showColour(0, 0, 0);
+  delay(1000);
+}</code></pre>
+
+    <p>There is something new in the middle: a group called <code>showColour</code>.</p>
+    <p>It looks like <code>setup</code> and <code>loop</code>, because it is the same kind of thing: a named group of instructions. But this one is not built into the Arduino. Somebody wrote it. It is called a <strong>function</strong>.</p>
+    <p>The difference from <code>setup</code> and <code>loop</code> is that this group does not run on its own. It runs only when something asks for it by name. Look at <code>loop</code>: every line there that says <code>showColour(...)</code> is asking for it.</p>
+    <p>And it takes three numbers with it. Look at the top line of the group:</p>
+    <pre><code>void showColour(int r, int g, int b) {</code></pre>
+    <p>The three things in the brackets are empty boxes waiting to be filled. When <code>loop</code> says <code>showColour(255, 120, 0)</code>, then inside the group <code>r</code> holds 255, <code>g</code> holds 120, and <code>b</code> holds 0. The three <code>analogWrite</code> lines then use those.</p>
+
+    <div class="callout">
+      <h5>You are reading this one, not writing it</h5>
+      <p>Writing your own functions is Band 5. Here you only need to be able to read one and say what it does. That is deliberate: reading working code before writing your own is easier and teaches just as much.</p>
+      <p>But do notice what it buys. Without it, every colour change would be three lines of <code>analogWrite</code>. With it, each change is one line that says what it means. And if you ever needed to change how colours are set, you would change it in one place instead of everywhere.</p>
+    </div>
+
+    <h3 style="margin-top:.8rem">The worked example</h3>
+    <p>Now upload <code>b2_03_colour_story_worked.ino</code>. Watch it all the way through before you read it. It is a sunrise: night, first red light, orange, full daylight, then back to night.</p>
+    <p>Then open it and find the group called <code>fadeTo</code>. This is the part that matters:</p>
+    <span class="filename">b2_03_colour_story_worked.ino</span>
+    <pre><code>void fadeTo(int r1, int g1, int b1, int r2, int g2, int b2) {
+  for (int step = 0; step &lt;= 100; step = step + 1) {
+    int r = r1 + (r2 - r1) * step / 100;
+    int g = g1 + (g2 - g1) * step / 100;
+    int b = b1 + (b2 - b1) * step / 100;
+    showColour(r, g, b);
+    delay(stepDelay);
+  }
+}</code></pre>
+    <p>It takes six numbers: the colour you are starting from, and the colour you are going to. Then it walks from one to the other in a hundred small steps, showing each one, so the change looks smooth instead of jumping.</p>
+    <p>The arithmetic inside says: <em>start where you are, and add the part of the difference you have travelled so far.</em> When <code>step</code> is 0 you get exactly the first colour. When <code>step</code> is 100 you get exactly the second. In between you get a mixture.</p>
+    <p class="note">You do not need to be able to write this yet. You do need to be able to say what it does, because your Make task uses it.</p>
+  </div>
+</section>
+
+<section class="part" id="closer">
+  <div class="parthead"><span class="tag">Part 8</span><h2>Look closer</h2><span class="mins">25 min</span></div>
+  <div class="col stack">
+    <h3>a. Run the loop by hand</h3>
+    <p>Take the first <code>for</code> loop of <code>b2_01</code>. Copy this table and fill it in for the first four rounds and the last one.</p>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Round</th><th><code>level</code> at the start</th><th>Is it 255 or less?</th><th>Number sent to the pin</th><th><code>level</code> after the step</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>0</td><td>yes</td><td>0</td><td>4</td></tr>
+          <tr><td>2</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+          <tr><td>3</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+          <tr><td>4</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+          <tr><td>last</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <details><summary>Check your table</summary><div class="inner">
+      <p>Round 2: starts at 4, yes, sends 4, becomes 8. Round 3: starts at 8, yes, sends 8, becomes 12. Round 4: starts at 12, yes, sends 12, becomes 16.</p>
+      <p>Last round: starts at 252, yes, sends 252, becomes 256. Then the test asks whether 256 is 255 or less. It is not, so the loop ends without running the block again.</p>
+      <p>Now write down in your own words what each of the three parts inside <code>for( ; ; )</code> is for. If you cannot, read Part 4 again.</p>
+    </div></details>
+
+    <h3 style="margin-top:.8rem">b. Find the one wrong character</h3>
+    <p><strong>First move one wire.</strong> Take the wire that goes to pin 9 and put it into <strong>pin 7</strong> instead. Leave everything else exactly as it is.</p>
+    <p>Now open <code>b2_04_buggy_nonpwm.ino</code> and upload it. It compiles. It uploads. The LED is wired correctly and it does light up. But it will not fade. It snaps from off to on, somewhere in the middle.</p>
+    <p>One character in the sketch is wrong. Find it by reading, then say why moving that wire is what made the fault show up.</p>
+    <details><summary>Answer</summary><div class="inner">
+      <p>The sketch uses <strong>pin 7</strong>, and you have just put your wire into pin 7, so the light really is on pin 7. Pin 7 has no <code>~</code> next to it, so it cannot do PWM.</p>
+      <p><code>analogWrite</code> on a pin like that is perfectly legal code, so nothing complains. The board simply treats anything below 128 as fully off and anything from 128 upwards as fully on. So instead of 64 brightness levels you get two.</p>
+      <p><strong>To put it right you must change two things, not one.</strong> Move your wire back to pin 9, <em>and</em> change the <code>7</code> in the sketch to a <code>9</code>. Change only one of them and the light will not come on at all, because the code and the wire will be pointing at different pins.</p>
+      <p>That is worth sitting with. The code and the board have to agree. Neither one can tell you when they do not.</p>
+      <p>If you have not already found all six squiggles on your board, do it now.</p>
+    </div></details>
+
+    <h3 style="margin-top:.8rem">c. Put the lines back in order</h3>
+    <p>The five lines inside <code>fadeTo</code>'s loop have been shuffled:</p>
+    <pre><code>delay(stepDelay);
+int g = g1 + (g2 - g1) * step / 100;
+showColour(r, g, b);
+int b = b1 + (b2 - b1) * step / 100;
+int r = r1 + (r2 - r1) * step / 100;</code></pre>
+    <p>Put them back in a working order. Then say why the order matters, in one sentence.</p>
+    <details><summary>Answer</summary><div class="inner">
+      <p>The three lines that work out <code>r</code>, <code>g</code> and <code>b</code> must all come before <code>showColour(r, g, b)</code>, because you cannot show three values before you have worked them out. The three of them can be in any order among themselves. <code>delay</code> goes last.</p>
+      <p>The general rule: a name has to be given a value before anything can use it.</p>
+    </div></details>
+
+    <h3 style="margin-top:.8rem">d. Why is your white not white?</h3>
+    <p>In <code>b2_02</code>, the line <code>showColour(255, 255, 255)</code> is supposed to give white. Look at yours carefully. It is probably slightly pink, or slightly blue, or slightly green.</p>
+    <p>Why would equal numbers not give equal light?</p>
+    <details><summary>Answer</summary><div class="inner">
+      <p>The three tiny lights inside the package are not equally good at making light. Red is usually the strongest. They all have the same 220 ohm resistor, so equal numbers do not produce equal brightness.</p>
+      <p>The fix is not to argue with it. The fix is to find, by eye, the three numbers that <em>look</em> white on <strong>your particular LED</strong>, and write them down. Try lowering the red a little, say 200 instead of 255, and see if it improves.</p>
+      <p>That process has a name: <strong>calibration</strong>. It is the idea that the numbers in your code are instructions, not measurements, and that real parts differ from one another. It is the whole subject of Band 4, arriving one band early.</p>
+    </div></details>
+  </div>
+</section>
+
+<section class="part" id="change">
+  <div class="parthead"><span class="tag">Part 9</span><h2>Change it</h2><span class="mins">30 min</span></div>
+  <div class="col stack">
+    <p>Work on a copy of <code>b2_01</code>.</p>
+    <dl class="tier">
+      <dt>Bronze</dt><dd>Make the fade take exactly twice as long, <strong>without changing any <code>delay</code></strong>. Count the rounds before and after to prove it worked. Then say what the two different ways of slowing it down are, and what each one costs you.</dd>
+      <dt>Silver</dt><dd>Make it breathe: hold at full brightness for one second at the top of each round, and stay fully off for two seconds at the bottom.</dd>
+      <dt>Gold</dt><dd>Rewrite <code>b2_01</code> so that both the step size and the delay are names at the top of the sketch. Then retune the whole thing to a slow, smooth two second breath by editing only those two lines. After that, go back to your Band 0 Gold answer and rewrite it using a <code>for</code> loop. Compare the number of lines.</dd>
+    </dl>
+
+    <details><summary>A hint for Bronze</summary><div class="inner">
+      <p>The number of rounds is decided by the step size. Right now the step is 4 and there are 64 rounds.</p>
+      <p>Halve the step to 2 and you get 128 rounds, which is exactly twice as many, so it takes exactly twice as long.</p>
+    </div></details>
+
+    <div class="callout">
+      <h5>The point of Bronze</h5>
+      <p>Halving the step from 4 to 2 takes you from 64 rounds to 128, so the fade takes twice as long <em>and</em> gets finer.</p>
+      <p>Doubling the delay from 20 to 40 also makes it take twice as long, but you still only have 64 rounds, so it gets chunkier instead.</p>
+      <p>Same result, opposite cost. Noticing that two different controls reach the same outcome by different routes, and choosing between them on purpose, is most of what engineering judgement actually is.</p>
+    </div>
+  </div>
+</section>
+
+<section class="part" id="make">
+  <div class="parthead"><span class="tag">Part 10</span><h2>Make: a lamp that tells a story</h2><span class="mins">120 min</span></div>
+  <div class="col stack">
+    <div class="brief">
+      <h5>What to build</h5>
+      <p>A lamp with a diffuser over it that plays a colour story lasting between 45 and 90 seconds, then repeats. Choose something you have actually watched happen:</p>
+      <ul class="plain">
+        <li>Sunrise over the lagoon</li>
+        <li>Harmattan haze getting thicker through the day</li>
+        <li>A storm coming in</li>
+        <li>The light in a room you know well, at a particular hour</li>
+      </ul>
+      <h5 style="margin-top:.3rem">It is finished when all of these are true</h5>
+      <ul class="plain">
+        <li>It uses at least four colours, and each one has its name written next to it in a comment</li>
+        <li>Every change is a fade. There are no sudden jumps anywhere in the story</li>
+        <li>It has a diffuser, made from something that was going to be thrown away</li>
+        <li>All the colour numbers sit at the top of the sketch, so the story can be retuned without hunting through it</li>
+        <li>Somebody who has not been told what it is can describe what it reminds them of</li>
+      </ul>
+    </div>
+
+    <h3>How to go about it</h3>
+    <div class="steps">
+      <div class="step"><div class="body"><p><strong>Watch the real thing, or remember it properly.</strong> Write down the four or five colours in order, in words: dark blue, then deep red, then orange, then pale yellow.</p></div></div>
+      <div class="step"><div class="body"><p><strong>Turn each word into three numbers.</strong> Use the table in Part 6, or search the web for the colour name and "RGB value".</p></div></div>
+      <div class="step"><div class="body"><p><strong>Start from <code>b2_03</code>.</strong> Use Save As to make your own copy. Change the colours in the <code>fadeTo</code> lines to yours.</p></div></div>
+      <div class="step"><div class="body"><p><strong>Get the timing right.</strong> The whole story must last between 45 and 90 seconds. Change <code>stepDelay</code> to make each fade longer or shorter, and use <code>delay</code> between fades to hold on a colour.</p></div></div>
+      <div class="step"><div class="body">
+        <p><strong>Make the diffuser.</strong> A ping pong ball with a small hole cut in it, pushed over the LED, works very well. So does the bottom half of a plastic sachet-water bottle, or paper rolled into a tube with a paper cap.</p>
+        <div class="ifnot"><b>If the diffuser gets warm</b>Stop and check your resistors. A correctly wired LED at these currents stays cool. Warmth means a resistor is missing or not connected.</div>
+      </div></div>
+      <div class="step"><div class="body"><p><strong>Look at it in a dark room</strong> and adjust. Colours that look right on a screen often look wrong through a diffuser.</p></div></div>
+    </div>
+
+    <h3 style="margin-top:.8rem">Test it on two people</h3>
+    <p>Show it to two people separately. Ask each the same question: <em>what does this remind you of?</em></p>
+    <p>Write down both answers word for word. If neither is close to what you intended, you have learned something more useful than a working lamp. Write down what you would change.</p>
+    <div class="ifnot"><b>If you cannot find two people today</b>Record a video and send it to two people on your phone, and ask each of them the same question. Any two people will do: family, neighbours, friends from school. They do not need to know anything about electronics. If you truly cannot reach anyone, leave the lamp for a day, watch it again with fresh eyes, and write down what you think a stranger would say. Say in your log which one you did.</div>
+
+    <h3 style="margin-top:.6rem">Show your work</h3>
+    <p>Post a video of the whole story, all 45 to 90 seconds of it, not a short clip. Include both testers' answers. Then look at one other person's sketch and tell them one place where their colour numbers would be easier to change.</p>
+  </div>
+</section>
+
+<section class="part" id="check">
+  <div class="parthead"><span class="tag">Part 11</span><h2>Check yourself</h2><span class="mins">15 min</span></div>
+  <div class="col stack">
+    <p>Code you have not seen. Answer from reading only.</p>
+    <pre><code>int pin = 6;
+
+void setup() {
+  pinMode(pin, OUTPUT);
+}
+
+void loop() {
+  for (int v = 0; v &lt; 200; v = v + 40) {
+    analogWrite(pin, v);
+    delay(250);
+  }
+}</code></pre>
+    <ol class="num">
+      <li>List every value that <code>v</code> takes.</li>
+      <li>How long does one full pass through <code>loop</code> take?</li>
+      <li>Does the LED ever reach full brightness? Explain.</li>
+      <li>What does a person watching see at the moment <code>loop</code> starts again?</li>
+      <li>Change two numbers so the fade looks smooth instead of stepped, while one full pass still takes about the same time.</li>
+      <li>Would this sketch behave the same way on pin 7? Say exactly what would happen.</li>
+    </ol>
+    <details><summary>Answers</summary><div class="inner">
+      <p><strong>1.</strong> 0, 40, 80, 120, 160. Five values. If you said 200 as well, look again: the test is <code>&lt;</code>, not <code>&lt;=</code>, so 200 is not allowed. That one character is the difference.</p>
+      <p><strong>2.</strong> Five rounds, each waiting 250 milliseconds, so 1250 milliseconds, which is one and a quarter seconds.</p>
+      <p><strong>3.</strong> No. The biggest number ever sent is 160 out of a possible 255, so it only reaches about two thirds of full brightness.</p>
+      <p><strong>4.</strong> A sudden jump from 160 straight back to 0. There is no fading down, only fading up, so the cycle has a hard edge in it.</p>
+      <p><strong>5.</strong> Any pair where the number of rounds multiplied by the delay still comes to about 1250. For example step 5 with delay 31, which gives 40 rounds. Or step 10 with delay 62, which gives 20 rounds. What is being checked is whether you understand that the two numbers trade against each other.</p>
+      <p><strong>6.</strong> No. Pin 7 cannot do PWM, so anything below 128 comes out fully off and anything from 128 up comes out fully on. Working through the values from question 1: it stays dark at 0, 40, 80 <strong>and 120</strong>, and lights only at 160. One brief flash per pass, not a fade. <em>This is the question that matters most in this band. If you said it lights at 120, check 120 against 128 again.</em></p>
+    </div></details>
+  </div>
+</section>
+
+<section class="part" id="problems">
+  <div class="parthead"><span class="tag">Part 12</span><h2>When something goes wrong</h2></div>
+  <div class="scroll">
+    <table>
+      <thead><tr><th>What you see</th><th>What it usually is</th><th>What to do</th></tr></thead>
+      <tbody>
+        <tr><td>No fade, just on and off</td><td><code>analogWrite</code> on a pin with no <code>~</code></td><td>Check <strong>two</strong> things and make them agree: which pin your wire is really in, and which pin number the sketch says. Both must be 3, 5, 6, 9, 10 or 11. Look at the board itself, not at what you think you did.</td></tr>
+        <tr><td>0 gives bright, 255 gives dark</td><td>You have the other kind of RGB LED, where the shared leg goes to 5V</td><td>Quick test: if <code>showColour(0,0,0)</code> gives white, that is what you have. Move the shared leg's wire to the <code>+</code> rail and run the rail to 5V. Your numbers are then backwards.</td></tr>
+        <tr><td>Brightness drifts as the colour changes</td><td>One resistor on the shared leg instead of three on the colour legs</td><td>Three separate resistors, one for each colour leg, none on the shared leg.</td></tr>
+        <tr><td>One colour never appears</td><td>That leg is in the wrong column, or its resistor is loose</td><td>Test each colour on its own with <code>showColour(255,0,0)</code>, then <code>(0,255,0)</code>, then <code>(0,0,255)</code>, before you assume the code is wrong.</td></tr>
+        <tr><td>White looks pink or blue</td><td>Nothing. This is completely normal</td><td>Adjust the numbers by eye and write down what worked. See Part 8d.</td></tr>
+        <tr><td>The LED is hot, or looks brown inside</td><td>A missing or disconnected resistor</td><td>Unplug now. That LED may already be damaged. Replace it and check the whole circuit before powering up again.</td></tr>
+        <tr><td>Fade is smooth but very fast or very slow</td><td>Step size and delay are fighting each other</td><td>Change one at a time and watch. Never change both at once, or you cannot tell which one did what.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="col stack" style="margin-top:1.2rem">
+    <div class="callout">
+      <h5>Still stuck after 30 minutes?</h5>
+      <p>Photograph the breadboard from directly above in good light. Post the photo, your sketch, and one sentence saying what you expected and what happened instead. Do not rebuild it first.</p>
+    </div>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Done</span><h2>What you know now</h2></div>
+  <div class="col stack">
+    <p>You can control brightness, and you know that the board is faking it, because you proved it with your own hand. You can mix any colour from three numbers. And you can write a loop that repeats itself, which means the length of your code no longer grows every time you want to do something more.</p>
+    <h3 style="margin-top:.6rem">Before you move on, make sure you have</h3>
+    <ul class="plain">
+      <li>Your finished lamp with its diffuser, and a video of the whole story</li>
+      <li>Both testers' answers, word for word</li>
+      <li>Your sentence about what you saw when you waved your hand</li>
+      <li>Your completed table from Part 8a</li>
+      <li>The six PWM pin numbers written down</li>
+      <li>Your build log for this band</li>
+      <li>Five or six correct answers in Part 11, including question 6</li>
+    </ul>
+    <p style="margin-top:.6rem"><strong>Next is Band 3: Combination Lock.</strong> So far the board has only ever talked. Next it starts listening, and you find out that a button is far stranger than it looks.</p>
+  </div>
+</section>
+
+
+<nav class="pager" aria-label="Bands">
+<a href="band-1.html"><span class="dir">Previous</span><span class="name">Band 1: Signal Tower</span></a>
+<a class="next" href="band-3.html"><span class="dir">Next</span><span class="name">Band 3: Combination Lock &rarr;</span></a>
+</nav>
+
+<footer>
+  <p>Bozoma Innovation Hub &nbsp;·&nbsp; Aiyinasi, Ellembelle District. Band 2 of nine. Every sketch used here was compiled and tested before it reached you.</p>
+</footer>
+
+</div>
+</body>
+</html>

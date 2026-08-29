@@ -1,0 +1,877 @@
+<!doctype html>
+<html lang="en" data-band="5">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Band 5: Simon Says · Arduino Ladder</title>
+  <meta name="description" content="The hardest band and the most important. You write your own instructions, and find out why delay has been holding you back since Band 0.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+  <link rel="stylesheet" href="../assets/course.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the lesson</a>
+<div class="topbar">
+  <a class="home" href="../index.html">Arduino Ladder <span>· Bozoma Innovation Hub</span></a>
+  <nav class="bandlinks" aria-label="Bands"><a href="../bands/band-0.html">0</a><a href="../bands/band-1.html">1</a><a href="../bands/band-2.html">2</a><a href="../bands/band-3.html">3</a><a href="../bands/band-4.html">4</a><a href="../bands/band-5.html" aria-current="page">5</a></nav>
+</div>
+<div class="wrap" id="main">
+<nav aria-label="Sections">
+  <a href="#start">Start here</a>
+  <a href="#counting">Think first</a>
+  <a href="#sound">Sound</a>
+  <a href="#read">Read the code</a>
+  <a href="#build1">Build and run</a>
+  <a href="#functions">Your own instructions</a>
+  <a href="#problem">The delay problem</a>
+  <a href="#millis">millis</a>
+  <a href="#random">random</a>
+  <a href="#simon">Build the game</a>
+  <a href="#closer">Look closer</a>
+  <a href="#change">Change it</a>
+  <a href="#make">Make yours</a>
+  <a href="#check">Check yourself</a>
+  <a href="#problems">Problems</a>
+</nav>
+
+<header style="padding:3rem 0 1rem">
+  <p class="eyebrow">Bozoma Innovation Hub &nbsp;·&nbsp; Arduino Ladder &nbsp;·&nbsp; Band 5</p>
+  <h1 style="margin:.8rem 0">Simon Says</h1>
+  <p class="col sub" style="font-size:1.1em">The hardest band so far, and the most important one. You write your own instructions for the first time. And you find out that <code>delay</code>, which you have used in every band since Band 0, has been quietly holding you back the whole time.</p>
+  <p class="col note" style="margin-top:.8rem">About 8 hours. Finish Bands 3 and 4 first. This band uses buttons, arrays, the serial monitor and <code>for</code> loops as though you already know them, because you do.</p>
+</header>
+
+<section class="sketchbox">
+  <h2>Sketches for this band</h2>
+  <ul><li><a href="../sketches/b5_01_tone_given.ino">b5_01_tone_given.ino</a></li><li><a href="../sketches/b5_02_functions_worked.ino">b5_02_functions_worked.ino</a></li><li><a href="../sketches/b5_03_blocking_problem.ino">b5_03_blocking_problem.ino</a></li><li><a href="../sketches/b5_04_millis_fixed.ino">b5_04_millis_fixed.ino</a></li><li><a href="../sketches/b5_05_simon_worked.ino">b5_05_simon_worked.ino</a></li></ul>
+  <p>Click one to save it, or get every sketch at once from <a href="../downloads/arduino-ladder-sketches.zip" style="border:0;background:none;padding:0">the downloads page</a>. Each file opens with a plain-English header telling you what it does and how to wire it.</p>
+</section>
+
+
+<section class="part" id="start">
+  <div class="parthead"><span class="tag">Start here</span><h2>Why this band matters more than the others</h2></div>
+  <div class="col stack">
+    <p>Everything you have built so far does one thing at a time, in order, and never has to pay attention to anything while it is busy. That has been fine. It stops being fine here.</p>
+    <p>A game has to watch for a button <em>while</em> a light is doing something else. As soon as you want two things happening at once, the way you have been writing code falls apart. Not slowly. Completely.</p>
+    <p>So this band does three things:</p>
+    <ul class="plain">
+      <li><strong>You write your own instructions.</strong> Until now you have used instructions somebody else wrote: <code>digitalWrite</code>, <code>analogRead</code>, <code>map</code>. Now you make your own and give them names. This is called writing a <strong>function</strong>, and it is the single most useful idea in programming.</li>
+      <li><strong>You break <code>delay</code> on purpose.</strong> You will build something that fails, understand exactly why, and then fix it properly.</li>
+      <li><strong>You build a real game.</strong> Not a demonstration. A thing people will actually pick up and play, and lose at, and ask for another go.</li>
+    </ul>
+
+    <h3 style="margin-top:.5rem">What you need</h3>
+    <ul class="plain">
+      <li>Your board, USB cable and breadboard</li>
+      <li>Four LEDs, ideally four different colours</li>
+      <li>Four 220 ohm resistors</li>
+      <li>Four push buttons</li>
+      <li>A <strong>passive</strong> buzzer. This is the one with an exposed green circuit board underneath, not a solid black cover.</li>
+      <li>About twenty jumper wires</li>
+    </ul>
+    <div class="ifnot"><b>About the breadboard</b>This build uses more room than anything before it: it runs to about column 42, and a small breadboard only has 30. If your kit has a large breadboard, use it.<br><br>If you only have small ones, split the build across two: <strong>lights on the first board, buttons and buzzer on the second</strong>. On the second board put the buttons at columns 1&amp;3, 6&amp;8, 11&amp;13 and 16&amp;18, and the buzzer at 21 and 23. Then run <strong>one wire between the two &#8722; rails</strong> to join them, and take one wire from either rail to a GND pin. Everything else is the same.</div>
+
+    <h3 style="margin-top:.5rem">By the end you will be able to</h3>
+    <ul class="plain">
+      <li>Write your own instruction, give it a name, and hand it values</li>
+      <li>Get an answer back out of an instruction you wrote</li>
+      <li>Make a sound at any pitch you choose</li>
+      <li>Explain, with a real example, why <code>delay</code> makes a program deaf</li>
+      <li>Use <code>millis</code> to make something happen on time without stopping everything else</li>
+      <li>Build a program long enough that it has to be organised, and organise it</li>
+    </ul>
+  </div>
+</section>
+
+<section class="part" id="counting">
+  <div class="parthead"><span class="tag">Part 1</span><h2>Think first: counting to sixty</h2><span class="mins">12 min</span></div>
+  <div class="col stack">
+    <h3>If you have someone with you</h3>
+    <p>Give them two jobs at once.</p>
+    <ol class="num">
+      <li><strong>Job one:</strong> count out loud from 1 to 60, one number per second, slowly.</li>
+      <li><strong>Job two:</strong> if I clap, put your hand up straight away.</li>
+      <li><strong>The rule:</strong> you must finish counting to 60 before you are allowed to check whether I clapped.</li>
+    </ol>
+    <p>Start them counting. Clap once when they reach about 12. Then wait and watch.</p>
+
+    <h3 style="margin-top:.6rem">If you are on your own</h3>
+    <p>Set an alarm on your phone to go off in about thirty seconds, then put the phone face down where you cannot see it. Now count out loud from 1 to 60, one per second, and do not stop for anything. Your second job is to press the phone screen the moment the alarm sounds, but you may only look at the phone after you reach 60.</p>
+
+    <div class="callout">
+      <h5>Write these down</h5>
+      <ol class="num">
+        <li>How long after the clap, or the alarm, did the hand actually go up?</li>
+        <li>Was the person deaf? Did they fail to hear it?</li>
+        <li>Now change one rule: they may check for a clap <em>after every single number</em>. Try it again. How long does the response take now?</li>
+        <li>In the second version, did the counting get slower?</li>
+      </ol>
+    </div>
+
+    <p>That is this whole band in one activity. Keep the paper.</p>
+    <p>The person was never deaf. They were <strong>busy</strong>, and the rule said they could not look up until they had finished. Change the rule so they look up constantly, and the response becomes instant while the counting carries on exactly as before.</p>
+    <p class="note">Your board is that person. <code>delay</code> is that rule.</p>
+  </div>
+</section>
+
+<section class="part" id="sound">
+  <div class="parthead"><span class="tag">Part 2</span><h2>Making a sound</h2><span class="mins">20 min</span></div>
+  <div class="col stack">
+    <p>Sound is something being pushed back and forth very fast. Fast pushing makes air wobble, the wobble reaches your ear, and you hear a note.</p>
+    <p><strong>How fast</strong> it wobbles is the <strong>pitch</strong>. Fast wobbling is a high note. Slow wobbling is a low note. We measure it in wobbles per second, and the unit is called <strong>hertz</strong>, written Hz.</p>
+
+    <h3 style="margin-top:.4rem">Two kinds of buzzer, and why it matters here</h3>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Kind</th><th>How to spot it</th><th>What it does</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Active</strong></td><td>Solid black cover on the bottom, usually with a sticker</td><td>Has its own wobbler inside. Switch it on with <code>digitalWrite</code> and it makes one fixed note. You used this in Band 3.</td></tr>
+          <tr><td><strong>Passive</strong></td><td>You can see a small green circuit board underneath</td><td>Has no wobbler of its own. You have to push it back and forth yourself, from the board. That means <strong>you choose the note</strong>.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>This band needs the passive one</strong>, because the game plays four different notes.</p>
+    <div class="ifnot"><b>If you only have an active buzzer</b>Everything in this band still works. You will get the same fixed beep for all four lights instead of four different notes, so the game becomes a bit harder to play but no harder to build. Note it in your log and carry on.</div>
+
+    <h3 style="margin-top:.6rem">The instruction</h3>
+    <pre><code>tone(buzzerPin, 262);   // start a note and keep it going
+noTone(buzzerPin);      // stop it</code></pre>
+    <p>The second number is the pitch in hertz. Bigger number, higher note.</p>
+    <p><code>tone</code> starts the note and then <strong>carries straight on to the next line</strong>. It does not wait. If you want a note to last, follow it with a <code>delay</code>, and then <code>noTone</code> to stop it.</p>
+    <p>Here are four notes that sound good together. You do not have to use these.</p>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Number</th><th>Roughly</th></tr></thead>
+        <tbody>
+          <tr><td><code>262</code></td><td>a low note</td></tr>
+          <tr><td><code>330</code></td><td>a bit higher</td></tr>
+          <tr><td><code>392</code></td><td>higher again</td></tr>
+          <tr><td><code>523</code></td><td>the same as the first, but one octave up</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Notice 523 is almost exactly double 262. Doubling the number always gives you the same note, higher. That is not a coincidence, it is what an octave is.</p>
+    <div class="words">
+      <h5>Words to know</h5>
+      <dl>
+        <dt>pitch</dt><dd>How high or low a note sounds.</dd>
+        <dt>hertz</dt><dd>Wobbles per second. The unit of pitch. Written Hz.</dd>
+        <dt>tone</dt><dd>Starts a note on a pin at a pitch you choose. Does not wait.</dd>
+        <dt>noTone</dt><dd>Stops the note on that pin.</dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section class="part" id="read">
+  <div class="parthead"><span class="tag">Part 3</span><h2>Read the code before you run it</h2><span class="mins">6 min</span></div>
+  <div class="col stack">
+    <span class="filename">b5_01_tone_given.ino</span>
+    <pre><code>int buzzerPin = 12;
+
+void setup() {
+  pinMode(buzzerPin, OUTPUT);
+}
+
+void loop() {
+  tone(buzzerPin, 262);
+  delay(400);
+
+  tone(buzzerPin, 330);
+  delay(400);
+
+  tone(buzzerPin, 392);
+  delay(400);
+
+  noTone(buzzerPin);
+  delay(1200);
+}</code></pre>
+    <div class="callout">
+      <h5>Write your answers down first</h5>
+      <ol class="num">
+        <li>How many separate notes will you hear each time round?</li>
+        <li>Is there any silence between the notes? Look carefully.</li>
+        <li>How long is the silence at the end?</li>
+        <li>What would happen if you deleted every <code>delay</code> line but left everything else?</li>
+      </ol>
+    </div>
+    <details><summary>An answer to think about, after you have guessed</summary><div class="inner">
+      <p>Question 2 catches people. There is <strong>no</strong> silence between the three notes. <code>tone</code> replaces whatever note was playing, immediately. To get a gap you would have to put <code>noTone</code> and a short <code>delay</code> between them.</p>
+      <p>Question 4: you would hear only the last thing, and only for an instant, because all four lines would run in a few millionths of a second. Probably a faint click.</p>
+    </div></details>
+  </div>
+</section>
+
+<section class="part" id="build1">
+  <div class="parthead"><span class="tag">Part 4</span><h2>Build the four lights and the buzzer</h2><span class="mins">40 min</span></div>
+  <div class="col stack">
+    <p>Build in stages and test each stage. There are thirteen parts in the finished thing. If you wire all of it and it fails, you have thirteen suspects.</p>
+
+    <h3 style="margin-top:.4rem">The pin plan</h3>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Part</th><th>Pin</th><th>Holes</th><th>Wiring</th></tr></thead>
+        <tbody>
+          <tr><td>Light 1</td><td>2</td><td>long <code>b3</code>, short <code>b4</code></td><td>Resistor <code>a3</code> to <code>a1</code>; wire <code>a1</code> to pin 2; wire <code>a4</code> to &#8722; rail</td></tr>
+          <tr><td>Light 2</td><td>3</td><td>long <code>b7</code>, short <code>b8</code></td><td>Resistor <code>a7</code> to <code>a5</code>; wire <code>a5</code> to pin 3; wire <code>a8</code> to &#8722; rail</td></tr>
+          <tr><td>Light 3</td><td>4</td><td>long <code>b11</code>, short <code>b12</code></td><td>Resistor <code>a11</code> to <code>a9</code>; wire <code>a9</code> to pin 4; wire <code>a12</code> to &#8722; rail</td></tr>
+          <tr><td>Light 4</td><td>5</td><td>long <code>b15</code>, short <code>b16</code></td><td>Resistor <code>a15</code> to <code>a13</code>; wire <code>a13</code> to pin 5; wire <code>a16</code> to &#8722; rail</td></tr>
+          <tr><td>Button 1</td><td>8</td><td>columns 19 and 21</td><td>Wire <code>j19</code> to pin 8; wire <code>a21</code> to &#8722; rail</td></tr>
+          <tr><td>Button 2</td><td>9</td><td>columns 24 and 26</td><td>Wire <code>j24</code> to pin 9; wire <code>a26</code> to &#8722; rail</td></tr>
+          <tr><td>Button 3</td><td>10</td><td>columns 29 and 31</td><td>Wire <code>j29</code> to pin 10; wire <code>a31</code> to &#8722; rail</td></tr>
+          <tr><td>Button 4</td><td>11</td><td>columns 34 and 36</td><td>Wire <code>j34</code> to pin 11; wire <code>a36</code> to &#8722; rail</td></tr>
+          <tr><td>Buzzer</td><td>12</td><td>long <code>b40</code>, short <code>b42</code></td><td>Wire <code>a40</code> to pin 12; wire <code>a42</code> to &#8722; rail. No resistor.</td></tr>
+          <tr><td>Ground</td><td>GND</td><td>&mdash;</td><td>One wire from the &#8722; rail to a GND pin</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Everything shares the one &#8722; rail along the bottom edge. Buttons straddle the middle channel, so their pin wire comes from the top side and their ground wire from the bottom side. That is the diagonal rule from Band 3.</p>
+
+    <figure>
+      <svg viewBox="0 0 700 450" role="img" aria-label="Wiring for the four game lights. Pins 2, 3, 4 and 5 each go through their own 220 ohm resistor to their own LED, and all four return to the same minus rail and then to one GND pin.">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker></defs>
+<rect x="30" y="37" width="86" height="36" rx="5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+<text x="73" y="60" text-anchor="middle" font-size="13" fill="currentColor" font-family="Archivo, Arial, sans-serif">Pin 2</text>
+<line x1="116" y1="55" x2="176" y2="55" stroke="currentColor" stroke-width="1.6"/>
+<polyline points="176,55 184,45 200,65 216,45 232,65 240,55" fill="none" stroke="currentColor" stroke-width="1.6"/>
+<text x="208" y="35" text-anchor="middle" font-size="11.5" fill="currentColor" opacity="0.8" font-family="IBM Plex Mono, monospace">220 &#8486;</text>
+<line x1="240" y1="55" x2="300" y2="55" stroke="currentColor" stroke-width="1.6"/>
+<polygon points="300,42 300,68 326,55" fill="none" stroke="#C0503A" stroke-width="1.8"/>
+<line x1="326" y1="42" x2="326" y2="68" stroke="#C0503A" stroke-width="2.4"/>
+<text x="292" y="35" text-anchor="middle" font-size="10.5" fill="currentColor" opacity="0.65" font-family="Archivo, Arial, sans-serif">long</text>
+<text x="336" y="35" text-anchor="middle" font-size="10.5" fill="currentColor" opacity="0.65" font-family="Archivo, Arial, sans-serif">short</text>
+<line x1="326" y1="55" x2="470" y2="55" stroke="currentColor" stroke-width="1.6" marker-end="url(#a)"/>
+<rect x="30" y="127" width="86" height="36" rx="5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+<text x="73" y="150" text-anchor="middle" font-size="13" fill="currentColor" font-family="Archivo, Arial, sans-serif">Pin 3</text>
+<line x1="116" y1="145" x2="176" y2="145" stroke="currentColor" stroke-width="1.6"/>
+<polyline points="176,145 184,135 200,155 216,135 232,155 240,145" fill="none" stroke="currentColor" stroke-width="1.6"/>
+<text x="208" y="125" text-anchor="middle" font-size="11.5" fill="currentColor" opacity="0.8" font-family="IBM Plex Mono, monospace">220 &#8486;</text>
+<line x1="240" y1="145" x2="300" y2="145" stroke="currentColor" stroke-width="1.6"/>
+<polygon points="300,132 300,158 326,145" fill="none" stroke="#A87A1E" stroke-width="1.8"/>
+<line x1="326" y1="132" x2="326" y2="158" stroke="#A87A1E" stroke-width="2.4"/>
+<text x="292" y="125" text-anchor="middle" font-size="10.5" fill="currentColor" opacity="0.65" font-family="Archivo, Arial, sans-serif">long</text>
+<text x="336" y="125" text-anchor="middle" font-size="10.5" fill="currentColor" opacity="0.65" font-family="Archivo, Arial, sans-serif">short</text>
+<line x1="326" y1="145" x2="470" y2="145" stroke="currentColor" stroke-width="1.6" marker-end="url(#a)"/>
+<rect x="30" y="217" width="86" height="36" rx="5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+<text x="73" y="240" text-anchor="middle" font-size="13" fill="currentColor" font-family="Archivo, Arial, sans-serif">Pin 4</text>
+<line x1="116" y1="235" x2="176" y2="235" stroke="currentColor" stroke-width="1.6"/>
+<polyline points="176,235 184,225 200,245 216,225 232,245 240,235" fill="none" stroke="currentColor" stroke-width="1.6"/>
+<text x="208" y="215" text-anchor="middle" font-size="11.5" fill="currentColor" opacity="0.8" font-family="IBM Plex Mono, monospace">220 &#8486;</text>
+<line x1="240" y1="235" x2="300" y2="235" stroke="currentColor" stroke-width="1.6"/>
+<polygon points="300,222 300,248 326,235" fill="none" stroke="#3F8A55" stroke-width="1.8"/>
+<line x1="326" y1="222" x2="326" y2="248" stroke="#3F8A55" stroke-width="2.4"/>
+<text x="292" y="215" text-anchor="middle" font-size="10.5" fill="currentColor" opacity="0.65" font-family="Archivo, Arial, sans-serif">long</text>
+<text x="336" y="215" text-anchor="middle" font-size="10.5" fill="currentColor" opacity="0.65" font-family="Archivo, Arial, sans-serif">short</text>
+<line x1="326" y1="235" x2="470" y2="235" stroke="currentColor" stroke-width="1.6" marker-end="url(#a)"/>
+<rect x="30" y="307" width="86" height="36" rx="5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+<text x="73" y="330" text-anchor="middle" font-size="13" fill="currentColor" font-family="Archivo, Arial, sans-serif">Pin 5</text>
+<line x1="116" y1="325" x2="176" y2="325" stroke="currentColor" stroke-width="1.6"/>
+<polyline points="176,325 184,315 200,335 216,315 232,335 240,325" fill="none" stroke="currentColor" stroke-width="1.6"/>
+<text x="208" y="305" text-anchor="middle" font-size="11.5" fill="currentColor" opacity="0.8" font-family="IBM Plex Mono, monospace">220 &#8486;</text>
+<line x1="240" y1="325" x2="300" y2="325" stroke="currentColor" stroke-width="1.6"/>
+<polygon points="300,312 300,338 326,325" fill="none" stroke="#4A7FC8" stroke-width="1.8"/>
+<line x1="326" y1="312" x2="326" y2="338" stroke="#4A7FC8" stroke-width="2.4"/>
+<text x="292" y="305" text-anchor="middle" font-size="10.5" fill="currentColor" opacity="0.65" font-family="Archivo, Arial, sans-serif">long</text>
+<text x="336" y="305" text-anchor="middle" font-size="10.5" fill="currentColor" opacity="0.65" font-family="Archivo, Arial, sans-serif">short</text>
+<line x1="326" y1="325" x2="470" y2="325" stroke="currentColor" stroke-width="1.6" marker-end="url(#a)"/>
+<line x1="474" y1="29" x2="474" y2="351" stroke="currentColor" stroke-width="2.6"/>
+<text x="486" y="23" font-size="12.5" fill="currentColor" font-family="Archivo, Arial, sans-serif">the &#8722; rail</text>
+<line x1="474" y1="190" x2="580" y2="190" stroke="currentColor" stroke-width="1.6" marker-end="url(#a)"/>
+<rect x="580" y="172" width="86" height="36" rx="5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+<text x="623" y="195" text-anchor="middle" font-size="13" fill="currentColor" font-family="Archivo, Arial, sans-serif">GND pin</text>
+<text x="623" y="228" text-anchor="middle" font-size="11.5" fill="currentColor" opacity="0.75" font-family="Archivo, Arial, sans-serif">one wire only</text>
+</svg>
+      <figcaption>The four lights. Each has its own pin and its own resistor, and all four return to the same minus rail. The buttons and the buzzer join the same rail.</figcaption>
+    </figure>
+
+    <div class="ifnot" style="margin-bottom:.4rem"><b>Before you start</b>USB unplugged. Every time.</div>
+
+    <div class="steps">
+      <div class="step"><div class="body">
+        <p><strong>Stage one: the four lights.</strong> Wire all four as in the table, then test with a blink sketch on pin 2, then 3, then 4, then 5.</p>
+        <div class="ifnot"><b>If one light does not come on</b>Turn that LED round first. Then check its two legs are in different columns, and that its resistor really joins the light's column to the wire's column. These lights are in the bottom block, rows a and b, so their ground goes to the <strong>bottom</strong> &#8722; rail.</div>
+        <div class="ifnot"><b>If none of them come on</b>Check the one wire from the &#8722; rail to a GND pin. One missing wire there stops all four at once and everything else looks perfect.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Stage two: the buzzer.</strong> Long leg towards the pin. Upload <code>b5_01_tone_given.ino</code>.</p>
+        <div class="see"><b>You should see</b>Three notes rising, then a pause, over and over.</div>
+        <div class="ifnot"><b>If it clicks instead of playing notes</b>You probably have an active buzzer. See Part 2. Carry on with a fixed beep.</div>
+        <div class="ifnot"><b>If it makes no sound at all</b>Check the long leg is on the pin side, and that your buzzer is really on pin 12.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Stage three: the four buttons.</strong> Wire them, then test each one with the serial watch sketch from Band 3, changing the pin number to 8, then 9, then 10, then 11.</p>
+        <div class="ifnot"><b>Do not skip this</b>Four buttons is where the diagonal-leg mistake usually appears. Two minutes of testing now saves an hour later.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Now upload <code>b5_02_functions_worked.ino</code>.</strong></p>
+        <div class="see"><b>You should see</b>Each light coming on in turn with its own note, then a pause, over and over. All four lights and all four notes in one sketch.</div>
+        <div class="ifnot"><b>If the lights go in the wrong order</b>Your lights are not physically left to right in the order 2, 3, 4, 5. Either move the wires or just note down which is which. Nothing is broken.</div>
+        <div class="ifnot"><b>If one light stays dark but worked in stage one</b>Look at the arrays at the top of the sketch. <code>ledPins</code> must list the four pins you actually used.</div>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<section class="part" id="functions">
+  <div class="parthead"><span class="tag">Part 5</span><h2>Writing your own instruction</h2><span class="mins">35 min</span></div>
+  <div class="col stack">
+    <p>Look at what that sketch would need without any new ideas. To play light 1 with its note, then light 2, then 3, then 4, you would write this five-line block four times over:</p>
+    <pre><code>digitalWrite(ledPins[0], HIGH);
+tone(buzzerPin, notes[0]);
+delay(400);
+digitalWrite(ledPins[0], LOW);
+noTone(buzzerPin);</code></pre>
+    <p>Twenty lines, nearly identical, differing by one number. And if you later decide the note should last 300 instead of 400, you have to find and change it in four places, and getting one wrong gives you a bug that is very hard to see.</p>
+    <p>Here is the alternative. Open <code>b5_02_functions_worked.ino</code> and find this:</p>
+    <span class="filename">b5_02_functions_worked.ino</span>
+    <pre><code>void playStep(int which) {
+  digitalWrite(ledPins[which], HIGH);
+  tone(buzzerPin, notes[which]);
+  delay(400);
+
+  digitalWrite(ledPins[which], LOW);
+  noTone(buzzerPin);
+  delay(120);
+}</code></pre>
+    <p>And then, down in <code>loop</code>:</p>
+    <pre><code>playStep(0);
+playStep(1);
+playStep(2);
+playStep(3);</code></pre>
+    <p>Twenty lines became four. And the 400 exists in exactly one place.</p>
+
+    <h3 style="margin-top:.6rem">How to read a function, piece by piece</h3>
+    <pre><code>void playStep(int which) {</code></pre>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Piece</th><th>What it means</th></tr></thead>
+        <tbody>
+          <tr><td><code>void</code></td><td>This instruction does <strong>not</strong> hand an answer back. It just does things. You have been writing this word since Band 0 without knowing why. Now you do.</td></tr>
+          <tr><td><code>playStep</code></td><td>The name you chose. Any name you like, as long as it has no spaces and starts with a letter. Choose one that says what it does.</td></tr>
+          <tr><td><code>(int which)</code></td><td>An empty box that gets filled in when the instruction is used. <code>int</code> says it holds a whole number, and <code>which</code> is the name that box has <em>inside</em> the instruction.</td></tr>
+          <tr><td><code>{ ... }</code></td><td>The lines to run, exactly like <code>setup</code> and <code>loop</code>.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout">
+      <h5>What happens when you write <code>playStep(2)</code></h5>
+      <ol class="num">
+        <li>The board stops what it is doing in <code>loop</code> and remembers where it was.</li>
+        <li>It puts the number 2 into the box called <code>which</code>.</li>
+        <li>It runs every line inside <code>playStep</code>, and everywhere it sees <code>which</code>, it uses 2.</li>
+        <li>When it reaches the closing curly bracket, it goes back to <code>loop</code> and carries on from where it stopped.</li>
+      </ol>
+      <p>So the same seven lines do a different job each time, depending on the number you hand them.</p>
+    </div>
+
+    <h3 style="margin-top:.6rem">Getting an answer back</h3>
+    <p>Some instructions do hand something back. <code>digitalRead</code> does: you get a HIGH or a LOW. To write one of your own, you replace <code>void</code> with the type of thing you are handing back, and use the word <code>return</code>.</p>
+    <pre><code>int waitForPress() {
+  ...
+  return i;
+}</code></pre>
+    <p>Read it as: <em>this instruction hands back a whole number. When it reaches <code>return i</code>, it stops immediately and gives back whatever is in <code>i</code>.</em></p>
+    <p>Then you can use it like any other instruction that produces a value:</p>
+    <pre><code>int pressed = waitForPress();</code></pre>
+    <p><code>return</code> also ends the instruction there and then. Any lines below it do not run.</p>
+
+    <div class="callout">
+      <h5>Three rules that will save you</h5>
+      <ol class="num">
+        <li><strong>Write your functions above <code>setup</code>.</strong> The Arduino software is clever enough to find them wherever you put them, so it will still work if you do not. Put them at the top anyway: a reader meets each tool before they meet the code that uses it, and that is much easier to follow.</li>
+        <li><strong>A name made inside a function only exists inside it.</strong> If <code>playStep</code> makes a name called <code>x</code>, then <code>loop</code> cannot see it. That is a feature, not a problem: it means you can never accidentally break one part of your program by changing another.</li>
+        <li><strong>One function, one job.</strong> If you cannot say what yours does in one short sentence, it is doing too much. Split it.</li>
+      </ol>
+    </div>
+
+    <div class="steps">
+      <div class="step"><div class="body">
+        <p><strong>Try it now.</strong> In your copy of <code>b5_02</code>, change the <code>delay(400)</code> inside <code>playStep</code> to <code>delay(150)</code> and upload.</p>
+        <div class="see"><b>You should see</b>All four steps get shorter. One edit, four changes, and no chance of missing one.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Now write one yourself.</strong> Add a function called <code>flashAll</code> that switches all four lights on, waits, and switches them all off. Then call it from <code>loop</code> before the four <code>playStep</code> lines.</p>
+        <details><summary>Check yours against this, after you have written it</summary><div class="inner">
+          <pre><code>void flashAll() {
+  for (int i = 0; i &lt; 4; i = i + 1) {
+    digitalWrite(ledPins[i], HIGH);
+  }
+  delay(300);
+  for (int i = 0; i &lt; 4; i = i + 1) {
+    digitalWrite(ledPins[i], LOW);
+  }
+}</code></pre>
+          <p>Yours does not have to match. If it works and you can say what it does in one sentence, it is right. Notice the empty round brackets: this one needs no values handed to it.</p>
+        </div></details>
+      </div></div>
+    </div>
+
+    <div class="words">
+      <h5>Words to know</h5>
+      <dl>
+        <dt>function</dt><dd>A named group of instructions you can run from anywhere by using its name.</dd>
+        <dt>call</dt><dd>To run a function by writing its name, like <code>playStep(2);</code></dd>
+        <dt>parameter</dt><dd>The box in the round brackets that gets filled in when the function is called.</dd>
+        <dt>return</dt><dd>Hands a value back to whatever called the function, and ends it immediately.</dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section class="part" id="problem">
+  <div class="parthead"><span class="tag">Part 6</span><h2>Now break it on purpose</h2><span class="mins">25 min</span></div>
+  <div class="col stack">
+    <p>Here is a small thing that ought to be easy. A lamp fades slowly up and down, and a second light comes on whenever you hold a button. Two simple jobs you can already do.</p>
+
+    <h3 style="margin-top:.4rem">Move three wires</h3>
+    <p>You do not need to rebuild anything. Keep everything exactly where it is and move three wires. Unplug the USB first.</p>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Wire</th><th>Was in</th><th>Move it to</th><th>What it becomes</th></tr></thead>
+        <tbody>
+          <tr><td>From <code>a1</code></td><td>pin 2</td><td><strong>pin 9</strong></td><td>Light 1 is now the fading lamp</td></tr>
+          <tr><td>From <code>a5</code></td><td>pin 3</td><td><strong>pin 8</strong></td><td>Light 2 is now the button's answer light</td></tr>
+          <tr><td>From <code>j19</code></td><td>pin 8</td><td><strong>pin 6</strong></td><td>Button 1 is now the button</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Pin 9 matters. It is the fading lamp, and only a pin with a <code>~</code> can fade. Pin 2, where that light was, cannot. Lights 3 and 4 and buttons 2, 3 and 4 are simply not used in this part. Leave them alone.</p>
+    <div class="ifnot"><b>When you have finished Part 7</b>Move all three wires back before Part 9, or the game will not work. The pin table in Part 4 is the one to put it back to.</div>
+    <p><strong>Upload <code>b5_03_blocking_problem.ino</code>.</strong> Then press the button.</p>
+
+    <div class="see"><b>What you will actually see</b>The fade works perfectly. The button almost never does. You press it and nothing happens. You press it again and nothing happens. Then once in a while, for no reason you can see, it works.</div>
+
+    <div class="callout">
+      <h5>Before you read on, answer this</h5>
+      <p>Look at the sketch. Nothing in it is wrong. The wiring is right. The button test is exactly the same one that worked perfectly in Band 3.</p>
+      <p>So why does the button not work? Write your answer down.</p>
+    </div>
+
+    <details><summary>The answer</summary><div class="inner">
+      <p>Count the delays. The two <code>for</code> loops run 128 times in total, each with <code>delay(20)</code>. That is 2560 thousandths of a second, about two and a half seconds, spent doing nothing.</p>
+      <p>The button is checked <strong>once</strong>, at the very bottom, after all of that. So the board looks at the button for a few millionths of a second, once every two and a half seconds.</p>
+      <p>Your press has to still be held down at exactly that instant to be seen. A normal press lasts perhaps a fifth of a second out of every two and a half, so you get lucky about one time in twelve. That matches what you saw: mostly nothing, and then once in a while it works for no reason you could see.</p>
+      <p>The board is not broken and your code is not wrong. It is the person counting to sixty, from Part 1. It is busy, and the rule says it may not look up.</p>
+    </div></details>
+
+    <p>This is worth sitting with, because it is not a small technical detail. It is the reason your projects have all been simple so far.</p>
+    <p><strong>Every <code>delay</code> you have ever written has stopped the entire board.</strong> Not the light. Not the line it is on. Everything. For that whole time the board cannot read a button, cannot check a sensor, cannot do anything at all.</p>
+    <p>Up to now that never mattered, because your projects only ever did one thing. From here it matters in everything you build.</p>
+  </div>
+</section>
+
+<section class="part" id="millis">
+  <div class="parthead"><span class="tag">Part 7</span><h2><code>millis</code>: waiting without stopping</h2><span class="mins">35 min</span></div>
+  <div class="col stack">
+    <p>Here is the change in thinking, and it is a real change, so go slowly.</p>
+    <p><strong>Instead of stopping until it is time, keep running and keep asking whether it is time yet.</strong></p>
+    <p>That is exactly the rule change in Part 1, question 3. The person keeps counting <em>and</em> checks the door after every number.</p>
+
+    <figure>
+      <svg viewBox="0 0 700 340" role="img" aria-label="Two timelines compared. With delay, the board spends nearly all its time frozen inside the wait, so a button press that lands during a wait is missed. With millis, the loop keeps running all the time, so the same press is noticed immediately.">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker></defs>
+<text x="20" y="30" font-size="13.5" fill="currentColor" font-family="IBM Plex Mono, monospace">using delay()</text>
+<g fill="currentColor" opacity="0.18">
+  <rect x="20" y="60" width="120" height="26" rx="3"/>
+  <rect x="150" y="60" width="120" height="26" rx="3"/>
+  <rect x="280" y="60" width="120" height="26" rx="3"/>
+  <rect x="410" y="60" width="120" height="26" rx="3"/>
+  <rect x="540" y="60" width="120" height="26" rx="3"/>
+</g>
+<g fill="currentColor">
+  <rect x="140" y="60" width="8" height="26"/>
+  <rect x="270" y="60" width="8" height="26"/>
+  <rect x="400" y="60" width="8" height="26"/>
+  <rect x="530" y="60" width="8" height="26"/>
+</g>
+<text x="80" y="105" text-anchor="middle" font-size="11.5" fill="currentColor" opacity="0.75" font-family="Archivo, Arial, sans-serif">frozen inside delay(20)</text>
+<text x="404" y="50" text-anchor="middle" font-size="11.5" fill="currentColor" opacity="0.75" font-family="Archivo, Arial, sans-serif">doing something</text>
+<g stroke="#C0503A" stroke-width="2" fill="none"><line x1="330" y1="130" x2="330" y2="92" marker-end="url(#a)"/></g>
+<text x="330" y="148" text-anchor="middle" font-size="12.5" fill="currentColor" font-family="Archivo, Arial, sans-serif">you press the button here</text>
+<text x="330" y="166" text-anchor="middle" font-size="12.5" fill="currentColor" font-weight="600" font-family="Archivo, Arial, sans-serif">nothing notices</text>
+
+<g stroke="currentColor" stroke-width="1" opacity="0.3" fill="none"><line x1="20" y1="196" x2="680" y2="196"/></g>
+
+<text x="20" y="230" font-size="13.5" fill="currentColor" font-family="IBM Plex Mono, monospace">using millis()</text>
+<g fill="currentColor">
+  <rect x="20" y="256" width="7" height="26"/><rect x="37" y="256" width="7" height="26"/><rect x="54" y="256" width="7" height="26"/>
+  <rect x="71" y="256" width="7" height="26"/><rect x="88" y="256" width="7" height="26"/><rect x="105" y="256" width="7" height="26"/>
+  <rect x="122" y="256" width="7" height="26"/><rect x="139" y="256" width="7" height="26"/><rect x="156" y="256" width="7" height="26"/>
+  <rect x="173" y="256" width="7" height="26"/><rect x="190" y="256" width="7" height="26"/><rect x="207" y="256" width="7" height="26"/>
+  <rect x="224" y="256" width="7" height="26"/><rect x="241" y="256" width="7" height="26"/><rect x="258" y="256" width="7" height="26"/>
+  <rect x="275" y="256" width="7" height="26"/><rect x="292" y="256" width="7" height="26"/><rect x="309" y="256" width="7" height="26"/>
+  <rect x="326" y="256" width="7" height="26"/><rect x="343" y="256" width="7" height="26"/><rect x="360" y="256" width="7" height="26"/>
+  <rect x="377" y="256" width="7" height="26"/><rect x="394" y="256" width="7" height="26"/><rect x="411" y="256" width="7" height="26"/>
+  <rect x="428" y="256" width="7" height="26"/><rect x="445" y="256" width="7" height="26"/><rect x="462" y="256" width="7" height="26"/>
+  <rect x="479" y="256" width="7" height="26"/><rect x="496" y="256" width="7" height="26"/><rect x="513" y="256" width="7" height="26"/>
+  <rect x="530" y="256" width="7" height="26"/><rect x="547" y="256" width="7" height="26"/><rect x="564" y="256" width="7" height="26"/>
+  <rect x="581" y="256" width="7" height="26"/><rect x="598" y="256" width="7" height="26"/><rect x="615" y="256" width="7" height="26"/>
+</g>
+<text x="330" y="246" text-anchor="middle" font-size="11.5" fill="currentColor" opacity="0.75" font-family="Archivo, Arial, sans-serif">loop runs again and again, thousands of times a second</text>
+<g stroke="#3F8A55" stroke-width="2" fill="none"><line x1="330" y1="322" x2="330" y2="288" marker-end="url(#a)"/></g>
+<text x="330" y="338" text-anchor="middle" font-size="12.5" fill="currentColor" font-weight="600" font-family="Archivo, Arial, sans-serif">same press, noticed straight away</text>
+</svg>
+      <figcaption>The same button press, in two programs. With <code>delay</code> the board spends nearly all its time frozen, so a press that lands during a wait is never noticed. With <code>millis</code> the loop keeps running the whole time, so the same press is caught within a few millionths of a second.</figcaption>
+    </figure>
+
+    <h3 style="margin-top:.5rem">The instruction</h3>
+    <pre><code>millis()</code></pre>
+    <p>It hands back how many thousandths of a second the board has been running since it was switched on. That is all it does. It does not wait, it does not pause, it just tells you the time.</p>
+    <p>It is a clock that started when the board did. Not the time of day. The board has no idea what day it is.</p>
+
+    <div class="callout">
+      <h5>Why it needs a strange type</h5>
+      <p>After one minute, <code>millis()</code> is already 60 000. After an hour it is 3 600 000. An <code>int</code> cannot hold numbers that big.</p>
+      <p>So you store it in an <code>unsigned long</code>, which is a name for a number that can be very large but never negative.</p>
+      <pre><code>unsigned long now = millis();</code></pre>
+      <p>Use <code>int</code> here and your program will work for about half a minute and then behave very strangely. It is a horrible bug to find, so learn the type now.</p>
+    </div>
+
+    <h3 style="margin-top:.6rem">The pattern</h3>
+    <p>Every non-blocking timer you will ever write looks like this. Learn the shape, not the details. The sketch calls these two names <code>lastFadeTime</code> and <code>fadeGap</code>; here they are shortened to <code>lastTime</code> and <code>gap</code> so the shape is easier to see.</p>
+    <pre><code>unsigned long lastTime = 0;
+unsigned long gap = 20;
+
+void loop() {
+  unsigned long now = millis();
+
+  if (now - lastTime &gt;= gap) {
+    lastTime = now;
+
+    // it is time. Do the thing.
+  }
+
+  // everything else, every single round
+}</code></pre>
+    <p>Read it as three ideas:</p>
+    <ol class="num">
+      <li><code>lastTime</code> remembers when you last did the thing.</li>
+      <li><code>now - lastTime</code> is how long it has been since. If that is at least <code>gap</code>, it is time.</li>
+      <li>The moment you do the thing, write down the new time, so the count starts again.</li>
+    </ol>
+    <p>And crucially: everything below the <code>if</code> runs on <strong>every single round</strong>, thousands of times a second, whether it was time or not.</p>
+
+    <div class="steps">
+      <div class="step"><div class="body">
+        <p><strong>Upload <code>b5_04_millis_fixed.ino</code></strong>, with the same wiring as before.</p>
+        <div class="see"><b>You should see</b>The lamp fading exactly as before, and the button responding instantly, every single time, even in the middle of a fade.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Compare the two sketches side by side.</strong> The fade looks the same to a person watching. The code is completely different in shape.</p>
+        <p>In <code>b5_03</code>, the brightness lived in a <code>for</code> loop. In <code>b5_04</code>, the brightness has to be remembered in a name outside <code>loop</code>, because <code>loop</code> now only does <em>one step</em> of the fade each time it runs and then leaves.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Find the two lines that reverse the direction.</strong> They are the ones that check whether <code>level</code> has reached an end and flip <code>step</code> between 4 and &minus;4.</p>
+        <p class="note">A <code>for</code> loop could not do this, because a <code>for</code> loop insists on finishing before it lets go. Once you stop letting the loop control the timing, you have to control the counting yourself. That is the trade.</p>
+      </div></div>
+    </div>
+
+    <div class="callout">
+      <h5>When <code>delay</code> is still fine</h5>
+      <p>Do not now decide that <code>delay</code> is always wrong. It is not, and thinking so leads people to write complicated code for no reason.</p>
+      <p><code>delay</code> is fine whenever the board genuinely has nothing else to do. A 50 thousandth of a second debounce is fine. Playing a note in the game, while the player is only watching, is fine.</p>
+      <p><strong>The rule: <code>delay</code> is a problem only when something else needs to happen during it.</strong> Ask that question and the answer is usually obvious.</p>
+    </div>
+
+    <div class="words">
+      <h5>Words to know</h5>
+      <dl>
+        <dt>millis</dt><dd>Gives you how many thousandths of a second the board has been running.</dd>
+        <dt>unsigned long</dt><dd>A name that holds a very large whole number that is never negative. Needed for <code>millis</code>.</dd>
+        <dt>blocking</dt><dd>Code that stops the whole board while it waits. <code>delay</code> is blocking.</dd>
+        <dt>non-blocking</dt><dd>Code that checks whether it is time yet and carries on regardless.</dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section class="part" id="random">
+  <div class="parthead"><span class="tag">Part 8</span><h2>Making it unpredictable</h2><span class="mins">15 min</span></div>
+  <div class="col stack">
+    <p>A memory game is no fun if it plays the same sequence every time. You need a number the player cannot predict.</p>
+    <pre><code>int which = random(0, 4);</code></pre>
+    <p>That gives you 0, 1, 2 or 3, chosen at random.</p>
+    <div class="callout">
+      <h5>Read the two numbers carefully</h5>
+      <p><code>random(0, 4)</code> includes the first number and <strong>excludes</strong> the second. So you get 0, 1, 2 or 3. Never 4.</p>
+      <p>That is deliberate and it matches how arrays count. <code>random(0, 4)</code> gives you exactly the valid positions in a list of four, which is almost always what you want. But it surprises everybody the first time.</p>
+    </div>
+
+    <h3 style="margin-top:.5rem">The problem with random on a small chip</h3>
+    <p>The board has no real source of randomness. It runs a calculation that produces numbers that <em>look</em> random. And it starts that calculation from the same place every time it is switched on.</p>
+    <p>So without help, your game plays the identical "random" sequence every single time you power it up. Try it if you like: it is a strange thing to watch.</p>
+    <p>The fix is to start the calculation from somewhere different each time:</p>
+    <pre><code>randomSeed(analogRead(A0));</code></pre>
+    <p>Put that in <code>setup</code>. It reads an analog pin with nothing connected to it, which, as you found out in Band 4, gives a meaningless drifting number. Meaningless is exactly what is wanted here. For once, a floating pin is useful.</p>
+    <div class="ifnot"><b>Make sure A0 really is empty</b>If you have something wired to A0, use a different unused analog pin. A pin with a sensor on it gives a steady number, which defeats the purpose.</div>
+  </div>
+</section>
+
+<section class="part" id="simon">
+  <div class="parthead"><span class="tag">Part 9</span><h2>Build the game</h2><span class="mins">40 min</span></div>
+  <div class="col stack">
+    <p>Everything is wired from Part 4. Put your wiring back the way the pin table describes it if you moved anything for Part 6.</p>
+    <p><strong>Upload <code>b5_05_simon_worked.ino</code></strong> and open the serial monitor.</p>
+    <div class="see"><b>You should see</b>One light flashes with its note. Copy it by pressing the matching button. Then two lights, then three. Get one wrong and all four flash with a low buzz, and your score prints.</div>
+
+    <h3 style="margin-top:.6rem">Read it as a set of small jobs</h3>
+    <p>This is the longest sketch in the course so far, at about ninety lines. It is not harder than what you have read before. It is <strong>organised</strong>, which is the whole point of this band.</p>
+    <p>Open it and find each of these. Notice that you can understand any one of them without reading the others.</p>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Function</th><th>Its one job</th></tr></thead>
+        <tbody>
+          <tr><td><code>playStep(which)</code></td><td>Show one light and play its note.</td></tr>
+          <tr><td><code>allLights(state)</code></td><td>Switch all four lights on or off together.</td></tr>
+          <tr><td><code>waitForPress()</code></td><td>Wait until a button is pressed, play its light and note, wait for release, and hand back which one it was.</td></tr>
+          <tr><td><code>gameOver()</code></td><td>Print the score, flash and buzz, and reset the game.</td></tr>
+          <tr><td><code>setup()</code></td><td>Set up all the pins, start the randomness, start the serial monitor.</td></tr>
+          <tr><td><code>loop()</code></td><td>One round of the game: add a step, play the sequence, listen to the answer.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Now look at <code>loop</code> on its own. Strip away the details and it says: <em>add a new random step, play the whole sequence, then check the player's answer one press at a time. If any press is wrong, game over.</em></p>
+    <p>Nine lines of real work. Everything else has a name and lives somewhere else. That is what functions bought you.</p>
+
+    <div class="callout">
+      <h5>Two things worth noticing in <code>waitForPress</code></h5>
+      <p><strong>It waits for you to let go.</strong> There is a small loop that does nothing until the button is released. Without it, one long press would count as many presses, and the whole sequence would fail instantly. It is Band 3's problem in a new place.</p>
+      <p><strong>It blocks, on purpose.</strong> It sits there and refuses to do anything else until a button is pressed. Ten minutes ago you learned that blocking is bad. Here it is fine, because while the game is waiting for the player there is genuinely nothing else it needs to do. This is the rule from Part 7 being applied rather than obeyed.</p>
+    </div>
+
+    <div class="ifnot"><b>If the game starts and immediately says game over</b>A button is reading LOW when nothing is pressed. Test each button on its own with the Band 3 serial watch sketch. It is almost always two legs from the same side.</div>
+    <div class="ifnot"><b>If it plays the same sequence every time you switch it on</b>The <code>randomSeed</code> line is missing, or A0 has something wired to it. See Part 8.</div>
+  </div>
+</section>
+
+<section class="part" id="closer">
+  <div class="parthead"><span class="tag">Part 10</span><h2>Look closer</h2><span class="mins">30 min</span></div>
+  <div class="col stack">
+    <h3>a. Follow the timing by hand</h3>
+    <p>Fill this in for <code>b5_04</code>, assuming <code>fadeGap</code> is 20 and the board has been running a while. Do not run it.</p>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Round</th><th><code>now</code></th><th><code>lastFadeTime</code></th><th><code>now - lastFadeTime</code></th><th>Is it 20 or more?</th><th>Fade moves?</th><th>Button checked?</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>1000</td><td>1000</td><td>0</td><td>no</td><td>no</td><td>yes</td></tr>
+          <tr><td>2</td><td>1005</td><td>1000</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+          <tr><td>3</td><td>1019</td><td>1000</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+          <tr><td>4</td><td>1020</td><td>1000</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+          <tr><td>5</td><td>1021</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <details><summary>Check your table</summary><div class="inner">
+      <p>Round 2: difference 5, not enough, fade does not move, button still checked. Round 3: difference 19, still not enough, button still checked. Round 4: difference 20, which is 20 or more, so the fade moves <em>and</em> <code>lastFadeTime</code> becomes 1020. Round 5: <code>lastFadeTime</code> is now 1020, so the difference is 1, not enough.</p>
+      <p><strong>The column that matters is the last one.</strong> The button is checked on every single round, whether the fade moved or not. That is the whole difference from <code>b5_03</code>, and it is why the button feels instant.</p>
+    </div></details>
+
+    <h3 style="margin-top:.8rem">b. Break it on purpose</h3>
+    <p>In <code>b5_04</code>, delete the line <code>lastFadeTime = now;</code> from inside the <code>if</code>. Predict what will happen, then upload.</p>
+    <details><summary>Answer</summary><div class="inner">
+      <p><code>lastFadeTime</code> stays at 0 forever. So <code>now - lastFadeTime</code> is just <code>now</code>, which is always far bigger than 20. The <code>if</code> is true on every round, so the fade advances thousands of times a second instead of fifty times a second.</p>
+      <p>The lamp will flicker or look oddly dim, and the fade will be far too fast to see as a fade.</p>
+      <p>The lesson: in this pattern, writing down the new time is not tidying up. It <em>is</em> the timer. Put it back.</p>
+    </div></details>
+
+    <h3 style="margin-top:.8rem">c. Put the lines back in order</h3>
+    <p>These lines from a function have been shuffled:</p>
+    <pre><code>  return total;
+int addUp(int a, int b) {
+  int total = a + b;
+}</code></pre>
+    <p>Put them in order. Then answer two questions: why is the first word <code>int</code> and not <code>void</code>? And what would happen if <code>return total;</code> came before <code>int total = a + b;</code>?</p>
+    <details><summary>Answer</summary><div class="inner">
+      <p>Order: the header line, then make <code>total</code>, then return it, then the closing bracket.</p>
+      <p>It says <code>int</code> because this function hands a whole number back. <code>void</code> means it hands nothing back, and this one clearly does.</p>
+      <p>If <code>return</code> came first, the sketch would not compile, because <code>total</code> would not exist yet. And even if it did, <code>return</code> ends the function immediately, so the line below it would never run.</p>
+    </div></details>
+
+    <h3 style="margin-top:.8rem">d. Explain one line</h3>
+    <p>In <code>b5_05</code>, inside <code>waitForPress</code>, there is this:</p>
+    <pre><code>while (digitalRead(buttonPins[i]) == LOW) {
+  delay(5);
+}</code></pre>
+    <p>It does nothing at all. It has no body worth speaking of. Why is it there, and what exactly breaks without it?</p>
+    <details><summary>Answer</summary><div class="inner">
+      <p>It waits for you to let go of the button. <code>while</code> means "keep doing this for as long as the test is true", so as long as the button is still down, it keeps doing nothing.</p>
+      <p>Without it, <code>waitForPress</code> would hand back an answer the instant you pressed. Then <code>loop</code> would call it again immediately for the next step in the sequence, your finger would still be on the button, and it would instantly count a second press of the same button. A three-step sequence would be "answered" in one press and you would lose straight away.</p>
+      <p>It is exactly the Band 3 edge detection problem, solved a different way. There, we compared with the last reading. Here, we simply refuse to move on until the button is released. Both are correct. The second is easier to read when the program has nothing else to do at that moment.</p>
+    </div></details>
+  </div>
+</section>
+
+<section class="part" id="change">
+  <div class="parthead"><span class="tag">Part 11</span><h2>Change it</h2><span class="mins">40 min</span></div>
+  <div class="col stack">
+    <p>Work on a copy of <code>b5_05_simon_worked.ino</code>.</p>
+    <dl class="tier">
+      <dt>Bronze</dt><dd>Make the game speed up as it gets longer. The sequence should play faster with every round. You will need to hand <code>playStep</code> a second value: how long the step should last.</dd>
+      <dt>Silver</dt><dd>Write a function called <code>playSequence()</code> that plays the whole sequence, and use it in <code>loop</code> instead of the <code>for</code> loop that is there now. Then say in one sentence what <code>loop</code> reads like afterwards.</dd>
+      <dt>Gold</dt><dd>Add a time limit. If the player does not press within three seconds, they lose. This one is hard, and it is hard for an interesting reason: <code>waitForPress</code> blocks, so it can never notice time passing. You will have to rewrite it using <code>millis</code>, so that it watches the buttons and the clock at the same time.</dd>
+    </dl>
+    <details><summary>A hint for Bronze</summary><div class="inner">
+      <p>Change the header to <code>void playStep(int which, int howLong)</code> and use <code>howLong</code> instead of the fixed 400. Then work out the value where you call it, for example <code>400 - sequenceLength * 15</code>. Do not let it go below about 120, or the notes become impossible to hear.</p>
+    </div></details>
+    <details><summary>A hint for Gold, after you have tried it properly</summary><div class="inner">
+      <p>The shape you want: record the start time before the waiting begins, then loop while checking two things each round. Have the buttons been pressed? Has too long passed?</p>
+      <p>Hand back the button number if one was pressed, and hand back something impossible, like &minus;1, if the time ran out. Then in <code>loop</code>, check for that impossible value and treat it as a loss.</p>
+      <p>Using an impossible value to mean "nothing happened" is a very common trick, and you have now met it.</p>
+    </div></details>
+  </div>
+</section>
+
+<section class="part" id="make">
+  <div class="parthead"><span class="tag">Part 12</span><h2>Make: a game somebody will play twice</h2><span class="mins">120 min</span></div>
+  <div class="col stack">
+    <div class="brief">
+      <h5>What to build</h5>
+      <p>A game or toy that a person picks up, understands without instructions, and asks to play again. Pick one, or bring your own:</p>
+      <ul class="plain">
+        <li>Your own version of the memory game, with your own rules</li>
+        <li>A reaction race for two players: a light comes on at a random moment, first to press wins</li>
+        <li>A rhythm game: copy the pattern of gaps rather than the order of lights</li>
+        <li>A one-button timing game: stop the moving light on the right one</li>
+        <li>A simple instrument: four buttons, four notes, and a way to record and play back</li>
+      </ul>
+      <h5 style="margin-top:.3rem">It is finished when all of these are true</h5>
+      <ul class="plain">
+        <li>Your sketch has at least <strong>four functions you wrote yourself</strong>, and each one does a single job you can say in one sentence</li>
+        <li>Nothing important is missed because the board was stuck in a <code>delay</code></li>
+        <li>A player knows whose turn it is at all times, without being told</li>
+        <li>Losing feels like something happened, not like the game just stopped</li>
+        <li>Somebody works out how to play it with no more than one sentence from you</li>
+      </ul>
+    </div>
+
+    <h3>The test that matters most in this band</h3>
+    <p>Hand it to somebody and say one sentence, no more. Then <strong>be quiet and watch</strong>. Do not help. Do not explain. Let them be confused.</p>
+    <p>Write down every moment they did not know what to do, and every moment they thought it was their turn when it was not.</p>
+    <p>Then ask one question at the end: <em>would you play it again?</em> Write down the answer exactly, including the pause before it.</p>
+    <div class="ifnot"><b>If you cannot find anyone today</b>Put the game down and do not touch it for a full day. Then pick it up and play it cold. You will have forgotten enough of your own design to notice the confusing parts. It is not as good as a real player, but it is much better than nothing. Say in your log which you did.</div>
+
+    <h3 style="margin-top:.6rem">Show your work</h3>
+    <p>Post a video of somebody else playing it, if you had somebody. If you tested it alone, post the video of yourself playing it cold the next day, and say so. Include your build log, your list of confusions, and a list of your functions with the one sentence each.</p>
+    <p>Then read one other person's sketch and tell them one place where a job could be pulled out into a function of its own.</p>
+    <div class="ifnot"><b>If there is no other sketch to read</b>Do it to <code>b5_05</code> instead. It is somebody else's code, it is ninety lines long, and there is at least one job in <code>loop</code> that could still be pulled out into a function. Find it and write the function header you would give it.</div>
+  </div>
+</section>
+
+<section class="part" id="check">
+  <div class="parthead"><span class="tag">Part 13</span><h2>Check yourself</h2><span class="mins">20 min</span></div>
+  <div class="col stack">
+    <p>Code you have not seen. Answer from reading only.</p>
+    <pre><code>int lampPin = 5;
+int buttonPin = 7;
+int count = 0;
+
+unsigned long lastBlink = 0;
+int gap = 500;
+
+void blinkOnce(int pin, int howLong) {
+  digitalWrite(pin, HIGH);
+  delay(howLong);
+  digitalWrite(pin, LOW);
+}
+
+void setup() {
+  pinMode(lampPin, OUTPUT);
+  pinMode(buttonPin, INPUT_PULLUP);
+  Serial.begin(9600);
+}
+
+void loop() {
+  unsigned long now = millis();
+
+  if (now - lastBlink &gt;= gap) {
+    lastBlink = now;
+    blinkOnce(lampPin, 300);
+    count = count + 1;
+    Serial.println(count);
+  }
+
+  if (digitalRead(buttonPin) == LOW) {
+    Serial.println("pressed");
+  }
+}</code></pre>
+    <ol class="num">
+      <li>How many values does <code>blinkOnce</code> need when you call it, and what are they for?</li>
+      <li>Why does <code>blinkOnce</code> start with <code>void</code> rather than <code>int</code>?</li>
+      <li>How often does the lamp blink?</li>
+      <li>Out of every 500 thousandths of a second, roughly how much of it is the board unable to see the button? Explain how you worked it out.</li>
+      <li>What will the serial monitor show if you hold the button down for two seconds?</li>
+      <li><code>gap</code> is an <code>int</code> but <code>lastBlink</code> is an <code>unsigned long</code>. Is that a problem here? What would happen if <code>lastBlink</code> were an <code>int</code> too?</li>
+    </ol>
+    <details><summary>Answers</summary><div class="inner">
+      <p><strong>1.</strong> Two: which pin to blink, and how long to keep it on.</p>
+      <p><strong>2.</strong> Because it does not hand anything back. It just does something.</p>
+      <p><strong>3.</strong> Every 500 thousandths of a second, so twice a second.</p>
+      <p><strong>4.</strong> About 300 out of every 500, which is roughly three fifths of the time. The <code>delay(300)</code> inside <code>blinkOnce</code> is blocking, and it runs every time the lamp blinks. So although the outer timing uses <code>millis</code> properly, a blocking <code>delay</code> has been hidden inside a function and the same old problem is back. <em>This is the question that matters most in this band. Using <code>millis</code> outside does not help if there is a <code>delay</code> inside.</em></p>
+      <p><strong>5.</strong> The word <code>pressed</code>, printed thousands of times, flooding the window. There is no edge detection and no debounce, so it prints on every round of <code>loop</code> that the button is down. The counting numbers will still appear twice a second, mixed into the flood.</p>
+      <p><strong>6.</strong> It is not a problem here. The subtraction happens on the <code>unsigned long</code>, and comparing the result against an <code>int</code> works fine for these sizes. If <code>lastBlink</code> were an <code>int</code>, it would work for about 32 seconds and then <code>millis()</code> would grow past what an <code>int</code> can hold, and the timing would go wrong in a way that looks random. Accept any answer that says the type matters because <code>millis</code> gets very large.</p>
+    </div></details>
+  </div>
+</section>
+
+<section class="part" id="problems">
+  <div class="parthead"><span class="tag">Part 14</span><h2>When something goes wrong</h2></div>
+  <div class="scroll">
+    <table>
+      <thead><tr><th>What you see</th><th>What it usually is</th><th>What to do</th></tr></thead>
+      <tbody>
+        <tr><td>The game says game over immediately</td><td>A button reads LOW when untouched</td><td>Two legs from the same side. Test each button on its own with the Band 3 serial watch sketch.</td></tr>
+        <tr><td>The same sequence every time you power up</td><td>No <code>randomSeed</code>, or A0 has something on it</td><td>See Part 8. The seeding pin must be genuinely unconnected.</td></tr>
+        <tr><td>One press counts as several steps</td><td>The wait-for-release loop is missing</td><td>See Part 10d.</td></tr>
+        <tr><td>The buzzer clicks instead of playing notes</td><td>It is an active buzzer</td><td>Passive buzzers show a green circuit board underneath. An active one still works, just with one fixed note.</td></tr>
+        <tr><td>Everything is far too fast</td><td>A missing <code>lastTime = now;</code></td><td>See Part 10b.</td></tr>
+        <tr><td>Timing works for half a minute, then goes strange</td><td>An <code>int</code> where an <code>unsigned long</code> is needed</td><td>Any name holding a value from <code>millis</code> must be <code>unsigned long</code>.</td></tr>
+        <tr><td>"not declared in this scope" on a function you wrote</td><td>A spelling difference, or a name that only exists inside another function</td><td>Check the spelling and the capital letters match exactly, in both places. Then check you are not using a name that was made inside a different function, because those do not exist outside it.</td></tr>
+        <tr><td>A name inside a function is not visible outside it</td><td>That is correct behaviour</td><td>Names made inside a function only exist there. If two parts need it, make it at the top of the file.</td></tr>
+        <tr><td>A button works but the wrong light responds</td><td>Your button order and light order do not match</td><td>Buttons are pins 8 to 11 and lights are pins 2 to 5, in the same order. Check physically, left to right.</td></tr>
+        <tr><td>The board resets or behaves oddly under load</td><td>Too many lights on at once through the board</td><td>Check every LED has its own resistor. Four LEDs and a buzzer is fine; four LEDs with no resistors is not.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="col stack" style="margin-top:1.2rem">
+    <div class="callout">
+      <h5>Still stuck after 30 minutes?</h5>
+      <p>Photograph the board from above, copy some serial output, and say which stage of Part 4 last worked. That last detail is the useful one: it tells whoever helps you where to start.</p>
+    </div>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Done</span><h2>What you know now</h2></div>
+  <div class="col stack">
+    <p>This was the hinge of the course, and you are through it.</p>
+    <p>Before this band you could only write programs that were one long list. Now you can break a job into pieces, give each piece a name, and put the pieces together. That is the difference between programs that fit on a page and programs that do something real.</p>
+    <p>And you know why <code>delay</code> was never quite enough, because you built something that failed on account of it and then fixed it yourself.</p>
+    <h3 style="margin-top:.6rem">Before you move on, make sure you have</h3>
+    <ul class="plain">
+      <li>Your game, with a video of somebody else playing it, or of you playing it cold a day later</li>
+      <li>Your list of the moments they were confused, and their answer to "would you play again"</li>
+      <li>The list of your own functions with one sentence each</li>
+      <li>Your completed timing table from Part 10a</li>
+      <li>Your answers from the counting activity in Part 1</li>
+      <li>Your build log for this band</li>
+      <li>Five or six correct answers in Part 13, including question 4</li>
+    </ul>
+    <p style="margin-top:.6rem"><strong>Next is Band 6: Things That Move.</strong> Everything you have built so far makes light or sound. Next it moves, and you find out why a motor cannot simply be plugged into a pin.</p>
+  </div>
+</section>
+
+
+<nav class="pager" aria-label="Bands">
+<a href="band-4.html"><span class="dir">Previous</span><span class="name">Band 4: Night Guard</span></a>
+<a class="next" href="../guide.html"><span class="dir">Next</span><span class="name">Bands 6 to 8 are still being written. Read the facilitator guide &rarr;</span></a>
+</nav>
+
+<footer>
+  <p>Bozoma Innovation Hub &nbsp;·&nbsp; Aiyinasi, Ellembelle District. Band 5 of nine. Every sketch used here was compiled and tested before it reached you.</p>
+</footer>
+
+</div>
+</body>
+</html>

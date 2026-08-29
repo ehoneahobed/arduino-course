@@ -1,0 +1,752 @@
+<!doctype html>
+<html lang="en" data-band="4">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Band 4: Night Guard · Arduino Ladder</title>
+  <meta name="description" content="Sensors give you a number instead of a yes or no. And a number means nothing until you go and measure what it means.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+  <link rel="stylesheet" href="../assets/course.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the lesson</a>
+<div class="topbar">
+  <a class="home" href="../index.html">Arduino Ladder <span>· Bozoma Innovation Hub</span></a>
+  <nav class="bandlinks" aria-label="Bands"><a href="../bands/band-0.html">0</a><a href="../bands/band-1.html">1</a><a href="../bands/band-2.html">2</a><a href="../bands/band-3.html">3</a><a href="../bands/band-4.html" aria-current="page">4</a><a href="../bands/band-5.html">5</a></nav>
+</div>
+<div class="wrap" id="main">
+<nav aria-label="Sections">
+  <a href="#start">Start here</a>
+  <a href="#rope">Think first</a>
+  <a href="#numbers">0 to 1023</a>
+  <a href="#knob">The knob</a>
+  <a href="#read">Read the code</a>
+  <a href="#build1">Build the knob</a>
+  <a href="#map">map</a>
+  <a href="#light">The light sensor</a>
+  <a href="#calibrate">Calibration</a>
+  <a href="#division">The division trap</a>
+  <a href="#guard">Build the guard</a>
+  <a href="#closer">Look closer</a>
+  <a href="#change">Change it</a>
+  <a href="#make">Make yours</a>
+  <a href="#check">Check yourself</a>
+  <a href="#problems">Problems</a>
+</nav>
+
+<header style="padding:3rem 0 1rem">
+  <p class="eyebrow">Bozoma Innovation Hub &nbsp;·&nbsp; Arduino Ladder &nbsp;·&nbsp; Band 4</p>
+  <h1 style="margin:.8rem 0">Night Guard</h1>
+  <p class="col sub" style="font-size:1.1em">Buttons only ever say yes or no. Sensors give you a number. In this band you learn to read those numbers, and to find out the hard way that a number from a sensor means nothing at all until you decide what it means.</p>
+  <p class="col note" style="margin-top:.8rem">About 7 hours. Finish Band 3 first. You will need the serial monitor constantly.</p>
+</header>
+
+<section class="sketchbox">
+  <h2>Sketches for this band</h2>
+  <ul><li><a href="../sketches/b4_01_pot_read_given.ino">b4_01_pot_read_given.ino</a></li><li><a href="../sketches/b4_02_pot_dim_led.ino">b4_02_pot_dim_led.ino</a></li><li><a href="../sketches/b4_03_light_read.ino">b4_03_light_read.ino</a></li><li><a href="../sketches/b4_04_buggy_intdiv.ino">b4_04_buggy_intdiv.ino</a></li><li><a href="../sketches/b4_05_night_guard_worked.ino">b4_05_night_guard_worked.ino</a></li></ul>
+  <p>Click one to save it, or get every sketch at once from <a href="../downloads/arduino-ladder-sketches.zip" style="border:0;background:none;padding:0">the downloads page</a>. Each file opens with a plain-English header telling you what it does and how to wire it.</p>
+</section>
+
+
+<section class="part" id="start">
+  <div class="parthead"><span class="tag">Start here</span><h2>What this band is for</h2></div>
+  <div class="col stack">
+    <p>Everything the board has read so far has been on or off. A button is pressed or it is not. There is no in between.</p>
+    <p>The world is not like that. Light is not on or off. It is dim, or bright, or somewhere between. Temperature is not hot or cold. To build anything that reacts to the real world, the board needs to read <em>amounts</em>, not just yes and no.</p>
+    <p>That is what this band gives you, along with the most important lesson in the whole course about working with real things:</p>
+    <div class="callout">
+      <p><strong>A sensor does not tell you what something is. It tells you a number. What that number means is your job to work out, in the place where the thing will actually be used.</strong></p>
+    </div>
+    <p>That job has a name, <strong>calibration</strong>, and it is Part 8 of this band. Skip it and your night light will work perfectly on your desk and be useless in the room you built it for.</p>
+
+    <h3 style="margin-top:.5rem">What you need</h3>
+    <ul class="plain">
+      <li>Your board, USB cable and breadboard</li>
+      <li>One potentiometer, the round knob with three legs</li>
+      <li>One light sensor, a small round part with a wiggly line on top. It may be called an LDR or a photoresistor.</li>
+      <li>One resistor of 10 000 ohms. The stripes read brown, black, orange.</li>
+      <li>One LED and one 220 ohm resistor</li>
+      <li>Jumper wires</li>
+    </ul>
+
+    <h3 style="margin-top:.5rem">By the end you will be able to</h3>
+    <ul class="plain">
+      <li>Read a number from a sensor and say what range it can be in</li>
+      <li>Explain how a knob turns a turning motion into a voltage</li>
+      <li>Turn a number from one range into another with <code>map</code></li>
+      <li>Measure the same thing in three real places and write down what you found</li>
+      <li>Say why <code>5 / 1023</code> gives you zero, and fix it</li>
+      <li>Build something that decides for itself, using a limit that a person can set</li>
+    </ul>
+  </div>
+</section>
+
+<section class="part" id="rope">
+  <div class="parthead"><span class="tag">Part 1</span><h2>Think first: the rope and the walk</h2><span class="mins">15 min</span></div>
+  <div class="col stack">
+    <h3>Activity one: the rope</h3>
+    <p>Tie a piece of string or rope between two fixed points, a couple of metres apart. A door handle and a chair leg will do. Make it fairly tight.</p>
+    <p>Now pinch the rope with your fingers at some point along it and slide your hand slowly from one end to the other.</p>
+    <div class="callout">
+      <h5>Answer these</h5>
+      <ol class="num">
+        <li>When your hand is right at the left-hand end, how much rope is on your left? How much on your right?</li>
+        <li>When your hand is exactly in the middle, what fraction of the rope is on each side?</li>
+        <li>As you slide from left to right, does the amount on your left change smoothly, or in jumps?</li>
+      </ol>
+    </div>
+    <p>That is a potentiometer. The rope is a strip of material that resists electricity. The two ends are fixed. Your pinching hand is a contact that slides along it. Where your hand is decides how the total is split between the two sides.</p>
+    <p>Hold on to that. In Part 3 the two ends will be 5 volts and ground, and your hand will be the middle leg going to the board.</p>
+
+    <h3 style="margin-top:.8rem">Activity two: the brightness walk</h3>
+    <p>Take a pen and paper. Visit five different places, indoors and outdoors. For example: outside in the sun, outside in shade, by a window, in the middle of a room, and in a cupboard or under a cloth.</p>
+    <p>In each place, write down <strong>a number from 0 to 10</strong> for how bright it feels.</p>
+    <div class="callout">
+      <h5>Then answer</h5>
+      <ol class="num">
+        <li>Is your "7" the same as your friend's "7"? How would you find out?</li>
+        <li>If you did the same walk at eight in the evening instead, would your five numbers be the same?</li>
+        <li>Somebody asks you to build a lamp that switches on "when it gets dark". What number would you tell it to use as the switching point, and how would you decide?</li>
+      </ol>
+    </div>
+    <p>Keep this paper. In Part 8 you will do the exact same walk again, carrying the sensor, and compare your numbers with its numbers.</p>
+    <p class="note">Question 3 has no right answer yet, and that is the point. Nobody can know the right switching number without going and measuring. Not you, not your facilitator, not the person who wrote the sensor.</p>
+  </div>
+</section>
+
+<section class="part" id="numbers">
+  <div class="parthead"><span class="tag">Part 2</span><h2>What the board gives you</h2><span class="mins">15 min</span></div>
+  <div class="col stack">
+    <p>There is a second row of pins on your board, along the bottom, marked <code>A0</code> to <code>A5</code>. The A stands for analog, which just means "a smooth amount rather than on or off".</p>
+    <p>These pins do something the digital pins cannot. They measure the <strong>voltage</strong> on the pin and give you a number for it.</p>
+    <p>The instruction is <code>analogRead</code>, and it works like this:</p>
+    <pre><code>int reading = analogRead(A0);</code></pre>
+    <p>The number you get back is always between <strong>0 and 1023</strong>.</p>
+    <ul class="plain">
+      <li>0 volts on the pin gives you <strong>0</strong></li>
+      <li>5 volts on the pin gives you <strong>1023</strong></li>
+      <li>Anything in between gives you a number in between, in proportion</li>
+    </ul>
+    <p>So 2.5 volts, exactly half, gives about 512.</p>
+
+    <div class="callout">
+      <h5>Why 1023 and not 1000?</h5>
+      <p>Band 2 met the same oddity with 255. It is the same reason.</p>
+      <p>The board splits the range into a fixed number of steps, and that number comes from how computers store things, not from anything convenient for humans. Here there are 1024 steps, counted from 0, so the last one is 1023.</p>
+      <p>Whenever you see a number like 255 or 1023, it came from the size of a box.</p>
+    </div>
+
+    <div class="ifnot"><b>An important warning</b>Never put more than 5 volts on any pin, and never join 5V straight to GND. Everything in this band stays inside the board's own 5 volt supply, so you are safe as long as you follow the wiring.</div>
+
+    <div class="words">
+      <h5>Words to know</h5>
+      <dl>
+        <dt>analog</dt><dd>A smooth amount that can be anything in a range, rather than just on or off.</dd>
+        <dt>voltage</dt><dd>How hard the electricity is being pushed. Measured in volts.</dd>
+        <dt>analogRead</dt><dd>Measures the voltage on an analog pin and gives back a number from 0 to 1023.</dd>
+        <dt>calibration</dt><dd>Measuring, in the real place, what the sensor's numbers actually mean.</dd>
+      </dl>
+    </div>
+    <p class="note"><strong>Do not confuse these two.</strong> <code>analogWrite</code> from Band 2 sends brightness out, and takes 0 to 255. <code>analogRead</code> here takes a measurement in, and gives 0 to 1023. Different jobs, different ranges, similar names. Write both in your glossary, side by side.</p>
+  </div>
+</section>
+
+<section class="part" id="knob">
+  <div class="parthead"><span class="tag">Part 3</span><h2>The knob, and how it makes a voltage</h2><span class="mins">15 min</span></div>
+  <div class="col stack">
+    <p>A potentiometer is the rope from Part 1, built as a component. Take yours out and look at it. Three legs, and a shaft you can turn.</p>
+    <p>Inside there is a curved strip of resistive material. The two <strong>outer legs</strong> are joined to the two ends of that strip. The <strong>middle leg</strong> is joined to a contact that slides along it as you turn.</p>
+
+    <figure>
+      <svg viewBox="0 0 700 380" role="img" aria-label="A potentiometer wired as a voltage divider. Five volts goes to the top leg, ground to the bottom leg, and the middle leg goes to analog pin A0. Turning the knob moves where the middle leg taps, which changes the voltage, which the board reports as a number from 0 to 1023.">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker></defs>
+<g fill="none" stroke="currentColor" stroke-width="1.6">
+  <line x1="300" y1="40" x2="300" y2="70"/>
+  <line x1="280" y1="40" x2="320" y2="40"/>
+  <rect x="278" y="70" width="44" height="180" rx="4"/>
+  <line x1="300" y1="250" x2="300" y2="280"/>
+  <line x1="280" y1="280" x2="320" y2="280"/>
+  <line x1="288" y1="288" x2="312" y2="288"/>
+  <line x1="294" y1="296" x2="306" y2="296"/>
+  <line x1="322" y1="150" x2="430" y2="150" marker-end="url(#a)"/>
+  <rect x="432" y="132" width="90" height="36" rx="5"/>
+  <polyline points="322,150 336,142 336,158 322,150"/>
+</g>
+<g fill="currentColor" font-size="13" font-family="Archivo, Arial, sans-serif">
+  <text x="300" y="28" text-anchor="middle">5V</text>
+  <text x="300" y="318" text-anchor="middle">GND</text>
+  <text x="477" y="155" text-anchor="middle">Pin A0</text>
+  <text x="256" y="120" text-anchor="end">turning the knob</text>
+  <text x="256" y="137" text-anchor="end">moves this tap</text>
+  <text x="256" y="154" text-anchor="end">up or down</text>
+</g>
+<g stroke="currentColor" stroke-width="1" opacity="0.5" fill="none"><line x1="262" y1="148" x2="290" y2="150"/></g>
+<g stroke="currentColor" stroke-width="1.6" fill="none"><line x1="90" y1="345" x2="610" y2="345"/></g>
+<g stroke="currentColor" stroke-width="1.6" fill="none">
+  <line x1="90" y1="338" x2="90" y2="352"/>
+  <line x1="350" y1="338" x2="350" y2="352"/>
+  <line x1="610" y1="338" x2="610" y2="352"/>
+</g>
+<g fill="currentColor" font-size="12" font-family="IBM Plex Mono, monospace">
+  <text x="90" y="332" text-anchor="middle">0 V</text>
+  <text x="350" y="332" text-anchor="middle">2.5 V</text>
+  <text x="610" y="332" text-anchor="middle">5 V</text>
+  <text x="90" y="368" text-anchor="middle">0</text>
+  <text x="350" y="368" text-anchor="middle">512</text>
+  <text x="610" y="368" text-anchor="middle">1023</text>
+</g>
+<text x="350" y="392" text-anchor="middle" font-size="12.5" fill="currentColor" opacity="0.8" font-family="Archivo, Arial, sans-serif">what analogRead gives you</text>
+</svg>
+      <figcaption>How a knob makes a voltage. The outer legs go to 5V and to ground, so the whole strip has 5 volts across it. The middle leg picks up whatever voltage is at the point where the contact is sitting, and the board turns that voltage into a number from 0 to 1023.</figcaption>
+    </figure>
+
+    <p>So when you turn the knob fully one way, the contact is right next to the 5 volt end, and the middle leg reads close to 5 volts, which is close to 1023. Turn it fully the other way and it sits next to ground, so close to 0 volts, which is 0. Anywhere between and you get a proportion.</p>
+    <p>This arrangement, where a voltage is split between two parts and you tap the middle, has a name: a <strong>voltage divider</strong>. Remember the name, because the light sensor in Part 7 is the same idea with one part replaced.</p>
+
+    <div class="words">
+      <h5>Words to know</h5>
+      <dl>
+        <dt>potentiometer</dt><dd>A knob with three legs whose middle leg gives a voltage depending on the position of the knob. Often shortened to "pot".</dd>
+        <dt>voltage divider</dt><dd>Two resistances in a row across a supply, with a wire tapping the point between them.</dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section class="part" id="read">
+  <div class="parthead"><span class="tag">Part 4</span><h2>Read the code before you run it</h2><span class="mins">6 min</span></div>
+  <div class="col stack">
+    <span class="filename">b4_01_pot_read_given.ino</span>
+    <pre><code>int knobPin = A0;
+
+void setup() {
+  Serial.begin(9600);
+}
+
+void loop() {
+  int reading = analogRead(knobPin);
+  Serial.println(reading);
+  delay(200);
+}</code></pre>
+    <div class="callout">
+      <h5>Write your answers down first</h5>
+      <ol class="num">
+        <li>What is the smallest number you expect to see? What is the largest?</li>
+        <li>How many numbers will appear each second?</li>
+        <li>There is no <code>pinMode</code> line for <code>knobPin</code>. Is that a mistake?</li>
+        <li>Notice that the pin is written <code>A0</code>, with a capital A, and not just <code>0</code>. Why do you think that is?</li>
+      </ol>
+    </div>
+    <details><summary>Answers to 3 and 4, once you have written your guesses</summary><div class="inner">
+      <p><strong>3.</strong> Not a mistake. Analog pins used for reading do not need <code>pinMode</code>. You can write it and it does no harm, but it is not required.</p>
+      <p><strong>4.</strong> Because there is already a pin called 0. Digital pin 0 and analog pin A0 are two different pins on two different edges of the board. The capital A is how you tell the board which one you mean. Leave it out and your sketch will quietly read the wrong pin.</p>
+    </div></details>
+  </div>
+</section>
+
+<section class="part" id="build1">
+  <div class="parthead"><span class="tag">Part 5</span><h2>Build the knob and watch it</h2><span class="mins">25 min</span></div>
+  <div class="col stack">
+    <div class="ifnot" style="margin-bottom:.4rem"><b>Two things before you start</b>USB unplugged. And for this whole band, use the pair of rails along <strong>one</strong> edge of the breadboard for everything, because on most boards the top rails and the bottom rails are not joined to each other.</div>
+
+    <div class="steps">
+      <div class="step"><div class="body">
+        <p><strong>Power the rails.</strong> Wire from the <strong>+ rail</strong> to the <strong>5V</strong> pin. Wire from the <strong>&#8722; rail</strong> to a <strong>GND</strong> pin.</p>
+        <p class="note">This is the first build where the breadboard needs 5 volts of its own. Until now everything was powered straight from a digital pin.</p>
+        <div class="ifnot"><b>Check this twice</b>The + rail must go to 5V and the &#8722; rail must go to GND. Joining them the wrong way round, or joining the two rails to each other, is the one mistake that can damage the board.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Push the potentiometer into the board</strong> so its three legs land in <code>f5</code>, <code>f6</code> and <code>f7</code>.</p>
+        <p class="note">Some knobs have legs that are too wide or too thick for a breadboard. If yours will not go in, bend the legs gently until they line up. Do not force it.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Wire from <code>j5</code> to the + rail.</strong> That is one end of the rope.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Wire from <code>j7</code> to the &#8722; rail.</strong> That is the other end.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Wire from <code>j6</code> to pin <code>A0</code>.</strong> That is your hand on the rope, going to the board.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Plug in, upload <code>b4_01_pot_read_given.ino</code>, and open the serial monitor.</strong></p>
+        <div class="see"><b>You should see</b>Numbers scrolling past, five a second. Turn the knob slowly all the way one way and watch them fall towards 0. Turn it the other way and watch them climb towards 1023.</div>
+        <div class="ifnot"><b>If the number never changes</b>One of the two outer wires is probably not connected. Check <code>j5</code> and <code>j7</code>, and check the rails really do reach 5V and GND.</div>
+        <div class="ifnot"><b>If the number jumps about wildly on its own</b>The middle leg is probably not connected to A0. An analog pin with nothing on it floats, exactly like the button pin in Band 3.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Find the two ends.</strong> Turn the knob as far as it will go each way and write down the exact largest and smallest numbers you can reach.</p>
+        <p class="note">Many knobs will not quite reach 0 or 1023. Yours might stop at 3 and 1020. That is normal and it is useful to know, because it means you should never write code that waits for exactly 1023.</p>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<section class="part" id="map">
+  <div class="parthead"><span class="tag">Part 6</span><h2><code>map</code>: turning one range into another</h2><span class="mins">25 min</span></div>
+  <div class="col stack">
+    <p>Here is a problem you now have. Your knob gives you 0 to 1023. Brightness needs 0 to 255. They do not match.</p>
+    <p>You could do the arithmetic yourself. There is an instruction that does it for you:</p>
+    <pre><code>int brightness = map(reading, 0, 1023, 0, 255);</code></pre>
+    <p>Read it as a sentence: <em>take <code>reading</code>, which lives on a scale from 0 to 1023, and give me the matching place on a scale from 0 to 255.</em></p>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Part</th><th>Means</th></tr></thead>
+        <tbody>
+          <tr><td><code>reading</code></td><td>the number you have</td></tr>
+          <tr><td><code>0, 1023</code></td><td>the scale it came from: lowest, then highest</td></tr>
+          <tr><td><code>0, 255</code></td><td>the scale you want: lowest, then highest</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>So 0 becomes 0, 1023 becomes 255, and 512 becomes about 127.</p>
+
+    <div class="steps">
+      <div class="step"><div class="body">
+        <p><strong>Add a light.</strong> LED long leg into <code>f20</code>, short leg into <code>f22</code>. Resistor from <code>j20</code> to <code>j18</code>. Wire <code>j18</code> to pin 9. Wire <code>j22</code> to the &#8722; rail.</p>
+        <div class="ifnot"><b>If the light never comes on</b>Turn the LED round first, then check both legs are in different columns. This band puts everything in the top block, rows f to j, so the light's ground goes to the same &#8722; rail as the knob. If the knob still reads fine but the light is dead, it is the light, not the wiring to the board.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Upload <code>b4_02_pot_dim_led.ino</code></strong> and keep the serial monitor open.</p>
+        <div class="see"><b>You should see</b>The light brightening and dimming as you turn the knob, and two numbers on each line: the raw reading and the brightness it was turned into. Watch how 1023 becomes 255.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Now try it backwards.</strong> Change the line to this and upload again:</p>
+        <pre><code>int brightness = map(reading, 0, 1023, 255, 0);</code></pre>
+        <div class="see"><b>You should see</b>The knob works the other way round. Turning it up makes the light dimmer.</div>
+        <p class="note">Swapping the last two numbers flips the direction. That is a genuinely useful trick, and it is much easier than rewiring anything.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>And try a small range.</strong> Change it to <code>map(reading, 0, 1023, 60, 120);</code> and upload.</p>
+        <div class="see"><b>You should see</b>The light never goes fully off and never goes fully bright. The whole turn of the knob now only covers a narrow band of brightness.</div>
+      </div></div>
+    </div>
+    <div class="callout">
+      <h5>What <code>map</code> does not do</h5>
+      <p>It does not stop numbers going outside the range. If your reading is bigger than the number you promised, <code>map</code> will happily give you a result bigger than 255, and <code>analogWrite</code> will behave oddly.</p>
+      <p>There is a second instruction for that: <code>constrain(value, 0, 255)</code> forces anything below 0 up to 0 and anything above 255 down to 255. Wrapping one around the other is a common and sensible habit:</p>
+      <pre><code>int brightness = constrain(map(reading, 0, 1023, 0, 255), 0, 255);</code></pre>
+    </div>
+  </div>
+</section>
+
+<section class="part" id="light">
+  <div class="parthead"><span class="tag">Part 7</span><h2>The light sensor</h2><span class="mins">30 min</span></div>
+  <div class="col stack">
+    <p>Take out the light sensor. It is a small round part, usually orange or brown on top, with a wiggly line across its face.</p>
+    <p>It is a resistor whose resistance changes with light:</p>
+    <ul class="plain">
+      <li><strong>Bright light</strong> makes it resist <em>less</em>.</li>
+      <li><strong>Darkness</strong> makes it resist <em>much more</em>.</li>
+    </ul>
+    <p>It has no direction, so it goes in either way round.</p>
+
+    <div class="callout">
+      <h5>Here is the difficulty</h5>
+      <p>The board cannot measure resistance. It can only measure <strong>voltage</strong>. So a sensor that changes its resistance is no use on its own.</p>
+      <p>The fix is the voltage divider from Part 3. Put the sensor at the top and a fixed resistor at the bottom, and tap the middle. Now, as the sensor's resistance changes, the voltage at the middle changes, and the board <em>can</em> read that.</p>
+      <p>This is one of the most useful ideas in all of electronics. Almost every simple sensor you will ever meet is wired exactly this way.</p>
+    </div>
+
+    <figure>
+      <svg viewBox="0 0 700 340" role="img" aria-label="A light sensor wired as a voltage divider. Five volts goes through the light sensor to a middle point, which connects to pin A1, and a ten thousand ohm resistor carries on from that middle point to ground. More light lowers the sensor's resistance and raises the voltage at the middle point.">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker></defs>
+<g fill="none" stroke="currentColor" stroke-width="1.6">
+  <line x1="300" y1="30" x2="300" y2="60"/>
+  <line x1="280" y1="30" x2="320" y2="30"/>
+  <polyline points="300,60 292,70 308,82 292,94 308,106 300,116"/>
+  <line x1="300" y1="116" x2="300" y2="180"/>
+  <polyline points="300,180 292,190 308,202 292,214 308,226 300,236"/>
+  <line x1="300" y1="236" x2="300" y2="272"/>
+  <line x1="280" y1="272" x2="320" y2="272"/>
+  <line x1="288" y1="280" x2="312" y2="280"/>
+  <line x1="294" y1="288" x2="306" y2="288"/>
+  <line x1="300" y1="148" x2="430" y2="148" marker-end="url(#a)"/>
+  <rect x="432" y="130" width="90" height="36" rx="5"/>
+  <circle cx="300" cy="148" r="3.5" fill="currentColor"/>
+</g>
+<g fill="currentColor" font-size="13" font-family="Archivo, Arial, sans-serif">
+  <text x="300" y="18" text-anchor="middle">5V</text>
+  <text x="300" y="310" text-anchor="middle">GND</text>
+  <text x="477" y="153" text-anchor="middle">Pin A1</text>
+  <text x="268" y="82" text-anchor="end">light sensor</text>
+  <text x="268" y="212" text-anchor="end">10 k&#8486; resistor</text>
+</g>
+<g fill="currentColor" font-size="12.5" font-family="Archivo, Arial, sans-serif">
+  <text x="540" y="80">More light</text>
+  <text x="540" y="98" opacity="0.85">&#8594; sensor resists less</text>
+  <text x="540" y="116" opacity="0.85">&#8594; this point rises</text>
+  <text x="540" y="134" opacity="0.85">&#8594; bigger number</text>
+</g>
+</svg>
+      <figcaption>The light sensor wired as a voltage divider. Five volts goes through the sensor to a middle point, and a fixed 10 000 ohm resistor carries on from that point down to ground. Pin A1 reads the middle. More light lowers the sensor's resistance, which raises the voltage at the middle, which raises the number.</figcaption>
+    </figure>
+
+    <div class="ifnot" style="margin-bottom:.4rem"><b>Before you start</b>USB unplugged.</div>
+    <div class="steps">
+      <div class="step"><div class="body">
+        <p><strong>Push the light sensor in</strong> so its two legs land in <code>f12</code> and <code>f14</code>.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Wire from <code>j12</code> to the + rail.</strong></p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Put the 10 000 ohm resistor from <code>j14</code> to <code>j16</code>.</strong> Its stripes read brown, black, orange. It is a different resistor from the 220 ohm ones. Check the stripes, do not guess.</p>
+        <div class="ifnot"><b>If you use a 220 ohm resistor here by mistake</b>Nothing will break, but the reading will barely move as the light changes, and you will think the sensor is faulty. Check the stripes.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Wire from <code>j16</code> to the &#8722; rail.</strong></p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Wire from <code>h14</code> to pin <code>A1</code>.</strong> That is the middle point, between the sensor and the resistor.</p>
+        <p class="note">Hole <code>h14</code> is the same column as <code>f14</code> and <code>j14</code>, so all three are the same connection. Any free hole in that column works.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Plug in, upload <code>b4_03_light_read.ino</code>, and open the serial monitor.</strong></p>
+        <div class="see"><b>You should see</b>A number that changes as you change the light. Cup your hand over the sensor and watch it fall. Shine a phone torch on it and watch it climb.</div>
+        <div class="ifnot"><b>If the number hardly moves at all</b>Check the resistor stripes. Then check the sensor is really in two different columns.</div>
+        <div class="ifnot"><b>If the number goes the wrong way for you</b>You may have the sensor and resistor swapped over, which is not wrong, just upside down. Either swap them, or leave it and remember that for you a bigger number means darker. Write down which it is.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Write down four numbers:</strong> your reading with your hand fully covering the sensor, in the room normally, near a window, and with a torch on it.</p>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<section class="part" id="calibrate">
+  <div class="parthead"><span class="tag">Part 8</span><h2>Calibration: the most important part of this band</h2><span class="mins">30 min</span></div>
+  <div class="col stack">
+    <p>You now have a sensor giving numbers. Here is the question that decides whether your project works or not:</p>
+    <p><strong>What number counts as "dark"?</strong></p>
+    <p>Nobody can tell you. Not this page, not your facilitator, not the internet. It depends on your sensor, your resistor, the room, the time of day, and which way the sensor is pointing. Two people doing this band side by side will get different answers, and both will be right.</p>
+    <p>So go and find out.</p>
+
+    <div class="steps">
+      <div class="step"><div class="body">
+        <p><strong>Get your paper from Part 1</strong>, the one with your five places and your 0 to 10 guesses.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Take the board and a laptop to each of those five places</strong>, with <code>b4_03</code> running and the serial monitor open. Write the sensor's number next to your guess.</p>
+        <p class="note">If carrying a laptop about is awkward, do it in whatever three places you can reach. Three real measurements beat five imagined ones.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Make a table like this</strong> and fill it in properly.</p>
+        <div class="scroll">
+          <table>
+            <thead><tr><th>Place</th><th>My guess, 0 to 10</th><th>Sensor number</th><th>Time of day</th></tr></thead>
+            <tbody>
+              <tr><td>Outside in the sun</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+              <tr><td>Outside in shade</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+              <tr><td>By a window</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+              <tr><td>Middle of a room</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+              <tr><td>Under a cloth</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Now choose your number.</strong> Look at your table and pick the reading that sits between "light enough to see" and "dark enough to want a lamp". That is your switching point.</p>
+        <p><strong>Write it down with a reason.</strong> Not just "400", but "400, because the middle of the room read 520 at six in the evening and 310 once the sun had gone."</p>
+        <p class="note">From here on this page calls that number the <strong>threshold</strong>. It is just a shorter word for the switching point: the number the sensor has to cross before the device changes its mind.</p>
+      </div></div>
+    </div>
+
+    <div class="callout">
+      <h5>Two things your table will show you</h5>
+      <p><strong>Your guesses and the sensor's numbers do not line up neatly.</strong> Your eyes adjust as you walk about. The sensor does not. A room that feels "about half as bright" as outside will usually read far less than half.</p>
+      <p><strong>The time of day matters enormously.</strong> This is why the Make task in this band puts the switching point on a knob instead of writing it into the code. A number written into the code is a decision made once, by you, in one room, on one day. A knob lets the person using it decide, in their room, whenever they like.</p>
+      <p>That is a design idea, not an electronics one, and it is worth more than either.</p>
+    </div>
+  </div>
+</section>
+
+<section class="part" id="division">
+  <div class="parthead"><span class="tag">Part 9</span><h2>The division trap</h2><span class="mins">20 min</span></div>
+  <div class="col stack">
+    <p>Suppose you want to turn your reading into actual volts. The arithmetic is easy. 1023 stands for 5 volts, so:</p>
+    <pre><code>volts = 5 / 1023 * reading</code></pre>
+    <p>Upload <code>b4_04_buggy_intdiv.ino</code>, which contains exactly that line, and watch the serial monitor.</p>
+    <div class="see"><b>You will see</b>The reading changing as you turn the knob, and the volts stuck at <code>0.00</code>. Always. Whatever you do.</div>
+
+    <p>Nothing is broken. The arithmetic is correct. The problem is what kind of numbers the board thinks it is dealing with.</p>
+
+    <div class="callout">
+      <h5>Whole numbers and decimals are different types</h5>
+      <p>You have been using <code>int</code> since Band 0. An <code>int</code> holds a <strong>whole number only</strong>. It has no way to hold a fraction.</p>
+      <p>There is another type, <code>float</code>, which can hold decimals like 0.00489 or 3.5.</p>
+      <p>Here is the trap. When the board sees <code>5 / 1023</code>, both of those are whole numbers, so it does whole-number division. The true answer is about 0.00489. There is nowhere to put the fraction, so it is thrown away, and the answer becomes <strong>0</strong>.</p>
+      <p>Then it multiplies your reading by 0. And 0 times anything is 0.</p>
+      <p>Saying <code>float volts</code> does not help. By the time the answer is stored, the damage is already done.</p>
+    </div>
+
+    <h3 style="margin-top:.5rem">The fix</h3>
+    <p>Write at least one of the numbers with a decimal point. That tells the board to work in decimals from the start:</p>
+    <pre><code>float volts = 5.0 / 1023.0 * reading;</code></pre>
+    <div class="steps">
+      <div class="step"><div class="body">
+        <p><strong>Make that change and upload.</strong></p>
+        <div class="see"><b>You should see</b>The volts changing smoothly between about 0.00 and 5.00 as you turn the knob. Check it against your reading: halfway should be about 2.5.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Now try just one of them.</strong> Change it to <code>5.0 / 1023</code> and upload. It still works.</p>
+        <p class="note">One decimal point anywhere in the division is enough. The board sees a decimal on one side and works in decimals for the whole thing.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Now try a different fix, with no decimals at all.</strong> Replace the line with these two:</p>
+        <pre><code>int millivolts = 5000 * (long)reading / 1023;
+Serial.println(millivolts);</code></pre>
+        <div class="see"><b>You should see</b>Numbers from about 0 to 5000, changing smoothly as you turn the knob. Those are <strong>thousandths</strong> of a volt, so 2500 means 2.5 volts.</div>
+        <p>This works because of the order. Multiplying by 5000 <em>first</em> makes the number big, and only then does the division throw a fraction away. Losing a fraction out of 5000 hardly matters. Losing one out of 5 loses everything.</p>
+        <div class="ifnot"><b>What the <code>(long)</code> is doing</b>5000 times a reading of 1023 is over five million, which is too big for an ordinary <code>int</code>. Writing <code>(long)</code> in front tells the board to use a bigger box for the arithmetic. Leave it out and the answer wraps round and goes nonsense above about a reading of 130. Try it if you like, then put it back.</div>
+        <p class="note">Both fixes are used in real code. Decimals are easier to read. Whole numbers are faster and use less memory, which matters on a small chip. What decides between them is whether the scale you choose is big enough to hold the detail you need.</p>
+      </div></div>
+    </div>
+    <div class="words">
+      <h5>Words to know</h5>
+      <dl>
+        <dt>int</dt><dd>A name that holds a whole number. No fractions.</dd>
+        <dt>float</dt><dd>A name that can hold a number with a decimal point.</dd>
+        <dt>whole-number division</dt><dd>When both numbers are whole, the fraction in the answer is thrown away, not rounded.</dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section class="part" id="guard">
+  <div class="parthead"><span class="tag">Part 10</span><h2>Build the night guard</h2><span class="mins">30 min</span></div>
+  <div class="col stack">
+    <p>Everything is already wired. The knob is on A0, the light sensor is on A1, the LED is on pin 9. You only need the sketch.</p>
+    <p><strong>Upload <code>b4_05_night_guard_worked.ino</code></strong> and open the serial monitor.</p>
+    <div class="see"><b>You should see</b>Three things on each line: the light reading, the threshold your knob is set to, and whether the lamp is on. Cover the sensor and the lamp comes on. Turn the knob and the point at which it comes on moves.</div>
+    <div class="ifnot"><b>If the lamp never comes on, whatever you do</b>Look at the two numbers before you touch the wiring. If the threshold is stuck near 0, the knob is not being read, so nothing can ever be below it. If the light reading never falls below the threshold even with your hand over the sensor, turn the knob up and try again. The serial monitor tells you which of the two is at fault, so read it before you rebuild anything.</div>
+    <div class="ifnot"><b>If the lamp is on all the time</b>Turn the knob all the way down. If it goes off, nothing is wrong and your threshold was simply set very high. If it stays on, check the LED wiring from Part 6.</div>
+
+    <h3 style="margin-top:.6rem">Read the sketch</h3>
+    <pre><code>void loop() {
+  int light = analogRead(lightPin);
+  int threshold = analogRead(knobPin);
+
+  if (light &lt; threshold) {
+    digitalWrite(lampPin, HIGH);
+  } else {
+    digitalWrite(lampPin, LOW);
+  }
+  ...
+}</code></pre>
+    <p>That is the whole idea in four lines. Two sensors, one comparison, one decision.</p>
+    <p>Notice what the knob is really doing. It is not controlling the light. It is setting <strong>the number that counts as dark</strong>. The person using the device gets to make that decision, in their room, at their time of day, without touching any code.</p>
+
+    <h3 style="margin-top:.6rem">Now find the flaw</h3>
+    <p>Set the knob so that the lamp is right on the edge of coming on. Then hold it there and watch carefully for thirty seconds.</p>
+    <div class="see"><b>You should see</b>The lamp flickering on and off, or switching back and forth as tiny changes in the light push the reading over and back across the threshold.</div>
+    <p>This is a real problem and every device that compares against a limit has it. Fixing it is the Gold task in Part 12, and the fix has a name you can look up: <strong>hysteresis</strong>. It means using two limits instead of one, with a gap between them.</p>
+    <p class="note">Finding a flaw in something that works is a good day's work. Most people never look for one.</p>
+  </div>
+</section>
+
+<section class="part" id="closer">
+  <div class="parthead"><span class="tag">Part 11</span><h2>Look closer</h2><span class="mins">25 min</span></div>
+  <div class="col stack">
+    <h3>a. Work it out by hand</h3>
+    <p>Fill in this table without running anything. Assume the knob and sensor are wired as in this band.</p>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Sensor reading</th><th>Knob reading</th><th>Is <code>light &lt; threshold</code>?</th><th>Lamp</th></tr></thead>
+        <tbody>
+          <tr><td>800</td><td>400</td><td>no</td><td>off</td></tr>
+          <tr><td>200</td><td>400</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+          <tr><td>400</td><td>400</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+          <tr><td>399</td><td>400</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+          <tr><td>200</td><td>0</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+          <tr><td>1000</td><td>1023</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <details><summary>Check your table</summary><div class="inner">
+      <p>200 and 400: yes, lamp on. 400 and 400: no, lamp off, because <code>&lt;</code> means strictly less than and they are equal. 399 and 400: yes, lamp on, by one. 200 and 0: no, lamp off, because nothing is less than 0, so turning the knob all the way down switches the lamp off permanently. 1000 and 1023: yes, lamp on, so turning the knob all the way up leaves the lamp on almost all the time.</p>
+      <p>Those last two rows are worth noticing. The two ends of the knob are "never on" and "almost always on". That is a sensible design: the person can switch the whole thing off, or force it on, using the same control.</p>
+    </div></details>
+
+    <h3 style="margin-top:.8rem">b. Break it on purpose</h3>
+    <p>In <code>b4_05</code>, change <code>if (light &lt; threshold)</code> to <code>if (light &gt; threshold)</code>. Predict what will happen before you upload.</p>
+    <details><summary>Answer</summary><div class="inner">
+      <p>It becomes a day lamp. It switches on when the room is bright and off when it is dark, which is exactly wrong for a night light and exactly right for something else, like a warning that a fridge door has been left open.</p>
+      <p>One character reverses the whole purpose of the device. Change it back.</p>
+    </div></details>
+
+    <h3 style="margin-top:.8rem">c. Put the lines back in order</h3>
+    <p>These lines have been shuffled:</p>
+    <pre><code>analogWrite(lampPin, brightness);
+int brightness = map(reading, 0, 1023, 0, 255);
+int reading = analogRead(knobPin);</code></pre>
+    <p>Put them in a working order and say why no other order works.</p>
+    <details><summary>Answer</summary><div class="inner">
+      <p>Read the knob, turn the reading into a brightness, then send the brightness out. No other order works because each line needs the name that the line before it created. You cannot map a reading you have not taken, and you cannot send a brightness you have not worked out.</p>
+    </div></details>
+
+    <h3 style="margin-top:.8rem">d. Explain one line</h3>
+    <p>In <code>b4_05</code>, the same comparison <code>light &lt; threshold</code> appears twice: once to decide the lamp, and once again lower down to decide what to print. Why not just print inside the first <code>if</code>?</p>
+    <details><summary>Answer</summary><div class="inner">
+      <p>You could, and it would work. The reason it is written this way is that the printing block is deliberately separate: it always prints the same three things in the same order, so the output is easy to read and easy to compare between runs.</p>
+      <p>But you have spotted something real. The same test written twice means that if you ever change one and forget the other, the display will lie about what the lamp is doing. That is a genuine weakness, and the tidy fix uses a tool you meet in Band 5: work the answer out once, keep it in a name, and use that name in both places.</p>
+      <p>Full marks for anything that notices the duplication is a risk.</p>
+    </div></details>
+  </div>
+</section>
+
+<section class="part" id="change">
+  <div class="parthead"><span class="tag">Part 12</span><h2>Change it</h2><span class="mins">30 min</span></div>
+  <div class="col stack">
+    <p>Work on a copy of <code>b4_05</code>.</p>
+    <dl class="tier">
+      <dt>Bronze</dt><dd>Make the lamp <strong>fade</strong> as the light falls, instead of snapping on. The darker it gets, the brighter the lamp. You will need <code>map</code> and <code>analogWrite</code>, and you will need to think about which way round the map goes.</dd>
+      <dt>Silver</dt><dd>Print the reading in volts as well as as a number, using what you learned in Part 9. Then check it: at the halfway point on the knob, does it really say about 2.5?</dd>
+      <dt>Gold</dt><dd>Fix the flickering you found in Part 10. Use <strong>two</strong> limits instead of one: switch the lamp on when the light falls below the threshold, but do not switch it off again until the light rises above the threshold plus 50. Then find the smallest gap that stops the flicker, and write that number in your log.</dd>
+    </dl>
+    <details><summary>A hint for Bronze</summary><div class="inner">
+      <p>A low sensor reading means dark, and dark should mean bright lamp. So the two ranges run in opposite directions. Look again at the reversed <code>map</code> you tried in Part 6, step 3.</p>
+    </div></details>
+    <details><summary>A hint for Gold, after you have tried it</summary><div class="inner">
+      <p>You need the board to remember whether the lamp is currently on, because the rule now depends on that. A <code>bool</code> from Band 3 is exactly the tool.</p>
+      <p>If the lamp is off, switch on when <code>light &lt; threshold</code>. If the lamp is already on, switch off only when <code>light &gt; threshold + gap</code>. Two different tests, chosen by what the lamp is already doing.</p>
+    </div></details>
+  </div>
+</section>
+
+<section class="part" id="make">
+  <div class="parthead"><span class="tag">Part 13</span><h2>Make: something that watches and decides</h2><span class="mins">100 min</span></div>
+  <div class="col stack">
+    <div class="brief">
+      <h5>What to build</h5>
+      <p>A device that measures something about the world, compares it against a limit a person can set, and does something about it. Pick one, or bring your own:</p>
+      <ul class="plain">
+        <li>A security light for a corridor or a doorway</li>
+        <li>A light that warns you when your room is too dark to read in</li>
+        <li>A plant monitor: has this plant had enough light today?</li>
+        <li>A cupboard alarm: a light comes on when the door is opened and light gets in</li>
+        <li>A study lamp that gets brighter as the room gets darker, so the total stays even</li>
+      </ul>
+      <h5 style="margin-top:.3rem">It is finished when all of these are true</h5>
+      <ul class="plain">
+        <li>The person using it can change the limit without touching any code</li>
+        <li>You have a calibration table with at least three real measurements, taken where the device will actually live</li>
+        <li>It does not flicker when the reading sits near the limit</li>
+        <li>The serial monitor shows enough for somebody else to work out what it is thinking</li>
+        <li>It still behaves sensibly when you take it into a completely different room</li>
+      </ul>
+    </div>
+
+    <h3>The test that matters most in this band</h3>
+    <p>Set it up carefully where you built it, and check it works. Then <strong>carry it to a different room and switch it on without changing anything</strong>.</p>
+    <p>Write down what happened. Did it still make sense? Did the person have to reach for the knob straight away? Was the knob even in a place they could reach?</p>
+    <p>Almost every sensor project in the world fails this test the first time. Yours failing is normal and expected. What you write down about <em>why</em> is the actual work.</p>
+    <div class="ifnot"><b>If you cannot move it to another room</b>Test it at two very different times of day instead, morning and after dark, without changing anything in between. That gives you the same lesson.</div>
+
+    <h3 style="margin-top:.6rem">Show your work</h3>
+    <p>Post a video, your calibration table, and one paragraph on what happened when you moved it. Then look at one other person's calibration table and ask them one question about how they chose their number.</p>
+    <div class="ifnot"><b>If there is no other table to look at</b>Measure a second place properly and make a second table of your own, at a different time of day. Then write the question you would have asked somebody else, and answer it about your own two tables. The point is to notice that two honest measurements of the same thing disagree, and you can get that from your own work.</div>
+  </div>
+</section>
+
+<section class="part" id="check">
+  <div class="parthead"><span class="tag">Part 14</span><h2>Check yourself</h2><span class="mins">15 min</span></div>
+  <div class="col stack">
+    <p>Code you have not seen. Answer from reading only.</p>
+    <pre><code>int sensorPin = A2;
+int lampPin = 6;
+
+void setup() {
+  pinMode(lampPin, OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  int reading = analogRead(sensorPin);
+  int level = map(reading, 0, 1023, 0, 100);
+
+  float share = level / 100;
+
+  analogWrite(lampPin, level);
+  Serial.println(share);
+  delay(100);
+}</code></pre>
+    <ol class="num">
+      <li>What range of numbers can <code>reading</code> be in?</li>
+      <li>What range can <code>level</code> be in?</li>
+      <li>The lamp never gets close to full brightness. Why not?</li>
+      <li>What will <code>share</code> print, for every reading except the very highest? Explain.</li>
+      <li>Fix line by line: what is the smallest change that makes <code>share</code> work properly?</li>
+      <li>The sketch has no wire connected to pin A2 at all. What will the serial monitor show, and what is that called?</li>
+    </ol>
+    <details><summary>Answers</summary><div class="inner">
+      <p><strong>1.</strong> 0 to 1023.</p>
+      <p><strong>2.</strong> 0 to 100, because that is what the <code>map</code> was told to produce.</p>
+      <p><strong>3.</strong> Because <code>analogWrite</code> wants 0 to 255, and <code>level</code> never goes above 100. So the lamp tops out at well under half brightness. The map should have gone to 255, not 100. <em>Mixing up the two ranges is the classic Band 4 mistake, and this is it in the wild.</em></p>
+      <p><strong>4.</strong> <code>0.00</code> every time, except when <code>level</code> is exactly 100, when it gives 1.00. Both <code>level</code> and 100 are whole numbers, so the division throws the fraction away. Writing <code>float share</code> does not save it, because the damage happens before the answer is stored.</p>
+      <p><strong>5.</strong> Put a decimal point on the 100: <code>float share = level / 100.0;</code>. One character.</p>
+      <p><strong>6.</strong> Numbers drifting and jumping about with no pattern, and changing if you wave your hand near the board. It is called a <strong>floating pin</strong>, exactly the same fault as the button in Band 3. An analog pin with nothing connected has no more idea what it is reading than a digital one does. <em>This is the question that matters most in this band. If you answered "0", check what you saw in Band 3 Part 4.</em></p>
+    </div></details>
+  </div>
+</section>
+
+<section class="part" id="problems">
+  <div class="parthead"><span class="tag">Part 15</span><h2>When something goes wrong</h2></div>
+  <div class="scroll">
+    <table>
+      <thead><tr><th>What you see</th><th>What it usually is</th><th>What to do</th></tr></thead>
+      <tbody>
+        <tr><td>The number never changes</td><td>One of the outer legs is not connected</td><td>Check both ends of the divider reach the rails, and that the rails reach 5V and GND.</td></tr>
+        <tr><td>The number jumps about on its own</td><td>The middle leg is not reaching the analog pin</td><td>A floating analog pin, just like a floating button pin. Check that one wire.</td></tr>
+        <tr><td>The sensor barely changes with light</td><td>Wrong fixed resistor</td><td>You need 10 000 ohms, striped brown black orange. A 220 ohm one gives almost no swing.</td></tr>
+        <tr><td>Bigger number when it gets darker</td><td>Sensor and resistor are swapped</td><td>Not wrong, just upside down. Swap them, or write down that for you a big number means dark.</td></tr>
+        <tr><td>Any calculation gives 0.00</td><td>Whole-number division</td><td>Put a decimal point on one of the numbers. See Part 9.</td></tr>
+        <tr><td>The lamp is very dim at full</td><td>You mapped to 100 or 1023 instead of 255</td><td><code>analogWrite</code> wants 0 to 255. Check the last two numbers in your <code>map</code>.</td></tr>
+        <tr><td>The lamp flickers near the switching point</td><td>Nothing is wrong. This is normal</td><td>It needs two limits with a gap. See Part 12, Gold.</td></tr>
+        <tr><td>It reads the wrong pin entirely</td><td>You wrote <code>0</code> instead of <code>A0</code></td><td>Analog pins always need the capital A.</td></tr>
+        <tr><td>Everything was fine, now nothing works</td><td>The rail wire to 5V or GND has come out</td><td>This build needs power on the breadboard. Check both rail wires first.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="col stack" style="margin-top:1.2rem">
+    <div class="callout">
+      <h5>Still stuck after 30 minutes?</h5>
+      <p>Photograph the board from above, and copy ten lines from your serial monitor. Post both, plus one sentence on what you expected. In this band the serial numbers are usually enough on their own for someone to tell you what is wrong.</p>
+    </div>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Done</span><h2>What you know now</h2></div>
+  <div class="col stack">
+    <p>Your board can measure the world now, not just be poked at. And you know the thing that separates a project that works on a desk from one that works in a room: the number a sensor gives you is not a fact about the world, it is a reading that has to be interpreted, in the place where it will be used.</p>
+    <p>You also met the division trap, which will catch you again one day. When a calculation gives you a stubborn zero, look at the types first.</p>
+    <h3 style="margin-top:.6rem">Before you move on, make sure you have</h3>
+    <ul class="plain">
+      <li>Your working device, with a video</li>
+      <li>Your calibration table with at least three real measurements</li>
+      <li>Your paragraph on what happened when you moved it to another room</li>
+      <li>The number you found for Gold, if you did it</li>
+      <li>Both <code>analogRead</code> and <code>analogWrite</code> in your glossary, with their different ranges</li>
+      <li>Your build log for this band</li>
+      <li>Five or six correct answers in Part 14, including question 6</li>
+    </ul>
+    <p style="margin-top:.6rem"><strong>Next is Band 5: Simon Says.</strong> It is the hardest band so far and the most important one. You will write your own instructions for the first time, and you will find out why <code>delay</code>, which you have used in every single band, has been quietly holding you back the whole time.</p>
+  </div>
+</section>
+
+
+<nav class="pager" aria-label="Bands">
+<a href="band-3.html"><span class="dir">Previous</span><span class="name">Band 3: Combination Lock</span></a>
+<a class="next" href="band-5.html"><span class="dir">Next</span><span class="name">Band 5: Simon Says &rarr;</span></a>
+</nav>
+
+<footer>
+  <p>Bozoma Innovation Hub &nbsp;·&nbsp; Aiyinasi, Ellembelle District. Band 4 of nine. Every sketch used here was compiled and tested before it reached you.</p>
+</footer>
+
+</div>
+</body>
+</html>
