@@ -48,7 +48,7 @@
 <section class="part">
   <div class="parthead"><span class="tag">Assessment</span><h2>How a band is passed</h2></div>
   <div class="col stack">
-    <p>Four pieces of evidence. All four are needed. There is no half a band.</p>
+    <p>Four pieces of evidence. All four are needed. There is no half a band. Band 8, the capstone, asks for a fifth: an honest evaluation against criteria the learner wrote before building.</p>
     <p>There is also no failing. The only two results are <strong>passed</strong> and <strong>not yet</strong>, and "not yet" always comes with the one specific thing that would change it.</p>
   </div>
   <div class="scroll" style="margin-top:1rem">
@@ -166,8 +166,9 @@
   <div class="parthead"><span class="tag">Before you begin</span><h2>Preparing to run it</h2></div>
   <div class="col stack">
     <ul class="plain">
-      <li><strong>Work through all nine bands yourself as a learner</strong>, handing in the same four pieces of evidence. It is the cheapest quality control available and it produces your first set of worked examples. Band 5 especially: the <code>delay</code> lesson is far easier to teach once you have watched it fail on your own bench.</li>
+      <li><strong>Work through all nine bands yourself as a learner</strong>, handing in the same evidence you will ask of them. It is the cheapest quality control available and it produces your first set of worked examples. Band 5 especially: the <code>delay</code> lesson is far easier to teach once you have watched it fail on your own bench.</li>
       <li><strong>Check the kits you actually bought.</strong> Band 3 needs an active buzzer, Band 5 needs a passive one, and Band 5 needs a full-size breadboard or two small ones. Every one of those has a documented fallback, but find out before a cohort starts, not during.</li>
+      <li><strong>Check the four late-band parts before Band 5 ends.</strong> Band 6 needs an SG90 servo and a four-cell AA battery holder; Bands 7 and 8 need an HC-SR04 ultrasonic sensor; Band 7 needs an LCD1602. The servo has no substitute and the band cannot run without it. The screen does have a fallback, using the serial monitor, at the cost of the band&#8217;s best design exercise. <strong>Turn every LCD over and check which kind it is</strong> before Band 7 starts: those with a four-pin board on the back need the LiquidCrystal_I2C library installed, which needs internet once, and those without take twelve more wires. A cohort with a mix of both is normal and the band covers both paths in full.</li>
       <li><strong>Budget consumables.</strong> LEDs and servos die, and jumper wires fail more often than anything else in the box, producing faults that look exactly like code bugs. Assume around 15% annual replacement.</li>
       <li><strong>Test the cable.</strong> Charge-only USB cables cost more first-week hours than any other single thing. Check every cable before it goes in a kit.</li>
     </ul>

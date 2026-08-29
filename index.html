@@ -23,7 +23,7 @@
   <h1 style="margin:.8rem 0">The Arduino Ladder</h1>
   <p class="col sub" style="font-size:1.15em">A course for people who have never done this before. You start knowing nothing about electronics or programming. You finish having built nine real things, one at a time, at your own speed, ending with something somebody actually asked you for.</p>
   <p style="margin-top:1.4rem"><a class="startbtn" href="bands/band-0.html">Start with Band 0 &rarr;</a></p>
-  <p class="col note" style="margin-top:.9rem">Free to use. Nothing to sign up for. About 63 hours of work across nine bands.</p>
+  <p class="col note" style="margin-top:.9rem">Free to use. Nothing to sign up for. About 65 hours of work across nine bands.</p>
 </header>
 
 <section class="part">
@@ -70,11 +70,11 @@
       <p>The hardest band and the most important. You write your own instructions, and find out why delay has been holding you back since Band 0.</p>
       <span class="go">Open Band 5 &rarr;</span>
     </a><a class="bandcard" href="bands/band-6.html" data-band="6">
-      <div class="row"><span class="tag">Band 6 &middot; Blue</span><h3>Things That Move</h3><span class="mins">≈7 hours</span></div>
+      <div class="row"><span class="tag">Band 6 &middot; Blue</span><h3>Things That Move</h3><span class="mins">≈8 hours</span></div>
       <p>A servo, a gate made of card, and the first problem that is not about code at all: a moving thing needs real power, and two power sources need one shared ground.</p>
       <span class="go">Open Band 6 &rarr;</span>
     </a><a class="bandcard" href="bands/band-7.html" data-band="7">
-      <div class="row"><span class="tag">Band 7 &middot; Violet</span><h3>Distance and Display</h3><span class="mins">≈7 hours</span></div>
+      <div class="row"><span class="tag">Band 7 &middot; Violet</span><h3>Distance and Display</h3><span class="mins">≈8 hours</span></div>
       <p>Measuring distance with sound you cannot hear, and saying the answer on a screen of its own. Sixteen characters turns out to be a design problem.</p>
       <span class="go">Open Band 7 &rarr;</span>
     </a><a class="bandcard" href="bands/band-8.html" data-band="8">
@@ -95,7 +95,8 @@
         <h4>Equipment</h4>
         <ul class="plain">
           <li>An Arduino Uno board and a USB cable</li>
-          <li>A starter kit with a breadboard, LEDs, resistors, buttons, a knob, a light sensor, buzzers and jumper wires</li>
+          <li>A starter kit with a breadboard, LEDs, resistors, buttons, a knob, a light sensor, buzzers and jumper wires. That covers Bands 0 to 5.</li>
+          <li>For the last three bands you also need <strong>a servo</strong> (the small blue SG90, Band 6), <strong>an ultrasonic distance sensor</strong> (HC-SR04, Bands 7 and 8), <strong>an LCD1602 screen</strong> of either kind (Band 7), and <strong>a battery holder for four AA cells</strong> (Band 6). Most starter kits contain all four. Band 8 needs nothing new at all.</li>
           <li>A laptop or computer</li>
           <li>A pen and paper. You will use these more than you expect.</li>
         </ul>
@@ -113,17 +114,18 @@
     <div class="sketchbox" style="--bc:var(--accent); max-width:none">
       <h2>The sketches</h2>
       <ul>
-        <li><a href="downloads/arduino-ladder-sketches.zip">Download all 26 sketches (zip)</a></li>
+        <li><a href="downloads/arduino-ladder-sketches.zip">Download all 41 sketches (zip)</a></li>
         <li><a href="sketches/README.txt">Read the sketch guide</a></li>
       </ul>
       <p>Each band page also links the sketches it needs. Every file opens with a plain-English header saying what it does and how to wire it, hole by hole.</p>
     </div>
 
     <div class="callout" style="--bc:var(--copper); margin-top:.4rem">
-      <h5>Three rules for the whole course</h5>
+      <h5>Four rules for the whole course</h5>
       <ol class="num">
         <li><strong>Unplug the USB cable before you change any wiring.</strong> Build it, check it, then give it power. Every time.</li>
         <li><strong>Never join the 5V pin straight to a GND pin.</strong> That is the one mistake that can damage the board.</li>
+        <li><strong>Never put more than 5 volts on an Arduino pin.</strong> This one only matters from Band 6, when a battery arrives. Four AA cells make about six volts, and no pin should ever see it.</li>
         <li><strong>If you are stuck for 30 minutes, stop and ask.</strong> Take a photo of your board first, and do not rebuild it before you ask.</li>
       </ol>
     </div>
@@ -141,7 +143,7 @@
       <li><strong>Run it.</strong> Build the circuit, upload the program, and compare what happens with your guess.</li>
       <li><strong>Look closer.</strong> Follow the code by hand, find a planted bug, put shuffled lines back in order, and explain why one particular line is there.</li>
       <li><strong>Change it.</strong> Three tasks, getting harder: Bronze, Silver, Gold. You are changing working code, not starting from a blank screen.</li>
-      <li><strong>Make your own.</strong> A real thing to build, with a list of what it must do, and a real person to test it on.</li>
+      <li><strong>Make your own.</strong> A real thing to build, with a list of what it must do, and somebody to test it on. Every band also says how to do that step if you are working entirely alone.</li>
     </ol>
     <p class="note">The minutes shown on each part are for the activity itself, if nothing goes wrong. They do not include your build log, finding someone to test your build, or fixing it afterwards. The band totals allow for all of that.</p>
   </div>

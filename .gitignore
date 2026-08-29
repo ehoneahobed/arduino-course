@@ -1,7 +1,7 @@
-.DS_Store
-Thumbs.db
 *.swp
+.DS_Store
 .vercel/
-node_modules/
+Thumbs.db
 _site.zip
 _transfer.tgz
+node_modules/
