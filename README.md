@@ -112,20 +112,20 @@ Four of them fail **on purpose**, because reading a failure is part of the lesso
 - `b6_03_buggy_jitter.ino` compiles and runs, and will not hold the arm still
 - `b8_02_buggy_flags.ino` compiles and runs, and freezes in a state no branch handles
 
-A fifth, `b7_04_buggy_flicker.ino`, works but is unpleasant to look at, also on
-purpose.
+And one fails to compile on purpose:
+
+- `b0_03_buggy_semicolon.ino` — the learner is meant to read the error message
+
+A fifth, `b7_04_buggy_flicker.ino`, compiles and runs but is deliberately
+unpleasant to look at, and the band takes it apart.
+
+Every other sketch works. If one does not do what its header says, the problem
+is the wiring, and the band page has a checklist for it.
 
 **Libraries.** Bands 0 to 5 need none. Band 6 uses `Servo` and Band 7 uses
 `LiquidCrystal`; both ship with the Arduino IDE. The only one a learner may have
 to install is `LiquidCrystal_I2C` (Frank de Brabander), and only if their screen
 has an I²C backpack. Band 7 Part 6a walks through it.
-
-And one fails to compile on purpose:
-
-- `b0_03_buggy_semicolon.ino` — the learner is meant to read the error message
-
-Every other sketch works. If one does not do what its header says, the problem
-is the wiring, and the band page has a checklist for it.
 
 ## The teaching behind it
 
