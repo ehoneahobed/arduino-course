@@ -9,10 +9,15 @@
 //     Writes two lines on the screen and leaves them there.
 //
 //   WIRING, FOUR WIRES
-//     GND -> GND
-//     VCC -> 5V
+//     GND -> the MINUS rail
+//     VCC -> the PLUS rail
 //     SDA -> pin A4
 //     SCL -> pin A5
+//
+//     Then one wire from the PLUS rail to 5V, and one from the
+//     MINUS rail to a GND pin. The distance sensor from Part 2 is
+//     already using the one 5V pin, and ONE ARDUINO PIN TAKES ONE
+//     WIRE. The rails are how two things share one pin.
 //
 //     A4 and A5 are not ordinary analog pins here. They are the
 //     two pins this chip uses to talk to other boards. You cannot

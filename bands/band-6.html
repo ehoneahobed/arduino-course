@@ -43,6 +43,12 @@
   <p class="col note" style="margin-top:.8rem">About 8 hours. Finish Bands 4 and 5 first. This band uses <code>map</code>, <code>millis</code> and your own functions as though you already know them, because you do.</p>
 </header>
 
+<section class="choose">
+  <h2>Choose your build</h2>
+  <ul><li><span class="ptype core">Core</span><span><b>Things That Move</b><span class="cb">the cardboard gate. This page. Everybody builds this one.</span></span></li><li><span class="ptype swap">Swap</span><span><a href="../projects/b6-stepper-dial.html">The stepper dial</a><span class="cb">A pointer that moves an exact number of steps and can turn for ever. It has no idea where it is, so you have to remember for it.</span></span></li><li><span class="ptype swap">Swap</span><span><a href="../projects/b6-fan-transistor.html">A fan on a transistor</a><span class="cb">Speed instead of position, and one three-legged part doing the whole job of a driver board.</span></span></li></ul>
+  <p><b>Swap</b> means build it instead of the one on this page: it teaches the same things and leaves you just as ready for the next band. Everything else on this page still applies, including the Check yourself questions.</p>
+</section>
+
 <section class="sketchbox">
   <h2>Sketches for this band</h2>
   <ul><li><a href="../sketches/b6_01_servo_sweep_given.ino">b6_01_servo_sweep_given.ino</a></li><li><a href="../sketches/b6_02_servo_knob.ino">b6_02_servo_knob.ino</a></li><li><a href="../sketches/b6_03_buggy_jitter.ino">b6_03_buggy_jitter.ino</a></li><li><a href="../sketches/b6_04_servo_gate_worked.ino">b6_04_servo_gate_worked.ino</a></li><li><a href="../sketches/b6_05_motor_driver.ino">b6_05_motor_driver.ino</a></li></ul>
@@ -77,7 +83,12 @@
       <li>A battery pack, four AA cells, with two loose wires</li>
       <li>Cardboard, scissors, tape, and a skewer or a straightened paper clip</li>
       <li>About ten jumper wires</li>
-      <li><em>Optional:</em> a DC motor with an L293D chip, or a 28BYJ-48 stepper with a ULN2003 board</li>
+      <li><em>Only if you are doing one of this band's Swap projects instead of the servo gate:</em>
+        <ul class="plain" style="margin:.3rem 0 0 1rem">
+          <li><b>The stepper dial</b> needs a 28BYJ-48 stepper and its ULN2003 driver board.</li>
+          <li><b>The fan</b> needs a small DC motor, an NPN transistor (an <code>S8050</code> or <code>2N2222</code>; a <code>BC547</code> is too small for the job), a second 220 ohm resistor for the transistor's base, and a <b>1N4001-type diode, which is required and not optional</b>. If you have no diode, use the ULN2003 board in the transistor's place; the project page explains how.</li>
+        </ul>
+      </li>
     </ul>
     <div class="ifnot"><b>If you have no battery pack</b>You can do everything up to Part 7 on USB power alone. Part 8's gate will work too, as long as the arm is light card and it is not pushing against anything. What you will lose is the experience of the servo pulling the board&#8217;s voltage down until it resets, which is a useful thing to have felt once. If you can borrow four AA cells and a holder for one afternoon, borrow them.</div>
     <div class="ifnot"><b>If you have no servo at all</b>Stop and get one before starting this band. There is no substitute in a normal kit, and the whole band is built on it. Bands 7 and 8 do not need it, so you can go on to Band 7 and come back.</div>

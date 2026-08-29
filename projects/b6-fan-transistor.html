@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en" data-band="6">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>A fan on a transistor · Swap · Arduino Ladder</title>
+  <meta name="description" content="Speed instead of position, and one three-legged part doing the whole job of a driver board.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+  <link rel="stylesheet" href="../assets/course.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the project</a>
+<div class="topbar">
+  <a class="home" href="../index.html">Arduino Ladder <span>· Bozoma Innovation Hub</span></a>
+  <nav class="bandlinks" aria-label="Bands"><a href="../bands/band-0.html">0</a><a href="../bands/band-1.html">1</a><a href="../bands/band-2.html">2</a><a href="../bands/band-3.html">3</a><a href="../bands/band-4.html">4</a><a href="../bands/band-5.html">5</a><a href="../bands/band-6.html" aria-current="page">6</a><a href="../bands/band-7.html">7</a><a href="../bands/band-8.html">8</a></nav>
+</div>
+<div class="wrap" id="main">
+<header style="padding:2.6rem 0 1rem">
+  <p class="eyebrow">Band 6 &nbsp;·&nbsp; Things That Move</p>
+  <h1 style="margin:.7rem 0 .5rem"><span class="ptype swap">Swap</span> &nbsp;A fan on a transistor</h1>
+  <p class="col sub" style="font-size:1.06em">Speed instead of position, and one three-legged part doing the whole job of a driver board.</p>
+  <dl class="projmeta">
+    <div><dt>Time</dt><dd>90 min</dd></div>
+    <div><dt>You need</dt><dd>DC motor, NPN transistor (S8050 or 2N2222 preferred), <b>1N4001-type diode</b>, 220&#8486; resistor, potentiometer, LED and its 220&#8486; resistor, button, battery pack, 10 jumper wires</dd></div>
+    <div><dt>At once</dt><dd>One per motor</dd></div>
+    <div><dt>Before this</dt><dd>Finish Band 6 Part 7 first. <b>The diode is required, not optional.</b> Read the transistor leg order and the diode box on this page before you power anything. No diode in the kit? Use the ULN2003 board instead, as the page describes.</dd></div>
+  </dl>
+</header>
+
+<section class="sketchbox">
+  <h2>Sketches for this project</h2>
+  <ul><li><a href="../sketches/b6_07_fan_transistor.ino">b6_07_fan_transistor.ino</a></li></ul>
+  <p>Every file opens with a plain-English header saying what it does and how to wire it, hole by hole.</p>
+</section>
+<section class="part">
+  <div class="parthead"><span class="tag">Why</span><h2>Speed is not position</h2></div>
+  <div class="col stack">
+    <p>The servo gate answers the question <em>where should this be?</em> A motor answers a different one: <em>how fast should this go?</em></p>
+    <p>They are not interchangeable, and choosing the wrong one is a common way to waste an afternoon. A motor cannot stop somewhere in particular, because nothing in it is counting or looking. A servo cannot spin. If your build needs a fan, a pump or a wheel, you want this. If it needs an arm, a lid or a pointer, you want the servo.</p>
+    <p>There is a second thing in this build and it is the more important one.</p>
+
+    <div class="callout">
+      <h5>Why the motor cannot go straight on a pin</h5>
+      <p>An Arduino pin can supply about <strong>20 thousandths of an amp</strong> before it is damaged. A small DC motor wants ten to twenty times that at the moment it starts turning.</p>
+      <p>So wiring a motor to a pin is not driving a motor. It is damaging a chip, slowly, with no warning and no error message. It may even appear to work for a while, which is worse, because you will not know when it stopped being fine.</p>
+      <p>A <strong>transistor</strong> fixes it. Think of it as a switch that a tiny current operates and a big current passes through. The pin gives the order. The battery does the work. The two never meet.</p>
+      <p class="note">Band 6 Part 7 taught you that two power sources need one shared ground. This is the same lesson going the other way: <strong>signal and power are different jobs</strong>, and most of the mistakes come from treating them as one.</p>
+    </div>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Build</span><h2>Wire it</h2><span class="mins">35 min</span></div>
+  <div class="col stack">
+    <div class="ifnot" style="margin-bottom:.4rem"><b>Before you start</b>USB unplugged, battery switched off. Clear the servo off the board.</div>
+
+    <div class="which">
+      <h4>Read the number on the transistor before you power anything</h4>
+      <p>Your transistor is a small black semicircle with three legs and a number printed on the flat face: <code>S8050</code>, <code>2N2222</code>, <code>PN2222</code>, <code>BC547</code>, <code>BC548</code>, or something not in that list. <strong>Read yours.</strong> The number decides two separate things, and each of them can end the build.</p>
+      <p>Hold it with the <strong>flat face towards you</strong> and the legs pointing <strong>down</strong>. The middle leg is the <b>base</b> on all of them. It is the two outer legs that change.</p>
+      <div class="opts">
+        <div class="opt">
+          <b><code>S8050</code> &nbsp;·&nbsp; <code>2N2222</code> &nbsp;·&nbsp; <code>PN2222</code></b>
+          <p>Left to right these are <b>emitter, base, collector</b>. They carry six to seven hundred thousandths of an amp, which is plenty for a small motor. Use one of these if your kit has one.</p>
+          <p class="go">&#8594; Left leg into <code>e12</code>, middle leg into <code>e13</code>, right leg into <code>e14</code>.</p>
+        </div>
+        <div class="opt">
+          <b><code>BC547</code> &nbsp;·&nbsp; <code>BC548</code></b>
+          <p>Left to right these are <b>collector, base, emitter</b>, which is the <em>opposite</em> way round. They also carry only one hundred thousandths of an amp, and a small motor wants two to four times that at the moment it starts. This is not really the part for this job.</p>
+          <p class="go">&#8594; <b>Keep the flat face towards you</b> and cross the two outer legs over: the <b>right-hand</b> leg into <code>e12</code>, the middle leg into <code>e13</code>, the <b>left-hand</b> leg into <code>e14</code>. Do not physically turn the part round; only the two outer legs swap holes. If it then runs warm or will not start the motor, that is the size limit and not your wiring, and the ULN2003 box below is your way out.</p>
+        </div>
+        <div class="opt">
+          <b>A number that is in neither list</b>
+          <p>There is no way to tell the leg order by looking, and guessing costs you the part.</p>
+          <p class="go">&#8594; If you can get online, search for your number and the word <em>pinout</em>, find a picture, then put the <b>emitter</b> in <code>e12</code>, the <b>base</b> in <code>e13</code> and the <b>collector</b> in <code>e14</code>. <b>If you cannot look it up, do not guess.</b> Put that transistor back in the box and use the ULN2003 route in the box below. It runs this sketch unchanged.</p>
+        </div>
+      </div>
+      <p style="margin-top:.7rem">Whichever part you have, wire it so that <code>e12</code> ends up the emitter, <code>e13</code> the base and <code>e14</code> the collector. Then the table below is the same for everybody.</p>
+      <p><strong>Getting the two outer legs the wrong way round usually destroys the transistor.</strong> The battery pushes backwards through a junction that was never meant to take it, and the part does not recover. There is no smoke and no error message, so nothing will tell you. Check the number, check a picture, then wire it. This is one of the few places in this whole course where the mistake is not undoable.</p>
+    </div>
+
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Part</th><th>Goes to</th><th>Why</th></tr></thead>
+        <tbody>
+          <tr><td>Transistor</td><td>Three legs into <code>e12</code>, <code>e13</code>, <code>e14</code>, in the order the box above gave for <em>your</em> number</td><td><code>e12</code> emitter, <code>e13</code> base, <code>e14</code> collector, for everybody</td></tr>
+          <tr><td>Base, <code>e13</code></td><td>A <b>220 ohm</b> resistor from <code>a13</code> to <code>a11</code>, then a wire from <code>b11</code> to Arduino pin 5</td><td><code>b11</code>, not <code>a11</code>: a hole takes one leg</td></tr>
+          <tr><td>Emitter, <code>e12</code></td><td>A wire from <code>a12</code> to the &#8722; rail</td><td>Where the big current leaves</td></tr>
+          <tr><td>Collector, <code>e14</code></td><td>One motor wire into <code>a14</code></td><td>Where the big current enters</td></tr>
+          <tr><td>Other motor wire</td><td>The + rail</td><td>Battery power, never Arduino power</td></tr>
+          <tr><td><b>Diode</b>, across the motor</td><td><b>Striped end</b> into the + rail, plain end into <code>b14</code></td><td><b>Required.</b> Read the red box below before you switch on.</td></tr>
+          <tr><td>Battery pack</td><td>Red to + rail, black to &#8722; rail</td><td></td></tr>
+          <tr><td>Ground link</td><td>One wire, &#8722; rail to an Arduino GND pin</td><td>The Part 7 rule. Not optional.</td></tr>
+          <tr><td>Knob</td><td>Legs <code>f5</code>, <code>f6</code>, <code>f7</code>. <code>j5</code> to &#8722; rail, <code>j6</code> to A0, <code>j7</code> <b>straight to the Arduino 5V pin</b></td><td>Never the + rail; that is six volts.</td></tr>
+          <tr><td>Light</td><td>Long <code>b3</code>, short <code>b4</code>. A second <b>220 ohm</b> resistor <code>a3</code> to <code>a1</code>, wire <code>b1</code> to pin 7, <code>a4</code> to &#8722; rail</td><td>You need two 220 ohm resistors on this build, one here and one on the base. <code>b1</code>, not <code>a1</code>: a hole takes one leg</td></tr>
+          <tr><td>Button</td><td>Legs <code>e19</code>, <code>e21</code>, <code>f19</code>, <code>f21</code>. <code>j19</code> to pin 2, <code>a21</code> to &#8722; rail</td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout danger">
+      <h5>The diode is not optional, and the stripe faces the + rail</h5>
+      <p>A spinning motor that is switched off becomes a generator for an instant and pushes a high voltage back down the wire it came from. This is the part that catches people out: <strong>PWM switches the motor off about a thousand times every second.</strong> So that spike is not a rare event at the end of the session. It happens a thousand times a second, the whole time the fan is running, straight into the transistor.</p>
+      <p>Use a <code>1N4001</code>, any other <code>1N400x</code>, or a <code>1N4148</code>. There is a stripe painted round one end. <strong>The striped end goes into the + rail.</strong> The plain end goes into <code>b14</code>, which is the collector row, so the diode sits across the motor.</p>
+      <p>Fitted this way it does nothing at all while the motor is running, and only conducts for the instant the spike appears. That is why it looks pointless and is not.</p>
+      <p class="note">A diode fitted the wrong way round carries the current that was supposed to go through the motor. So the first thing you notice is that <strong>the motor does not turn at all</strong>, and the second is that the diode and the transistor get hot within a few seconds of turning the knob up. If that happens, switch off immediately and look at the stripe. Check it twice before you switch on and you never meet this.</p>
+    </div>
+
+    <div class="ifnot" style="margin-bottom:.4rem"><b>If your kit has no diode, or your only transistor is a <code>BC547</code> or <code>BC548</code></b>Do not run this build with a bare transistor. Use the <b>ULN2003 driver board</b> from the stepper kit instead: it holds seven transistors and all seven of their diodes already. Everything in the sketch stays exactly as it is.<br><br><b>Wiring it.</b> Arduino pin 5 to <code>IN1</code>. The board's <code>&#8722;</code> pin to the &#8722; rail, and its <code>+</code> pin to the <b>+ rail</b>; that second wire is not optional, because the diodes inside the board have nowhere to send the spike without it. Then the motor. Some of these boards have pins marked <code>OUT1</code> to <code>OUT4</code> along one edge: if yours does, one motor wire goes into <code>OUT1</code>. If yours has only the white five-pin socket, the outputs are inside that socket: push a jumper wire into the socket hole at the end furthest from the <code>IN</code> pins and use that as <code>OUT1</code>. The motor's other wire goes to the + rail.<br><br>What you lose is wiring a transistor as three separate legs yourself, which is most of the point of this page. Read the boxes above even if you take this route.</div>
+
+    <div class="ifnot" style="margin-bottom:.4rem"><b>Pin 5 has a <code>~</code> next to it, and that is why it was chosen</b>Speed is PWM, exactly like brightness in Band 2. On a pin without a <code>~</code> you get off and flat out and nothing in between, which would make this whole build pointless.<br><br><b>Why 220 ohms and not 1k.</b> A transistor needs roughly a tenth of the current it is <em>carrying</em> pushed into its base before it switches all the way on. Once it is turning, this motor settles at something like 150 to 200 thousandths of an amp, so it wants about twenty in the base. Through 220 ohms a pin supplies about nineteen, which is also about as much as one pin can give. Through 1k it supplies about four, the switch never fully closes, and you get a hot transistor and a weak motor. The much bigger gulp at the instant the motor starts is short enough not to matter. This resistor is not setting a brightness. It is deciding whether the switch actually shuts.</div>
+
+    <div class="steps">
+      <div class="step"><div class="body">
+        <p><strong>Tape the motor down</strong> before you switch anything on, and tape a small paper flag to its shaft so you can see it turning. A loose motor walks off the table and pulls its own wires out.</p>
+        <div class="see"><b>You should see</b>The flag clear of everything, and the motor held firmly enough that it does not move when the flag spins.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Plug in the USB, switch the battery on, and upload <code>b6_07_fan_transistor.ino</code>.</strong> Open the serial monitor at 9600 and turn the knob slowly from one end to the other.</p>
+        <div class="see"><b>You should see</b>Nothing at all at the bottom of the knob's travel, then the motor starting suddenly at some point and speeding up smoothly from there. The light comes on whenever it is running. The printed speed climbs from 0 to 255.</div>
+        <div class="ifnot"><b>If it never turns at all</b>Watch the serial monitor while you turn the knob. If the printed number climbs the way it should, the fault is on the motor's side of the circuit: check the battery switch, then the ground link, then the base wire on pin 5, then that the outer transistor legs are the way round the box above told you. If the printed number does not move, the fault is the knob, not the motor.</div>
+        <div class="ifnot"><b>If it runs flat out and nothing stops it</b>The motor is getting battery power without passing through the transistor. Almost always one motor wire has gone into the + rail and the other into the &#8722; rail, so the transistor is not in the circuit at all. Switch off and trace both motor wires: one goes to the + rail, the other goes into <code>a14</code>.</div>
+        <div class="ifnot"><b>If the speed jumps between off and full with nothing in between</b>The base wire is on a pin without a <code>~</code>. Read the printing on the board rather than counting holes.</div>
+        <div class="ifnot"><b>If it hums but does not turn at low settings</b>That is correct, and the next section is about it.</div>
+        <div class="ifnot"><b>If the transistor gets warm</b>Switch off, then work out which of two things it is, because they need different fixes. Either the transistor is too small for this motor, which is what a <code>BC547</code> does here, or the base resistor is too big and the switch is only half open. A <code>S8050</code> or <code>2N2222</code> with a 220 ohm base resistor should stay cool at every speed. Change the part rather than living with it.</div>
+        <div class="ifnot"><b>If the Arduino resets when the motor starts</b>Something is still sharing the Arduino's 5V with the motor. The motor's power comes only from the battery, through the + rail.</div>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Look closer</span><h2>The number you have to find yourself</h2><span class="mins">25 min</span></div>
+  <div class="col stack">
+    <pre><code>int minSpeed = 60;     // below this the motor hums and does not turn</code></pre>
+    <p>Below some value there is not enough push to overcome the friction in the bearings, so the motor sits there humming and getting warm. Above it, it turns. That threshold belongs to <em>your</em> motor and this page does not know it.</p>
+
+    <div class="callout">
+      <h5>Measure yours</h5>
+      <ol class="num">
+        <li>Set <code>minSpeed</code> to <code>0</code> and upload.</li>
+        <li>Turn the knob up very slowly from zero, watching the printed number and listening.</li>
+        <li>Write down the number at which it <strong>starts turning</strong>, not the number at which it starts humming. Those are different and the gap between them is the interesting part.</li>
+        <li>Put that number into <code>minSpeed</code>, upload again, and turn the knob from zero.</li>
+      </ol>
+      <div class="see"><b>You should see</b>The motor now goes from stopped to turning with no humming stage in between. The whole travel of the knob is useful, instead of the bottom third being wasted.</div>
+    </div>
+
+    <p>This is Band 4's calibration lesson in a new place, and it is worth saying out loud: <strong>the number was not in the code, it was in the motor.</strong> The only way to get it was to go and measure. Write yours in your build log. If somebody near you built one too, write theirs beside it and notice that they differ. Working alone, measure your motor again after it has been running for five minutes and see whether the warm number matches the cold one, because it often does not, and that tells you the same thing about where numbers come from.</p>
+
+    <h3 style="margin-top:.8rem">The line that stops the fan hunting</h3>
+    <pre><code>if (abs(speed - lastSpeed) &gt;= deadband || speed == 0 || lastSpeed == 0) {</code></pre>
+    <p>Take your hand right off the knob and <code>analogRead</code> still wobbles by a count or two. Without that line every wobble would be written to the motor, and the fan would hunt up and down for ever instead of holding a speed. <code>deadband</code> says: ignore any change smaller than six.</p>
+    <p>The two extra tests after it are there because <strong>off has to mean off</strong>. Set <code>minSpeed</code> to <code>0</code>, as the measuring box above has you do, and a change from 4 down to 0 is smaller than the deadband. Without <code>speed == 0</code> the fan would carry on creeping after you had turned the knob right down. A rule that is almost always right usually needs its one exception written out by hand, and this is what that looks like in code.</p>
+    <p>There is one more line just underneath, which the quote above leaves out:</p>
+    <pre><code>if (speed == lastSpeed) return;</code></pre>
+    <p>That one throws away any value identical to the last one, whatever the deadband says. Keep it in mind for the experiment below, because it is doing part of the same job.</p>
+    <div class="callout">
+      <h5>Try it</h5>
+      <p>Set <code>deadband</code> to <code>0</code>, upload, then leave the knob alone at a middle setting for thirty seconds. Watch the serial monitor and listen to the motor. Put it back to <code>6</code> and do the same. Write down what changed.</p>
+      <p>Expect a twitch rather than a runaway: the <code>speed == lastSpeed</code> line is still there catching the repeats. To see the full effect, take that line out too, and then put both back. This is Band 4's threshold lesson wearing different clothes, and you will meet it a third time in Band 8.</p>
+    </div>
+
+    <h3 style="margin-top:.8rem">Why the light is on a separate pin</h3>
+    <p>It would be tempting to wire the light across the motor and save a pin. Do not. The motor's side of the circuit is battery voltage and much larger currents; the light belongs on the Arduino's side where the rules you know apply. <strong>Keep the two sides separate everywhere except the one ground wire that joins them.</strong></p>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Change it</span><h2>Make it yours</h2><span class="mins">30 min</span></div>
+  <div class="col stack">
+    <dl class="tier">
+      <dt>Bronze</dt><dd>Make the fan speed up and slow down <strong>gradually</strong> when the burst button is pressed, rather than jumping to full and back. Use the fade loop from Band 2, and say in one sentence why a motor prefers this.</dd>
+      <dt>Silver</dt><dd>Drive it from the temperature sensor instead of the knob, if you have the DHT11: hotter room, faster fan. You will need two thresholds rather than one, for the reason Band 4 gave you.</dd>
+      <dt>Gold</dt><dd>Give the button a <strong>second job</strong>. Instead of one three second burst, make a short press step through three fixed speeds, slow then medium then fast then back to the knob. You will need a variable that remembers which of the four states you are in. You will also have to decide what should happen if somebody turns the knob while a fixed speed is running, and there is no right answer to that. Write down the rule you chose and one sentence saying why.</dd>
+    </dl>
+    <div class="ifnot"><b>If your kit has no DHT11</b>Do Silver with the light sensor instead: brighter room, faster fan. The two thresholds are needed for exactly the same reason, and it is the reasoning Band 4 wants back from you, not the sensor.</div>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Done</span><h2>You still owe Band 6 the same evidence</h2></div>
+  <div class="col stack">
+    <p>This Swap replaces the gate, not the band. To claim Band 6 you still need:</p>
+    <ul class="plain">
+      <li>A video of the fan responding to something, and a photo clear enough to show both the ground link and the diode's stripe</li>
+      <li>Your notes from the loaded-card activity in Part 1</li>
+      <li>Your measured <code>minSpeed</code>, and how you found it</li>
+      <li>Your build log, including whether the transistor legs caught you out</li>
+      <li>Five or six correct answers in Part 12, the Check yourself questions</li>
+    </ul>
+  </div>
+</section>
+
+<nav class="pager" aria-label="Back">
+  <a href="../bands/band-6.html">Back to Band 6</a>
+</nav>
+
+<footer>
+  <p>Bozoma Innovation Hub &nbsp;·&nbsp; Aiyinasi, Ellembelle District. Swap project. Every sketch used here was compiled and tested before it reached you.</p>
+</footer>
+
+</div>
+</body>
+</html>

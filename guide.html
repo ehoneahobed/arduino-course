@@ -29,7 +29,7 @@
   <div class="parthead"><span class="tag">Design</span><h2>What this course assumes</h2></div>
   <div class="col stack">
     <p>The pages carry the teaching. A learner working alone, with a kit and a laptop, can complete every band without asking anybody anything. That was the design goal and it is the standard every page is written to.</p>
-    <p>But two of the twelve pedagogy principles this course is built on cannot be delivered by a page: <strong>working together</strong>, and <strong>asking a learner a question at the moment they are about to go wrong</strong>. Those need you.</p>
+    <p>But one of the twelve pedagogy principles this course is built on cannot be delivered by a page, and that one is <strong>working together</strong>. Nor can the thing a person does that no page can: <strong>asking a learner a question at the moment they are about to go wrong</strong>. Those two need you.</p>
     <div class="callout">
       <h5>The thin layer that makes it work</h5>
       <p>The design assumes a small amount of human contact around the self-paced pages:</p>
@@ -48,7 +48,8 @@
 <section class="part">
   <div class="parthead"><span class="tag">Assessment</span><h2>How a band is passed</h2></div>
   <div class="col stack">
-    <p>Four pieces of evidence. All four are needed. There is no half a band. Band 8, the capstone, asks for a fifth: an honest evaluation against criteria the learner wrote before building.</p>
+    <p>Four <em>kinds</em> of evidence, and all four are needed. There is no half a band. Band 8, the capstone, asks for a fifth: an honest evaluation against criteria the learner wrote before building.</p>
+    <p class="note">The table below is the shape, not the list. Every band ends with its own <strong>Before you move on</strong> panel naming the specific artefacts it wants under each heading, and those are what you collect: the calibration walk in Band 4, the ruler-accuracy table in Band 7, the six PWM pin numbers in Band 2, the resistor values read off the board on a module build. Collect the band's list rather than this table, or you will miss the measurement work that is the whole point of Bands 4 and 7.</p>
     <p>There is also no failing. The only two results are <strong>passed</strong> and <strong>not yet</strong>, and "not yet" always comes with the one specific thing that would change it.</p>
   </div>
   <div class="scroll" style="margin-top:1rem">
@@ -64,7 +65,7 @@
   </div>
   <div class="col stack" style="margin-top:1.2rem">
     <div class="callout">
-      <h5>The six questions that actually decide it</h5>
+      <h5>The nine questions that actually decide it</h5>
       <p>Each band's check has one question marked as the one that matters. Each goes after the exact wrong idea that its band exists to correct. A learner can pass everything else by pattern matching; they cannot pass these.</p>
       <div class="scroll" style="margin-top:.6rem">
         <table>
@@ -77,7 +78,7 @@
             <tr><td>4</td><td>An analog pin with nothing wired to it. What does it read?</td><td>That an unconnected pin reads 0</td></tr>
             <tr><td>5</td><td>A <code>delay</code> hidden inside a function</td><td>That using <code>millis</code> outside makes a sketch non-blocking</td></tr>
             <tr><td>6</td><td>A battery-powered servo with no wire between the two grounds</td><td>That two power sources are two separate circuits</td></tr>
-            <tr><td>7</td><td>The sensor returns 0. What is in front of it?</td><td>That 0 means "touching" rather than "no echo came back"</td></tr>
+            <tr><td>7</td><td>It is pointed out of a window at open sky, so no echo ever comes back. What does the device do?</td><td>That a missing timeout gives a wrong number, rather than silently stopping the whole board</td></tr>
             <tr><td>8</td><td>Three flags, and one combination no branch handles</td><td>That careful typing can substitute for a sound structure</td></tr>
           </tbody>
         </table>
@@ -124,7 +125,7 @@
         <tr><td>Charge-only USB cable</td><td>No port in the Tools menu; looks exactly like a dead board</td><td>Band 0, Part 11. The most common first-week fault of all.</td></tr>
         <tr><td>LED in backwards</td><td>Nothing lights, nothing looks wrong</td><td>Band 1, Part 3. Turn it round before anything else.</td></tr>
         <tr><td>No shared ground</td><td>A servo twitches, buzzes, or does nothing at all</td><td>Band 6, Part 7. One wire from the battery&#8217;s minus to an Arduino GND pin. The commonest fault in Band 6 by a wide margin.</td></tr>
-        <tr><td>LCD contrast wrong</td><td>A completely blank screen that looks dead</td><td>Band 7, Part 5. Turn the knob or the blue screw end to end before checking anything else. Ask this first, every time.</td></tr>
+        <tr><td>LCD contrast wrong</td><td>A completely blank screen that looks dead</td><td>Band 7, Part 6b. Turn the knob or the blue screw end to end before checking anything else. Ask this first, every time.</td></tr>
         <tr><td>Servo on the 5V pin under load</td><td>Board resets, or the arm moves in jerks</td><td>Band 6, Part 7. It needs its own battery once it has to push something.</td></tr>
         <tr><td>Both legs in one column</td><td>Nothing lights, nothing looks wrong</td><td>Band 1, Part 11 checklist item 2.</td></tr>
         <tr><td>Rail never reaches GND</td><td>All lights dead at once, everything else perfect</td><td>Band 1, Part 11 checklist item 5.</td></tr>
@@ -168,7 +169,10 @@
     <ul class="plain">
       <li><strong>Work through all nine bands yourself as a learner</strong>, handing in the same evidence you will ask of them. It is the cheapest quality control available and it produces your first set of worked examples. Band 5 especially: the <code>delay</code> lesson is far easier to teach once you have watched it fail on your own bench.</li>
       <li><strong>Check the kits you actually bought.</strong> Band 3 needs an active buzzer, Band 5 needs a passive one, and Band 5 needs a full-size breadboard or two small ones. Every one of those has a documented fallback, but find out before a cohort starts, not during.</li>
-      <li><strong>Check the four late-band parts before Band 5 ends.</strong> Band 6 needs an SG90 servo and a four-cell AA battery holder; Bands 7 and 8 need an HC-SR04 ultrasonic sensor; Band 7 needs an LCD1602. The servo has no substitute and the band cannot run without it. The screen does have a fallback, using the serial monitor, at the cost of the band&#8217;s best design exercise. <strong>Turn every LCD over and check which kind it is</strong> before Band 7 starts: those with a four-pin board on the back need the LiquidCrystal_I2C library installed, which needs internet once, and those without take twelve more wires. A cohort with a mix of both is normal and the band covers both paths in full.</li>
+      <li><strong>Check the four late-band parts before Band 5 ends.</strong> Band 6 needs an SG90 servo and a four-cell AA battery holder; Bands 7 and 8 need an HC-SR04 ultrasonic sensor; Band 7 needs an LCD1602. The servo has no substitute and the band cannot run without it. The screen has two fallbacks: the four-digit TM1637 display project, which is a complete route through the band, or the serial monitor. Either one costs the band&#8217;s best design exercise, the sixteen-character writing, so ask for that on paper either way. <strong>Turn every LCD over and check which kind it is</strong> before Band 7 starts: those with a four-pin board on the back need the LiquidCrystal_I2C library installed, which needs internet once, and those without take twelve more wires. A cohort with a mix of both is normal and the band covers both paths in full.</li>
+      <li><strong>Do the part identification once, for the whole hub, and label the bags.</strong> Two components in these kits come in two kinds that look alike and behave completely differently: the buzzer (active or passive) and the RGB light (common cathode or common anode, and modules with or without their own resistors). The <a href="projects/which-part.html">Which part have I got?</a> page has two sketches that answer all of it in about twenty-five minutes. Doing this once saves every learner in the cohort a wasted evening, and it is the single highest-value hour of preparation on this list. Write the answers and the date on a slip of paper and put it in each box.</li>
+      <li><strong>Decide which alternative builds you are offering, and buy for those only.</strong> Most bands now have a second route: a keypad lock for Band 3, a rain alarm or a room monitor for Band 4, a stepper dial or a transistor fan for Band 6, a four-digit display for Band 7, and module versions of Bands 1 and 2. None is required. They exist so that six people and two keypads is a timetable rather than a queue, so that a kit without a servo does not close Band 6, and so that somebody working alone can do a band twice by two roads and find out what they actually understood. Each project page lists its own parts.</li>
+      <li><strong>If anybody is building the transistor fan, check there are diodes in the box.</strong> That build switches a motor about a thousand times a second and every switch-off throws a spike at the transistor. There is no visible symptom, so nobody will report it: parts simply wear out. If you have no diodes, direct those learners to the ULN2003 route on the same page, which has the diodes built in. This is the only build in the whole course where a missing part causes silent damage rather than a build that does not work.</li>
       <li><strong>Budget consumables.</strong> LEDs and servos die, and jumper wires fail more often than anything else in the box, producing faults that look exactly like code bugs. Assume around 15% annual replacement.</li>
       <li><strong>Test the cable.</strong> Charge-only USB cables cost more first-week hours than any other single thing. Check every cable before it goes in a kit.</li>
     </ul>

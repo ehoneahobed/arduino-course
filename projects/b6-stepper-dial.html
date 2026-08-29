@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en" data-band="6">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The stepper dial · Swap · Arduino Ladder</title>
+  <meta name="description" content="A pointer that moves an exact number of steps and can turn for ever. It has no idea where it is, so you have to remember for it.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+  <link rel="stylesheet" href="../assets/course.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the project</a>
+<div class="topbar">
+  <a class="home" href="../index.html">Arduino Ladder <span>· Bozoma Innovation Hub</span></a>
+  <nav class="bandlinks" aria-label="Bands"><a href="../bands/band-0.html">0</a><a href="../bands/band-1.html">1</a><a href="../bands/band-2.html">2</a><a href="../bands/band-3.html">3</a><a href="../bands/band-4.html">4</a><a href="../bands/band-5.html">5</a><a href="../bands/band-6.html" aria-current="page">6</a><a href="../bands/band-7.html">7</a><a href="../bands/band-8.html">8</a></nav>
+</div>
+<div class="wrap" id="main">
+<header style="padding:2.6rem 0 1rem">
+  <p class="eyebrow">Band 6 &nbsp;·&nbsp; Things That Move</p>
+  <h1 style="margin:.7rem 0 .5rem"><span class="ptype swap">Swap</span> &nbsp;The stepper dial</h1>
+  <p class="col sub" style="font-size:1.06em">A pointer that moves an exact number of steps and can turn for ever. It has no idea where it is, so you have to remember for it.</p>
+  <dl class="projmeta">
+    <div><dt>Time</dt><dd>85 min</dd></div>
+    <div><dt>You need</dt><dd>28BYJ-48 stepper, ULN2003 driver board, potentiometer, button, battery pack, 12 jumper wires</dd></div>
+    <div><dt>At once</dt><dd>One per stepper</dd></div>
+    <div><dt>Before this</dt><dd>Finish Band 6 Part 7 first. The shared-ground rule matters here exactly as much as it does for the servo.</dd></div>
+  </dl>
+</header>
+
+<section class="sketchbox">
+  <h2>Sketches for this project</h2>
+  <ul><li><a href="../sketches/b6_06_stepper_dial.ino">b6_06_stepper_dial.ino</a></li></ul>
+  <p>Every file opens with a plain-English header saying what it does and how to wire it, hole by hole.</p>
+</section>
+<section class="part">
+  <div class="parthead"><span class="tag">Why</span><h2>What a stepper does that a servo cannot</h2></div>
+  <div class="col stack">
+    <p>The gate in Band 6 uses a servo. You tell it an angle and it goes there. It can only reach 180 degrees, and it always knows where it is.</p>
+    <p>A stepper is the other way round in both respects.</p>
+    <ul class="plain">
+      <li><strong>It can turn for ever</strong>, in either direction, all the way round and round again. A servo cannot.</li>
+      <li><strong>It has no idea where it is.</strong> You tell it a number of steps and it takes exactly that many. Ask it where it is pointing and it cannot tell you, because nothing inside it is looking.</li>
+    </ul>
+    <p>That second one is the whole difficulty and the whole lesson. <strong>If the pointer's position matters, you have to remember it yourself</strong>, in a variable, and keep that variable honest every single time you move.</p>
+    <p class="note">This is the same shape as <code>lastAngle</code> in the servo gate, and it is not optional here. There the deadband was a comfort. Here the remembering <em>is</em> the mechanism.</p>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Build</span><h2>Wire it</h2><span class="mins">30 min</span></div>
+  <div class="col stack">
+    <div class="ifnot" style="margin-bottom:.4rem"><b>Before you start</b>USB unplugged, battery switched off. Clear the servo and its wires off the board.</div>
+
+    <h3>The motor end is easy</h3>
+    <p>The blue cylinder has a white plug on a short lead. It goes into the white socket on the driver board and it only fits one way. That end cannot be got wrong.</p>
+
+    <h3 style="margin-top:.7rem">The Arduino end has one trap in it</h3>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Driver board</th><th>Arduino pin</th><th>Note</th></tr></thead>
+        <tbody>
+          <tr><td><code>IN1</code></td><td class="n">8</td><td></td></tr>
+          <tr><td><code>IN2</code></td><td class="n"><strong>10</strong></td><td>Not 9. Read the box below.</td></tr>
+          <tr><td><code>IN3</code></td><td class="n"><strong>9</strong></td><td>Not 10.</td></tr>
+          <tr><td><code>IN4</code></td><td class="n">11</td><td></td></tr>
+          <tr><td><code>&#8722;</code></td><td>&mdash;</td><td>The breadboard &#8722; rail</td></tr>
+          <tr><td><code>+</code></td><td>&mdash;</td><td>The breadboard + rail</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="ifnot" style="margin-bottom:.4rem"><b>8, 10, 9, 11. The middle two are crossed on purpose.</b>The <code>Stepper</code> library treats the <strong>first two pins you give it as the two ends of one coil</strong>, and the last two as the two ends of the other. Inside a 28BYJ-48 the two ends of one coil are <code>IN1</code> and <code>IN3</code>, not <code>IN1</code> and <code>IN2</code>. So <code>IN3</code> has to land on pin 9, where the library is expecting pin 8's partner. Crossing the two middle wires is how you hand the library the pairs it thinks it has.<br><br>Wire them 8, 9, 10, 11 in the obvious order and the motor will buzz, shake, and go nowhere at all. It is not broken and neither are you. This is the single most common way this build fails, and now it cannot catch you.</div>
+
+    <h3 style="margin-top:.4rem">The rest</h3>
+    <div class="steps">
+      <div class="step"><div class="body">
+        <p><strong>Battery pack red to the + rail, black to the &#8722; rail.</strong> Then check it before any power: two reds on the + rail, two blacks on the &#8722; rail, nothing else on either <em>yet</em>.</p>
+        <div class="see"><b>You should see</b>Exactly four wires on the two rails at this moment. The driver board's two, and the battery's two. Three more will join the &#8722; rail in the next steps: the ground link, the knob's <code>j5</code> wire and the button's <code>a21</code> wire. Nothing else ever will.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>One wire from the &#8722; rail to an Arduino GND pin.</strong></p>
+        <p>Same wire, same reason, same band. A stepper on its own battery needs the shared ground exactly as much as the servo did. Leave it out and you get the buzzing again, from a different cause, which is why you check the pin order <em>and</em> this wire before suspecting anything else.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>The knob.</strong> Legs in <code>f5</code>, <code>f6</code>, <code>f7</code>. Wire <code>j5</code> to the &#8722; rail, <code>j6</code> to <code>A0</code>, and <code>j7</code> <strong>straight to the Arduino's 5V pin</strong>.</p>
+        <div class="ifnot"><b>Not to the + rail</b>The + rail is battery power, about six volts. An Arduino pin must never see more than five. The knob takes its power from the Arduino's own 5V pin, on its own wire.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>The button.</strong> Four legs into <code>e19</code>, <code>e21</code>, <code>f19</code>, <code>f21</code>, body over the middle channel. Wire <code>j19</code> to pin 2 and <code>a21</code> to the &#8722; rail.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Make the pointer and the dial.</strong> Tape a strip of card to the motor's shaft so it sticks out like a hand. Then draw a dial on another piece of card, tape the motor to the middle of it, and mark where the pointer starts.</p>
+        <div class="see"><b>You should see</b>The pointer swinging clear of the card all the way round, and the motor held down firmly enough that it does not walk when it turns.</div>
+        <div class="ifnot"><b>Mark the starting position</b>Draw a line on the dial where the pointer is sitting right now, before you power anything. The sketch assumes the pointer starts at step 0, and if you ever get confused about where it is, switching off and turning it back to that line by hand is how you start again.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Plug in the USB, switch the battery on, and upload <code>b6_06_stepper_dial.ino</code>.</strong> Open the serial monitor at 9600.</p>
+        <div class="see"><b>You should see</b>The pointer moving to wherever the knob is set, slowly and smoothly, and holding there. Turn the knob and it follows. Press the button and it goes all the way round once and comes back to the knob's position.</div>
+        <div class="ifnot"><b>If it buzzes and shakes but does not turn</b>The pin order. 8, 10, 9, 11. This is the fault four times out of five.</div>
+        <div class="ifnot"><b>If nothing happens at all</b>The shared ground wire, or the battery is off. To test, turn the knob a long way from one end to the other and watch the four little lights on the driver board. They should flicker while it steps, and two of them stay lit when it stops. If they never light at all, even with the knob right round, the board has no power. Dark lights on their own are not proof of anything: if the pointer is already where the knob is asking for, the sketch is not stepping and the lights have nothing to show.</div>
+        <div class="ifnot"><b>If it turns but the wrong way</b>Swap the two wires on Arduino pins <b>8 and 9</b>, so that <code>IN1</code> goes to 9 and <code>IN3</code> goes to 8. That reverses the order of the first pair, which reverses the direction. Do not swap 8 and 11: that gives you the buzzing instead. Or leave it and remember which way is which, since nothing in this build cares.</div>
+        <div class="ifnot"><b>The button makes the sketch stop listening for six seconds</b>At the speed this sketch uses, one full turn takes about six seconds, and <code>dial.step()</code> does not return until the turn is finished. During those six seconds the knob is ignored and a second press of the button is not noticed. That is not a fault, but it is a real limit, and it is the same lesson <code>delay()</code> taught you in Band 5: while one thing is happening, nothing else is.</div>
+        <div class="ifnot"><b>If it gets hot when standing still</b>That is normal for a stepper and it is one of their real costs. A stepper holds its position by pushing constantly, whether anything is resisting it or not, so it draws its full current even when nothing is moving. A servo is different: it only pushes when something is pushing back, which is why it goes quiet once it has arrived, and why Band 6 Part 7 offers <code>detach()</code> as a way of saving battery rather than as a necessity. Neither is happy left powered for hours, but the stepper is the greedier of the two.</div>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Look closer</span><h2>The number you have to keep honest</h2><span class="mins">25 min</span></div>
+  <div class="col stack">
+    <p>Find these lines in the sketch:</p>
+    <pre><code>long atStep = 0;            // where we believe the pointer is
+
+void goToStep(long target) {
+  long move = target - atStep;
+  if (move == 0) {
+    return;
+  }
+  dial.step(move);
+  atStep = target;
+}</code></pre>
+    <p>Read the comment on the first line again. <strong>Where we <em>believe</em> the pointer is.</strong> Not where it is. Nothing in this circuit can tell you where it actually is.</p>
+    <p><code>dial.step(move)</code> takes a number of steps and a direction, worked out by subtracting. Then <code>atStep = target</code> updates the belief. Those two lines must always happen together, and the moment they stop matching reality, everything after it is wrong and nothing complains.</p>
+
+    <div class="callout">
+      <h5>Break it, and watch the belief go wrong</h5>
+      <ol class="num">
+        <li>Delete the line <code>atStep = target;</code>. Predict what will happen, then upload.</li>
+        <li>Put it back. Now, while it is running, take hold of the pointer and turn it by hand about a quarter turn. Let go. Turn the knob a little.</li>
+      </ol>
+      <details><summary>What happens, after you have tried both</summary><div class="inner">
+        <p><strong>Without the update:</strong> <code>atStep</code> stays at 0 for ever, so every move is calculated from 0 rather than from where it is. Turn the knob a little and the pointer flies off much further than you asked. It gets worse the further round you go, and it never recovers.</p>
+        <p><strong>Turning it by hand:</strong> the pointer is now a quarter turn away from where the sketch believes it to be, and the sketch has no way of finding out. Every future move is off by that quarter turn, permanently, until you restart. The gears will also have complained; do not make a habit of it.</p>
+        <p>Both faults have the same shape: <strong>a variable and the world stopped agreeing, and nothing in the system noticed.</strong> That is what &#8220;open loop&#8221; means, and almost every cheap moving thing you will ever meet is open loop.</p>
+      </div></details>
+    </div>
+
+    <h3 style="margin-top:.8rem">The number 2048</h3>
+    <p><code>STEPS_PER_TURN</code> is 2048, and that is not a round number by accident. The motor itself takes 32 steps per turn. A gearbox inside divides that down by about 64, which is why it is slow, and why it is far stronger than a motor that size has any right to be. 32 times 64 is 2048.</p>
+    <div class="ifnot"><b>2048 is a rounding, and you can see it</b>The gearbox is not exactly 64 to 1. It is closer to 63.68, which makes a true full turn about 2038 steps. Ask for one turn and you will not see the difference. Ask for twenty turns in a row and the pointer will end up noticeably past your starting line. Try it, count how far past, and work out what number would have been right. Cheap parts have specifications that are approximately true, and knowing which of your numbers is approximate is a real engineering skill.</div>
+
+    <h3 style="margin-top:.8rem">Why the deadband is in steps here</h3>
+    <p>In the servo gate the deadband was 3 degrees. Here it is 20 <em>steps</em>, which is only about three and a half degrees of the pointer, because 2048 steps make a whole turn.</p>
+    <p>Same idea, different units. Compare the two sketches side by side and check you can say why the numbers are so different for the same amount of movement.</p>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Change it</span><h2>Make it yours</h2><span class="mins">30 min</span></div>
+  <div class="col stack">
+    <dl class="tier">
+      <dt>Bronze</dt><dd>Make the button turn it <strong>anticlockwise</strong> instead, and then make a second button that turns it clockwise. Then say in one sentence why <code>atStep</code> does not need updating for either.</dd>
+      <dt>Silver</dt><dd>Turn the dial into a gauge for something real: the light sensor from Band 4, or the distance sensor from Band 7. Mark the card with the numbers you measure, not with numbers you assumed. That measuring step is the whole of Band 4 arriving in a new place.</dd>
+      <dt>Gold</dt><dd>Give it a <strong>home position</strong>. Add a button that returns the pointer to step 0 whatever it currently believes, and use it to fix the by-hand problem above. Then think about what would have to change for the device to find home <em>by itself</em> at switch-on, and write down what extra part you would need. Real machines have that part.</dd>
+    </dl>
+    <div class="ifnot"><b>The answer to the Gold question, if you want to check yourself</b>A switch at the home position that the pointer presses when it reaches it. Switch on, turn slowly one way until the switch closes, and now you know where you are. Printers, scanners and 3D printers all do this every time you switch them on, and the noise they make while doing it is exactly this.</div>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Done</span><h2>You still owe Band 6 the same evidence</h2></div>
+  <div class="col stack">
+    <p>This Swap replaces the gate, not the band. To claim Band 6 you still need:</p>
+    <ul class="plain">
+      <li>A video of your dial responding to something, and a photo showing the ground link between the &#8722; rail and the Arduino</li>
+      <li>Your notes from the loaded-card activity in Part 1</li>
+      <li>The deadband table from Part 9b, done with your stepper's numbers</li>
+      <li>Your build log, including which way round the pin order caught you, if it did</li>
+      <li>Five or six correct answers in Part 12, the Check yourself questions</li>
+    </ul>
+    <p class="note">Part 12 asks about a servo sketch you have not built. Answer it anyway. Every idea in it is one you have used here: the deadband, the remembered position, and what happens when a reading is acted on too eagerly. If you can answer it having built the dial, you have understood the band rather than the build, which is the point.</p>
+  </div>
+</section>
+
+<nav class="pager" aria-label="Back">
+  <a href="../bands/band-6.html">Back to Band 6</a>
+</nav>
+
+<footer>
+  <p>Bozoma Innovation Hub &nbsp;·&nbsp; Aiyinasi, Ellembelle District. Swap project. Every sketch used here was compiled and tested before it reached you.</p>
+</footer>
+
+</div>
+</body>
+</html>

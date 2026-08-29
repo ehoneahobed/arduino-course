@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Which part have I got? · Identify · Arduino Ladder</title>
+  <meta name="description" content="Two sketches that tell you what is in your hand, for the two parts in this kit that come in more than one kind.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+  <link rel="stylesheet" href="../assets/course.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the project</a>
+<div class="topbar">
+  <a class="home" href="../index.html">Arduino Ladder <span>· Bozoma Innovation Hub</span></a>
+  <nav class="bandlinks" aria-label="Bands"><a href="../bands/band-0.html">0</a><a href="../bands/band-1.html">1</a><a href="../bands/band-2.html">2</a><a href="../bands/band-3.html">3</a><a href="../bands/band-4.html">4</a><a href="../bands/band-5.html">5</a><a href="../bands/band-6.html">6</a><a href="../bands/band-7.html">7</a><a href="../bands/band-8.html">8</a></nav>
+</div>
+<div class="wrap" id="main">
+<header style="padding:2.6rem 0 1rem">
+  <p class="eyebrow">Before you start any band</p>
+  <h1 style="margin:.7rem 0 .5rem"><span class="ptype identify">Identify</span> &nbsp;Which part have I got?</h1>
+  <p class="col sub" style="font-size:1.06em">Two sketches that tell you what is in your hand, for the two parts in this kit that come in more than one kind.</p>
+  <dl class="projmeta">
+    <div><dt>Time</dt><dd>25 min</dd></div>
+    <div><dt>You need</dt><dd>A buzzer, or an RGB light</dd></div>
+    <div><dt>At once</dt><dd>Everybody at once</dd></div>
+    <div><dt>Before this</dt><dd>Nothing. Do this before Band 2, Band 3 or Band 5 if nobody has labelled your box.</dd></div>
+  </dl>
+</header>
+
+<section class="sketchbox">
+  <h2>Sketches for this project</h2>
+  <ul><li><a href="../sketches/id_01_which_buzzer.ino">id_01_which_buzzer.ino</a></li><li><a href="../sketches/id_02_which_rgb.ino">id_02_which_rgb.ino</a></li></ul>
+  <p>Every file opens with a plain-English header saying what it does and how to wire it, hole by hole.</p>
+</section>
+<section class="part">
+  <div class="parthead"><span class="tag">Why</span><h2>Two parts, two kinds each</h2></div>
+  <div class="col stack">
+    <p>Most of what is in your box is exactly one thing. A resistor is a resistor. An LED is an LED.</p>
+    <p>Two parts are not like that. Each comes in two kinds that look almost the same and behave completely differently, and kits ship whichever kind was cheapest that month. If nobody has told you which you have, you will find out the hard way in the middle of a build.</p>
+    <p>These two sketches tell you in about ten minutes each. Do them once, write the answers on a slip of paper, and put the paper in the box.</p>
+
+    <div class="callout">
+      <h5>Who needs to do this</h5>
+      <p><strong>The facilitator, once, for the whole hub</strong>, is ideal. Label the bags and nobody else ever has to think about it.</p>
+      <p>If you are working alone and nothing is labelled, do the buzzer one before Band 3 and the RGB one before Band 2. Ten minutes each, and both save you an hour of the wrong kind of confusion.</p>
+    </div>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">One</span><h2>Which buzzer have I got?</h2><span class="mins">10 min</span></div>
+  <div class="col stack">
+    <p>There are two kinds of buzzer and they are the same size, the same colour, and have the same two legs.</p>
+
+    <div class="which">
+      <h4>Look first</h4>
+      <p>Turn the buzzer over and look at the bottom.</p>
+      <div class="opts">
+        <div class="opt">
+          <b>Sealed underneath, often with a paper sticker on it</b>
+          <p>Almost certainly an <strong>active</strong> buzzer. There is a tiny circuit sealed inside it whose only job is to switch back and forth thousands of times a second, which is what a sound is. Because that circuit is already in there, the buzzer makes its own note: switch it on and it beeps. It knows one note, and it cannot be persuaded otherwise.</p>
+        </div>
+        <div class="opt">
+          <b>You can see a small green circuit board underneath</b>
+          <p>Almost certainly a <strong>passive</strong> buzzer. There is no such circuit inside, so it has no note of its own. Switch it on and it clicks once and then sits there. You have to do the switching back and forth yourself, from the board, which is exactly what <code>tone</code> does, and that is why you get to choose the note.</p>
+        </div>
+      </div>
+      <p style="margin-top:.7rem">&#8220;Almost certainly&#8221; is not certainly, and some buzzers are sealed either way. So prove it.</p>
+    </div>
+
+    <h3 style="margin-top:.6rem">Then prove it</h3>
+    <div class="steps">
+      <div class="step"><div class="body">
+        <p><strong>Wire it.</strong> If one leg is longer than the other, or one is marked <code>+</code>, that leg goes to pin 8 and the other to the &#8722; rail. <strong>If both legs are the same length and nothing is marked, either way round works</strong>, and that on its own is a hint that yours is the passive kind, because a bare piezo disc has no right way round. Then one wire from the &#8722; rail to a GND pin.</p>
+        <div class="ifnot"><b>About the resistor</b>Every band in this course wires the buzzer straight to a pin with no resistor, and that is fine for a passive one. An <strong>active</strong> buzzer pulls a little more, often twenty-five to thirty thousandths of an amp, and a pin is only comfortable up to twenty. It will work, and thousands of kits are used exactly like this. If you have a spare <b>100 ohm</b> resistor, putting it in the pin leg costs you nothing you can hear and keeps the pin inside its rating. Once you know which kind you have, decide once and wire it that way for the rest of the course.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Upload <code>id_01_which_buzzer.ino</code></strong> and open the serial monitor (Tools, then Serial Monitor, 9600). Then <strong>listen while you read</strong>, because the sketch tells you what it is about to do before it does it.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Step 1 switches the pin on for a second.</strong> Step 2 asks for 440 Hz for a second. Watch which is which and listen to both.</p>
+        <div class="see"><b>You should see</b>One of exactly two things.<br><br><strong>It beeped both times, and both beeps sounded the same.</strong> You have an <strong>active</strong> buzzer. It made its own note in step 1, and in step 2 it ignored your request and made the same note again.<br><br><strong>It clicked once in step 1, then played a clear note in step 2.</strong> You have a <strong>passive</strong> buzzer. There was nothing inside it to make a sound in step 1; in step 2 you gave it one.</div>
+        <div class="ifnot"><b>If you heard nothing at all in either step</b>The buzzer is not wired, not the buzzer. Check the long leg is on pin 8 and the &#8722; rail really reaches GND. Then swap the two legs over and try once more.</div>
+        <div class="ifnot"><b>If step 2 was scratchy or rattly rather than a clean note</b>That is an active buzzer being asked to do something it cannot. Count it as active.</div>
+      </div></div>
+    </div>
+
+    <div class="callout">
+      <h5>Write it down, then read this</h5>
+      <div class="scroll">
+        <table>
+          <thead><tr><th>Band</th><th>With a passive one</th><th>With an active one</th></tr></thead>
+          <tbody>
+            <tr><td><b>Band 3</b>, the lock</td><td>Works fully. Use <code>tone(buzzerPin, 1000)</code> to beep and <code>noTone(buzzerPin)</code> to stop.</td><td>Works fully. Use <code>digitalWrite(buzzerPin, HIGH)</code> and <code>LOW</code> instead. The page gives you both lines.</td></tr>
+            <tr><td><b>Band 5</b>, the game</td><td>Works fully. Four lights, four different notes.</td><td>Works, with one note instead of four. The game is still a game; you lose the pitch, which is a real loss but not a blocking one.</td></tr>
+            <tr><td><b>Band 7</b>, the guard</td><td>Works fully. Beep rate <em>and</em> a rising note.</td><td>Works. You get the beep rate, which is the part that matters, and not the rising note.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="margin-top:.6rem"><strong>If you have two buzzers, test both.</strong> Kits very often contain one of each, and if that is true of yours then nothing in this course is closed to you at all. Mark them, keep them apart, and you never think about it again.</p>
+    </div>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Two</span><h2>Which RGB light have I got?</h2><span class="mins">15 min</span></div>
+  <div class="col stack">
+    <p>This one has two questions inside it, and Band 2 needs both answered.</p>
+
+    <div class="which">
+      <h4>Question one: what shape is it?</h4>
+      <p>Tip the bag out and look. You may find one of these, or both.</p>
+      <div class="opts">
+        <div class="opt">
+          <b>A loose dome with four legs, one longer than the rest</b>
+          <p>A <strong>discrete RGB LED</strong>. Three lights inside one case, sharing one leg. You fit three resistors yourself, one per colour.</p>
+          <p class="go">&#8594; Band 2's core build is written for this. Use it.</p>
+        </div>
+        <div class="opt">
+          <b>A small board with one light on it and a row of pins</b>
+          <p>An <strong>RGB module</strong>. The same three lights, on a board. Usually, but <em>not always</em>, with the three resistors already fitted.</p>
+          <p class="go">&#8594; Build the module Swap instead, after the check in the next box.</p>
+        </div>
+      </div>
+      <p style="margin-top:.7rem"><strong>If you have both</strong>, build the core with the loose one first. The module afterwards takes twenty minutes and makes a good second look at the same idea.</p>
+      <p><strong>If you have only the module</strong>, that is fine and Band 2 still works. What you would have missed is why the resistors are there, so the module page makes you go and find them on the board instead of fitting them.</p>
+    </div>
+
+    <div class="which">
+      <h4>Before you power a module: turn it over</h4>
+      <p>Two kinds of RGB module are sold in the same kits and they look alike from the front. Only one of them has the resistors. Getting this wrong damages the light <em>and</em> the pin, which is exactly what the resistors were for.</p>
+      <div class="opts">
+        <div class="opt">
+          <b>Three tiny black rectangles on the back, with numbers on them</b>
+          <p>The resistors are fitted. This is the common kind.</p>
+          <p class="go">&#8594; Wire the three colour pins straight to Arduino pins. No resistors of your own.</p>
+        </div>
+        <div class="opt">
+          <b>A bare back, with nothing but solder and the light's own legs</b>
+          <p>This module has <strong>no resistors</strong>. Wired straight to a pin at 255 it would pull something like five times what a pin is rated for.</p>
+          <p class="go">&#8594; Put a <b>220 ohm resistor in each of the three colour wires yourself</b>, exactly as the loose LED needs. Then carry on as normal. Write on your slip of paper that yours is the bare kind.</p>
+        </div>
+      </div>
+      <p style="margin-top:.7rem">If you cannot tell, add the three resistors anyway. A module that already has them will simply look a little dimmer, and nothing is harmed. That is the safe direction to be wrong in, and choosing the safe direction when you are unsure is a habit worth building now.</p>
+    </div>
+
+    <div class="which">
+      <h4>Question two: which way round is it?</h4>
+      <p>Both shapes come in two wirings, and you cannot tell by looking. This is the one you have to test.</p>
+      <div class="opts">
+        <div class="opt">
+          <b>Common cathode</b>
+          <p>The shared leg goes to <strong>ground</strong>. 0 is off and 255 is bright, which is what everything in Band 2 assumes.</p>
+        </div>
+        <div class="opt">
+          <b>Common anode</b>
+          <p>The shared leg goes to <strong>5V</strong>. It is backwards: 0 is bright and 255 is off. Everything still works and one line changes.</p>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="margin-top:.6rem">The test</h3>
+    <div class="steps">
+      <div class="step"><div class="body">
+        <p><strong>Wire whichever one you have</strong>, following the wiring comment at the top of <code>id_02_which_rgb.ino</code>. It gives both, hole by hole.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Upload it and watch the light while you read the serial monitor.</strong> It shows red, green, blue, all-on, all-off, and names each one as it goes.</p>
+        <div class="see"><b>You should see</b>Three answers, and you want all three written down.<br><br><strong>Which way round.</strong> If &#8220;all on&#8221; looked white and &#8220;all off&#8221; looked dark, it is <strong>common cathode</strong> and there is nothing to change. If &#8220;all on&#8221; was dark and &#8220;all off&#8221; was white, it is <strong>common anode</strong>.<br><br><strong>Whether the colours are in the order the sketch thinks.</strong> If it said red and you saw green, your legs are in a different order. Nothing is broken.<br><br><strong>Which pin turned out to be which colour</strong>, if they were not in order. Write the three down.</div>
+        <div class="ifnot"><b>If it lights but only ever one colour</b>Two of your three resistors are not making contact, or two colour wires are in the same hole. A hole takes one leg only.</div>
+        <div class="ifnot"><b>If nothing lights in any of the steps, including &#8220;all on&#8221;</b>You almost certainly have a <strong>common anode</strong> part, whose shared leg wants 5V rather than ground. It is not dead. On a loose LED: take the wire running from <code>j6</code> to the &#8722; rail and move that end to the <code>+</code> rail, then run one new wire from the <code>+</code> rail to the Arduino's <strong>5V</strong> pin. Leave the three resistors and the three pin wires exactly where they are. Run the sketch again. It will light this time, and &#8220;all on&#8221; will now be the dark one. On a module: move the fourth pin's wire from GND to 5V and run it again.</div>
+        <div class="ifnot"><b>If it still does nothing after that</b>Now check the shared leg itself. On a loose LED it is the longest one, and it must be in <code>f6</code>. On a module it is the pin marked <code>-</code>, <code>GND</code>, <code>VCC</code> or <code>+</code>. Then check that the &#8722; rail really reaches a GND pin.</div>
+      </div></div>
+    </div>
+
+    <div class="callout">
+      <h5>If yours is common anode, there are two steps and you need both</h5>
+      <p>Everything in Band 2 still works. Pick one of these and stay with it.</p>
+      <p><strong>Step one, the wiring, and it is not optional.</strong> The shared leg must go to <strong>5V</strong>, as the box above described. A common-anode part with its shared leg on the &#8722; rail cannot light in any state at all, because the shared leg has to sit <em>above</em> the three colour legs for anything to flow through them. This is what <strong>Band 2 Part 12</strong> tells you to do, and it is what makes the light work.</p>
+      <p><strong>Step two, the numbers, and this is the part people miss.</strong> Rewiring makes it light. It does not un-invert it. With 5V on the shared leg, <code>255</code> puts five volts on both ends of the light and you get nothing, while <code>0</code> gives you full brightness. So turn every number upside down inside <code>showColour</code> as well:</p>
+      <pre><code>analogWrite(redPin, 255 - r);
+analogWrite(greenPin, 255 - g);
+analogWrite(bluePin, 255 - b);</code></pre>
+      <p>Subtracting from 255 undoes exactly what the hardware did, and from then on every number on every page in this course means what it says again. You can also just live with the inversion and remember that 0 is bright, which is where Band 2 Part 12 leaves you. That works, and it will catch you out about once a fortnight for the rest of the course. Write on your slip of paper which of the two you chose.</p>
+      <p><strong>A module works exactly the same way.</strong> A module whose fourth pin is marked <code>VCC</code> or <code>+</code> is the common-anode kind: that pin goes to 5V, and its numbers are then upside down. <code>b2_05_rgb_module.ino</code> says the same.</p>
+      <p class="note">Notice what just happened. It looked like a choice between a hardware fix and a software fix, and it was not: the hardware step was compulsory and it only got you half way there. That pattern is very common. The habit worth building is to ask, after any fix at all, <em>what exactly did that change, and what did it leave alone?</em></p>
+    </div>
+
+    <div class="callout">
+      <h5>The slip of paper</h5>
+      <p>Write these six things and put the paper in the box:</p>
+      <ul class="plain">
+        <li>Buzzer 1 is active or passive</li>
+        <li>Buzzer 2 is active or passive</li>
+        <li>RGB shape: loose LED, module, or both</li>
+        <li>If a module: does it have its own resistors, or did you add three</li>
+        <li>RGB wiring: common cathode or common anode</li>
+        <li>Which pin is red, which is green, which is blue</li>
+        <li>The date, so the next person knows whether to trust it</li>
+      </ul>
+      <p>That is ten minutes now against an hour of everybody's confusion later, and it is the single highest-value thing a facilitator can do before a cohort starts.</p>
+    </div>
+  </div>
+</section>
+
+<nav class="pager" aria-label="Back">
+  <a href="../index.html">Back to the course home</a>
+</nav>
+
+<footer>
+  <p>Bozoma Innovation Hub &nbsp;·&nbsp; Aiyinasi, Ellembelle District. Identify project. Every sketch used here was compiled and tested before it reached you.</p>
+</footer>
+
+</div>
+</body>
+</html>

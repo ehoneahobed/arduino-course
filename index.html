@@ -88,6 +88,27 @@
 </section>
 
 <section class="part">
+  <div class="parthead"><span class="tag">More than one road</span><h2>Nine bands, but not one build each</h2></div>
+  <div class="col stack">
+    <p>Most bands now offer a <strong>second build</strong> that reaches the same place by a different route. A keypad instead of four buttons. A rain plate instead of a light sensor. A fan on a transistor instead of the servo gate. Same band, same evidence, different hardware and a different afternoon.</p>
+    <p>They exist for three reasons.</p>
+    <ul class="plain">
+      <li><strong>Kits differ.</strong> If your box has no servo but does have a stepper, Band 6 is still open to you.</li>
+      <li><strong>Groups are not all doing the same thing at once.</strong> Six people and two keypads is a problem. Six people, two keypads and four other routes through Band 3 is a timetable.</li>
+      <li><strong>Doing a band twice by two roads is the fastest way to find out what you actually understood.</strong> If you can only build the one you were shown, you learnt the build. If you can build the other one, you learnt the band.</li>
+    </ul>
+    <div class="sketchbox" style="--bc:var(--copper); max-width:none">
+      <h2>Start here if nobody has labelled your box</h2>
+      <ul>
+        <li><a href="projects/which-part.html">Which part have I got?</a></li>
+      </ul>
+      <p>Two parts in these kits come in two kinds that look almost identical and behave completely differently: the buzzer and the RGB light. About twenty-five minutes with two sketches tells you which you are holding, and saves everybody an evening of the wrong kind of confusion. A facilitator should do this once for the whole hub and label the bags.</p>
+    </div>
+    <p class="note">Every band page that has alternatives lists them near the top, under <em>Choose your build</em>. Each project page says exactly what it swaps out, what it does not teach, and what you still owe the band before you can claim it.</p>
+  </div>
+</section>
+
+<section class="part">
   <div class="parthead"><span class="tag">Before you start</span><h2>What you need</h2></div>
   <div class="col stack">
     <div class="grid-2">
@@ -99,6 +120,7 @@
           <li>For the last three bands you also need <strong>a servo</strong> (the small blue SG90, Band 6), <strong>an ultrasonic distance sensor</strong> (HC-SR04, Bands 7 and 8), <strong>an LCD1602 screen</strong> of either kind (Band 7), and <strong>a battery holder for four AA cells</strong> (Band 6). Most starter kits contain all four. Band 8 needs nothing new at all.</li>
           <li>A laptop or computer</li>
           <li>A pen and paper. You will use these more than you expect.</li>
+          <li><strong>Only for the alternative builds</strong>, and only the ones you choose: a 4&times;4 keypad, a rain sensor board and plate, a DHT11, a traffic light module, an RGB module, a four-digit TM1637 display, a 28BYJ-48 stepper with its ULN2003 board, or a small DC motor with an NPN transistor and a diode. Each project page lists exactly what its own build needs, and none of them is required to finish the course.</li>
         </ul>
       </div>
       <div class="card stack-sm">
@@ -114,18 +136,19 @@
     <div class="sketchbox" style="--bc:var(--accent); max-width:none">
       <h2>The sketches</h2>
       <ul>
-        <li><a href="downloads/arduino-ladder-sketches.zip">Download all 41 sketches (zip)</a></li>
+        <li><a href="downloads/arduino-ladder-sketches.zip">Download all 53 sketches (zip)</a></li>
         <li><a href="sketches/README.txt">Read the sketch guide</a></li>
       </ul>
       <p>Each band page also links the sketches it needs. Every file opens with a plain-English header saying what it does and how to wire it, hole by hole.</p>
     </div>
 
     <div class="callout" style="--bc:var(--copper); margin-top:.4rem">
-      <h5>Four rules for the whole course</h5>
+      <h5>Five rules for the whole course</h5>
       <ol class="num">
         <li><strong>Unplug the USB cable before you change any wiring.</strong> Build it, check it, then give it power. Every time.</li>
         <li><strong>Never join the 5V pin straight to a GND pin.</strong> That is the one mistake that can damage the board.</li>
         <li><strong>Never put more than 5 volts on an Arduino pin.</strong> This one only matters from Band 6, when a battery arrives. Four AA cells make about six volts, and no pin should ever see it.</li>
+        <li><strong>A motor driven by a bare transistor always needs its diode.</strong> This only matters if you build the fan in Band 6. Without the diode you damage parts slowly, invisibly, and with nothing to warn you.</li>
         <li><strong>If you are stuck for 30 minutes, stop and ask.</strong> Take a photo of your board first, and do not rebuild it before you ask.</li>
       </ol>
     </div>

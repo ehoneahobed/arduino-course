@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en" data-band="3">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The keypad lock · Swap · Arduino Ladder</title>
+  <meta name="description" content="A four-digit code on a real keypad. Sixteen buttons on eight wires, and the trick that makes that possible.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+  <link rel="stylesheet" href="../assets/course.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the project</a>
+<div class="topbar">
+  <a class="home" href="../index.html">Arduino Ladder <span>· Bozoma Innovation Hub</span></a>
+  <nav class="bandlinks" aria-label="Bands"><a href="../bands/band-0.html">0</a><a href="../bands/band-1.html">1</a><a href="../bands/band-2.html">2</a><a href="../bands/band-3.html" aria-current="page">3</a><a href="../bands/band-4.html">4</a><a href="../bands/band-5.html">5</a><a href="../bands/band-6.html">6</a><a href="../bands/band-7.html">7</a><a href="../bands/band-8.html">8</a></nav>
+</div>
+<div class="wrap" id="main">
+<header style="padding:2.6rem 0 1rem">
+  <p class="eyebrow">Band 3 &nbsp;·&nbsp; Combination Lock</p>
+  <h1 style="margin:.7rem 0 .5rem"><span class="ptype swap">Swap</span> &nbsp;The keypad lock</h1>
+  <p class="col sub" style="font-size:1.06em">A four-digit code on a real keypad. Sixteen buttons on eight wires, and the trick that makes that possible.</p>
+  <dl class="projmeta">
+    <div><dt>Time</dt><dd>100 min</dd></div>
+    <div><dt>You need</dt><dd>4&times;4 keypad, 2 LEDs, 2 resistors, buzzer, 15 jumper wires</dd></div>
+    <div><dt>At once</dt><dd>One per keypad module</dd></div>
+    <div><dt>Before this</dt><dd>Finish Band 3 up to Part 10. This replaces the four-button lock in Part 11. Test with <code>b3_07_keypad_test.ino</code> before you load the lock.</dd></div>
+  </dl>
+</header>
+
+<section class="sketchbox">
+  <h2>Sketches for this project</h2>
+  <ul><li><a href="../sketches/b3_07_keypad_test.ino">b3_07_keypad_test.ino</a></li><li><a href="../sketches/b3_06_keypad_lock.ino">b3_06_keypad_lock.ino</a></li></ul>
+  <p>Every file opens with a plain-English header saying what it does and how to wire it, hole by hole.</p>
+</section>
+<section class="part">
+  <div class="parthead"><span class="tag">Why</span><h2>Sixteen buttons on eight wires</h2></div>
+  <div class="col stack">
+    <p>The four-button lock in Band 3 uses four buttons on four pins. One each. That does not scale, and a keypad is where it stops working.</p>
+    <p>Sixteen keys, one pin each, would be sixteen pins. An UNO has eighteen usable. You would have a keypad and nothing else.</p>
+    <p>So a keypad does something cleverer, and it is the same trick that is hiding inside every multi-digit display in the drawer, including the one in Band 7. <strong>It is worth understanding rather than accepting.</strong></p>
+
+    <div class="callout">
+      <h5>How it works, in one paragraph</h5>
+      <p>The keys are in a grid: four rows of four. Every key sits where one row wire crosses one column wire, and pressing it joins that row to that column.</p>
+      <p>So the board switches on <strong>one row at a time</strong> and looks at all four columns. If column 3 answers while row 2 is switched on, the key at row 2 column 3 is down. It does that about a hundred times a second, and to you it looks instant.</p>
+      <p>Four rows plus four columns is eight wires for sixteen keys. Add a row and a column and you get twenty-five keys on ten wires. That is what makes it worth the cleverness.</p>
+      <p class="note">You already know this shape. It is Band 3's loop over four buttons, done in two directions at once.</p>
+    </div>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Build</span><h2>Wire it</h2><span class="mins">40 min</span></div>
+  <div class="col stack">
+    <div class="ifnot" style="margin-bottom:.4rem"><b>Before you start</b>USB unplugged, and <strong>strip the board right back to bare</strong>. The four buttons, both lights, the buzzer and every single wire come off. When you have finished, <b>nothing at all is in Arduino pins 2 to 12</b>.<br><br>This is not tidiness. The keypad needs eight pins in a row, and Band 3's lock had its green light on pin 8, its red on pin 9 and its buzzer on pin 10, which is exactly where three of the keypad's eight wires are going. Leave them and you have two wires in one pin three times over, which the course forbids for good reason: the two fight each other and neither works. The table below rebuilds the lights and the buzzer in new holes on new pins.</div>
+
+    <h3>The keypad</h3>
+    <p>Eight pins along one edge. <strong>Hold it with the buttons facing you and the right way up</strong>, so <code>1 2 3 A</code> is the top row. The pins are then, reading left to right:</p>
+
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Position</th><th>What it is</th><th>Arduino pin</th></tr></thead>
+        <tbody>
+          <tr><td>1st, leftmost</td><td>Row 1 &mdash; the <code>1 2 3 A</code> row</td><td class="n">9</td></tr>
+          <tr><td>2nd</td><td>Row 2 &mdash; the <code>4 5 6 B</code> row</td><td class="n">8</td></tr>
+          <tr><td>3rd</td><td>Row 3 &mdash; the <code>7 8 9 C</code> row</td><td class="n">7</td></tr>
+          <tr><td>4th</td><td>Row 4 &mdash; the <code>* 0 # D</code> row</td><td class="n">6</td></tr>
+          <tr><td>5th</td><td>Column 1 &mdash; the <code>1 4 7 *</code> column</td><td class="n">5</td></tr>
+          <tr><td>6th</td><td>Column 2 &mdash; the <code>2 5 8 0</code> column</td><td class="n">4</td></tr>
+          <tr><td>7th</td><td>Column 3 &mdash; the <code>3 6 9 #</code> column</td><td class="n">3</td></tr>
+          <tr><td>8th, rightmost</td><td>Column 4 &mdash; the <code>A B C D</code> column</td><td class="n">2</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="ifnot" style="margin-bottom:.4rem"><b>No resistors, no power wires</b>A keypad is nothing but switches. It has no VCC and no GND pin, and if you go looking for one you will waste ten minutes. The Arduino's internal pull-ups do the rest, exactly as they did for the four buttons.</div>
+
+    <h3 style="margin-top:.5rem">The rest</h3>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Part</th><th>Holes</th><th>Wiring</th></tr></thead>
+        <tbody>
+          <tr><td>Green light</td><td>long <code>b3</code>, short <code>b4</code></td><td>Resistor <code>a3</code> to <code>a1</code>; wire <code>b1</code> to pin 10; wire <code>a4</code> to &#8722; rail</td></tr>
+          <tr><td>Red light</td><td>long <code>b7</code>, short <code>b8</code></td><td>Resistor <code>a7</code> to <code>a5</code>; wire <code>b5</code> to pin 11; wire <code>a8</code> to &#8722; rail</td></tr>
+          <tr><td>Buzzer</td><td>long <code>b40</code>, short <code>b42</code></td><td>Wire <code>a40</code> to pin 12; wire <code>a42</code> to &#8722; rail. No resistor.</td></tr>
+          <tr><td colspan="3" class="note">If the buzzer's legs are set too far apart to reach <code>b40</code> and <code>b42</code>, use <code>b40</code> and <code>b43</code> instead and move the &#8722; rail wire to <code>a43</code>. Buzzers are made to two different leg spacings and both are common. Do not force the legs; they snap.</td></tr>
+          <tr><td>Ground</td><td>&mdash;</td><td>One wire from the &#8722; rail to a GND pin</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">The pin wires go in <code>b1</code> and <code>b5</code>, not <code>a1</code> and <code>a5</code>, because the resistor legs are already in those holes and <strong>a hole takes one leg only</strong>. Same column, same connection.</p>
+
+    <div class="ifnot" style="margin-bottom:.4rem"><b>If your buzzer is the active kind</b>The sketch uses <code>tone</code>, which an active buzzer cannot follow. It will still beep, at its own single note, and the lock works perfectly. If you would rather it were exact, replace each <code>tone(buzzerPin, ...)</code> with <code>digitalWrite(buzzerPin, HIGH)</code> and each <code>noTone(buzzerPin)</code> with <code>digitalWrite(buzzerPin, LOW)</code>. Run <code>id_01_which_buzzer.ino</code> if you are not sure which you have.</div>
+
+    <h3 style="margin-top:.4rem">Install one library, then test in two stages</h3>
+    <div class="steps">
+      <div class="step"><div class="body">
+        <p><strong>Install the Keypad library.</strong> Tools, then Manage Libraries, search for <code>Keypad</code>, and install the one by <strong>Mark Stanley and Alexander Brevig</strong>. Once, on one machine.</p>
+        <div class="see"><b>You should see</b>The word INSTALLED next to it in the list.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Stage one: prove every key works, before the lock is anywhere near it.</strong> Upload <code>b3_07_keypad_test.ino</code>, which does nothing at all but print, and open the serial monitor at 9600. Press every one of the sixteen keys in turn, reading along the rows.</p>
+        <div class="ifnot" style="margin-top:.4rem"><b>Why a separate sketch, and not just the lock</b>The lock makes a decision after every four keys. Test sixteen keys on it and every fourth press sets off a wrong-code buzz, and the third of those locks you out for ten seconds. You would come away certain that three of your keys were dead. <strong>Test one thing at a time</strong> is not a slogan; this is what it buys you.</div>
+        <div class="see"><b>You should see</b><code>key 1</code>, <code>key 2</code>, <code>key 3</code>, <code>key A</code>, and so on, matching what is printed on the key you pressed. All sixteen.</div>
+        <div class="ifnot"><b>If whole rows or columns are dead</b>A row or column wire is in the wrong place, and this is the usual fault. Count the pins from the left again, with the keypad the right way up. Rows first, then columns.</div>
+        <div class="ifnot"><b>If the wrong character prints, but consistently</b>Two of your eight wires are swapped. Same fix: count from the left.</div>
+        <div class="ifnot"><b>If nothing prints at all</b>Check the serial monitor is at 9600 and the library installed. A keypad needs no power, so there is nothing else to check.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Stage two: use the lock.</strong> The secret is <strong>1 9 4 2</strong>. Type it.</p>
+        <div class="see"><b>You should see</b>Green light for two seconds, with a beep. Two rising notes if your buzzer is the passive kind, or one note twice if it is the active kind Band 3's parts list named, because an active buzzer only knows one note. Now type something wrong: red light and two low buzzes. Do that three times in a row and the red light flashes for ten seconds and nothing you press does anything.</div>
+        <div class="ifnot"><b>If it unlocks on the wrong code</b>Look at <code>matchesSecret</code>. It compares with <code>!=</code>, meaning &#8220;is different from&#8221;, and it returns <code>false</code> the moment it finds one digit that does not match. If you have edited that function, check you have not turned <code>!=</code> into <code>=</code> by accident: <code>=</code> is an instruction to change the value, not a question about it, and the compiler will accept it without a word. That is exactly the trap Band 3 <strong>Part 7</strong> set for you.</div>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Look closer</span><h2>Watch the scanning happen</h2><span class="mins">25 min</span></div>
+  <div class="col stack">
+    <p>The library hides the row-and-column trick. Here is how to see it.</p>
+    <div class="callout">
+      <h5>Take one wire out</h5>
+      <ol class="num">
+        <li><strong>Upload <code>b3_07_keypad_test.ino</code> again first.</strong> You are about to press twelve keys in a row, and on the lock that is three wrong codes, so the third one would lock you out for ten seconds in the middle of the experiment.</li>
+        <li>Unplug the USB. Take the <strong>row 1</strong> wire out of pin 9. Leave everything else exactly as it is.</li>
+        <li>Plug back in and try every key.</li>
+      </ol>
+      <div class="see"><b>You should see</b><code>1</code>, <code>2</code>, <code>3</code> and <code>A</code> are dead. The other twelve keys work perfectly. One wire, one whole row.</div>
+      <ol class="num" style="margin-top:.7rem">
+        <li>Put row 1 back. Now take the <strong>column 1</strong> wire out of pin 5.</li>
+      </ol>
+      <div class="see"><b>You should see</b><code>1</code>, <code>4</code>, <code>7</code> and <code>*</code> are dead. A different four, in a line the other way.</div>
+      <p style="margin-top:.7rem">Only <code>1</code> was dead both times, because <code>1</code> is where row 1 crosses column 1. That is the grid, and you have just proved it exists without opening anything.</p>
+    </div>
+
+    <h3 style="margin-top:.8rem">The guard you have seen before</h3>
+    <pre><code>if (pressCount &lt; 4) {
+  entered[pressCount] = key;
+  pressCount = pressCount + 1;
+}</code></pre>
+    <p>This is the same guard as Band 3 Part 11, for the same reason. <code>entered</code> holds four things, so its positions are 0, 1, 2 and 3. Without the check, a fifth key would be written to <code>entered[4]</code>, which is outside the list, and the lock would jam permanently.</p>
+    <div class="callout">
+      <h5>Two questions for your log</h5>
+      <ol class="num">
+        <li>The <code>*</code> key clears what you have typed. Find the two lines that do it, and say why <code>startAgain</code> sets every position back to 0 rather than only resetting <code>pressCount</code>.</li>
+        <li>The four-button lock had to do edge detection: notice the <em>moment</em> a button goes down, not that it is down. This sketch has no edge detection anywhere. Why not?</li>
+      </ol>
+      <details><summary>Check your answers</summary><div class="inner">
+        <p><strong>1.</strong> Strictly, only <code>pressCount</code> has to change, because nothing reads past it. Clearing the rest is a habit worth having: it means that if you ever add code that <em>does</em> look at the whole list, it cannot find yesterday's leftovers there. The same reason Band 1 writes all three lights in every state.</p>
+        <p><strong>2.</strong> Because <code>pad.getKey()</code> already does it. It hands back a key once, at the moment it goes down, and then <code>NO_KEY</code> until something changes. The library is doing the edge detection <em>and</em> the debouncing for you. Worth knowing, because when you meet an input without a library you will have to do both yourself, and now you know what &#8220;both&#8221; means.</p>
+      </div></details>
+    </div>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Change it</span><h2>Make it yours</h2><span class="mins">35 min</span></div>
+  <div class="col stack">
+    <dl class="tier">
+      <dt>Bronze</dt><dd>Change the secret, and change its <strong>length</strong> from four digits to six. Count how many places you had to edit. If it was more than two, look for the number 4 written somewhere it should have been a name.</dd>
+      <dt>Silver</dt><dd>Let the user set their own code: press <code>#</code> twice in a row, then type four keys, and that becomes the new secret until the power goes off. Then say in one sentence what happens to it when the power goes off, and why. <em>(If you would rather it were a two-second hold, you cannot do it with <code>getKey</code>, because that only ever tells you the moment a key goes down. The library has <code>setHoldTime</code> and <code>getState</code> for exactly this, and its own <code>CustomKeypad</code> example, installed on your machine alongside it, shows them working. That is a real piece of research and it is worth the hour.)</em></dd>
+      <dt>Gold</dt><dd>Make the lockout get longer each time: ten seconds, then thirty, then two minutes. Do it without ever using <code>delay</code>, so that keys pressed during a lockout can still be seen and ignored deliberately rather than missed. This is Band 5 arriving early, and it is the honest way to write a lockout.</dd>
+    </dl>
+    <div class="ifnot"><b>A hint for Bronze</b>There are six: the size of <code>secret</code>, the size of <code>entered</code>, the loop that compares them, the loop that clears them, the guard that stops a fifth key being stored, and the test that decides the entry is finished. Find all six before you change any of them. A single <code>const int CODE_LENGTH = 4;</code> at the top fixes all six at once, and that is Band 1's variables lesson paying off two bands later.</div>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Done</span><h2>You still owe Band 3 the same evidence</h2></div>
+  <div class="col stack">
+    <p>This Swap replaces the four-button lock. To claim Band 3 you still need:</p>
+    <ul class="plain">
+      <li>A video of a correct entry, a wrong entry, and the lockout</li>
+      <li>Your build log, including which wires the row-and-column ordering caught you on</li>
+      <li>Your answers to the two questions above, and your list of hesitations: the places where somebody using it stopped, guessed, or pressed the wrong thing. Watch another person if there is one. If you are on your own, film yourself using it while thinking aloud, then watch it back tomorrow, when you have forgotten what you meant. Both work. Building it and never watching anybody use it is the only option that does not.</li>
+      <li>Five or six correct answers in the band's Check yourself questions</li>
+    </ul>
+    <p class="note">The Check yourself questions are about <code>INPUT_PULLUP</code>, edge detection, debounce and the one-equals-sign trap, and this build hides the first three of those behind a library. Answer them anyway. If you can, you have understood the band; if you cannot, go back and wire two loose buttons for twenty minutes, because the library will not always be there.</p>
+  </div>
+</section>
+
+<nav class="pager" aria-label="Back">
+  <a href="../bands/band-3.html">Back to Band 3</a>
+</nav>
+
+<footer>
+  <p>Bozoma Innovation Hub &nbsp;·&nbsp; Aiyinasi, Ellembelle District. Swap project. Every sketch used here was compiled and tested before it reached you.</p>
+</footer>
+
+</div>
+</body>
+</html>

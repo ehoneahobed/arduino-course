@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en" data-band="2">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mood lamp on an RGB module · Swap · Arduino Ladder</title>
+  <meta name="description" content="The whole colour story with three wires and no resistors, and an honest look at where the resistors went.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+  <link rel="stylesheet" href="../assets/course.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the project</a>
+<div class="topbar">
+  <a class="home" href="../index.html">Arduino Ladder <span>· Bozoma Innovation Hub</span></a>
+  <nav class="bandlinks" aria-label="Bands"><a href="../bands/band-0.html">0</a><a href="../bands/band-1.html">1</a><a href="../bands/band-2.html" aria-current="page">2</a><a href="../bands/band-3.html">3</a><a href="../bands/band-4.html">4</a><a href="../bands/band-5.html">5</a><a href="../bands/band-6.html">6</a><a href="../bands/band-7.html">7</a><a href="../bands/band-8.html">8</a></nav>
+</div>
+<div class="wrap" id="main">
+<header style="padding:2.6rem 0 1rem">
+  <p class="eyebrow">Band 2 &nbsp;·&nbsp; Mood Lamp</p>
+  <h1 style="margin:.7rem 0 .5rem"><span class="ptype swap">Swap</span> &nbsp;Mood lamp on an RGB module</h1>
+  <p class="col sub" style="font-size:1.06em">The whole colour story with three wires and no resistors, and an honest look at where the resistors went.</p>
+  <dl class="projmeta">
+    <div><dt>Time</dt><dd>85 min</dd></div>
+    <div><dt>You need</dt><dd>RGB LED module, 5 jumper wires (plus three 220&#8486; resistors if your module's back is bare)</dd></div>
+    <div><dt>At once</dt><dd>One per RGB module</dd></div>
+    <div><dt>Before this</dt><dd>Run <code>id_02_which_rgb.ino</code> first if you are not sure which RGB part you have. If you have a loose four-legged LED, build the core version first.</dd></div>
+  </dl>
+</header>
+
+<section class="sketchbox">
+  <h2>Sketches for this project</h2>
+  <ul><li><a href="../sketches/id_02_which_rgb.ino">id_02_which_rgb.ino</a></li><li><a href="../sketches/b2_05_rgb_module.ino">b2_05_rgb_module.ino</a></li></ul>
+  <p>Every file opens with a plain-English header saying what it does and how to wire it, hole by hole.</p>
+</section>
+<section class="part">
+  <div class="parthead"><span class="tag">Why</span><h2>Where did the resistors go?</h2></div>
+  <div class="col stack">
+    <p>Band 2's core build uses a loose RGB LED with four legs, and you fit three resistors yourself: one per colour, because an RGB LED is three lights in one case and each needs its own.</p>
+    <p>The module is the same three lights on a small board, and it needs <strong>no resistors at all</strong>.</p>
+    <p>That is either a convenience or a lie, depending on whether you go and look. This build makes you go and look.</p>
+
+    <div class="which">
+      <h4>Which should you build?</h4>
+      <div class="opts">
+        <div class="opt">
+          <b>You have a loose four-legged RGB LED</b>
+          <p>Build Band 2's core with that first. Wire the three resistors, get one backwards, fix it. Then come here afterwards if you want the comparison; it takes twenty minutes.</p>
+          <p class="go">&#8594; Core first, this second.</p>
+        </div>
+        <div class="opt">
+          <b>You only have the module</b>
+          <p>Then this is your Band 2, and it teaches the same things. What you would have missed is <em>why</em> the resistors are there, so the Look closer section makes you find them on the board and read their values instead of fitting them.</p>
+          <p class="go">&#8594; This page, and do the Look closer properly.</p>
+        </div>
+      </div>
+      <p style="margin-top:.7rem">Not sure which you have? Run <code>id_02_which_rgb.ino</code> first. It also tells you which way round yours is wired, which you need either way.</p>
+    </div>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Build</span><h2>Four wires</h2><span class="mins">20 min</span></div>
+  <div class="col stack">
+    <div class="ifnot" style="margin-bottom:.4rem"><b>Before you start</b>USB unplugged. Clear the board.</div>
+
+    <div class="which">
+      <h4>Turn the module over before you wire anything</h4>
+      <p>Two kinds of RGB module are sold in the same kits and they look identical from the front. This takes ten seconds and it decides whether the next step damages your parts.</p>
+      <div class="opts">
+        <div class="opt">
+          <b>Three tiny black rectangles on the back, with numbers on them</b>
+          <p>The resistors are fitted. This is the common kind and the rest of this page assumes it.</p>
+          <p class="go">&#8594; Wire the three colour pins straight to the Arduino. Nothing of your own.</p>
+        </div>
+        <div class="opt">
+          <b>A bare back, nothing but solder</b>
+          <p>This module has <strong>no resistors</strong>. Wired straight to a pin and asked for 255, it would pull roughly five times what a pin is rated for, and it would damage the light and the pin together.</p>
+          <p class="go">&#8594; Put a <b>220 ohm resistor in each of the three colour wires</b>, exactly as the loose LED needs. Then everything else on this page works unchanged.</p>
+        </div>
+      </div>
+      <p style="margin-top:.7rem">If you cannot tell, <strong>fit the three resistors anyway</strong>. On a module that already has them the light is simply a little dimmer and nothing is harmed. When you are unsure, be wrong in the direction that costs you brightness rather than the direction that costs you the part.</p>
+    </div>
+
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Module pin</th><th>Arduino pin</th><th>Why this one</th></tr></thead>
+        <tbody>
+          <tr><td><code>R</code></td><td class="n">9</td><td rowspan="3">All three <strong>must</strong> have a <code>~</code> next to them. Without one you get off and full on and nothing between, which is Band 2's whole subject.</td></tr>
+          <tr><td><code>G</code></td><td class="n">10</td></tr>
+          <tr><td><code>B</code></td><td class="n">11</td></tr>
+          <tr><td><code>-</code> or <code>GND</code></td><td>the &#8722; rail</td><td>If your fourth pin is marked <code>+</code> or <code>VCC</code>, it goes to <strong>5V</strong> instead and yours is the backwards kind.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Then one wire from the &#8722; rail to a GND pin. Five wires in all. <strong>The core build also takes five wires</strong>, so the module saves you no wiring at all: what it saves is the three resistors and the three careful placements that go with them. Worth noticing, because &#8220;a module is simpler&#8221; turns out to mean something narrower than it sounds.</p>
+
+    <div class="steps">
+      <div class="step"><div class="body">
+        <p><strong>Upload <code>b2_05_rgb_module.ino</code></strong> and watch for a full cycle, which takes about half a minute.</p>
+        <div class="see"><b>You should see</b>A sunrise: black, then a dim red glow, then red over the lagoon, then orange, then full daylight held for a few seconds, then evening and back to night. Every change smooth, with no jumps.</div>
+        <div class="ifnot"><b>If it lights but runs backwards, bright when it should be dark</b>You have the <b>common-anode</b> kind, and its fourth pin is already on 5V, which is where it has to be. That is the only reason it lights at all: with the shared pin on the &#8722; rail a common-anode part cannot light in any state, because the shared leg has to sit <em>above</em> the three colour legs for anything to flow.<br><br>So the wiring is already right and moving it cannot help. What is left is the numbers, and they really are upside down: 5V on the shared leg means <code>255</code> puts five volts on both ends of the light and gives you nothing, while <code>0</code> gives you full brightness. Change the three lines inside <code>showColour</code>:<br><br><code>analogWrite(redPin, 255 - r);</code> and the same for green and blue.<br><br>Subtracting from 255 undoes exactly what the hardware did, and every number on every page then means what it says again. Band 2 Part 12 tells you the same two-part story: rewiring the shared leg to 5V is what makes it light, and it leaves 0 bright and 255 off.</div>
+        <div class="ifnot"><b>If the colours are wrong but the fading is smooth</b>Your module's pins are in a different order. Swap the wires at the Arduino end until red is red, then write down which pin is which.</div>
+        <div class="ifnot"><b>If it snaps between colours instead of fading</b>One of your three wires is on a pin without a <code>~</code>. Check the printing on the board.</div>
+        <div class="ifnot"><b>If nothing lights at all</b>Check the fourth pin. If it is marked <code>VCC</code> and you have it on the &#8722; rail, the module simply has no power, and that looks exactly like a dead part.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Make a diffuser</strong>, exactly as the core build asks: a ping pong ball, a sachet-water bottle, or folded white paper over the light.</p>
+        <div class="see"><b>You should see</b>A soft glow of one colour instead of a hard bright dot with coloured edges. This matters more than it sounds; an undiffused RGB LED does not look like a colour, it looks like three lights.</div>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Look closer</span><h2>Find the resistors</h2><span class="mins">25 min</span></div>
+  <div class="col stack">
+    <p>Turn the module over, or look closely at the front near the light.</p>
+    <div class="see"><b>You should see</b>Three small black rectangles, one per colour, with tiny numbers printed on them: often <code>101</code>, <code>151</code>, <code>221</code> or similar. They may be different values from each other.</div>
+    <div class="ifnot"><b>If your module was the bare kind</b>Then the three resistors you can read are the ones <em>you</em> fitted, all 220 ohm, and the questions below still work. Answer question 1 with &#8220;there were none, and I had to supply them&#8221;, and then answer the more interesting version: why would anybody sell a module without them, and who ends up paying for that decision?</div>
+
+    <div class="callout">
+      <h5>Reading them</h5>
+      <p>At this size they use three digits instead of colour stripes. The first two are the number and the third says how many zeros to add.</p>
+      <ul class="plain">
+        <li><code>101</code> is 10 with one zero, so <strong>100 ohms</strong>. Stop at this one if you find it. With five volts on the pin and about two across a red light, 100 ohms lets through roughly 30 thousandths of an amp, and an Arduino pin is rated for 20. On this module all three colours run at once during the sunrise. It works, and it is over the line, and it is the same thing Band 1's traffic module page flags. Note it in your log and do not be surprised if the board runs warm.</li>
+        <li><code>151</code> is 15 with one zero, so <strong>150 ohms</strong></li>
+        <li><code>221</code> is 22 with one zero, so <strong>220 ohms</strong>, the same value you would have used</li>
+      </ul>
+      <p><strong>Write down all three of yours.</strong> If they differ from each other, that is deliberate: red, green and blue LEDs do not need the same resistance to look equally bright, and whoever designed the board made a decision about it that you never got to make.</p>
+    </div>
+
+    <div class="callout">
+      <h5>Questions for your log</h5>
+      <ol class="num">
+        <li>Your module needed no resistors. Where are they?</li>
+        <li>If the three values on your board differ, why might that be?</li>
+        <li>Comment out everything inside <code>loop</code> and put six lines there instead: <code>showColour(255,0,0);</code> then <code>delay(2000);</code>, and the same for green and blue. Upload and watch all three. Do they look equally bright to you? <em>(If yours is the common-anode kind, use 0 where this says 255 and 255 where it says 0.)</em> Put <code>loop</code> back afterwards.</li>
+        <li>Name one thing you can do with the loose RGB LED that you cannot do with this module.</li>
+      </ol>
+      <details><summary>Something to check yourself against</summary><div class="inner">
+        <p><strong>1.</strong> On the module, soldered on, near the light. Turn it over and find them. They did not disappear and they were not made unnecessary: somebody fitted them for you, chose their values without asking you, and put the cost in the price of the board. That is what a module is. Every module you ever meet is a set of decisions somebody made on your behalf, and the useful habit is to go and find out what those decisions were.</p>
+        <p><strong>2.</strong> A red LED lights at a lower voltage than a blue one, so with the same resistor the red would be much brighter. Different resistors even them out. That is a real design decision made on your behalf.</p>
+        <p><strong>3.</strong> Probably not exactly, and blue often looks weakest. Your eye is not equally sensitive to the three colours either, so even perfectly matched LEDs would not look matched. This is why the white in your sunrise may look slightly pink or slightly blue, and why the core build's Part 12 mentions it.</p>
+        <p><strong>4.</strong> Choose the resistor. Put the three colours in different places on the board. Use a different LED. Replace one that burns out. <strong>The module traded your choices for your time</strong>, and that is a good trade when you already know what you gave up.</p>
+      </div></details>
+    </div>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Change it</span><h2>Make it yours</h2><span class="mins">40 min</span></div>
+  <div class="col stack">
+    <p>The band's Make task is a colour story of your own, 45 to 90 seconds long, on a real place or a real thing. That does not change here. These are the smaller steps towards it.</p>
+    <dl class="tier">
+      <dt>Bronze</dt><dd>Make the six <strong>fades</strong> take exactly twice as long, without touching <code>stepDelay</code>. Leave the two <code>delay</code> calls that hold full day and full night alone; those are not fades. Then say what the two different ways of slowing a fade are, and what each one costs you.</dd>
+      <dt>Silver</dt><dd>Add a fourth colour to the story and a fifth fade, so the sequence tells a longer version of the same place. <em>(If you have already done Band 4, do this instead: add a knob that sets the overall brightness without changing the colours, so the same story runs in a dark room. Multiply, do not add, and watch for whole-number division. You will need a potentiometer, which is not in this project's parts list.)</em></dd>
+      <dt>Gold</dt><dd>Write your story so that each fade's length is part of the description rather than fixed: give <code>fadeTo</code> a seventh value, how long that fade should take, and work the step delay out from it. Then a slow dawn and a sudden dusk are one line each.</dd>
+    </dl>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Done</span><h2>You still owe Band 2 the same evidence</h2></div>
+  <div class="col stack">
+    <p>To claim Band 2 you still need:</p>
+    <ul class="plain">
+      <li>A video of your whole colour story, 45 to 90 seconds, not a short clip, with the diffuser on</li>
+      <li>Both testers' answers to what they thought it was showing</li>
+      <li><strong>Your completed table from Part 8a</strong></li>
+      <li><strong>The six PWM pin numbers</strong>, written down</li>
+      <li>Your sentence about what you saw when you waved your hand</li>
+      <li><strong>Your three resistor values off the module</strong>, and your answer to question 4</li>
+      <li>Your build log</li>
+      <li>Five or six correct answers in Part 11, the Check yourself questions, <strong>including question 6</strong></li>
+    </ul>
+    <p class="note">Band 2 Part 7 says an RGB light needs three resistors and not one, and getting that wrong is one of the commonest mistakes in the band. You did not fit any. Answer it from what you found on the back of the board, and you will have understood it better than somebody who fitted three without ever looking at them.</p>
+  </div>
+</section>
+
+<nav class="pager" aria-label="Back">
+  <a href="../bands/band-2.html">Back to Band 2</a>
+</nav>
+
+<footer>
+  <p>Bozoma Innovation Hub &nbsp;·&nbsp; Aiyinasi, Ellembelle District. Swap project. Every sketch used here was compiled and tested before it reached you.</p>
+</footer>
+
+</div>
+</body>
+</html>

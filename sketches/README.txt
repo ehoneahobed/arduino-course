@@ -1,38 +1,116 @@
 ==================================================================
-  ARDUINO SKETCHES  -  ALL 41 FILES, BANDS 0 TO 8
+  ARDUINO SKETCHES  -  ALL 53 FILES
+  Bands 0 to 8, plus the project sketches
   Bozoma Innovation Hub, Aiyinasi
 ==================================================================
 
-  This folder holds every sketch in the course. It is three packs
-  joined together, so you will find three sets of notes below:
-  bands 0 to 2 first, then bands 3 to 5, then bands 6 to 8.
+  This folder holds every sketch in the course. The notes below
+  are in three sets, one per pack: bands 0 to 2, then 3 to 5,
+  then 6 to 8. The project sketches are listed at the end of this
+  preamble.
 
-  41 files in all. Every one was compiled and linked for the
+  In the folder itself every file sorts by name, so a project
+  sketch sits next to the band it belongs to: b1_05 comes right
+  after b1_04, and so on. Only the two id_ files sort last.
+
+  53 files in all. Every one was compiled and linked for the
   ATmega328P chip before it was given to you.
 
-  Five of them misbehave ON PURPOSE, and the course tells you
+  SEVEN of them misbehave ON PURPOSE, and the course tells you
   which and why:
     b0_03_buggy_semicolon.ino  will not compile at all
+    b1_04_buggy_silent.ino     compiles, one light never comes on
+    b2_04_buggy_nonpwm.ino     compiles, snaps instead of fading
     b3_03_toggle_buggy.ino     compiles, does the wrong thing
     b5_03_blocking_problem.ino compiles, does the wrong thing
     b6_03_buggy_jitter.ino     compiles, will not hold still
     b8_02_buggy_flags.ino      compiles, freezes and cannot heal
 
-  A sixth, b7_04_buggy_flicker.ino, works but is unpleasant to
+  An eighth, b7_04_buggy_flicker.ino, works but is unpleasant to
   look at, also on purpose.
+
+  If one of those eight misbehaves for you, nothing is wrong with
+  the pack and nothing is wrong with you. Finding the fault is
+  the exercise.
 
   Everything else compiles cleanly and does what its header says.
 
-  LIBRARIES. Bands 0 to 5 need none. Band 6 uses Servo and Band 7
-  uses LiquidCrystal, and both of those come with the Arduino
-  software already. The ONLY one you may have to install is
-  LiquidCrystal_I2C, and only if your screen has a small board on
-  the back with four pins. Band 7 Part 6a walks you through it.
+------------------------------------------------------------------
+  THE PROJECT SKETCHES
+------------------------------------------------------------------
 
-  ONE HOLE, ONE LEG. A breadboard hole takes one lead and no
-  more. Where a resistor leg has a hole, the jumper wire goes in
-  a DIFFERENT hole in the SAME column. The five holes in a column
-  are joined underneath, so it is the same connection.
+  These go with the project pages under /projects/ on the site.
+  Each one is a different way through a band you have already
+  started, not a replacement for it. The page for each says what
+  it swaps out and what you still owe the band.
+
+    id_01_which_buzzer.ino     which buzzer am I holding
+    id_02_which_rgb.ino        which RGB light am I holding
+    b1_05_traffic_module.ino   band 1, the traffic light module
+    b2_05_rgb_module.ino       band 2, the RGB module
+    b3_07_keypad_test.ino      band 3, prove the keypad first
+    b3_06_keypad_lock.ino      band 3, the keypad lock
+    b4_06_rain_alarm.ino       band 4, the rain alarm
+    b4_07_room_monitor.ino     band 4, the room monitor
+    b5_06_reaction_race.ino    band 5, reaction race
+    b6_06_stepper_dial.ino     band 6, the stepper dial
+    b6_07_fan_transistor.ino   band 6, a fan on a transistor
+    b7_06_guard_tm1637.ino     band 7, the guard on 4 digits
+
+  RUN THE TWO id_ SKETCHES FIRST if nobody has labelled your box.
+  Two parts in these kits come in two kinds that look alike and
+  behave completely differently, and finding out now takes about
+  twenty-five minutes. Finding out in the middle of a build costs an evening.
+
+------------------------------------------------------------------
+  LIBRARIES
+------------------------------------------------------------------
+
+  Bands 0 to 5 need none.
+
+  ALREADY IN THE ARDUINO SOFTWARE, nothing to install:
+    Servo            band 6
+    LiquidCrystal    band 7, the bare 16-pin screen
+    Stepper          the stepper dial project
+
+  YOU MAY HAVE TO INSTALL, and only if you build that thing:
+    LiquidCrystal_I2C   band 7, only for a screen with a small
+                        board soldered on the back. Part 6a.
+    Keypad              by Mark Stanley and Alexander Brevig,
+                        for the keypad lock project
+    SimpleDHT           by Winlin, for the room monitor project
+    TM1637              by Avishay Orpaz, for the four-digit
+                        display project
+
+  Tools, then Manage Libraries, then search the name. Once, on
+  one machine. With no internet, download the .zip on any machine
+  and use Sketch, Include Library, Add .ZIP Library.
+
+------------------------------------------------------------------
+  ONE HOLE, ONE LEG
+------------------------------------------------------------------
+
+  A breadboard hole takes one lead and no more. Where a resistor
+  leg has a hole, the jumper wire goes in a DIFFERENT hole in the
+  SAME column. The five holes in a column are joined underneath,
+  so it is the same connection.
+
+  The same rule applies at the Arduino: one wire per pin.
+
+------------------------------------------------------------------
+  TWO THINGS THAT ARE NOT OPTIONAL
+------------------------------------------------------------------
+
+  A MOTOR DRIVEN BY A TRANSISTOR NEEDS ITS DIODE. The fan project
+  switches the motor about a thousand times a second, and every
+  one of those switch-offs sends a spike back at the transistor.
+  Build it without the diode and you are destroying parts slowly
+  and invisibly. No diode in your kit? Use the ULN2003 board
+  instead; the project page explains how.
+
+  ANYTHING RUNNING FROM ITS OWN BATTERY NEEDS ONE SHARED GROUND
+  WIRE back to an Arduino GND pin. Band 6 Part 7 explains why,
+  and every build after it depends on you having read that.
 
 
 ==================================================================

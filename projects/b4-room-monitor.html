@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en" data-band="4">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The room monitor · Swap · Arduino Ladder</title>
+  <meta name="description" content="A sensor that hands you degrees and a percentage, already meant. The one time somebody else did the calibrating.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+  <link rel="stylesheet" href="../assets/course.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the project</a>
+<div class="topbar">
+  <a class="home" href="../index.html">Arduino Ladder <span>· Bozoma Innovation Hub</span></a>
+  <nav class="bandlinks" aria-label="Bands"><a href="../bands/band-0.html">0</a><a href="../bands/band-1.html">1</a><a href="../bands/band-2.html">2</a><a href="../bands/band-3.html">3</a><a href="../bands/band-4.html" aria-current="page">4</a><a href="../bands/band-5.html">5</a><a href="../bands/band-6.html">6</a><a href="../bands/band-7.html">7</a><a href="../bands/band-8.html">8</a></nav>
+</div>
+<div class="wrap" id="main">
+<header style="padding:2.6rem 0 1rem">
+  <p class="eyebrow">Band 4 &nbsp;·&nbsp; Night Guard</p>
+  <h1 style="margin:.7rem 0 .5rem"><span class="ptype swap">Swap</span> &nbsp;The room monitor</h1>
+  <p class="col sub" style="font-size:1.06em">A sensor that hands you degrees and a percentage, already meant. The one time somebody else did the calibrating.</p>
+  <dl class="projmeta">
+    <div><dt>Time</dt><dd>90 min</dd></div>
+    <div><dt>You need</dt><dd>DHT11, 2 LEDs, 2 resistors, 8 jumper wires (plus a 10k resistor if yours is the bare four-pin kind)</dd></div>
+    <div><dt>At once</dt><dd>One per DHT11</dd></div>
+    <div><dt>Before this</dt><dd>Finish Band 4 up to Part 9. This replaces the night guard in Part 10. It never uses <code>analogRead</code>, <code>map</code> or the division trap, so do not skip Parts 5 to 9.</dd></div>
+  </dl>
+</header>
+
+<section class="sketchbox">
+  <h2>Sketches for this project</h2>
+  <ul><li><a href="../sketches/b4_07_room_monitor.ino">b4_07_room_monitor.ino</a></li></ul>
+  <p>Every file opens with a plain-English header saying what it does and how to wire it, hole by hole.</p>
+</section>
+<section class="part">
+  <div class="parthead"><span class="tag">Why</span><h2>The one sensor that answers in units</h2></div>
+  <div class="col stack">
+    <p>Every other sensor in this course hands you a number between 0 and 1023 and leaves the meaning to you. The knob, the light sensor, the rain plate: all of them make you go and find out what their numbers mean in your room.</p>
+    <p>This one hands you <strong>degrees</strong>. And a <strong>percentage</strong>. Already meant.</p>
+    <p>That is worth building precisely because it is the exception, and because of the question it raises.</p>
+    <div class="ifnot"><b>What this Swap does not give you</b>Because the sensor answers in units, this build never uses <code>analogRead</code>, never uses <code>map</code>, and never meets the division trap in Part 9. Those are three of Band 4's four big ideas, and you will be asked about them in Check yourself. So <strong>do Parts 1 to 9 first and do not skip them.</strong> This page replaces Part 10, the night guard, and nothing earlier. What it adds instead is the question the night guard cannot ask: what do you do when somebody else has already decided what a number means?</div>
+
+    <div class="callout">
+      <h5>Somebody else did the calibration, and you should still check it</h5>
+      <p>Inside the DHT11 is a small sensor and a small chip. The chip does what you did by hand in the night guard: it takes a raw electrical reading and turns it into a number that means something, using a table put there at the factory.</p>
+      <p>So the calibration did not disappear. It moved somewhere you cannot see, done by somebody you cannot ask, for a room that is not yours.</p>
+      <p><strong>That is a reason to check it, not a reason to relax.</strong> This build ends with you putting it next to a real thermometer and writing down the difference.</p>
+    </div>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Build</span><h2>Three wires</h2><span class="mins">25 min</span></div>
+  <div class="col stack">
+    <div class="ifnot" style="margin-bottom:.4rem"><b>Before you start</b>USB unplugged. Take the light sensor and its resistor off the board.</div>
+
+    <div class="ifnot" style="margin-bottom:.4rem"><b>Which rails this page means</b>Everything on this page goes in rows <code>a</code> to <code>e</code>, so use the pair of rails along the <strong>bottom</strong> edge, the ones nearest row <code>a</code>. Band 4's own builds used the top pair, so <strong>move your two rail wires down</strong>: + rail to the Arduino's 5V pin, &#8722; rail to a GND pin, both on the bottom pair. On most boards the top rails and the bottom rails are not joined to each other, and mixing them means nothing works and nothing looks wrong.</div>
+
+    <div class="which">
+      <h4>Which DHT11 have you got?</h4>
+      <p>Count the pins on yours. This decides whether you need a resistor.</p>
+      <div class="opts">
+        <div class="opt">
+          <b>Three pins, on a small circuit board</b>
+          <p>A module. The resistor it needs is already on the board.</p>
+          <p class="go">&#8594; Push its three pins into <code>a25</code>, <code>a26</code>, <code>a27</code>. The ground pin, marked <code>-</code>, <code>G</code>, <code>GND</code> or <code>&#8722;</code>, gets a wire to the <b>&#8722; rail</b>. The power pin, marked <code>+</code>, <code>V</code>, <code>VCC</code> or <code>5V</code>, gets a wire to the <b>+ rail</b>. The data pin, marked <code>S</code>, <code>OUT</code>, <code>DATA</code> or <code>DAT</code>, gets a wire to <b>pin 4</b>.</p>
+          <p>Different factories use different letters for the same three pins. Read the printing on <em>your</em> board rather than counting positions, because the order is not the same on every module either.</p>
+        </div>
+        <div class="opt">
+          <b>Four pins, bare, no board</b>
+          <p>The raw part. It needs a 10k resistor that the module version has built in.</p>
+          <p class="go">&#8594; Hold it with the holes facing you and push its four pins into <code>a30</code>, <code>a31</code>, <code>a32</code>, <code>a33</code>, left to right. Then: wire <code>b30</code> to the <b>+ rail</b>, wire <code>b31</code> to <b>pin 4</b>, nothing at all in column 32, wire <code>b33</code> to the <b>&#8722; rail</b>. Finally the <strong>10k resistor from <code>c30</code> to <code>c31</code></strong>. Note the letters: <code>b30</code> holds a wire so the resistor goes in <code>c30</code>, because a hole takes one leg.</p>
+        </div>
+      </div>
+      <p style="margin-top:.7rem">The 10k resistor holds the data line up when nobody is talking, which is the same job the internal pull-ups did for your buttons in Band 3. The module has one soldered on; the bare part expects you to bring your own.</p>
+    </div>
+
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Part</th><th>Wiring</th></tr></thead>
+        <tbody>
+          <tr><td>Green light</td><td>long <code>b3</code>, short <code>b4</code>; resistor <code>a3</code> to <code>a1</code>; wire <code>b1</code> to pin 7; <code>a4</code> to &#8722; rail</td></tr>
+          <tr><td>Red light</td><td>long <code>b7</code>, short <code>b8</code>; resistor <code>a7</code> to <code>a5</code>; wire <code>b5</code> to pin 8; <code>a8</code> to &#8722; rail</td></tr>
+          <tr><td>Power</td><td>One wire from the + rail to the Arduino's 5V pin</td></tr>
+          <tr><td>Ground</td><td>One wire from the &#8722; rail to a GND pin</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="steps">
+      <div class="step"><div class="body">
+        <p><strong>Install the library.</strong> Tools, then Manage Libraries, search <code>SimpleDHT</code>, install the one by <strong>Winlin</strong>. Once, on one machine.</p>
+        <div class="ifnot"><b>Why this one</b>There are several DHT libraries and some of them need a second library installed alongside. SimpleDHT needs nothing else, which is one less thing to go wrong on a slow connection.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Upload <code>b4_07_room_monitor.ino</code></strong> and open the serial monitor at 9600.</p>
+        <div class="see"><b>You should see</b>A line every two seconds: a temperature in degrees, a humidity percentage, and the word <code>fine</code>. The green light is on. Both numbers are whole numbers and the temperature should be somewhere plausible for the room you are sitting in.</div>
+        <div class="ifnot"><b>If it says &#8220;could not read the sensor&#8221; every time</b>Almost always the data wire on the wrong pin, or a bare four-pin part with no 10k resistor. Check both. The error number itself is not worth chasing.</div>
+        <div class="ifnot"><b>If it reads once and then errors</b>Something is asking it too fast. Check the <code>delay(2000)</code> at the bottom of <code>loop</code> is still there.</div>
+        <div class="ifnot"><b>If the temperature is wildly wrong, like 0 or 80</b>Check the wiring order. On the bare part, pin 3 really does go nowhere, and using it as ground gives nonsense rather than nothing.</div>
+        <div class="ifnot"><b>If the part gets hot, or hot enough to be uncomfortable to touch</b>Unplug immediately. Power and ground are the wrong way round, which happens easily on a module whose pins are in an order you assumed rather than read. Check the printing, put it right, and then test again: a DHT11 usually survives a few seconds of this and usually does not survive a minute.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Breathe on it, gently, from a few centimetres away, and watch.</strong></p>
+        <div class="see"><b>You should see</b>The humidity climbing fast, within a few seconds, and the temperature rising a degree or two more slowly. Then both drifting back down over half a minute or so. That lag is real and it is worth noticing: the part takes time to agree with the world.</div>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Measure</span><h2>Check the factory's work</h2><span class="mins">30 min</span></div>
+  <div class="col stack">
+    <p>You have been handed a number in units. Now find out whether to believe it.</p>
+
+    <div class="steps">
+      <div class="step"><div class="body">
+        <p><strong>Put it next to any other thermometer</strong> for five minutes: a wall thermometer, a kitchen one, the weather reading on a phone, or somebody else's DHT11 if a classmate built one. Working alone, a phone's weather reading for your town plus one indoor thermometer is enough for the table; note that the phone's number is for outside, and say in your log why that makes it a weak comparison rather than a useless one.</p>
+        <div class="scroll">
+          <table>
+            <thead><tr><th>What</th><th>Says</th><th>Difference from yours</th></tr></thead>
+            <tbody>
+              <tr><td>Your DHT11</td><td></td><td>&mdash;</td></tr>
+              <tr><td>Another thermometer</td><td></td><td></td></tr>
+              <tr><td>Somebody else's DHT11</td><td></td><td></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="ifnot"><b>If you are working alone, and offline</b>Leave the third row blank rather than inventing something for it. Then write in your log what a second DHT11 would have told you that one cannot: two of the same part disagreeing is evidence about the <em>part</em>, while your part disagreeing with a wall thermometer could be either of them. Knowing which question a measurement can answer is worth more than the measurement.</div>
+        <div class="see"><b>You should see</b>Agreement within about two degrees, and probably not exact agreement. A DHT11 is specified to about two degrees and about <strong>five</strong> percentage points of humidity, and it reads in whole numbers only. That is fine for &#8220;is this room too hot&#8221; and useless for anything scientific. Notice what that means: if it says 60 percent, the honest reading is &#8220;somewhere between 55 and 65&#8221;. A number printed to the unit is not a number known to the unit, and that gap catches people out for the whole of their careers.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Now choose your two thresholds</strong>, <code>tooHot</code> and <code>tooHumid</code>, by measuring your actual room over a day rather than by guessing.</p>
+        <p>Read it in the morning, in the afternoon and at night. Write the three pairs down. Then pick numbers that would have warned you at the right moment and not before.</p>
+        <div class="ifnot"><b>The trap here is the same one as everywhere else</b>If you pick 30 degrees because it sounds hot, and your room is 31 degrees all day every day, you have built a device that is always warning and therefore says nothing. The number has to come from the room.</div>
+      </div></div>
+    </div>
+
+    <div class="callout">
+      <h5>Two questions for your log</h5>
+      <ol class="num">
+        <li>The night guard made you invent the meaning of a number. This build handed you the meaning. Which device would you trust more in a place you had never been, and why?</li>
+        <li>This sketch has only one threshold for each value, not two. Given what the rain alarm and the night guard both taught you, what will happen when the room sits exactly on 32 degrees? What would you change?</li>
+      </ol>
+      <details><summary>Something to check yourself against</summary><div class="inner">
+        <p><strong>1.</strong> There is no right answer, but there is a better argument, and it is probably not the one you expect. The DHT11 is more <em>convenient</em> in a place you have never been, because it arrives already meaning something. The night guard is more <em>trustworthy</em>, because you calibrated it in the room it is standing in and you know exactly what it was compared against. The DHT11's factory table was made for an average room by somebody who has never seen yours. So: trust the DHT11 to be roughly right anywhere, and trust the night guard to be exactly right in one place. Say which of those your device actually needs, and you have answered the question properly.</p>
+        <p><strong>2.</strong> The warning will flicker on and off as the reading wobbles between 31 and 32, because there is only one line and the reading sits on it. It needs two numbers: warn above 32, clear below 30. That is the same fix as <code>wetLevel</code> and <code>dryLevel</code>, and the same fix as the deadband in Band 6. <strong>Adding it is the best Bronze task on this page,</strong> and it is deliberately left undone in the sketch so that you can find it.</p>
+      </div></details>
+    </div>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Change it</span><h2>Make it yours</h2><span class="mins">35 min</span></div>
+  <div class="col stack">
+    <dl class="tier">
+      <dt>Bronze</dt><dd>Fix the flickering threshold you found in question 2, using two numbers instead of one for both temperature and humidity.</dd>
+      <dt>Silver</dt><dd>Remember the highest and lowest temperature since it was switched on, and print all four numbers every time. Then leave it running for a whole day and see what the room actually did.</dd>
+      <dt>Gold</dt><dd>Work out the <strong>heat index</strong>, which is how hot it feels once the humidity is high, and warn on that instead of on temperature. If you cannot get online, use this rule of thumb, which is close enough below about 40 degrees: <em>add one degree for every ten percentage points of humidity above 40</em>. So 32 degrees at 80 percent humidity feels like about 36. If you can get online, find the real formula, use it, and be honest in your log about how much of it you understood. Either way, say why a device that warns on how it feels rather than on the temperature might be the more useful one in Aiyinasi.</dd>
+    </dl>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Done</span><h2>You still owe Band 4 the same evidence</h2></div>
+  <div class="col stack">
+    <p>This Swap replaces the night guard. To claim Band 4 you still need:</p>
+    <ul class="plain">
+      <li>A video of it working, including a warning happening</li>
+      <li><strong>Your comparison table</strong> against another thermometer, and your day's readings</li>
+      <li>Your two chosen thresholds and a sentence on why those numbers</li>
+      <li>Your build log</li>
+      <li>Five or six correct answers in the band's Check yourself questions</li>
+    </ul>
+    <p class="note">The Check yourself questions are about <code>analogRead</code> and the 0 to 1023 range, which this sensor never gives you. Answer them anyway. If you cannot, spend twenty minutes with the light sensor and the knob before claiming the band, because that range is the thing almost every other sensor you meet will speak in.</p>
+  </div>
+</section>
+
+<nav class="pager" aria-label="Back">
+  <a href="../bands/band-4.html">Back to Band 4</a>
+</nav>
+
+<footer>
+  <p>Bozoma Innovation Hub &nbsp;·&nbsp; Aiyinasi, Ellembelle District. Swap project. Every sketch used here was compiled and tested before it reached you.</p>
+</footer>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en" data-band="5">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reaction race · Swap · Arduino Ladder</title>
+  <meta name="description" content="Every Band 5 idea with one light and one button. Functions, tone, random and millis, a quarter of the wiring.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+  <link rel="stylesheet" href="../assets/course.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the project</a>
+<div class="topbar">
+  <a class="home" href="../index.html">Arduino Ladder <span>· Bozoma Innovation Hub</span></a>
+  <nav class="bandlinks" aria-label="Bands"><a href="../bands/band-0.html">0</a><a href="../bands/band-1.html">1</a><a href="../bands/band-2.html">2</a><a href="../bands/band-3.html">3</a><a href="../bands/band-4.html">4</a><a href="../bands/band-5.html" aria-current="page">5</a><a href="../bands/band-6.html">6</a><a href="../bands/band-7.html">7</a><a href="../bands/band-8.html">8</a></nav>
+</div>
+<div class="wrap" id="main">
+<header style="padding:2.6rem 0 1rem">
+  <p class="eyebrow">Band 5 &nbsp;·&nbsp; Simon Says</p>
+  <h1 style="margin:.7rem 0 .5rem"><span class="ptype swap">Swap</span> &nbsp;Reaction race</h1>
+  <p class="col sub" style="font-size:1.06em">Every Band 5 idea with one light and one button. Functions, tone, random and millis, a quarter of the wiring.</p>
+  <dl class="projmeta">
+    <div><dt>Time</dt><dd>100 min</dd></div>
+    <div><dt>You need</dt><dd>1 LED, 1 resistor, 1 button, buzzer, 7 jumper wires</dd></div>
+    <div><dt>At once</dt><dd>Everybody at once</dd></div>
+    <div><dt>Before this</dt><dd>Finish Band 5 up to Part 8. This replaces Simon Says as the build you are assessed on.</dd></div>
+  </dl>
+</header>
+
+<section class="sketchbox">
+  <h2>Sketches for this project</h2>
+  <ul><li><a href="../sketches/b5_06_reaction_race.ino">b5_06_reaction_race.ino</a></li></ul>
+  <p>Every file opens with a plain-English header saying what it does and how to wire it, hole by hole.</p>
+</section>
+<section class="part">
+  <div class="parthead"><span class="tag">Why</span><h2>The whole band, a quarter of the wiring</h2></div>
+  <div class="col stack">
+    <p>Simon Says needs four lights, four buttons, four resistors and a buzzer, joined by about twenty wires. That is thirteen parts, and if it does not work you have thirteen suspects.</p>
+    <p>This build needs one light, one button and a buzzer. It teaches <strong>every single idea in Band 5</strong>:</p>
+    <ul class="plain">
+      <li>Functions you write yourself, with values handed in and answers handed back</li>
+      <li><code>tone</code> and pitch</li>
+      <li><code>random</code>, and why it needs seeding</li>
+      <li><code>millis</code>, and the difference between waiting and watching</li>
+      <li>A job broken into pieces small enough to name</li>
+    </ul>
+    <p class="note">If four buttons is more wiring than you want to fight with today, come here. You are not taking an easier band. You are taking the same band with less to go wrong at the bench, which is a reasonable thing to want.</p>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Build</span><h2>Seven wires</h2><span class="mins">25 min</span></div>
+  <div class="col stack">
+    <div class="ifnot" style="margin-bottom:.4rem"><b>Before you start</b>USB unplugged. Clear the board completely, including anything left from Band 4. A0 in particular must have <strong>nothing</strong> wired to it, and the reason is in the Look closer section.</div>
+
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Part</th><th>Pin</th><th>Holes</th><th>Wiring</th></tr></thead>
+        <tbody>
+          <tr><td>Light</td><td class="n">7</td><td>long <code>b3</code>, short <code>b4</code></td><td>Resistor <code>a3</code> to <code>a1</code>; wire <code>b1</code> to pin 7; wire <code>a4</code> to &#8722; rail</td></tr>
+          <tr><td>Button</td><td class="n">2</td><td>legs in <code>e19</code>, <code>e21</code>, <code>f19</code>, <code>f21</code></td><td>Wire <code>j19</code> to pin 2; wire <code>a21</code> to &#8722; rail</td></tr>
+          <tr><td>Buzzer</td><td class="n">8</td><td>long <code>b40</code>, short <code>b42</code></td><td>Wire <code>a40</code> to pin 8; wire <code>a42</code> to &#8722; rail. No resistor. If the legs will not reach two holes apart, use <code>b40</code> and <code>b43</code>, and move the &#8722; wire to <code>a43</code>.</td></tr>
+          <tr><td>Ground</td><td>GND</td><td>&mdash;</td><td>One wire from the &#8722; rail to a GND pin</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">The light's pin wire goes in <code>b1</code>, not <code>a1</code>: the resistor leg is already there and <strong>a hole takes one leg only</strong>.</p>
+
+    <div class="ifnot" style="margin-bottom:.4rem"><b>If your buzzer is the active kind</b>The two different sounds in the sketch will come out as the same note, because an active buzzer cannot change pitch. The game is completely unaffected. Run <code>id_01_which_buzzer.ino</code> if you are not sure which you have, and if you would rather it were silent, delete the two <code>beep</code> lines.</div>
+
+    <div class="steps">
+      <div class="step"><div class="body">
+        <p><strong>Test the light and the button separately first</strong>, exactly as Band 5's staged build tells you to. Blink on pin 7, then the serial watch sketch on pin 2.</p>
+        <div class="see"><b>You should see</b>The light blinking once a second, and then a steady <code>1</code> changing to <code>0</code> for as long as you hold the button.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Upload <code>b5_06_reaction_race.ino</code></strong> and open the serial monitor at 9600.</p>
+        <div class="see"><b>You should see</b><code>Get ready...</code>, then the printed length of this round's wait, then that wait, which is somewhere between three and seven seconds, then the light comes on. Press the button and it prints your time in thousandths of a second and beeps. Then it goes round again, keeping your best.</div>
+        <div class="ifnot"><b>If it says &#8220;Too early&#8221; every single round</b>The button is reading as held down. Two of its wires are on a joined pair of legs rather than a diagonal: move one wire so the two are in different columns and different halves of the board.</div>
+        <div class="ifnot"><b>If the light comes on but nothing happens when you press</b>The button is not being seen at all. Test it again with the serial watch sketch.</div>
+        <div class="ifnot"><b>If the wait is the same length every single time</b>Read the Look closer section. Something is wired to A0.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Play it ten times and write down your best.</strong> Then hand it to somebody else and watch them play, without explaining anything.</p>
+        <div class="ifnot"><b>If there is nobody to hand it to</b>Play it ten more times with your <em>other</em> hand, and ten more with your eyes shut until the buzzer sounds. Both make you a fresh user of your own device, which is most of what watching somebody else buys you. Write down the three sets of times and what surprised you. If you can, film yourself playing and watch it back; you will see hesitations you did not feel.</div>
+        <div class="see"><b>You should see</b>Times somewhere between 200 and 350 thousandths of a second once you have settled down. Under 150 means you guessed rather than reacted, and the sketch cannot tell the difference. Only you know. Write down your real best, not your luckiest.</div>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Look closer</span><h2>Four small ideas, one at a time</h2><span class="mins">35 min</span></div>
+  <div class="col stack">
+
+    <h3>a. Read <code>loop</code> first</h3>
+    <p>Go to the bottom of the sketch. The whole round is there and it reads like a description of the game: get ready, wait a random time, check for cheating, light on, time the press, compare with the best. Everything complicated is behind a name.</p>
+
+    <h3 style="margin-top:.8rem">b. The function that hands back an answer</h3>
+    <pre><code>unsigned long timeOnePress() {
+  unsigned long startedAt = millis();
+  while (!isPressed()) {
+    if (millis() - startedAt &gt; 10000) {
+      return 0;
+    }
+  }
+  return millis() - startedAt;
+}</code></pre>
+    <p>This one starts with <code>unsigned long</code> rather than <code>void</code>, because it <strong>hands something back</strong>. That is what <code>return</code> does, and it is the half of functions that Band 5 Part 5 introduces.</p>
+    <p>Inside it is a <code>while</code> loop that does nothing but watch. That is blocking, on purpose, and it is fine here because there is genuinely nothing else the game needs to do while it waits for a press. <strong>Band 5 taught you when blocking is a problem; this is what it looks like when it is not.</strong></p>
+    <p>The <code>if</code> in the middle is the one escape. After ten seconds with no press it gives up and hands back <code>0</code>, and <code>loop</code> reads that <code>0</code> as &#8220;no press seen&#8221; and starts the round again. Without it, a badly wired button would leave the board sitting there for ever looking dead, with no message and nothing to work from. <strong>Any loop that waits for the outside world needs a way out that does not depend on the outside world.</strong> Write that in your log; it is one of the most useful sentences in the course.</p>
+
+    <h3 style="margin-top:.8rem">c. The function that catches cheating</h3>
+    <pre><code>bool waitWithoutCheating(unsigned long howLong) {
+  unsigned long startedAt = millis();
+  while (millis() - startedAt &lt; howLong) {
+    if (isPressed()) {
+      return false;
+    }
+  }
+  return true;
+}</code></pre>
+    <div class="callout">
+      <h5>Answer before you read on</h5>
+      <ol class="num">
+        <li>Why could this not have been written with <code>delay(howLong)</code>?</li>
+        <li>It hands back <code>true</code> or <code>false</code>. What do those two mean here, in words?</li>
+        <li>There are two <code>return</code> lines. What happens to the rest of the function when the first one runs?</li>
+      </ol>
+      <details><summary>Check your answers</summary><div class="inner">
+        <p><strong>1.</strong> Because <code>delay</code> stops everything. During a <code>delay</code> the button cannot be watched, so an early press would be invisible and the cheat would go unnoticed. This is exactly the Band 5 lesson: <em>waiting</em> and <em>watching while time passes</em> are different things, and only one of them lets you notice anything.</p>
+        <p><strong>2.</strong> <code>true</code> means the wait finished properly. <code>false</code> means somebody pressed during it. The name is written so that the <code>if</code> in <code>loop</code> reads almost like English.</p>
+        <p><strong>3.</strong> Nothing else runs. <code>return</code> leaves the function immediately, which is why the cheat case does not fall through into the honest one.</p>
+      </div></details>
+    </div>
+
+    <h3 style="margin-top:.8rem">d. Why A0 must be empty</h3>
+    <pre><code>randomSeed(analogRead(A0));</code></pre>
+    <p><code>random</code> is not really random. It runs a calculation, and from the same starting point it produces the same sequence every time. Without seeding, this game would wait exactly the same series of times after every power-up, and you could learn them.</p>
+    <p><code>analogRead</code> on a pin with nothing connected gives a drifting, meaningless number, because the pin is floating. You met floating pins in Band 3 as a problem. <strong>Here it is the solution.</strong> Meaningless is exactly what a seed needs to be.</p>
+    <div class="callout">
+      <h5>Prove it to yourself</h5>
+      <ol class="num">
+        <li>Comment out the <code>randomSeed</code> line and upload. Play four rounds and write down the four waits, which the sketch prints for you at the start of each round.</li>
+        <li>Press the reset button on the Arduino. Play four more rounds and write those down.</li>
+      </ol>
+      <div class="see"><b>You should see</b>The same four waits, in the same order, every time you reset. Then put the line back and do it again, and they differ.</div>
+      <div class="ifnot"><b>If they still repeat with the line put back</b>Then <code>A0</code> is not floating enough on your board to be a good seed. It happens: a pin sitting near a steady voltage gives a nearly steady reading, and a nearly steady seed gives a nearly repeating game. Make sure nothing at all is in <code>A0</code>, then try touching the pin with your finger, which makes it drift much more. If you want a seed you can rely on, the honest answer is that a floating pin is a cheap trick rather than a good source, and real programs use the time of the first button press instead. Try that: call <code>randomSeed(millis())</code> just after the player's very first press, and say in your log why the moment a human presses a button is a better source of unpredictability than a wire.</div>
+    </div>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Change it</span><h2>Make it yours</h2><span class="mins">40 min</span></div>
+  <div class="col stack">
+    <dl class="tier">
+      <dt>Bronze</dt><dd>Make it a game of five rounds that then prints your <strong>average</strong> as well as your best. You will need somewhere to keep a running total and a count, and you will meet whole-number division from Band 4 on the way.</dd>
+      <dt>Silver</dt><dd>Make it a <strong>two-player game</strong>: a second button, and whoever presses first wins the round. This is harder than it sounds. You cannot use <code>timeOnePress</code> as it stands, because it watches only one button, and the honest fix is to write a function that watches both and hands back which one won.</dd>
+      <dt>Gold</dt><dd>Add a <strong>false start</strong> that is properly fair. First <strong>move the LED's pin wire from pin 7 to pin 6</strong> and change <code>ledPin</code> to match, because pin 6 has a <code>~</code> and pin 7 does not, and you cannot dim a light on a pin without one. Then light the LED dimly for a moment at a random point before the real signal, and count a press during that as a fault. Then, using <code>millis</code> throughout, make sure the game never stops responding, even during the penalty.</dd>
+    </dl>
+    <div class="ifnot"><b>If you do Silver, one thing worth noticing</b>Your function will have to hand back <em>which</em> button won, not just how long it took. So it needs to give back two things at once, and a single <code>return</code> hands back one thing. There are two honest ways out. The first is to hand the function two places to write its answers into: open <code>b4_07_room_monitor.ino</code> even if you never built it, and look at <code>dht.read(&amp;temperature, &amp;humidity, NULL)</code>, which is exactly that. The second is to make one thing that holds both, which C++ calls a <code>struct</code>. Neither is taught in this course. Read about one of them, use it, and say in your log which you chose and why.</div>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Done</span><h2>You still owe Band 5 the same evidence</h2></div>
+  <div class="col stack">
+    <p>This Swap replaces Simon Says as the build you are assessed on. To claim Band 5 you still need:</p>
+    <ul class="plain">
+      <li>A video of somebody playing it, which may be you if you are working alone, and your own best time</li>
+      <li>The list of your own functions with one sentence each saying what they do</li>
+      <li>Your notes from the counting activity in Part 1</li>
+      <li>Your before-and-after waits from the <code>randomSeed</code> experiment</li>
+      <li>Your build log</li>
+      <li>Five or six correct answers in Part 13, the Check yourself questions, including question 4</li>
+    </ul>
+    <p class="note">Part 13's question 4 is the one that matters most in the band: a <code>delay</code> hidden inside a function that looks like it is using <code>millis</code> properly from outside. You have now built both kinds of waiting on purpose, so you are in a better position to answer it than somebody who only built the game.</p>
+  </div>
+</section>
+
+<nav class="pager" aria-label="Back">
+  <a href="../bands/band-5.html">Back to Band 5</a>
+</nav>
+
+<footer>
+  <p>Bozoma Innovation Hub &nbsp;·&nbsp; Aiyinasi, Ellembelle District. Swap project. Every sketch used here was compiled and tested before it reached you.</p>
+</footer>
+
+</div>
+</body>
+</html>
