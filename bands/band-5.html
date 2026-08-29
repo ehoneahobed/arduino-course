@@ -67,10 +67,10 @@
       <li>Four LEDs, ideally four different colours</li>
       <li>Four 220 ohm resistors</li>
       <li>Four push buttons</li>
-      <li>A <strong>passive</strong> buzzer. This is the one with an exposed green circuit board underneath, not a solid black cover.</li>
+      <li>A <strong>passive</strong> buzzer. This is the one where you can see a small green circuit board underneath, rather than a solid black cover.</li>
       <li>About twenty jumper wires</li>
     </ul>
-    <div class="ifnot"><b>About the breadboard</b>This build uses more room than anything before it: it runs to about column 42, and a small breadboard only has 30. If your kit has a large breadboard, use it.<br><br>If you only have small ones, split the build across two: <strong>lights on the first board, buttons and buzzer on the second</strong>. On the second board put the buttons at columns 1&amp;3, 6&amp;8, 11&amp;13 and 16&amp;18, and the buzzer at 21 and 23. Then run <strong>one wire between the two &#8722; rails</strong> to join them, and take one wire from either rail to a GND pin. Everything else is the same.</div>
+    <div class="ifnot"><b>About the breadboard</b>This build uses more room than anything before it: it runs to about column 42, and a small breadboard only has 30. If your kit has a large breadboard, use it.<br><br>If you only have small ones, split the build across two: <strong>lights on the first board, buttons and buzzer on the second</strong>. On the second board put the buttons at columns 1&amp;3, 6&amp;8, 11&amp;13 and 16&amp;18, and the buzzer at 21 and 23. Then run <strong>one wire between the two &#8722; rails</strong> to join them, and take one wire from either rail to a GND pin.<br><br><strong>Important:</strong> if you split it this way, the hole names in the tables below no longer match your boards. The tables assume one long board. Use them for <em>which pin goes to which part</em>, which is the part that matters, and work out the hole names on your own two boards from the column numbers listed just above. Write your own version of the table on paper before you start wiring, or you will lose your place halfway through.</div>
 
     <h3 style="margin-top:.5rem">By the end you will be able to</h3>
     <ul class="plain">
@@ -96,16 +96,40 @@
     </ol>
     <p>Start them counting. Clap once when they reach about 12. Then wait and watch.</p>
 
+    <div class="see"><b>You should see</b>They keep counting. The clap happens at about 12 and their hand stays down. It only goes up once they have said &#8220;sixty&#8221;. That is roughly <strong>forty-eight seconds late</strong>, and you can watch the whole delay happen.</div>
+
     <h3 style="margin-top:.6rem">If you are on your own</h3>
-    <p>Set an alarm on your phone to go off in about thirty seconds, then put the phone face down where you cannot see it. Now count out loud from 1 to 60, one per second, and do not stop for anything. Your second job is to press the phone screen the moment the alarm sounds, but you may only look at the phone after you reach 60.</p>
+    <p>You can run the same thing alone. You need a clock you can see, so use the clock on your phone, a wall clock with a second hand, or a watch.</p>
+    <div class="steps">
+      <div class="step"><div class="body">
+        <p>Put a pen and paper in front of you, and put the clock where you can see it <strong>without turning your head</strong>.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p>Pick a number between 10 and 20 and say it out loud now. That is your <strong>signal number</strong>. Say it is 14.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p>Count out loud from 1 to 60, one number per second. To keep one per second, say &#8220;one and, two and, three and&#8221; in your head. Do not rush, and <strong>do not stop for anything</strong>.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p>When you say your signal number, that is the moment the clap happens. Notice the time on the clock as you say it, and keep counting anyway. Your rule is that you may not write anything down until you have finished saying &#8220;sixty&#8221;.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p>The instant you finish saying &#8220;sixty&#8221;, look at the clock and write down the time. Then write down the difference between the two times.</p>
+        <div class="see"><b>You should see</b>A gap of about <strong>forty-five seconds</strong> between the signal and the moment you were finally allowed to act on it.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Now change one rule and run it again.</strong> This time you are allowed to stop and write the time down the very moment you say your signal number, then carry on counting to 60 from where you left off.</p>
+        <div class="see"><b>You should see</b>The gap is now under a second. The counting still reaches 60. It took you a heartbeat longer overall, and nothing else was harmed.</div>
+      </div></div>
+    </div>
 
     <div class="callout">
       <h5>Write these down</h5>
       <ol class="num">
-        <li>How long after the clap, or the alarm, did the hand actually go up?</li>
-        <li>Was the person deaf? Did they fail to hear it?</li>
-        <li>Now change one rule: they may check for a clap <em>after every single number</em>. Try it again. How long does the response take now?</li>
-        <li>In the second version, did the counting get slower?</li>
+        <li>In the first run, how long was it between the signal and the response?</li>
+        <li>Was the ear broken? Was the signal missed?</li>
+        <li>In the second run, how long was it?</li>
+        <li>In the second run, did the counting get noticeably slower, or was it about the same?</li>
       </ol>
     </div>
 
@@ -206,6 +230,8 @@ void loop() {
 <section class="part" id="build1">
   <div class="parthead"><span class="tag">Part 4</span><h2>Build the four lights and the buzzer</h2><span class="mins">40 min</span></div>
   <div class="col stack">
+    <div class="ifnot" style="margin-bottom:.4rem"><b>Start from an empty board</b>Unplug the USB. Take everything from Band 4 off the breadboard: pull out every wire, every light, every resistor, the light sensor <strong>and the potentiometer</strong>, the round knob with three legs, and put them all back in the box. The potentiometer matters more than it looks: it sits on A0, and Part 8 of this band needs A0 completely empty or your game will play the same sequence every single time. This build needs almost the whole board, and a single leftover leg from the last build will send current somewhere you did not intend. An empty board also means that when something does not work, it is something you put there today.</div>
+
     <p>Build in stages and test each stage. There are thirteen parts in the finished thing. If you wire all of it and it fails, you have thirteen suspects.</p>
 
     <h3 style="margin-top:.4rem">The pin plan</h3>
@@ -213,20 +239,67 @@ void loop() {
       <table>
         <thead><tr><th>Part</th><th>Pin</th><th>Holes</th><th>Wiring</th></tr></thead>
         <tbody>
-          <tr><td>Light 1</td><td>2</td><td>long <code>b3</code>, short <code>b4</code></td><td>Resistor <code>a3</code> to <code>a1</code>; wire <code>a1</code> to pin 2; wire <code>a4</code> to &#8722; rail</td></tr>
-          <tr><td>Light 2</td><td>3</td><td>long <code>b7</code>, short <code>b8</code></td><td>Resistor <code>a7</code> to <code>a5</code>; wire <code>a5</code> to pin 3; wire <code>a8</code> to &#8722; rail</td></tr>
-          <tr><td>Light 3</td><td>4</td><td>long <code>b11</code>, short <code>b12</code></td><td>Resistor <code>a11</code> to <code>a9</code>; wire <code>a9</code> to pin 4; wire <code>a12</code> to &#8722; rail</td></tr>
-          <tr><td>Light 4</td><td>5</td><td>long <code>b15</code>, short <code>b16</code></td><td>Resistor <code>a15</code> to <code>a13</code>; wire <code>a13</code> to pin 5; wire <code>a16</code> to &#8722; rail</td></tr>
-          <tr><td>Button 1</td><td>8</td><td>columns 19 and 21</td><td>Wire <code>j19</code> to pin 8; wire <code>a21</code> to &#8722; rail</td></tr>
-          <tr><td>Button 2</td><td>9</td><td>columns 24 and 26</td><td>Wire <code>j24</code> to pin 9; wire <code>a26</code> to &#8722; rail</td></tr>
-          <tr><td>Button 3</td><td>10</td><td>columns 29 and 31</td><td>Wire <code>j29</code> to pin 10; wire <code>a31</code> to &#8722; rail</td></tr>
-          <tr><td>Button 4</td><td>11</td><td>columns 34 and 36</td><td>Wire <code>j34</code> to pin 11; wire <code>a36</code> to &#8722; rail</td></tr>
+          <tr><td>Light 1</td><td>2</td><td>long <code>b3</code>, short <code>b4</code></td><td>Resistor <code>a3</code> to <code>a1</code>; wire <code>b1</code> to pin 2; wire <code>a4</code> to &#8722; rail</td></tr>
+          <tr><td>Light 2</td><td>3</td><td>long <code>b7</code>, short <code>b8</code></td><td>Resistor <code>a7</code> to <code>a5</code>; wire <code>b5</code> to pin 3; wire <code>a8</code> to &#8722; rail</td></tr>
+          <tr><td>Light 3</td><td>4</td><td>long <code>b11</code>, short <code>b12</code></td><td>Resistor <code>a11</code> to <code>a9</code>; wire <code>b9</code> to pin 4; wire <code>a12</code> to &#8722; rail</td></tr>
+          <tr><td>Light 4</td><td>5</td><td>long <code>b15</code>, short <code>b16</code></td><td>Resistor <code>a15</code> to <code>a13</code>; wire <code>b13</code> to pin 5; wire <code>a16</code> to &#8722; rail</td></tr>
+          <tr><td>Button 1</td><td>8</td><td>legs in <code>e19</code>, <code>e21</code>, <code>f19</code>, <code>f21</code></td><td>Wire <code>j19</code> to pin 8; wire <code>a21</code> to &#8722; rail</td></tr>
+          <tr><td>Button 2</td><td>9</td><td>legs in <code>e24</code>, <code>e26</code>, <code>f24</code>, <code>f26</code></td><td>Wire <code>j24</code> to pin 9; wire <code>a26</code> to &#8722; rail</td></tr>
+          <tr><td>Button 3</td><td>10</td><td>legs in <code>e29</code>, <code>e31</code>, <code>f29</code>, <code>f31</code></td><td>Wire <code>j29</code> to pin 10; wire <code>a31</code> to &#8722; rail</td></tr>
+          <tr><td>Button 4</td><td>11</td><td>legs in <code>e34</code>, <code>e36</code>, <code>f34</code>, <code>f36</code></td><td>Wire <code>j34</code> to pin 11; wire <code>a36</code> to &#8722; rail</td></tr>
           <tr><td>Buzzer</td><td>12</td><td>long <code>b40</code>, short <code>b42</code></td><td>Wire <code>a40</code> to pin 12; wire <code>a42</code> to &#8722; rail. No resistor.</td></tr>
           <tr><td>Ground</td><td>GND</td><td>&mdash;</td><td>One wire from the &#8722; rail to a GND pin</td></tr>
         </tbody>
       </table>
     </div>
+    <p class="note">Each light&#8217;s pin wire goes in row <code>b</code>, not row <code>a</code>, because the resistor leg is already in the row <code>a</code> hole and <strong>a hole takes one leg only</strong>. The five holes in a column are joined underneath, so <code>b1</code> reaches the resistor in <code>a1</code> perfectly well.</p>
     <p class="note">Everything shares the one &#8722; rail along the bottom edge. Buttons straddle the middle channel, so their pin wire comes from the top side and their ground wire from the bottom side. That is the diagonal rule from Band 3.</p>
+
+    <h3 style="margin-top:.6rem">How each button sits on the board</h3>
+    <p>You have done this once, in Band 3, and now you are doing it four times. It is worth a minute to get it right, because a button that is turned the wrong way is the single most common reason a build like this half works.</p>
+    <p>A push button has <strong>four legs</strong>, not two. They come out of the four corners of its square body, and they need four holes. The body sits over the <strong>middle channel</strong> of the breadboard, the groove running down the centre, so that two legs land in the top half and two land in the bottom half.</p>
+    <figure>
+      <svg viewBox="0 0 700 400" role="img" aria-label="A push button pushed into a breadboard. Its four legs land in two columns, two legs above the centre channel and two below it, with the body of the button sitting over the channel. Two legs that are diagonally opposite each other are marked as the pair to wire to.">
+<defs><marker id="t" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker></defs>
+<rect x="90" y="50" width="380" height="300" rx="6" fill="none" stroke="currentColor" stroke-width="1.5"/>
+<rect x="90" y="188" width="380" height="30" fill="currentColor" opacity="0.07"/>
+<line x1="90" y1="188" x2="470" y2="188" stroke="currentColor" stroke-width="1" opacity="0.4"/>
+<line x1="90" y1="218" x2="470" y2="218" stroke="currentColor" stroke-width="1" opacity="0.4"/>
+<circle cx="120" cy="70" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="120" cy="96" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="120" cy="122" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="120" cy="148" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="120" cy="174" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="120" cy="232" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="120" cy="258" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="120" cy="284" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="120" cy="310" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="120" cy="336" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="172" cy="70" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="172" cy="96" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="172" cy="122" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="172" cy="148" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="172" cy="174" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="172" cy="232" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="172" cy="258" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="172" cy="284" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="172" cy="310" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="172" cy="336" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="224" cy="70" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="224" cy="96" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="224" cy="122" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="224" cy="148" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="224" cy="174" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="224" cy="232" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="224" cy="258" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="224" cy="284" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="224" cy="310" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="224" cy="336" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="276" cy="70" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="276" cy="96" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="276" cy="122" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="276" cy="148" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="276" cy="174" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="276" cy="232" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="276" cy="258" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="276" cy="284" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="276" cy="310" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="276" cy="336" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="328" cy="70" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="328" cy="96" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="328" cy="122" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="328" cy="148" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="328" cy="174" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="328" cy="232" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="328" cy="258" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="328" cy="284" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="328" cy="310" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="328" cy="336" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="380" cy="70" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="380" cy="96" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="380" cy="122" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="380" cy="148" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="380" cy="174" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="380" cy="232" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="380" cy="258" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="380" cy="284" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="380" cy="310" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="380" cy="336" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="432" cy="70" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="432" cy="96" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="432" cy="122" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="432" cy="148" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="432" cy="174" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="432" cy="232" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="432" cy="258" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="432" cy="284" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="432" cy="310" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="432" cy="336" r="4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/>
+<g font-size="11" fill="currentColor" opacity="0.6" font-family="IBM Plex Mono, monospace" text-anchor="middle">
+  <text x="104" y="74">j</text><text x="104" y="100">i</text><text x="104" y="126">h</text><text x="104" y="152">g</text><text x="104" y="178">f</text>
+  <text x="104" y="236">e</text><text x="104" y="262">d</text><text x="104" y="288">c</text><text x="104" y="314">b</text><text x="104" y="340">a</text>
+  <text x="172" y="42">19</text><text x="276" y="42">21</text>
+</g>
+<rect x="152" y="150" width="144" height="106" rx="6" fill="none" stroke="currentColor" stroke-width="2.2"/>
+<circle cx="224" cy="203" r="17" fill="none" stroke="currentColor" stroke-width="2"/>
+<g fill="currentColor">
+  <circle cx="172" cy="174" r="5"/><circle cx="276" cy="174" r="5"/>
+  <circle cx="172" cy="232" r="5"/><circle cx="276" cy="232" r="5"/>
+</g>
+<circle cx="172" cy="174" r="11" fill="none" stroke="#C0503A" stroke-width="2.4"/>
+<circle cx="276" cy="232" r="11" fill="none" stroke="#C0503A" stroke-width="2.4"/>
+<g stroke="#C0503A" stroke-width="1.2" fill="none" opacity="0.8">
+  <line x1="183" y1="168" x2="520" y2="120"/>
+  <line x1="287" y1="238" x2="520" y2="286"/>
+</g>
+<g font-size="12.5" fill="currentColor" font-family="Archivo, Arial, sans-serif">
+  <text x="526" y="110">Use these two.</text>
+  <text x="526" y="128" opacity="0.85">They are diagonally</text>
+  <text x="526" y="146" opacity="0.85">opposite, so they are</text>
+  <text x="526" y="164" opacity="0.85">always a switching pair.</text>
+  <text x="526" y="284">Wire from another hole</text>
+  <text x="526" y="302" opacity="0.85">in the same column,</text>
+  <text x="526" y="320" opacity="0.85">not from the leg itself.</text>
+</g>
+<text x="280" y="378" text-anchor="middle" font-size="12" fill="currentColor" font-family="Archivo, Arial, sans-serif">The body sits over the middle channel. Two legs above it, two below.</text>
+</svg>
+      <figcaption>One button, seen from above. Its body covers the middle channel. Two legs go into row <code>e</code> and two into row <code>f</code>, in two columns. The two circled legs are a matching diagonal pair: one wire goes to the Arduino pin, the other to the minus rail.</figcaption>
+    </figure>
+    <p>Take button 1 as the example. Its four legs go into <code>e19</code>, <code>e21</code>, <code>f19</code> and <code>f21</code>. To seat it, line the four legs up over those four holes, then press <strong>straight down on the body with your thumb</strong>, not on a leg, until the body is almost touching the board. It will feel stiff and it may take real pressure. If it goes in crooked, pull it straight back out by the body, straighten any bent leg with your fingers, and try again.</p>
+    <div class="see"><b>You should see</b>The button sitting flat and square, its body over the channel, and it does not rock or fall out when you nudge it sideways.</div>
+    <p>Then the two wires. The pin wire goes into the <strong>top</strong> half in one column, and the ground wire into the <strong>bottom</strong> half in the <em>other</em> column. For button 1 that is <code>j19</code> to pin 8, and <code>a21</code> to the minus rail. Different column, different half. That is the diagonal.</p>
+    <div class="ifnot"><b>Why diagonal</b>Two of a button's four legs are permanently joined inside it, and it is the two on the same side. Wiring across a joined pair means your circuit is complete before you ever press anything, and the board will behave as if the button is held down forever.</div>
 
     <figure>
       <svg viewBox="0 0 700 450" role="img" aria-label="Wiring for the four game lights. Pins 2, 3, 4 and 5 each go through their own 220 ohm resistor to their own LED, and all four return to the same minus rail and then to one GND pin.">
@@ -289,7 +362,13 @@ void loop() {
 
     <div class="steps">
       <div class="step"><div class="body">
-        <p><strong>Stage one: the four lights.</strong> Wire all four as in the table, then test with a blink sketch on pin 2, then 3, then 4, then 5.</p>
+        <p><strong>Stage one: the four lights.</strong> Wire all four as in the table, then test them one at a time.</p>
+        <p>To test them, open <code>b0_01_blink_given.ino</code> from Band 0. That sketch has the number <code>13</code> written in it <strong>three times</strong>, on these three lines:</p>
+        <pre><code>pinMode(13, OUTPUT);
+digitalWrite(13, HIGH);
+digitalWrite(13, LOW);</code></pre>
+        <p>Change <strong>all three</strong> of those <code>13</code>s to <code>2</code>, upload, and watch light 1. Then change all three to <code>3</code>, upload again, and watch light 2. Then <code>4</code>, then <code>5</code>. Miss one and nothing blinks, which is itself worth seeing once.</p>
+        <div class="see"><b>You should see</b>One light, and only one, blinking on and off about once a second, each time you upload. Four uploads, four lights, one at a time.</div>
         <div class="ifnot"><b>If one light does not come on</b>Turn that LED round first. Then check its two legs are in different columns, and that its resistor really joins the light's column to the wire's column. These lights are in the bottom block, rows a and b, so their ground goes to the <strong>bottom</strong> &#8722; rail.</div>
         <div class="ifnot"><b>If none of them come on</b>Check the one wire from the &#8722; rail to a GND pin. One missing wire there stops all four at once and everything else looks perfect.</div>
       </div></div>
@@ -300,7 +379,11 @@ void loop() {
         <div class="ifnot"><b>If it makes no sound at all</b>Check the long leg is on the pin side, and that your buzzer is really on pin 12.</div>
       </div></div>
       <div class="step"><div class="body">
-        <p><strong>Stage three: the four buttons.</strong> Wire them, then test each one with the serial watch sketch from Band 3, changing the pin number to 8, then 9, then 10, then 11.</p>
+        <p><strong>Stage three: the four buttons.</strong> Seat all four as described above, wire them as in the table, then test each one on its own.</p>
+        <p>To test them, open <code>b3_02_serial_watch.ino</code> from Band 3. Near the top it says <code>int buttonPin = 2;</code>. Change the <code>2</code> to <code>8</code>, upload, then open the serial monitor: in the Arduino software click <strong>Tools</strong>, then <strong>Serial Monitor</strong>, and check the little box in the corner says <strong>9600</strong>. Press button 1 and watch the numbers. Then change it to <code>9</code> for button 2, <code>10</code> for button 3, and <code>11</code> for button 4.</p>
+        <div class="see"><b>You should see</b>A steady stream of <code>1</code> while you are not touching the button, changing to <code>0</code> for exactly as long as you hold it down, and back to <code>1</code> when you let go.</div>
+        <div class="ifnot"><b>If it reads 0 all the time, even untouched</b>That button is wired across a joined pair of legs instead of a diagonal. Move one of its two wires to the other column, keeping it in the same half of the board.</div>
+        <div class="ifnot"><b>If it reads 1 all the time, even when pressed</b>Either the button is not pushed fully into the board, or one of its two wires is in a column the button does not actually reach. Check the four holes against the table.</div>
         <div class="ifnot"><b>Do not skip this</b>Four buttons is where the diagonal-leg mistake usually appears. Two minutes of testing now saves an hour later.</div>
       </div></div>
       <div class="step"><div class="body">
@@ -392,7 +475,9 @@ playStep(3);</code></pre>
         <div class="see"><b>You should see</b>All four steps get shorter. One edit, four changes, and no chance of missing one.</div>
       </div></div>
       <div class="step"><div class="body">
-        <p><strong>Now write one yourself.</strong> Add a function called <code>flashAll</code> that switches all four lights on, waits, and switches them all off. Then call it from <code>loop</code> before the four <code>playStep</code> lines.</p>
+        <p><strong>Now write one yourself.</strong> Add a function called <code>flashAll</code> that switches all four lights on, waits, and switches them all off. Then call it from <code>loop</code> before the four <code>playStep</code> lines, and upload.</p>
+        <div class="see"><b>You should see</b>All four lights come on together for a moment and go off again, then the usual four steps play one after another with their notes, then the whole thing repeats.</div>
+        <div class="ifnot"><b>If nothing changed</b>You wrote the function but never called it. A function that is never called by name never runs. Check that the line <code>flashAll();</code> really is inside <code>loop</code>.</div>
         <details><summary>Check yours against this, after you have written it</summary><div class="inner">
           <pre><code>void flashAll() {
   for (int i = 0; i &lt; 4; i = i + 1) {
@@ -425,20 +510,22 @@ playStep(3);</code></pre>
   <div class="col stack">
     <p>Here is a small thing that ought to be easy. A lamp fades slowly up and down, and a second light comes on whenever you hold a button. Two simple jobs you can already do.</p>
 
-    <h3 style="margin-top:.4rem">Move three wires</h3>
-    <p>You do not need to rebuild anything. Keep everything exactly where it is and move three wires. Unplug the USB first.</p>
+    <h3 style="margin-top:.4rem">Move four wires</h3>
+    <p>You do not need to rebuild anything. Keep everything exactly where it is and move four wires. Unplug the USB first.</p>
+    <p><strong>Work the table from the top down, in order.</strong> The order is not decoration. Only one wire fits in an Arduino pin, and pins 9 and 8 are both occupied right now, so the two wires that are in the way have to come out before the two new ones can go in.</p>
     <div class="scroll">
       <table>
         <thead><tr><th>Wire</th><th>Was in</th><th>Move it to</th><th>What it becomes</th></tr></thead>
         <tbody>
-          <tr><td>From <code>a1</code></td><td>pin 2</td><td><strong>pin 9</strong></td><td>Light 1 is now the fading lamp</td></tr>
-          <tr><td>From <code>a5</code></td><td>pin 3</td><td><strong>pin 8</strong></td><td>Light 2 is now the button's answer light</td></tr>
-          <tr><td>From <code>j19</code></td><td>pin 8</td><td><strong>pin 6</strong></td><td>Button 1 is now the button</td></tr>
+          <tr><td><strong>1.</strong> From <code>j24</code></td><td>pin 9</td><td><strong>nowhere &#8212; take it right out</strong></td><td>Frees pin 9. Pull it out of the Arduino end only and leave the other end sitting in <code>j24</code>, so you cannot lose it. Before Part 9 you push that free end back into pin 9.</td></tr>
+          <tr><td><strong>2.</strong> From <code>j19</code></td><td>pin 8</td><td><strong>pin 6</strong></td><td>Frees pin 8. Button 1 is now the button.</td></tr>
+          <tr><td><strong>3.</strong> From <code>b1</code></td><td>pin 2</td><td><strong>pin 9</strong></td><td>Light 1 is now the fading lamp</td></tr>
+          <tr><td><strong>4.</strong> From <code>b5</code></td><td>pin 3</td><td><strong>pin 8</strong></td><td>Light 2 is now the button's answer light</td></tr>
         </tbody>
       </table>
     </div>
-    <p class="note">Pin 9 matters. It is the fading lamp, and only a pin with a <code>~</code> can fade. Pin 2, where that light was, cannot. Lights 3 and 4 and buttons 2, 3 and 4 are simply not used in this part. Leave them alone.</p>
-    <div class="ifnot"><b>When you have finished Part 7</b>Move all three wires back before Part 9, or the game will not work. The pin table in Part 4 is the one to put it back to.</div>
+    <p class="note">Pin 9 matters. It is the fading lamp, and only a pin with a <code>~</code> can fade. Pin 2, where that light was, cannot. Lights 3 and 4 and buttons 3 and 4 are simply not used in this part, so leave them exactly where they are. Button 2 is not used either, but its wire had to come out of pin 9 to make room.</p>
+    <div class="ifnot"><b>When you have finished Part 7</b>Put all four wires back before Part 9, or the game will not work. That means <code>b1</code> back to pin 2, <code>b5</code> back to pin 3, <code>j19</code> back to pin 8, and <code>j24</code> back into pin 9. The pin table in Part 4 is the one to check against.</div>
     <p><strong>Upload <code>b5_03_blocking_problem.ino</code>.</strong> Then press the button.</p>
 
     <div class="see"><b>What you will actually see</b>The fade works perfectly. The button almost never does. You press it and nothing happens. You press it again and nothing happens. Then once in a while, for no reason you can see, it works.</div>
@@ -467,7 +554,7 @@ playStep(3);</code></pre>
   <div class="col stack">
     <p>Here is the change in thinking, and it is a real change, so go slowly.</p>
     <p><strong>Instead of stopping until it is time, keep running and keep asking whether it is time yet.</strong></p>
-    <p>That is exactly the rule change in Part 1, question 3. The person keeps counting <em>and</em> checks the door after every number.</p>
+    <p>That is exactly the rule change in the last step of Part 1, the one where you were allowed to write the time down the moment you said your signal number instead of waiting until sixty. The person keeps counting <em>and</em> checks the door after every number.</p>
 
     <figure>
       <svg viewBox="0 0 700 340" role="img" aria-label="Two timelines compared. With delay, the board spends nearly all its time frozen inside the wait, so a button press that lands during a wait is missed. With millis, the loop keeps running all the time, so the same press is noticed immediately.">
@@ -604,7 +691,7 @@ void loop() {
     <p>So without help, your game plays the identical "random" sequence every single time you power it up. Try it if you like: it is a strange thing to watch.</p>
     <p>The fix is to start the calculation from somewhere different each time:</p>
     <pre><code>randomSeed(analogRead(A0));</code></pre>
-    <p>Put that in <code>setup</code>. It reads an analog pin with nothing connected to it, which, as you found out in Band 4, gives a meaningless drifting number. Meaningless is exactly what is wanted here. For once, a floating pin is useful.</p>
+    <p>You do not have to type this in anywhere. The finished game sketch you will upload in Part 9, <code>b5_05_simon_worked.ino</code>, already has that line in its <code>setup</code>, just below the loop that sets the pin modes. Your only job here is to understand why it is there, and to make sure nothing is wired to A0. It reads an analog pin with nothing connected to it, which, as you found out in Band 4, gives a meaningless drifting number. Meaningless is exactly what is wanted here. For once, a floating pin is useful.</p>
     <div class="ifnot"><b>Make sure A0 really is empty</b>If you have something wired to A0, use a different unused analog pin. A pin with a sensor on it gives a steady number, which defeats the purpose.</div>
   </div>
 </section>
@@ -612,9 +699,25 @@ void loop() {
 <section class="part" id="simon">
   <div class="parthead"><span class="tag">Part 9</span><h2>Build the game</h2><span class="mins">40 min</span></div>
   <div class="col stack">
-    <p>Everything is wired from Part 4. Put your wiring back the way the pin table describes it if you moved anything for Part 6.</p>
+    <p>Everything is wired from Part 4. Put your wiring back the way the pin table describes it if you moved anything for Part 6. All four lights, all four buttons and the buzzer need to be working.</p>
+
+    <h3 style="margin-top:.4rem">Which button belongs to which light</h3>
+    <p>The game pairs them up by position in the sketch's two lists. Button 1 answers light 1, button 2 answers light 2, and so on:</p>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>When this light flashes</th><th>Press this button</th><th>Light pin</th><th>Button pin</th></tr></thead>
+        <tbody>
+          <tr><td>Light 1</td><td>Button 1</td><td>2</td><td>8</td></tr>
+          <tr><td>Light 2</td><td>Button 2</td><td>3</td><td>9</td></tr>
+          <tr><td>Light 3</td><td>Button 3</td><td>4</td><td>10</td></tr>
+          <tr><td>Light 4</td><td>Button 4</td><td>5</td><td>11</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>If you built the board left to right in the order the table in Part 4 gives, then light 1 is the leftmost light and button 1 is the leftmost button, and the pairing is simply straight down the board. If your parts ended up in a different order, that is fine, but write the pairing on a slip of paper and put it next to the board before you play, or every guess will be a guess.</p>
+
     <p><strong>Upload <code>b5_05_simon_worked.ino</code></strong> and open the serial monitor.</p>
-    <div class="see"><b>You should see</b>One light flashes with its note. Copy it by pressing the matching button. Then two lights, then three. Get one wrong and all four flash with a low buzz, and your score prints.</div>
+    <div class="see"><b>You should see</b>One light flashes with its note. Copy it by pressing the button that goes with it. Then two lights, then three. Get one wrong and all four flash with a low buzz, and your score prints.</div>
 
     <h3 style="margin-top:.6rem">Read it as a set of small jobs</h3>
     <p>This is the longest sketch in the course so far, at about ninety lines. It is not harder than what you have read before. It is <strong>organised</strong>, which is the whole point of this band.</p>
@@ -638,7 +741,7 @@ void loop() {
     <div class="callout">
       <h5>Two things worth noticing in <code>waitForPress</code></h5>
       <p><strong>It waits for you to let go.</strong> There is a small loop that does nothing until the button is released. Without it, one long press would count as many presses, and the whole sequence would fail instantly. It is Band 3's problem in a new place.</p>
-      <p><strong>It blocks, on purpose.</strong> It sits there and refuses to do anything else until a button is pressed. Ten minutes ago you learned that blocking is bad. Here it is fine, because while the game is waiting for the player there is genuinely nothing else it needs to do. This is the rule from Part 7 being applied rather than obeyed.</p>
+      <p><strong>It blocks, on purpose.</strong> It sits there and refuses to do anything else until a button is pressed. Ten minutes ago you learned that blocking is bad. Here it is fine, because while the game is waiting for the player there is genuinely nothing else it needs to do. In Part 7 you learned when <code>delay</code> causes trouble. Here it causes none, so <code>delay</code> is the right choice. A rule is worth more when you know when it does not apply.</p>
     </div>
 
     <div class="ifnot"><b>If the game starts and immediately says game over</b>A button is reading LOW when nothing is pressed. Test each button on its own with the Band 3 serial watch sketch. It is almost always two legs from the same side.</div>
@@ -669,7 +772,9 @@ void loop() {
     </div></details>
 
     <h3 style="margin-top:.8rem">b. Break it on purpose</h3>
+    <div class="ifnot"><b>Move the four wires again first</b><code>b5_04</code> needs the Part 6 wiring, not the game wiring. Unplug the USB and work down the Part 6 table again, in order: <code>j24</code> out of pin 9, <code>j19</code> from pin 8 to pin 6, <code>b1</code> from pin 2 to pin 9, <code>b5</code> from pin 3 to pin 8. When you have finished this experiment, put all four back the way the <strong>Part 4 pin table</strong> says: <code>b1</code> to pin 2, <code>b5</code> to pin 3, <code>j19</code> to pin 8, <code>j24</code> to pin 9.</div>
     <p>In <code>b5_04</code>, delete the line <code>lastFadeTime = now;</code> from inside the <code>if</code>. Predict what will happen, then upload.</p>
+    <div class="see"><b>You should see</b>Light 1, the fading lamp, stops fading smoothly. It goes to a flicker, or looks oddly dim and steady, because the fade is now racing far too fast for your eye to follow.</div>
     <details><summary>Answer</summary><div class="inner">
       <p><code>lastFadeTime</code> stays at 0 forever. So <code>now - lastFadeTime</code> is just <code>now</code>, which is always far bigger than 20. The <code>if</code> is true on every round, so the fade advances thousands of times a second instead of fifty times a second.</p>
       <p>The lamp will flicker or look oddly dim, and the fade will be far too fast to see as a fade.</p>
@@ -709,7 +814,7 @@ int addUp(int a, int b) {
     <p>Work on a copy of <code>b5_05_simon_worked.ino</code>.</p>
     <dl class="tier">
       <dt>Bronze</dt><dd>Make the game speed up as it gets longer. The sequence should play faster with every round. You will need to hand <code>playStep</code> a second value: how long the step should last.</dd>
-      <dt>Silver</dt><dd>Write a function called <code>playSequence()</code> that plays the whole sequence, and use it in <code>loop</code> instead of the <code>for</code> loop that is there now. Then say in one sentence what <code>loop</code> reads like afterwards.</dd>
+      <dt>Silver</dt><dd>Write a function called <code>playSequence()</code> that plays the whole sequence, and use it in <code>loop</code> instead of the <code>for</code> loop that calls <code>playStep(sequence[i])</code>. Leave the second <code>for</code> loop, the one that reads the player's answer, alone. Then say in one sentence what <code>loop</code> reads like afterwards.</dd>
       <dt>Gold</dt><dd>Add a time limit. If the player does not press within three seconds, they lose. This one is hard, and it is hard for an interesting reason: <code>waitForPress</code> blocks, so it can never notice time passing. You will have to rewrite it using <code>millis</code>, so that it watches the buttons and the clock at the same time.</dd>
     </dl>
     <details><summary>A hint for Bronze</summary><div class="inner">
@@ -731,7 +836,7 @@ int addUp(int a, int b) {
       <p>A game or toy that a person picks up, understands without instructions, and asks to play again. Pick one, or bring your own:</p>
       <ul class="plain">
         <li>Your own version of the memory game, with your own rules</li>
-        <li>A reaction race for two players: a light comes on at a random moment, first to press wins</li>
+        <li>A reaction race for two players (needs a second person): a light comes on at a random moment, first to press wins</li>
         <li>A rhythm game: copy the pattern of gaps rather than the order of lights</li>
         <li>A one-button timing game: stop the moving light on the right one</li>
         <li>A simple instrument: four buttons, four notes, and a way to record and play back</li>
@@ -742,7 +847,7 @@ int addUp(int a, int b) {
         <li>Nothing important is missed because the board was stuck in a <code>delay</code></li>
         <li>A player knows whose turn it is at all times, without being told</li>
         <li>Losing feels like something happened, not like the game just stopped</li>
-        <li>Somebody works out how to play it with no more than one sentence from you</li>
+        <li>Somebody works out how to play it with no more than one sentence from you. If you are working alone, this one counts as passed when you leave it for a full day, come back, pick it up cold, and know what to do without stopping to think.</li>
       </ul>
     </div>
 
@@ -753,6 +858,7 @@ int addUp(int a, int b) {
     <div class="ifnot"><b>If you cannot find anyone today</b>Put the game down and do not touch it for a full day. Then pick it up and play it cold. You will have forgotten enough of your own design to notice the confusing parts. It is not as good as a real player, but it is much better than nothing. Say in your log which you did.</div>
 
     <h3 style="margin-top:.6rem">Show your work</h3>
+    <div class="ifnot"><b>If you are doing this course alone</b>There may be nobody to post to and nobody else&#8217;s work to look at. That is fine, and it does not let you off this part. Do it this way instead: save the photos and the video into a folder named for this band, write the same notes into your build log, and then be your own second reader. Come back to your own sketch the next day, read it cold, and write down the one thing you would do differently now. That is the whole value of looking at somebody else&#8217;s work, and you can get most of it from your own.</div>
     <p>Post a video of somebody else playing it, if you had somebody. If you tested it alone, post the video of yourself playing it cold the next day, and say so. Include your build log, your list of confusions, and a list of your functions with the one sentence each.</p>
     <p>Then read one other person's sketch and tell them one place where a job could be pulled out into a function of its own.</p>
     <div class="ifnot"><b>If there is no other sketch to read</b>Do it to <code>b5_05</code> instead. It is somebody else's code, it is ninety lines long, and there is at least one job in <code>loop</code> that could still be pulled out into a function. Find it and write the function header you would give it.</div>
@@ -838,6 +944,7 @@ void loop() {
     <div class="callout">
       <h5>Still stuck after 30 minutes?</h5>
       <p>Photograph the board from above, copy some serial output, and say which stage of Part 4 last worked. That last detail is the useful one: it tells whoever helps you where to start.</p>
+      <div class="ifnot"><b>If there is nobody to send it to</b>Write the three things down anyway, in your build log: what you expected, what happened, and what you have already tried. Putting a problem into words solves a surprising number of them on its own. Then work down the checklist above one more time, slowly. If it is still stuck, leave it until tomorrow and come back fresh. Do not sit and stare at it.</div>
     </div>
   </div>
 </section>

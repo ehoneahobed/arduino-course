@@ -10,7 +10,9 @@
 //     Wire from j1 to digital pin 2.
 //     Wire from a3 to the minus rail. (Diagonal legs. See Part 2.)
 //     LED long leg b18, short leg b20.
-//     Resistor from a18 to a16. Wire a16 to pin 8. Wire a20 to the rail.
+//     Resistor from a18 to a16. Wire b16 to pin 8. Wire a20 to the rail.
+//       (b16, not a16: a hole takes ONE leg, and the resistor leg
+//        is in a16. Same column, same connection.)
 //     One wire from the minus rail to a GND pin.
 //     No resistor for the button. INPUT_PULLUP uses the one in the chip.
 //

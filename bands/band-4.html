@@ -87,8 +87,24 @@
   <div class="parthead"><span class="tag">Part 1</span><h2>Think first: the rope and the walk</h2><span class="mins">15 min</span></div>
   <div class="col stack">
     <h3>Activity one: the rope</h3>
-    <p>Tie a piece of string or rope between two fixed points, a couple of metres apart. A door handle and a chair leg will do. Make it fairly tight.</p>
-    <p>Now pinch the rope with your fingers at some point along it and slide your hand slowly from one end to the other.</p>
+    <p>You need something long and bendy again: a shoelace, a phone charger cable, string, or the rope from Band 1 with its knot untied.</p>
+    <div class="steps">
+      <div class="step"><div class="body">
+        <p><strong>Tie one end to something fixed,</strong> about level with your waist. A door handle, a chair leg, a table leg. Wrap it twice round and knot it so it will not slide.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Hold the other end in one hand</strong> and step back until the rope is straight. Not stretched tight, just not sagging.</p>
+        <div class="see"><b>You should see</b>A straight line of rope between the fixed point and your hand, roughly level, about a metre or two long. If it droops in the middle, step back a little more.</div>
+        <div class="ifnot"><b>If you have nothing to tie it to</b>Stand on one end with your foot and hold the other end up in your hand. That works just as well. Or lay it flat and straight along a table.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Now pinch the rope with your free hand.</strong> Thumb on one side, one finger on the other, loose enough that the rope can still slide through your fingers.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Slide your pinching hand slowly from one end to the other</strong>, taking about five seconds for the whole journey. The rope itself stays still. Only your hand moves.</p>
+        <div class="see"><b>You should see</b>The length of rope on one side of your hand growing steadily longer, and the length on the other side growing steadily shorter, by exactly the same amount. It changes smoothly the whole way, never in jumps.</div>
+      </div></div>
+    </div>
     <div class="callout">
       <h5>Answer these</h5>
       <ol class="num">
@@ -102,7 +118,12 @@
 
     <h3 style="margin-top:.8rem">Activity two: the brightness walk</h3>
     <p>Take a pen and paper. Visit five different places, indoors and outdoors. For example: outside in the sun, outside in shade, by a window, in the middle of a room, and in a cupboard or under a cloth.</p>
-    <p>In each place, write down <strong>a number from 0 to 10</strong> for how bright it feels.</p>
+    <p>In each place, write down <strong>a number from 0 to 10</strong> for how bright it feels, where:</p>
+    <ul class="plain">
+      <li><strong>0</strong> means you cannot see your own hand in front of your face.</li>
+      <li><strong>10</strong> means it is so bright it hurts to look.</li>
+    </ul>
+    <p>Write the two ends down at the top of your paper before you start, so you use the same scale in every place.</p>
     <div class="callout">
       <h5>Then answer</h5>
       <ol class="num">
@@ -249,7 +270,7 @@ void loop() {
 <section class="part" id="build1">
   <div class="parthead"><span class="tag">Part 5</span><h2>Build the knob and watch it</h2><span class="mins">25 min</span></div>
   <div class="col stack">
-    <div class="ifnot" style="margin-bottom:.4rem"><b>Two things before you start</b>USB unplugged. And for this whole band, use the pair of rails along <strong>one</strong> edge of the breadboard for everything, because on most boards the top rails and the bottom rails are not joined to each other.</div>
+    <div class="ifnot" style="margin-bottom:.4rem"><b>Two things before you start</b>USB unplugged. Also, <strong>take everything from Band 3 off the breadboard</strong> if it is still there. This band needs the top half of the board free.<br><br>And for this whole band, use the rails along the <strong>top</strong> edge for everything, the ones nearest row j. On most boards the top rails and the bottom rails are <strong>not joined to each other</strong>, so mixing them means nothing works and nothing looks wrong. Every build in this band puts its parts in rows f to j, so the top rails are the short journey.</div>
 
     <div class="steps">
       <div class="step"><div class="body">
@@ -258,8 +279,12 @@ void loop() {
         <div class="ifnot"><b>Check this twice</b>The + rail must go to 5V and the &#8722; rail must go to GND. Joining them the wrong way round, or joining the two rails to each other, is the one mistake that can damage the board.</div>
       </div></div>
       <div class="step"><div class="body">
-        <p><strong>Push the potentiometer into the board</strong> so its three legs land in <code>f5</code>, <code>f6</code> and <code>f7</code>.</p>
-        <p class="note">Some knobs have legs that are too wide or too thick for a breadboard. If yours will not go in, bend the legs gently until they line up. Do not force it.</p>
+        <p><strong>Push the potentiometer into the board</strong> so its three legs land in <code>f5</code>, <code>f6</code> and <code>f7</code>. Turn it so the <strong>shaft points away from the board</strong>, out over the edge, so you can reach it to turn it once everything is wired.</p>
+        <p>Hold the plastic body, line all three legs up, and press straight down.</p>
+        <div class="see"><b>You should see</b>The knob sitting flat and firm, not rocking, with the shaft free to turn.</div>
+        <p class="note"><strong>It does not matter which way round the two outer legs go.</strong> Swapping them only reverses which way the numbers run as you turn. The middle leg is the one that matters, and it must be the middle one.</p>
+        <div class="ifnot"><b>If the legs are too wide or too thick to fit</b>Grip each leg close to the body with your fingers and bend only the tip, until the three tips are the same distance apart as three holes in a row. Bend at the tip, never at the body, because that is where they snap. Do not force it in.</div>
+        <div class="ifnot"><b>If yours is a small square part with a slot on top instead of a shaft</b>That is a trimmer, and it does the same job. Turn it with a small screwdriver instead of your fingers. Everything else is the same.</div>
       </div></div>
       <div class="step"><div class="body">
         <p><strong>Wire from <code>j5</code> to the + rail.</strong> That is one end of the rope.</p>
@@ -305,7 +330,7 @@ void loop() {
 
     <div class="steps">
       <div class="step"><div class="body">
-        <p><strong>Add a light.</strong> LED long leg into <code>f20</code>, short leg into <code>f22</code>. Resistor from <code>j20</code> to <code>j18</code>. Wire <code>j18</code> to pin 9. Wire <code>j22</code> to the &#8722; rail.</p>
+        <p><strong>Add a light.</strong> LED long leg into <code>f20</code>, short leg into <code>f22</code>. Resistor from <code>j20</code> to <code>j18</code>. Wire <code>h18</code> to pin 9 (row <code>h</code>, because <code>j18</code> now holds the resistor leg and a hole takes one leg only). Wire <code>j22</code> to the &#8722; rail.</p>
         <div class="ifnot"><b>If the light never comes on</b>Turn the LED round first, then check both legs are in different columns. This band puts everything in the top block, rows f to j, so the light's ground goes to the same &#8722; rail as the knob. If the knob still reads fine but the light is dead, it is the light, not the wiring to the board.</div>
       </div></div>
       <div class="step"><div class="body">
@@ -387,17 +412,20 @@ void loop() {
     <div class="ifnot" style="margin-bottom:.4rem"><b>Before you start</b>USB unplugged.</div>
     <div class="steps">
       <div class="step"><div class="body">
-        <p><strong>Push the light sensor in</strong> so its two legs land in <code>f12</code> and <code>f14</code>.</p>
+        <p><strong>Push the light sensor in</strong> so its two legs land in <code>f12</code> and <code>f14</code>. Those holes are two columns apart, with column 13 empty between them.</p>
+        <p>Its legs come out much closer together than that, so <strong>spread them gently with your fingers first</strong>, holding the round body rather than the legs. It goes in either way round.</p>
+        <div class="see"><b>You should see</b>The sensor standing up with its wiggly face pointing upwards or outwards, where light can reach it. Not lying flat against the board.</div>
       </div></div>
       <div class="step"><div class="body">
         <p><strong>Wire from <code>j12</code> to the + rail.</strong></p>
       </div></div>
       <div class="step"><div class="body">
         <p><strong>Put the 10 000 ohm resistor from <code>j14</code> to <code>j16</code>.</strong> Its stripes read brown, black, orange. It is a different resistor from the 220 ohm ones. Check the stripes, do not guess.</p>
+        <div class="ifnot"><b>If your kit has no 10 000 ohm resistor</b>Anything from about 4 700 up to 47 000 ohms will work. The numbers you read will be different from somebody else's, which is exactly why this band makes you calibrate rather than trusting a number off a page.</div>
         <div class="ifnot"><b>If you use a 220 ohm resistor here by mistake</b>Nothing will break, but the reading will barely move as the light changes, and you will think the sensor is faulty. Check the stripes.</div>
       </div></div>
       <div class="step"><div class="body">
-        <p><strong>Wire from <code>j16</code> to the &#8722; rail.</strong></p>
+        <p><strong>Wire from <code>h16</code> to the &#8722; rail.</strong> Row <code>h</code>, not row <code>j</code>: the resistor leg is in <code>j16</code>, and a hole takes one leg only. Same column, same connection.</p>
       </div></div>
       <div class="step"><div class="body">
         <p><strong>Wire from <code>h14</code> to pin <code>A1</code>.</strong> That is the middle point, between the sensor and the resistor.</p>
@@ -411,6 +439,7 @@ void loop() {
       </div></div>
       <div class="step"><div class="body">
         <p><strong>Write down four numbers:</strong> your reading with your hand fully covering the sensor, in the room normally, near a window, and with a torch on it.</p>
+        <div class="ifnot"><b>The numbers will not sit still</b>They scroll past five times a second and jitter by a few either way. That is normal. Hold the sensor still for five seconds, watch the range they wander between, and write down a number from the middle of that range. You are after "about 400", not an exact figure.</div>
       </div></div>
     </div>
   </div>
@@ -429,7 +458,13 @@ void loop() {
         <p><strong>Get your paper from Part 1</strong>, the one with your five places and your 0 to 10 guesses.</p>
       </div></div>
       <div class="step"><div class="body">
-        <p><strong>Take the board and a laptop to each of those five places</strong>, with <code>b4_03</code> running and the serial monitor open. Write the sensor's number next to your guess.</p>
+        <p><strong>Take the board to each of those places</strong> with <code>b4_03</code> running, and write the sensor's number next to your guess.</p>
+        <div class="callout">
+          <h5>Two things that make this much easier</h5>
+          <p><strong>The sketch stays on the board when you unplug it.</strong> You proved that in Band 0. So you can unplug, walk somewhere, plug back into a laptop or a power bank there, and it is already running.</p>
+          <p><strong>Point the sensor the same way every time.</strong> Straight up at the ceiling or the sky is easiest to repeat. If you point it at a window in one place and at the floor in the next, your five numbers are not comparable and the whole table is wasted.</p>
+        </div>
+        <div class="ifnot"><b>If you cannot carry a laptop about</b>Be careful here, because there is a trap. A power bank runs the board, but the serial monitor only shows numbers while the board is joined to a <em>computer</em>. So a power bank gets you a running board and no readings at all, and a photo taken before you leave shows the old room, not the new one.<br><br>Two ways round it, both fine:<br><br><strong>The simple way.</strong> Do only the places you can reach with the laptop. Three real measurements beat five imagined ones, and the rest of the band works perfectly with three rows in the table.<br><br><strong>The clever way.</strong> Make the board report without a screen. Add one line to the end of <code>loop</code> in <code>b4_03_light_read.ino</code>: <code>delay(2000);</code>, and add above it a short piece that blinks the on-board light on pin 13 once for each hundred in the reading. A reading of 380 gives three blinks, 720 gives seven. Go to the room, watch, count, come back. It is rough, and rough is enough: you are looking for &#8220;about 400 in here and about 800 out there&#8221;, not exact numbers.</div>
         <p class="note">If carrying a laptop about is awkward, do it in whatever three places you can reach. Three real measurements beat five imagined ones.</p>
       </div></div>
       <div class="step"><div class="body">
@@ -500,7 +535,7 @@ void loop() {
 Serial.println(millivolts);</code></pre>
         <div class="see"><b>You should see</b>Numbers from about 0 to 5000, changing smoothly as you turn the knob. Those are <strong>thousandths</strong> of a volt, so 2500 means 2.5 volts.</div>
         <p>This works because of the order. Multiplying by 5000 <em>first</em> makes the number big, and only then does the division throw a fraction away. Losing a fraction out of 5000 hardly matters. Losing one out of 5 loses everything.</p>
-        <div class="ifnot"><b>What the <code>(long)</code> is doing</b>5000 times a reading of 1023 is over five million, which is too big for an ordinary <code>int</code>. Writing <code>(long)</code> in front tells the board to use a bigger box for the arithmetic. Leave it out and the answer wraps round and goes nonsense above about a reading of 130. Try it if you like, then put it back.</div>
+        <div class="ifnot"><b>What the <code>(long)</code> is doing</b>5000 times a reading of 1023 is over five million, which is too big for an ordinary <code>int</code>. Writing <code>(long)</code> in front tells the board to use a bigger box for the arithmetic. Leave it out and the answer wraps round and goes nonsense above a reading of about <strong>6</strong>, which is almost straight away. Try it if you like, then put it back.</div>
         <p class="note">Both fixes are used in real code. Decimals are easier to read. Whole numbers are faster and use less memory, which matters on a small chip. What decides between them is whether the scale you choose is big enough to hold the detail you need.</p>
       </div></div>
     </div>
@@ -540,7 +575,8 @@ Serial.println(millivolts);</code></pre>
     <p>Notice what the knob is really doing. It is not controlling the light. It is setting <strong>the number that counts as dark</strong>. The person using the device gets to make that decision, in their room, at their time of day, without touching any code.</p>
 
     <h3 style="margin-top:.6rem">Now find the flaw</h3>
-    <p>Set the knob so that the lamp is right on the edge of coming on. Then hold it there and watch carefully for thirty seconds.</p>
+    <p>Turn the knob <strong>very slowly</strong> until the lamp just starts to twitch, right on the point of coming on. Then <strong>take your hand off the knob completely</strong>, because your fingers will keep nudging it, and watch for thirty seconds.</p>
+    <div class="ifnot"><b>If it just sits there steady</b>Your room is very still. Wave your hand slowly, a metre away from the sensor, so the light changes a little. Or nudge the knob a hair at a time until you find the exact point. The flicker is there; it only shows up when the reading sits right on the line.</div>
     <div class="see"><b>You should see</b>The lamp flickering on and off, or switching back and forth as tiny changes in the light push the reading over and back across the threshold.</div>
     <p>This is a real problem and every device that compares against a limit has it. Fixing it is the Gold task in Part 12, and the fix has a name you can look up: <strong>hysteresis</strong>. It means using two limits instead of one, with a gap between them.</p>
     <p class="note">Finding a flaw in something that works is a good day's work. Most people never look for one.</p>
@@ -641,11 +677,13 @@ int reading = analogRead(knobPin);</code></pre>
 
     <h3>The test that matters most in this band</h3>
     <p>Set it up carefully where you built it, and check it works. Then <strong>carry it to a different room and switch it on without changing anything</strong>.</p>
+    <p class="note">You do not need a laptop to do this. A phone charger or a power bank plugged into the same USB socket runs the board perfectly well, and plugging it in <em>is</em> switching it on. The sketch is already inside the board.</p>
     <p>Write down what happened. Did it still make sense? Did the person have to reach for the knob straight away? Was the knob even in a place they could reach?</p>
     <p>Almost every sensor project in the world fails this test the first time. Yours failing is normal and expected. What you write down about <em>why</em> is the actual work.</p>
     <div class="ifnot"><b>If you cannot move it to another room</b>Test it at two very different times of day instead, morning and after dark, without changing anything in between. That gives you the same lesson.</div>
 
     <h3 style="margin-top:.6rem">Show your work</h3>
+    <div class="ifnot"><b>If you are doing this course alone</b>There may be nobody to post to and nobody else&#8217;s work to look at. That is fine, and it does not let you off this part. Do it this way instead: save the photos and the video into a folder named for this band, write the same notes into your build log, and then be your own second reader. Come back to your own sketch the next day, read it cold, and write down the one thing you would do differently now. That is the whole value of looking at somebody else&#8217;s work, and you can get most of it from your own.</div>
     <p>Post a video, your calibration table, and one paragraph on what happened when you moved it. Then look at one other person's calibration table and ask them one question about how they chose their number.</p>
     <div class="ifnot"><b>If there is no other table to look at</b>Measure a second place properly and make a second table of your own, at a different time of day. Then write the question you would have asked somebody else, and answer it about your own two tables. The point is to notice that two honest measurements of the same thing disagree, and you can get that from your own work.</div>
   </div>
@@ -714,6 +752,7 @@ void loop() {
     <div class="callout">
       <h5>Still stuck after 30 minutes?</h5>
       <p>Photograph the board from above, and copy ten lines from your serial monitor. Post both, plus one sentence on what you expected. In this band the serial numbers are usually enough on their own for someone to tell you what is wrong.</p>
+      <div class="ifnot"><b>If there is nobody to send it to</b>Write the three things down anyway, in your build log: what you expected, what happened, and what you have already tried. Putting a problem into words solves a surprising number of them on its own. Then work down the checklist above one more time, slowly. If it is still stuck, leave it until tomorrow and come back fresh. Do not sit and stare at it.</div>
     </div>
   </div>
 </section>

@@ -8,7 +8,7 @@
 //     Light sensor legs into f12 and f14.
 //     Wire j12 to the + rail.
 //     Resistor 10 000 ohm (BROWN BLACK ORANGE) from j14 to j16.
-//     Wire j16 to the minus rail.
+//     Wire h16 to the minus rail.
 //     Wire h14 to pin A1.
 //
 //     The 10 000 ohm resistor matters. A 220 ohm one here gives

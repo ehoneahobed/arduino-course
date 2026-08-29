@@ -28,20 +28,27 @@
 //     line is not tidying up. It IS the timer.
 //
 //   WIRING
-//     Keep the Band 5 build exactly as it is and MOVE THREE WIRES.
+//     Keep the Band 5 build exactly as it is and MOVE FOUR WIRES.
 //     Unplug the USB cable first.
 //
-//       the wire from a1  : pin 2  ->  PIN 9   (the fading lamp)
-//       the wire from a5  : pin 3  ->  PIN 8   (the answer light)
-//       the wire from j19 : pin 8  ->  PIN 6   (the button)
+//     DO THEM IN THIS ORDER. Only ONE wire fits in an Arduino pin,
+//     and pins 9 and 8 are both occupied right now.
+//
+//       1. the wire from j24 : pin 9  ->  OUT   (frees pin 9)
+//       2. the wire from j19 : pin 8  ->  PIN 6 (frees pin 8;
+//                                               this is the button)
+//       3. the wire from b1  : pin 2  ->  PIN 9 (the fading lamp)
+//       4. the wire from b5  : pin 3  ->  PIN 8 (the answer light)
 //
 //     Pin 9 matters. Only a pin with a ~ can fade, and pin 2,
 //     where that light was, cannot.
 //
-//     Lights 3 and 4 and buttons 2, 3 and 4 are not used here.
-//     Leave them alone.
+//     Lights 3 and 4 and buttons 3 and 4 are not used here, so
+//     leave them alone. Button 2 is not used either, but its wire
+//     had to come out of pin 9 to make room for the lamp.
 //
-//     WHEN YOU HAVE FINISHED PART 7, MOVE ALL THREE WIRES BACK,
+//     WHEN YOU HAVE FINISHED PART 7, PUT ALL FOUR WIRES BACK:
+//       b1 -> pin 2, b5 -> pin 3, j19 -> pin 8, j24 -> pin 9,
 //     or the game in Part 9 will not work.
 // ==================================================================
 

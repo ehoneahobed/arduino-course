@@ -11,7 +11,7 @@
 //   WIRING
 //     Knob as in b4_01.
 //     LED long leg f20, short leg f22.
-//     Resistor from j20 to j18. Wire j18 to pin 9.
+//     Resistor from j20 to j18. Wire h18 to pin 9.
 //     Wire j22 to the minus rail.
 //
 //   THINGS TO TRY

@@ -7,9 +7,9 @@
 //       green alone (5 s), yellow alone (1.5 s), then repeats.
 //
 //   WIRING
-//     Red    LED long leg f5,  short leg f6.  Resistor j5 to j3.  Wire j3 to pin 9.
-//     Yellow LED long leg f10, short leg f11. Resistor j10 to j8. Wire j8 to pin 8.
-//     Green  LED long leg f15, short leg f16. Resistor j15 to j13. Wire j13 to pin 7.
+//     Red    LED long leg f5,  short leg f6.  Resistor j5 to j3.  Wire h3 to pin 9.
+//     Yellow LED long leg f10, short leg f11. Resistor j10 to j8. Wire h8 to pin 8.
+//     Green  LED long leg f15, short leg f16. Resistor j15 to j13. Wire h13 to pin 7.
 //     Wire from j6, j11 and j16 each to the minus rail.
 //     ONE wire from the minus rail to a GND pin.
 //

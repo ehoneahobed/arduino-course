@@ -13,9 +13,12 @@
 //     Band 2 Part 8b has the answer.
 //
 //   WIRING
-//     Same as b2_01, BUT FIRST move the wire that goes to pin 9
-//     so that it goes to pin 7 instead. Leave everything else
-//     exactly as it was.
+//     Same as b2_02, the RGB build you already have on the board.
+//     FIRST move the RED channel's wire, the one from h2, out of
+//     pin 9 and into pin 7 instead. Leave green and blue alone.
+//     When you have finished, move that wire back to pin 9 AND
+//     change lampPin back to 9 in this file. Leave everything
+//     else exactly as it was.
 //
 //     That move is part of the exercise. Band 2 Part 8b tells
 //     you when to do it and why.

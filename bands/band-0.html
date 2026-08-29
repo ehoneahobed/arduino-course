@@ -79,6 +79,14 @@
       </ol>
       <p class="note">You will not touch wiring in this band, so rules 1 and 2 do not bite yet. Learn them now anyway.</p>
     </div>
+
+    <div class="words" style="margin-top:1rem">
+      <h5>Two words this course uses a lot</h5>
+      <dl>
+        <dt>build log</dt><dd>A page of notes you write for each band, <em>as you go</em>. What you set out to build, what went wrong, what you tried, and what fixed it. A notebook, a phone note or a document all work. There is a full list of what goes in it on the course home page, and the messy parts matter more than the tidy ones.</dd>
+        <dt>claim a band</dt><dd>Showing somebody the four things a band asks for: the thing you built, your build log, your Check yourself answers, and a 90 second explanation of one line of your own code. If you are working entirely on your own, keep them together in one folder anyway. They are how you can tell you actually finished.</dd>
+      </dl>
+    </div>
   </div>
 </section>
 
@@ -171,6 +179,8 @@
       <div class="step"><div class="body">
         <p><strong>Download it.</strong> Go to <code>arduino.cc/en/software</code> in your web browser. Find the download list. Choose the one that matches your computer: Windows, macOS, or Linux.</p>
         <div class="ifnot"><b>If the page asks for money</b>It will offer you a chance to donate, with a button that says something like "Just download". Click that. You do not have to pay.</div>
+        <div class="ifnot"><b>If your internet is slow or expensive</b>The file is large, a few hundred megabytes, and it will not install on a phone. You only need to download it once, on one computer. If data is a problem, ask somebody who already has it to copy the installer onto a USB stick for you. The installer file is all you need. There is nothing else to fetch.</div>
+
       </div></div>
 
       <div class="step"><div class="body">
@@ -208,7 +218,7 @@
       <div class="step"><div class="body">
         <p><strong>Tell the IDE where the board is.</strong> Click <strong>Tools</strong>, then <strong>Port</strong>. You will see a short list. One of them is your board.</p>
         <p>If you are not sure which one, do this: unplug the board and look at the list. Note what is there. Plug the board back in and look again. The one that just appeared is your board. Choose it.</p>
-        <div class="ifnot"><b>If the Port menu is empty or greyed out</b>Almost always the cable. Swap it for a different one and try again. If you have already swapped the cable, and you are on Windows with a copy board rather than an original, search the web for "CH340 driver", install it, then restart the IDE.</div>
+        <div class="ifnot"><b>If the Port menu is empty or greyed out</b>Two things cause this, and you should check them in this order.<br><br><strong>One: the cable.</strong> Many USB cables are charge-only and carry no data. Swap it for a different one and try again.<br><br><strong>Two: the driver.</strong> Most starter-kit boards, including the Elegoo one, are copies rather than original Arduinos, and they use a different USB chip called the CH340. Every operating system needs a driver for it, not just Windows. Search the web for &#8220;CH340 driver&#8221; plus the name of your system, install it, then close the IDE completely and open it again. On Linux the driver is usually already there but you also have to give yourself permission to use the port: run <code>sudo usermod -a -G dialout $USER</code> in a terminal, then log out and back in.</div>
       </div></div>
     </div>
 
@@ -230,21 +240,51 @@
   <div class="col stack">
     <p>Before you touch any code, do this small activity. It takes ten minutes and it will make the next part much easier to understand.</p>
 
-    <h3>If you have someone with you</h3>
-    <p>Write three instructions on a piece of paper:</p>
-    <div class="card"><p><strong>1.</strong> Stand up. &nbsp; <strong>2.</strong> Say your name. &nbsp; <strong>3.</strong> Sit down.</p></div>
-    <p>Give the paper to the other person and tell them: do instruction 1 one time only. Then do instructions 2 and 3 again and again, without stopping, until I tell you to stop.</p>
-    <p>Let them do it for about a minute. Then, while they are still going, cross out instruction 2 and write something different, like "clap your hands". Watch what happens.</p>
+    <p>Write three instructions on a piece of paper, in big letters:</p>
+    <div class="card"><p><strong>1.</strong> Stand up. &nbsp;&nbsp; <strong>2.</strong> Say your name. &nbsp;&nbsp; <strong>3.</strong> Clap once.</p></div>
+
+    <h3 style="margin-top:.6rem">If you have someone with you</h3>
+    <div class="steps">
+      <div class="step"><div class="body">
+        <p><strong>Hold the paper up where they can read it</strong> and keep holding it there. This matters. They must be able to see it the whole time.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Tell them the rule:</strong> "Do instruction 1 one time only. Then do 2 and 3 over and over, without stopping. And <strong>read the paper again every single time</strong> before you do them."</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Let them run for about a minute.</strong></p>
+        <div class="see"><b>You should see</b>Them standing up once at the very start, then saying their name and clapping, again and again, in a steady rhythm.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Now, while they are still going,</strong> cross out instruction 2 and write something different above it, like "hop once". Do not say anything. Just change the paper.</p>
+        <div class="see"><b>You should see</b>They carry on saying their name for one more round, because they had already read that line. Then, on the next round, they read the paper again, notice it has changed, and start hopping instead.</div>
+        <div class="ifnot"><b>If they never notice</b>They have stopped reading the paper and are working from memory. Remind them of the rule and try again. That is worth knowing about, and question 2 below is about exactly that.</div>
+      </div></div>
+    </div>
 
     <h3 style="margin-top:.6rem">If you are on your own</h3>
-    <p>Do the same thing yourself, out loud. Stand up once. Then say your name and sit down, say your name and sit down, over and over, twenty times. Count them.</p>
-    <p>Then stop, change the second instruction on your paper, and start again from the beginning.</p>
+    <div class="steps">
+      <div class="step"><div class="body">
+        <p><strong>Prop the paper up</strong> against something, where you can see it while standing.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Do instruction 1 once:</strong> stand up.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Now do 2 and 3 over and over, twenty times,</strong> reading the paper each time before you do them. Say your name, clap. Read. Say your name, clap. Read. Count the rounds out loud.</p>
+        <div class="see"><b>You should see</b>That you only stood up once, at the very beginning, and everything after that repeated.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Now stop.</strong> Change instruction 2 on the paper to something different. Then start again from instruction 1.</p>
+        <p class="note">Notice what you had to do there: <strong>stop, change the paper, and start again from the top.</strong> You could not change it halfway through and carry straight on. Hold on to that.</p>
+      </div></div>
+    </div>
 
     <div class="callout">
       <h5>Write your answers down before you go on</h5>
       <ol class="num">
         <li>Which instruction happened only once? Which ones happened again and again?</li>
-        <li>When the paper changed while the person was still going, did the change happen straight away? What did they actually have to do first?</li>
+        <li><strong>If somebody helped you:</strong> when the paper changed while they were still going, did the change happen straight away? What did they actually have to do first?<br><strong>If you did it alone:</strong> you could not swap the paper halfway through without stopping. What exactly did you have to do to get the new instructions running? Write down each thing, in order.</li>
         <li>Write down one thing you do once each morning, and one thing you repeat all day.</li>
       </ol>
     </div>
@@ -381,7 +421,14 @@ void loop() {
   <div class="col stack">
     <div class="steps">
       <div class="step"><div class="body">
-        <p><strong>Open the sketch.</strong> In the IDE, click <strong>File</strong>, then <strong>Open</strong>, and find <code>b0_01_blink_given.ino</code>.</p>
+        <p><strong>Get the sketch onto your computer first.</strong> Clicking the link usually just shows the text on screen instead of saving it. So do this instead:</p>
+        <ul class="plain">
+          <li><strong>Right-click</strong> the sketch link, or press and hold it on a touchscreen.</li>
+          <li>Choose <strong>Save link as</strong> (some browsers say <em>Download linked file</em>).</li>
+          <li>Save it somewhere you will find again. Your <strong>Documents</strong> folder is a good choice. Make a folder called <strong>Arduino</strong> inside it and put every sketch there.</li>
+        </ul>
+        <p><strong>Then open it.</strong> In the IDE, click <strong>File</strong>, then <strong>Open</strong>, go to the folder you just saved it in, and choose <code>b0_01_blink_given.ino</code>.</p>
+        <div class="ifnot"><b>If you downloaded the whole zip instead</b>A zip is a folder squashed into one file. Double-click it to unsqueeze it. On Windows you may have to choose "Extract all" first. You will get a folder with every sketch in it.</div>
         <div class="ifnot"><b>If the IDE says the file must be in a folder with the same name</b>This is normal. Click yes and let it fix it for you. The Arduino IDE wants every sketch to sit inside a folder named after it.</div>
       </div></div>
 
@@ -392,7 +439,7 @@ void loop() {
 
       <div class="step"><div class="body">
         <p><strong>Press Upload</strong>, the arrow button.</p>
-        <div class="see"><b>You should see</b>Two very small lights on the board flicker quickly for a second or two while the program crosses the cable. Then a message at the bottom telling you it is done uploading.</div>
+        <div class="see"><b>You should see</b>Two very small lights on the board, marked <strong>TX</strong> and <strong>RX</strong>, flicker quickly for a second or two while the program crosses the cable. They sit close together near the USB socket. The light called <strong>L</strong>, the one you will be watching afterwards, is the one further away from that pair. Then a message at the bottom telling you it is done uploading.</div>
         <div class="ifnot"><b>If you get a red error about a port or being "not in sync"</b>Go back to Tools and check both Board and Port are still set correctly. Unplugging the board can clear the Port setting. If it still fails, unplug the board, plug it back in, choose the Port again, and upload again.</div>
       </div></div>
 
@@ -579,8 +626,17 @@ void loop() {
     <h3>How to go about it</h3>
     <div class="steps">
       <div class="step"><div class="body"><p><strong>Tap it first, away from the computer.</strong> Tap a rhythm on the table until you have one you like.</p></div></div>
-      <div class="step"><div class="body"><p><strong>Write it down as marks on paper.</strong> Use a short line for a short flash and a long line for a long flash. Something like: <code>- - ——— (pause)</code></p></div></div>
-      <div class="step"><div class="body"><p><strong>Turn each mark into numbers.</strong> Decide how many milliseconds a short flash is, a long flash is, and the pause is. Write the numbers next to your marks.</p></div></div>
+      <div class="step"><div class="body">
+        <p><strong>Write it down as marks on paper.</strong> Use a short line for a short flash, a long line for a long flash, and <strong>a dot for each gap where the light is off</strong>. The gaps matter as much as the flashes.</p>
+        <p>Something like: <code>&mdash; &middot; &mdash; &middot; &mdash;&mdash;&mdash; &middot;&middot;&middot;&middot;</code> which is short, gap, short, gap, long, long rest.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Turn every mark into a number of milliseconds,</strong> including the dots. Write the number above each mark.</p>
+        <div class="callout">
+          <h5>Remember: every mark is two lines of code, and every gap is two more</h5>
+          <p>One flash is: switch on, wait, switch off, wait. So a pattern of five marks is twenty lines. That is normal, and it is exactly why Band 2 exists.</p>
+        </div>
+      </div></div>
       <div class="step"><div class="body"><p><strong>Now open the IDE</strong> and turn your marks into lines of code, one mark at a time.</p></div></div>
       <div class="step"><div class="body"><p><strong>Upload and watch.</strong> Does it match the rhythm you tapped? Adjust the numbers until it does.</p></div></div>
     </div>
@@ -588,10 +644,20 @@ void loop() {
 
     <h3 style="margin-top:.8rem">Also due this band: your kit list</h3>
     <p>Open your kit box. Go through it part by part. Write a list with the name of each part and how many of them you have.</p>
-    <p>If you do not know what something is, look at the paper that came with the kit, or search the web for "Arduino starter kit parts" and match the pictures. If anything is missing or broken, report it now. A missing part that you only discover at Band 4 costs you a week of waiting.</p>
+    <p>If you do not know what something is, look at the paper that came with the kit, or search the web for "Arduino starter kit parts" and match the pictures. If anything is missing or broken, deal with it now rather than at Band 4, when you are halfway through a build and cannot finish.</p>
+    <p>Most missing parts have a substitute you already have, so check this list before you go looking for a shop:</p>
+    <ul class="plain">
+      <li><strong>Resistors:</strong> anything from 200 to 470 ohms works in place of a 220. The light is a little dimmer at the high end. Nothing is harmed.</li>
+      <li><strong>LEDs:</strong> any colour works anywhere. The colours in this course are only so the instructions can name them.</li>
+      <li><strong>Jumper wires:</strong> you can get by with fewer than the count given, by taking a wire out of a finished part of a build and reusing it, as long as you write down what you moved.</li>
+      <li><strong>The buzzer, the light sensor, the potentiometer:</strong> these have no substitute. If one is missing you can still finish every other part of the band it belongs to. Skip that one part and come back.</li>
+    </ul>
+    <p>If somebody is running this course for you, tell them now. If you are on your own, note it in your build log so you remember why a later part had to be skipped.</p>
 
     <h3 style="margin-top:.8rem">Show your work</h3>
     <p>Post a ten second video of your signature blinking, plus your build log for this band. Then look at two other people's signatures and check yours is different from both. If it is not, change yours.</p>
+    <div class="ifnot"><b>If you are doing this course alone</b>There may be nobody to post to and nobody else&#8217;s work to look at. That is fine, and it does not let you off this part. Do it this way instead: save the photos and the video into a folder named for this band, write the same notes into your build log, and then be your own second reader. Come back to your own sketch the next day, read it cold, and write down the one thing you would do differently now. That is the whole value of looking at somebody else&#8217;s work, and you can get most of it from your own.</div>
+
     <div class="ifnot"><b>If there is nobody else nearby</b>Send your video to someone on your phone and ask them to describe the rhythm back to you. If you cannot do that, leave it for a day, then watch your own video fresh and write down whether you could still pick it out from a group. Say in your log which one you did.</div>
   </div>
 </section>
@@ -650,7 +716,9 @@ void loop() {
   <div class="col stack" style="margin-top:1.2rem">
     <div class="callout">
       <h5>Still stuck after 30 minutes?</h5>
-      <p>Stop working on it. Post three things to the group: a photo of your screen showing the red error, your sketch, and one sentence saying what you expected and what actually happened. Then move on to something else while you wait.</p>
+      <p>Stop working on it. Get three things together: a photo of your screen showing the red error, your sketch, and one sentence saying what you expected and what actually happened.</p>
+      <p>Then send them to whoever is running this course for you, or to your build buddy, or to whatever group you were given at the start. Then move on to something else while you wait.</p>
+      <div class="ifnot"><b>If there is nobody to send it to</b>Write the three things down anyway, in your build log. Putting the problem into words solves a surprising number of them on its own. Then work down the list above one more time, slowly, and if it is still stuck, leave it until tomorrow and come back to it fresh. Do not sit and stare at it.</div>
       <p>Being stuck for half an hour is normal. Being stuck for three hours on your own is not, and it is the point where people give up on the whole course. Ask early.</p>
     </div>
   </div>

@@ -7,7 +7,7 @@
 //   WIRING
 //     LED long leg into hole f5, short leg into hole f6.
 //     Resistor (220 ohm) from j5 to j3.
-//     Wire from j3 to digital pin 8.
+//     Wire from h3 to digital pin 8.
 //     Wire from j6 to the minus rail.
 //     Wire from the minus rail to a GND pin.
 //

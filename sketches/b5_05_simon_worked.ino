@@ -7,10 +7,10 @@
 //     all four flash with a low buzz and your score prints.
 //
 //   WIRING
-//     Light 1  long b3,  short b4.  Resistor a3 to a1.   Wire a1 to pin 2.
-//     Light 2  long b7,  short b8.  Resistor a7 to a5.   Wire a5 to pin 3.
-//     Light 3  long b11, short b12. Resistor a11 to a9.  Wire a9 to pin 4.
-//     Light 4  long b15, short b16. Resistor a15 to a13. Wire a13 to pin 5.
+//     Light 1  long b3,  short b4.  Resistor a3 to a1.   Wire b1 to pin 2.
+//     Light 2  long b7,  short b8.  Resistor a7 to a5.   Wire b5 to pin 3.
+//     Light 3  long b11, short b12. Resistor a11 to a9.  Wire b9 to pin 4.
+//     Light 4  long b15, short b16. Resistor a15 to a13. Wire b13 to pin 5.
 //
 //     Button 1  columns 19 and 21  wire j19 to pin 8,  a21 to minus rail
 //     Button 2  columns 24 and 26  wire j24 to pin 9,  a26 to minus rail

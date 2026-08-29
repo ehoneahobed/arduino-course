@@ -1,4 +1,30 @@
 ==================================================================
+  ARDUINO SKETCHES  -  ALL 26 FILES, BANDS 0 TO 5
+  Bozoma Innovation Hub, Aiyinasi
+==================================================================
+
+  This folder holds every sketch in the course. It is two packs
+  joined together, so you will find two sets of notes below:
+  bands 0, 1 and 2 first, then bands 3, 4 and 5.
+
+  26 files in all. Every one was compiled and tested for the
+  ATmega328P chip before it was given to you.
+
+  Three of them fail ON PURPOSE, and the course tells you which
+  and why:
+    b0_03_buggy_semicolon.ino  will not compile at all
+    b3_03_toggle_buggy.ino     compiles, does the wrong thing
+    b5_03_blocking_problem.ino compiles, does the wrong thing
+
+  Everything else compiles cleanly and does what its header says.
+
+  ONE HOLE, ONE LEG. A breadboard hole takes one lead and no
+  more. Where a resistor leg has a hole, the jumper wire goes in
+  a DIFFERENT hole in the SAME column. The five holes in a column
+  are joined underneath, so it is the same connection.
+
+
+==================================================================
   ARDUINO SKETCHES FOR BANDS 0, 1 AND 2
   Bozoma Innovation Hub, Aiyinasi
 ==================================================================
@@ -79,24 +105,29 @@ WHICH FILE IS WHICH
 WIRING, IN SHORT
 
   Band 1 (three lights)
-    Red    LED long leg f5,  short leg f6.  Resistor j5 to j3.  Wire j3 to pin 9.
-    Yellow LED long leg f10, short leg f11. Resistor j10 to j8. Wire j8 to pin 8.
-    Green  LED long leg f15, short leg f16. Resistor j15 to j13. Wire j13 to pin 7.
+    Red    LED long leg f5,  short leg f6.  Resistor j5 to j3.  Wire h3 to pin 9.
+    Yellow LED long leg f10, short leg f11. Resistor j10 to j8. Wire h8 to pin 8.
+    Green  LED long leg f15, short leg f16. Resistor j15 to j13. Wire h13 to pin 7.
     Wire from j6, j11 and j16 each to the minus rail.
     ONE wire from the minus rail to a GND pin.
 
   Band 2 (one fading light)
     LED long leg f5, short leg f6. Resistor j5 to j3.
-    Wire j3 to pin 9. Wire j6 to the minus rail. Minus rail to GND.
+    Wire h3 to pin 9. Wire j6 to the minus rail. Minus rail to GND.
 
   Band 2 (RGB LED)
     Four legs into f5, f6, f7, f8, with the LONG LEG in f6.
     Wire j6 to the minus rail, and the minus rail to GND.
-    Resistor j5 to j2,  wire j2 to pin 9   (red)
-    Resistor j7 to j10, wire j10 to pin 10 (green)
-    Resistor j8 to j12, wire j12 to pin 11 (blue)
+    Resistor j5 to j2,  wire h2 to pin 9   (red)
+    Resistor j7 to j10, wire h10 to pin 10 (green)
+    Resistor j8 to j12, wire h12 to pin 11 (blue)
 
   Every LED needs its own resistor. An RGB LED needs three.
+
+  ONE HOLE, ONE LEG. A breadboard hole takes one lead and no
+  more. That is why each pin wire sits in row h and not row j:
+  the resistor leg already has the row j hole. The five holes in
+  a column are joined underneath, so it is the same connection.
 
 
 TWO THINGS TO REMEMBER
@@ -193,7 +224,9 @@ WHICH FILE IS WHICH
     b5_03_blocking_problem.ino
       FAILS ON PURPOSE. The fade works, the button does not.
       This is the most important failure in the whole course.
-      Needs THREE WIRES MOVED first. The file header says which.
+      Needs FOUR WIRES MOVED first, in the order the file header
+      gives. The order matters: two Arduino pins are already
+      occupied and only one wire fits in a pin.
       Move them back before you build the game.
 
     b5_04_millis_fixed.ino

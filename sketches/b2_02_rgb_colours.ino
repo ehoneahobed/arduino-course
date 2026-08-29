@@ -11,9 +11,13 @@
 //     with the LONG LEG in f6.
 //
 //     Wire from j6 to the minus rail, and the minus rail to GND.
-//     Resistor from j5 to j2,   wire from j2 to pin 9   (red)
-//     Resistor from j7 to j10,  wire from j10 to pin 10 (green)
-//     Resistor from j8 to j12,  wire from j12 to pin 11 (blue)
+//     Resistor from j5 to j2,   wire from h2 to pin 9   (red)
+//     Resistor from j7 to j10,  wire from h10 to pin 10 (green)
+//     Resistor from j8 to j12,  wire from h12 to pin 11 (blue)
+//
+//     The pin wire goes in row h, not row j, because the resistor
+//     leg is already in the row j hole and a hole takes ONE leg.
+//     Same column, same connection.
 //
 //     THREE resistors, one for each colour. Not one shared resistor.
 //     An RGB LED is three lights in one case.

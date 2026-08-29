@@ -61,7 +61,7 @@
     <ul class="plain">
       <li>Your board, USB cable and breadboard</li>
       <li>One ordinary LED and one RGB LED. The RGB one has four legs instead of two.</li>
-      <li>Four resistors of 220 ohms</li>
+      <li>Four resistors of 220 ohms. Three are used at once in Part 7; the fourth is a spare.</li>
       <li>Jumper wires</li>
       <li>A torch, or your phone light</li>
       <li>Something to make a diffuser from: a ping pong ball, a plastic sachet-water bottle, or white paper</li>
@@ -73,18 +73,36 @@
   <div class="parthead"><span class="tag">Part 1</span><h2>The torch test, before any code</h2><span class="mins">10 min</span></div>
   <div class="col stack">
     <p>Ten minutes with a torch will teach you the main idea of this band better than any explanation.</p>
-    <p>Find a dim room. Point a torch or your phone light at a plain wall. Now cover and uncover the light with your hand, and change how fast you do it.</p>
-    <ol class="num">
-      <li><strong>Once a second.</strong> Watch the wall. It clearly flashes on and off.</li>
-      <li><strong>Twice a second.</strong> Still clearly flashing.</li>
-      <li><strong>As fast as your hand will go.</strong> Keep watching the wall, not your hand.</li>
-    </ol>
+    <p>You need a small light: a torch, or the camera light on a phone. A big room lamp will not work, because you cannot cover it with a hand.</p>
+    <div class="steps">
+      <div class="step"><div class="body">
+        <p><strong>Set it up so your hands are free.</strong> Stand the phone against a book, or prop the torch on a table, pointing at a plain pale wall about an arm's length away. Make the room as dim as you can.</p>
+        <div class="see"><b>You should see</b>A bright circle on the wall that stays still without you holding anything.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Now pass your flat hand across the front of the light</strong>, about 5 cm from it, so the circle on the wall goes dark and light again. Watch <strong>the wall</strong>, never your hand.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Once a second.</strong> Count out loud: "one and, two and". Cover on the number, uncover on the "and".</p>
+        <div class="see"><b>You should see</b>The wall clearly flashing on and off. Nobody could mistake it for a steady light.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Twice a second.</strong> Count twice as fast.</p>
+        <div class="see"><b>You should see</b>Still clearly flashing, just quicker.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Now as fast as your hand will physically go,</strong> for about ten seconds.</p>
+        <div class="see"><b>You should see</b>The flashing starting to smear together. It stops looking like separate flashes, and the wall looks dimmer than when the light is uncovered.</div>
+        <div class="ifnot"><b>You will not get all the way there, and that is the point</b>Your hand manages maybe five or six covers a second. To make flashing look like a completely steady dim light you need somewhere near fifty a second, and no hand can do that.<br><br>So you see it heading that way and never arriving. Hold on to that feeling. The board does this <strong>hundreds</strong> of times a second, which is far past the speed where your eye gives up and simply reports "dimmer".</div>
+      </div></div>
+    </div>
 
     <div class="callout">
       <h5>Write these down</h5>
       <ol class="num">
-        <li>At roughly what speed does the wall stop looking like it is flashing, and start looking like a steady but dimmer light?</li>
-        <li>When you cover the light for half of every second, is the wall as bright as when you do not cover it at all? Roughly how bright would you say it is?</li>
+        <li>At your fastest, did the wall still look like separate flashes, or had it started to smear into one? Describe what you actually saw.</li>
+        <li>Covering once a second means the light is off for half of every second. Is the wall as bright as when you never cover it? Roughly how bright would you say it looks?</li>
+        <li>If your hand could somehow go a hundred times faster, what do you think the wall would look like?</li>
       </ol>
     </div>
 
@@ -271,19 +289,20 @@ void loop() {
         <p><strong>Resistor</strong> from <code>j5</code> to <code>j3</code>.</p>
       </div></div>
       <div class="step"><div class="body">
-        <p><strong>Wire from <code>j3</code> to pin 9.</strong> Check your board and make sure pin 9 has a <code>~</code> next to it.</p>
+        <p><strong>Wire from <code>h3</code> to pin 9.</strong> Not <code>j3</code>: the resistor leg is in that hole already, and a hole takes one leg only. <code>h3</code> is in the same column, so it reaches the resistor just the same. Check your board and make sure pin 9 has a <code>~</code> next to it.</p>
       </div></div>
       <div class="step"><div class="body">
         <p><strong>Wire from <code>j6</code> to the &#8722; rail</strong>, and another wire from the <strong>&#8722; rail to a GND pin</strong>.</p>
+        <p class="note">Your breadboard has two &#8722; rails, one along each long edge. In this band, &#8220;the &#8722; rail&#8221; always means <strong>the one along the top edge, nearest row j</strong>. Pick it now and use only that one all band.</p>
       </div></div>
       <div class="step"><div class="body">
         <p><strong>Plug in and upload <code>b2_01_fade_given.ino</code>.</strong></p>
         <div class="see"><b>You should see</b>The light grows slowly brighter, then slowly dimmer, then repeats. One complete round takes about two and a half seconds.</div>
         <div class="ifnot"><b>If it snaps on and off instead of fading</b>You are on a pin without a <code>~</code>. Check which pin your wire is really in.</div>
-        <div class="ifnot"><b>If nothing lights at all</b>Go to Part 12 and work down the checklist. It is the same list as Band 1, because it is the same circuit.</div>
+        <div class="ifnot"><b>If nothing lights at all</b>Go back to <strong>Band 1, Part 11</strong> and work down that checklist: LED the wrong way round, both legs in the same column, bare legs touching, something crossing the middle channel, and whether the &#8722; rail really reaches GND. It is the same circuit as Band 1, so it fails in the same five ways. Part 12 of this band covers the faults that are new here.</div>
       </div></div>
       <div class="step"><div class="body">
-        <p><strong>Time it.</strong> Use a phone stopwatch. Time ten complete rounds and divide by ten. Compare that with the 2560 milliseconds you calculated.</p>
+        <p><strong>Time it.</strong> Use a phone stopwatch. <strong>Start it the moment the light goes fully dark.</strong> Count ten more times that it goes fully dark, then stop. Divide your total by ten, and compare that with the 2560 milliseconds you calculated.</p>
         <p class="note">They should agree closely. If they do not, one of the two is wrong, and working out which is the exercise.</p>
       </div></div>
     </div>
@@ -309,7 +328,9 @@ void loop() {
   analogWrite(lampPin, 60);
 }</code></pre>
         <p>Upload it. The light now sits at one steady, dim setting and stays there.</p>
-        <p>Turn the lights down. Now <strong>wave your hand quickly back and forth</strong> in front of the LED. Watch your fingers, not the light.</p>
+        <p><strong>Make the room as dark as you can.</strong> Switch the room light off, not just down, and draw the curtains if it is daytime.</p>
+        <p>Now hold your hand about <strong>10 cm from the LED</strong> with your fingers spread, and <strong>sweep it side to side as fast as you can</strong>, at least three full sweeps a second. Watch <strong>your fingers</strong>, not the light.</p>
+        <div class="ifnot"><b>If you only see a smooth blur</b>Three things to try, in order: get the room darker, sweep faster, and bring your hand closer to the LED. If it still blurs, take off any diffuser, because a diffuser spreads the light and hides the effect completely.</div>
         <div class="see"><b>You should see</b>Your fingers appear as a row of separate lit copies, like a series of frozen snapshots, instead of a smooth blur.</div>
       </div></div>
     </div>
@@ -327,9 +348,40 @@ void loop() {
   <div class="parthead"><span class="tag">Part 6</span><h2>Colour works differently than you think</h2><span class="mins">15 min</span></div>
   <div class="col stack">
     <p>Another short activity before any code.</p>
-    <p>You need red, green and blue light on a white wall. Three ways to get it: coloured torches, a torch with coloured sweet wrappers or plastic over it, or three phones each showing a full screen of one pure colour.</p>
-    <div class="ifnot"><b>If you only have one light</b>Use a screen instead. Open any drawing or painting app on a phone or a computer and find the colour picker with three sliders marked red, green and blue. Set red to 255, green to 255 and blue to 0, and look at the colour that appears. Then try the other pairs. It is the same experiment, and the answers below still apply.</div>
-    <p>Shine them on the wall and overlap them two at a time. Write down what colour you get each time.</p>
+    <p>There are two ways to do this. <strong>The screen way needs nothing but a phone, so start there.</strong> The torch way is more fun if you can manage it.</p>
+
+    <h4 style="margin-top:.5rem">The screen way, on your own, with one device</h4>
+    <div class="steps">
+      <div class="step"><div class="body">
+        <p><strong>Open any drawing or painting app</strong> on a phone or computer and find its colour picker. Look for one with <strong>three sliders</strong> marked R, G and B, or a box where you can type three numbers.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Set red to 255, green to 0, blue to 0.</strong> That is pure red light.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Now add green.</strong> Set red 255, green 255, blue 0.</p>
+        <div class="see"><b>You should see</b>Yellow. Not a muddy brown. Bright yellow.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Try the other pairs</strong> and write each down: red and blue (255, 0, 255), green and blue (0, 255, 255), all three (255, 255, 255).</p>
+      </div></div>
+    </div>
+
+    <h4 style="margin-top:.7rem">The torch way, if you can get two lights</h4>
+    <p>You need two lights you can colour: a torch with a red sweet wrapper taped over the front and another with a green one, or two phones each showing a full screen of one pure colour.</p>
+    <div class="steps">
+      <div class="step"><div class="body">
+        <p><strong>Make the room dark.</strong> This will not work in daylight.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Prop both lights on a table</strong> pointing at a white wall, about a hand's width apart, roughly an arm's length from the wall.</p>
+        <div class="see"><b>You should see</b>Two coloured circles on the wall, side by side, not touching.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Slide one light slowly towards the other</strong> until the two circles half overlap. Look at the middle part, where both colours land on the same piece of wall.</p>
+      </div></div>
+    </div>
+    <p style="margin-top:.6rem">Either way, write down the colour you get for each pair.</p>
     <ul class="plain">
       <li>Red and green together</li>
       <li>Red and blue together</li>
@@ -425,27 +477,45 @@ void loop() {
 
     <h3 style="margin-top:.4rem">Finding the legs</h3>
     <p>Hold the LED with the four legs pointing down. <strong>One leg is clearly longer than the other three.</strong> That is the shared one, and it goes to ground.</p>
-    <p>The longest leg is the second one in from one end. So the order along the row is: one leg, then the long leg, then two more legs. Those three shorter legs are red, green and blue in that order.</p>
+    <p>Now hold it so the four legs point down and <strong>the rounded back of the dome faces you</strong>, not the flat side. Turn it so that <strong>the long leg is second from the left</strong>. There will be one short leg to its left and two short legs to its right. (Which face you look from matters. Turn it round and the order reverses, so fix on the rounded back and stay there.) With it that way round, reading left to right:</p>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Position</th><th>Which leg</th><th>Goes to</th></tr></thead>
+        <tbody>
+          <tr><td>1st, far left</td><td>red</td><td>its own resistor, then pin 9</td></tr>
+          <tr><td>2nd, the long one</td><td>shared ground</td><td>straight to the &#8722; rail, no resistor</td></tr>
+          <tr><td>3rd</td><td>green</td><td>its own resistor, then pin 10</td></tr>
+          <tr><td>4th, far right</td><td>blue</td><td>its own resistor, then pin 11</td></tr>
+        </tbody>
+      </table>
+    </div>
     <div class="ifnot"><b>If you cannot tell which end is which</b>It does not matter yet. Wire it up, run the test sketch, and see which colour appears when. If they come out in a different order, just swap the wires until red is on pin 9. Nothing is damaged by getting this wrong, as long as each leg has its resistor.</div>
 
-    <div class="ifnot" style="margin-top:.6rem"><b>Before you start</b>USB unplugged.</div>
+    <div class="ifnot" style="margin-top:.6rem"><b>Before you start: clear the board</b>Unplug the USB. Then <strong>take out everything from Part 5</strong>: the plain LED, its resistor and both its wires. The RGB LED needs the holes the old one is sitting in.<br><br>Pull each part out by its body, straight up, as in Band 1 Part 3. You want an empty breadboard.</div>
 
     <div class="steps">
       <div class="step"><div class="body">
+        <p><strong>Straighten the four legs first.</strong> RGB LEDs arrive with their legs splayed out at angles. Hold the plastic body and gently bend each leg until all four point straight down, side by side, about as far apart as four holes in a row.</p>
+        <div class="see"><b>You should see</b>Four parallel legs, like the teeth of a comb.</div>
+      </div></div>
+      <div class="step"><div class="body">
         <p><strong>Push the LED into the board</strong> so its four legs land in <code>f5</code>, <code>f6</code>, <code>f7</code> and <code>f8</code>, with the <strong>long leg in <code>f6</code></strong>.</p>
+        <p>Hold the plastic dome, line all four legs up over the holes from directly above, and press straight down. Never push it in at an angle.</p>
         <p class="note">So: red leg in <code>f5</code>, long leg in <code>f6</code>, green leg in <code>f7</code>, blue leg in <code>f8</code>.</p>
+        <div class="see"><b>You should see</b>The LED standing upright, all four legs fully in, not wobbling when you nudge it.</div>
       </div></div>
       <div class="step"><div class="body">
         <p><strong>Ground first.</strong> Wire from <code>j6</code> to the <strong>&#8722; rail</strong>. Then a wire from the <strong>&#8722; rail to a GND pin</strong>.</p>
       </div></div>
       <div class="step"><div class="body">
-        <p><strong>Red.</strong> Resistor from <code>j5</code> to <code>j2</code>. Wire from <code>j2</code> to <strong>pin 9</strong>.</p>
+        <p><strong>Red.</strong> Resistor from <code>j5</code> to <code>j2</code>. Wire from <code>h2</code> to <strong>pin 9</strong>.</p>
       </div></div>
       <div class="step"><div class="body">
-        <p><strong>Green.</strong> Resistor from <code>j7</code> to <code>j10</code>. Wire from <code>j10</code> to <strong>pin 10</strong>.</p>
+        <p><strong>Green.</strong> Resistor from <code>j7</code> to <code>j10</code>. Wire from <code>h10</code> to <strong>pin 10</strong>.</p>
       </div></div>
       <div class="step"><div class="body">
-        <p><strong>Blue.</strong> Resistor from <code>j8</code> to <code>j12</code>. Wire from <code>j12</code> to <strong>pin 11</strong>.</p>
+        <p><strong>Blue.</strong> Resistor from <code>j8</code> to <code>j12</code>. Wire from <code>h12</code> to <strong>pin 11</strong>.</p>
+        <p class="note">Each pin wire goes in row <code>h</code>, not row <code>j</code>, because the resistor leg already has the <code>j</code> hole. Same column, same connection.</p>
       </div></div>
       <div class="step"><div class="body">
         <p><strong>Check:</strong> three resistors, three wires to pins 9, 10 and 11, one wire from the long leg to the rail, one wire from the rail to GND. Eight connections in all. Then plug in.</p>
@@ -522,6 +592,7 @@ void loop() {
     delay(stepDelay);
   }
 }</code></pre>
+    <p class="note">One name in there comes from further up the file. Near the top of <code>b2_03_colour_story_worked.ino</code> is the line <code>int stepDelay = 25;</code>. That is the pause between the hundred small steps, and it is the one number you change to make a fade slower or faster. Find it now, so you know where it is when Part 11 asks you to change it.</p>
     <p>It takes six numbers: the colour you are starting from, and the colour you are going to. Then it walks from one to the other in a hundred small steps, showing each one, so the change looks smooth instead of jumping.</p>
     <p>The arithmetic inside says: <em>start where you are, and add the part of the difference you have travelled so far.</em> When <code>step</code> is 0 you get exactly the first colour. When <code>step</code> is 100 you get exactly the second. In between you get a mixture.</p>
     <p class="note">You do not need to be able to write this yet. You do need to be able to say what it does, because your Make task uses it.</p>
@@ -552,7 +623,8 @@ void loop() {
     </div></details>
 
     <h3 style="margin-top:.8rem">b. Find the one wrong character</h3>
-    <p><strong>First move one wire.</strong> Take the wire that goes to pin 9 and put it into <strong>pin 7</strong> instead. Leave everything else exactly as it is.</p>
+    <p class="note">Your board still has the RGB LED on it from Part 7, and that is fine. The wire going to pin 9 is the <strong>red</strong> channel, and red is the light this exercise uses. Leave the green and blue wires alone.</p>
+    <p><strong>First move one wire.</strong> Take the wire that goes to <strong>pin 9</strong> and put it into <strong>pin 7</strong> instead. Leave everything else exactly as it is.</p>
     <p>Now open <code>b2_04_buggy_nonpwm.ino</code> and upload it. It compiles. It uploads. The LED is wired correctly and it does light up. But it will not fade. It snaps from off to on, somewhere in the middle.</p>
     <p>One character in the sketch is wrong. Find it by reading, then say why moving that wire is what made the fault show up.</p>
     <details><summary>Answer</summary><div class="inner">
@@ -591,6 +663,7 @@ int r = r1 + (r2 - r1) * step / 100;</code></pre>
   <div class="parthead"><span class="tag">Part 9</span><h2>Change it</h2><span class="mins">30 min</span></div>
   <div class="col stack">
     <p>Work on a copy of <code>b2_01</code>.</p>
+    <p class="note">Your plain LED came off the board in Part 7 and it does not go back. <code>b2_01</code> uses pin 9, which is now the <strong>red channel of the RGB LED</strong>, so what you will watch fade in this part is a red light coming out of the RGB one. That is expected. Nothing is broken.</p>
     <dl class="tier">
       <dt>Bronze</dt><dd>Make the fade take exactly twice as long, <strong>without changing any <code>delay</code></strong>. Count the rounds before and after to prove it worked. Then say what the two different ways of slowing it down are, and what each one costs you.</dd>
       <dt>Silver</dt><dd>Make it breathe: hold at full brightness for one second at the top of each round, and stay fully off for two seconds at the bottom.</dd>
@@ -640,8 +713,31 @@ int r = r1 + (r2 - r1) * step / 100;</code></pre>
       <div class="step"><div class="body"><p><strong>Start from <code>b2_03</code>.</strong> Use Save As to make your own copy. Change the colours in the <code>fadeTo</code> lines to yours.</p></div></div>
       <div class="step"><div class="body"><p><strong>Get the timing right.</strong> The whole story must last between 45 and 90 seconds. Change <code>stepDelay</code> to make each fade longer or shorter, and use <code>delay</code> between fades to hold on a colour.</p></div></div>
       <div class="step"><div class="body">
-        <p><strong>Make the diffuser.</strong> A ping pong ball with a small hole cut in it, pushed over the LED, works very well. So does the bottom half of a plastic sachet-water bottle, or paper rolled into a tube with a paper cap.</p>
-        <div class="ifnot"><b>If the diffuser gets warm</b>Stop and check your resistors. A correctly wired LED at these currents stays cool. Warmth means a resistor is missing or not connected.</div>
+        <p><strong>Make the diffuser.</strong> A diffuser is just something white or cloudy over the light, so you see a soft glow instead of one hard bright dot. Pick whichever of these you can actually get hold of.</p>
+
+        <p style="margin-top:.5rem"><strong>Paper tube. Easiest, and needs nothing special.</strong></p>
+        <ul class="plain">
+          <li>Cut a strip of white paper about 8 cm tall and 15 cm long.</li>
+          <li>Wrap it twice around a pen to make a tube, slide the pen out, and tape the seam.</li>
+          <li>Cut a small circle of the same paper and tape it on top like a lid.</li>
+          <li>Stand the tube over the LED. It does not have to touch it.</li>
+        </ul>
+
+        <p style="margin-top:.5rem"><strong>Ping pong ball. Best glow, but needs care.</strong></p>
+        <ul class="plain">
+          <li>Mark a spot on the ball. Push the point of a skewer or a compass into it and <strong>twist slowly</strong> to open a round hole about 6 mm across. Do not cut it cold with scissors, because the plastic splits.</li>
+          <li>Hold the LED body steady with one hand and lower the ball on with the other. Push down hard and you will lever the legs out of the board.</li>
+        </ul>
+
+        <p style="margin-top:.5rem"><strong>Sachet water bottle, or any thin white plastic.</strong></p>
+        <ul class="plain">
+          <li>Cut the bottom 6 cm off a bottle to make a small cup, and turn it upside down over the LED.</li>
+          <li>Cloudy or frosted plastic works much better than clear.</li>
+        </ul>
+
+        <div class="see"><b>You should see</b>The whole diffuser glowing evenly in the LED's colour, instead of one small bright point. Judge it in a dim room.</div>
+        <div class="ifnot"><b>If it is still one bright dot</b>The diffuser is too clear or too close. Use thicker paper, add a second layer, or raise it a centimetre off the LED.</div>
+        <div class="ifnot"><b>If the diffuser feels warm</b>Touch it with the back of a finger after a minute. It should feel like room temperature. If it is warm, unplug and check your resistors, because a correctly wired LED at these currents stays cool.</div>
       </div></div>
       <div class="step"><div class="body"><p><strong>Look at it in a dark room</strong> and adjust. Colours that look right on a screen often look wrong through a diffuser.</p></div></div>
     </div>
@@ -652,7 +748,9 @@ int r = r1 + (r2 - r1) * step / 100;</code></pre>
     <div class="ifnot"><b>If you cannot find two people today</b>Record a video and send it to two people on your phone, and ask each of them the same question. Any two people will do: family, neighbours, friends from school. They do not need to know anything about electronics. If you truly cannot reach anyone, leave the lamp for a day, watch it again with fresh eyes, and write down what you think a stranger would say. Say in your log which one you did.</div>
 
     <h3 style="margin-top:.6rem">Show your work</h3>
+    <div class="ifnot"><b>If you are doing this course alone</b>There may be nobody to post to and nobody else&#8217;s work to look at. That is fine, and it does not let you off this part. Do it this way instead: save the photos and the video into a folder named for this band, write the same notes into your build log, and then be your own second reader. Come back to your own sketch the next day, read it cold, and write down the one thing you would do differently now. That is the whole value of looking at somebody else&#8217;s work, and you can get most of it from your own.</div>
     <p>Post a video of the whole story, all 45 to 90 seconds of it, not a short clip. Include both testers' answers. Then look at one other person's sketch and tell them one place where their colour numbers would be easier to change.</p>
+    <div class="ifnot"><b>If there is no other sketch to look at</b>Put your own away for a day, then open it cold and read it as though somebody else wrote it. Find one place where the colour numbers would be hard to change, and write down what you would do instead. You will spot more than you expect, because by then you will have forgotten what you meant.</div>
   </div>
 </section>
 
@@ -698,7 +796,7 @@ void loop() {
       <thead><tr><th>What you see</th><th>What it usually is</th><th>What to do</th></tr></thead>
       <tbody>
         <tr><td>No fade, just on and off</td><td><code>analogWrite</code> on a pin with no <code>~</code></td><td>Check <strong>two</strong> things and make them agree: which pin your wire is really in, and which pin number the sketch says. Both must be 3, 5, 6, 9, 10 or 11. Look at the board itself, not at what you think you did.</td></tr>
-        <tr><td>0 gives bright, 255 gives dark</td><td>You have the other kind of RGB LED, where the shared leg goes to 5V</td><td>Quick test: if <code>showColour(0,0,0)</code> gives white, that is what you have. Move the shared leg's wire to the <code>+</code> rail and run the rail to 5V. Your numbers are then backwards.</td></tr>
+        <tr><td>0 gives bright, 255 gives dark</td><td>You have the other kind of RGB LED, where the shared leg goes to 5V</td><td>Quick test: if <code>showColour(0,0,0)</code> gives white, that is what you have. Take the wire running from <code>j6</code> to the &#8722; rail and move that end to the <code>+</code> rail, then run one new wire from the <code>+</code> rail to the <strong>5V</strong> pin. <strong>Leave everything else exactly as it is</strong>: all three resistors and all three pin wires stay put. Your numbers are then backwards, so 0 is bright and 255 is off.</td></tr>
         <tr><td>Brightness drifts as the colour changes</td><td>One resistor on the shared leg instead of three on the colour legs</td><td>Three separate resistors, one for each colour leg, none on the shared leg.</td></tr>
         <tr><td>One colour never appears</td><td>That leg is in the wrong column, or its resistor is loose</td><td>Test each colour on its own with <code>showColour(255,0,0)</code>, then <code>(0,255,0)</code>, then <code>(0,0,255)</code>, before you assume the code is wrong.</td></tr>
         <tr><td>White looks pink or blue</td><td>Nothing. This is completely normal</td><td>Adjust the numbers by eye and write down what worked. See Part 8d.</td></tr>
@@ -711,6 +809,7 @@ void loop() {
     <div class="callout">
       <h5>Still stuck after 30 minutes?</h5>
       <p>Photograph the breadboard from directly above in good light. Post the photo, your sketch, and one sentence saying what you expected and what happened instead. Do not rebuild it first.</p>
+    <div class="ifnot"><b>If there is nobody to send it to</b>Write the three things down anyway, in your build log: what you expected, what happened, and what you have already tried. Putting a problem into words solves a surprising number of them on its own. Then work down the checklist above one more time, slowly. If it is still stuck, leave it until tomorrow and come back fresh. Do not sit and stare at it.</div>
     </div>
   </div>
 </section>

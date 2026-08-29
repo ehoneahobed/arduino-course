@@ -15,9 +15,9 @@
 //     Button 4  columns 13 and 15  wire j13 to pin 5, a15 to minus rail
 //
 //     Green LED long b18, short b20. Resistor a18 to a16.
-//       Wire a16 to pin 8. Wire a20 to minus rail.
+//       Wire b16 to pin 8. Wire a20 to minus rail.
 //     Red LED long b23, short b25. Resistor a23 to a21.
-//       Wire a21 to pin 9. Wire a25 to minus rail.
+//       Wire b21 to pin 9. Wire a25 to minus rail.
 //     Buzzer long b27, short b29. Wire a27 to pin 10.
 //       Wire a29 to minus rail. No resistor.
 //
