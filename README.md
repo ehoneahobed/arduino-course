@@ -3,7 +3,7 @@
 A free, project-based Arduino course for complete beginners, built by
 [Bozoma Innovation Hub](https://bozomainnovationhub.com) in Aiyinasi, Ghana.
 
-Six bands. Six things you build. Written for someone who has never touched
+Nine bands. Nine things you build. Written for someone who has never touched
 electronics or programming, working at their own speed, with nobody to ask.
 
 **Live site:** _add your URL here once you have deployed it_
@@ -20,9 +20,13 @@ electronics or programming, working at their own speed, with nobody to ask.
 | 3 · Orange | Combination Lock | ~7 h | Buttons, floating pins, the serial monitor, remembering, arrays |
 | 4 · Yellow | Night Guard | ~7 h | Sensors, voltage dividers, `map`, and calibration |
 | 5 · Green | Simon Says | ~8 h | Writing your own functions, sound, and `millis` versus `delay` |
+| 6 · Blue | Things That Move | ~7 h | Servos, libraries, deadbands, and the shared-ground rule |
+| 7 · Violet | Distance and Display | ~7 h | Ultrasonic time-of-flight, LCD screens of both kinds, flicker-free output |
+| 8 · Grey | Build for Nzemaland | ~12 h | State machines, briefs and criteria, power-cut behaviour, honest evaluation |
 
-Bands 6, 7 and 8 (motors, distance and displays, and a capstone project) are
-still being written.
+Bands 0 to 5 teach the parts and the ideas. Bands 6 to 8 are about what happens
+when a project has to leave the desk: it has to push something, speak for
+itself, and be usable by somebody who is not its author.
 
 The band names come from the resistor colour code: black is 0, brown is 1,
 red is 2, and so on. Learners decode their own band name in Band 1.
@@ -30,8 +34,8 @@ red is 2, and so on. Learners decode their own band name in Band 1.
 ```
 index.html          the course home page
 guide.html          the facilitator guide
-bands/              the six lesson pages
-sketches/           all 26 Arduino sketches, plus a README
+bands/              the nine lesson pages
+sketches/           all 41 Arduino sketches, plus a README
 downloads/          a zip of every sketch
 assets/course.css   one stylesheet for the whole site
 ```
@@ -98,13 +102,23 @@ agrees with it. Several of those answers depend on exact numbers in the sketches
 
 ## About the sketches
 
-All 26 were compiled for the ATmega328P (the chip on an Arduino Uno) before
-publication, with zero warnings.
+All 41 were compiled and linked for the ATmega328P (the chip on an Arduino Uno)
+before publication, with zero warnings.
 
-Two of them fail **on purpose**, because reading a failure is part of the lesson:
+Four of them fail **on purpose**, because reading a failure is part of the lesson:
 
 - `b3_03_toggle_buggy.ino` compiles and runs, and does the wrong thing
 - `b5_03_blocking_problem.ino` compiles and runs, and misses button presses
+- `b6_03_buggy_jitter.ino` compiles and runs, and will not hold the arm still
+- `b8_02_buggy_flags.ino` compiles and runs, and freezes in a state no branch handles
+
+A fifth, `b7_04_buggy_flicker.ino`, works but is unpleasant to look at, also on
+purpose.
+
+**Libraries.** Bands 0 to 5 need none. Band 6 uses `Servo` and Band 7 uses
+`LiquidCrystal`; both ship with the Arduino IDE. The only one a learner may have
+to install is `LiquidCrystal_I2C` (Frank de Brabander), and only if their screen
+has an I²C backpack. Band 7 Part 6a walks through it.
 
 And one fails to compile on purpose:
 

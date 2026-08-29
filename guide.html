@@ -14,7 +14,7 @@
 <a class="skip" href="#main">Skip to the lesson</a>
 <div class="topbar">
   <a class="home" href="index.html">Arduino Ladder <span>· Bozoma Innovation Hub</span></a>
-  <nav class="bandlinks" aria-label="Bands"><a href="bands/band-0.html">0</a><a href="bands/band-1.html">1</a><a href="bands/band-2.html">2</a><a href="bands/band-3.html">3</a><a href="bands/band-4.html">4</a><a href="bands/band-5.html">5</a></nav>
+  <nav class="bandlinks" aria-label="Bands"><a href="bands/band-0.html">0</a><a href="bands/band-1.html">1</a><a href="bands/band-2.html">2</a><a href="bands/band-3.html">3</a><a href="bands/band-4.html">4</a><a href="bands/band-5.html">5</a><a href="bands/band-6.html">6</a><a href="bands/band-7.html">7</a><a href="bands/band-8.html">8</a></nav>
 </div>
 <div class="wrap" id="main">
 
@@ -76,6 +76,9 @@
             <tr><td>3</td><td>One equals sign instead of two. What happens?</td><td>That <code>=</code> and <code>==</code> are interchangeable</td></tr>
             <tr><td>4</td><td>An analog pin with nothing wired to it. What does it read?</td><td>That an unconnected pin reads 0</td></tr>
             <tr><td>5</td><td>A <code>delay</code> hidden inside a function</td><td>That using <code>millis</code> outside makes a sketch non-blocking</td></tr>
+            <tr><td>6</td><td>A battery-powered servo with no wire between the two grounds</td><td>That two power sources are two separate circuits</td></tr>
+            <tr><td>7</td><td>The sensor returns 0. What is in front of it?</td><td>That 0 means "touching" rather than "no echo came back"</td></tr>
+            <tr><td>8</td><td>Three flags, and one combination no branch handles</td><td>That careful typing can substitute for a sound structure</td></tr>
           </tbody>
         </table>
       </div>
@@ -120,6 +123,9 @@
       <tbody>
         <tr><td>Charge-only USB cable</td><td>No port in the Tools menu; looks exactly like a dead board</td><td>Band 0, Part 11. The most common first-week fault of all.</td></tr>
         <tr><td>LED in backwards</td><td>Nothing lights, nothing looks wrong</td><td>Band 1, Part 3. Turn it round before anything else.</td></tr>
+        <tr><td>No shared ground</td><td>A servo twitches, buzzes, or does nothing at all</td><td>Band 6, Part 7. One wire from the battery&#8217;s minus to an Arduino GND pin. The commonest fault in Band 6 by a wide margin.</td></tr>
+        <tr><td>LCD contrast wrong</td><td>A completely blank screen that looks dead</td><td>Band 7, Part 5. Turn the knob or the blue screw end to end before checking anything else. Ask this first, every time.</td></tr>
+        <tr><td>Servo on the 5V pin under load</td><td>Board resets, or the arm moves in jerks</td><td>Band 6, Part 7. It needs its own battery once it has to push something.</td></tr>
         <tr><td>Both legs in one column</td><td>Nothing lights, nothing looks wrong</td><td>Band 1, Part 11 checklist item 2.</td></tr>
         <tr><td>Rail never reaches GND</td><td>All lights dead at once, everything else perfect</td><td>Band 1, Part 11 checklist item 5.</td></tr>
         <tr><td><code>analogWrite</code> on a pin with no <code>~</code></td><td>A fade that snaps instead</td><td>Band 2, Parts 2 and 8.</td></tr>
@@ -160,7 +166,7 @@
   <div class="parthead"><span class="tag">Before you begin</span><h2>Preparing to run it</h2></div>
   <div class="col stack">
     <ul class="plain">
-      <li><strong>Work through all six bands yourself as a learner</strong>, handing in the same four pieces of evidence. It is the cheapest quality control available and it produces your first set of worked examples. Band 5 especially: the <code>delay</code> lesson is far easier to teach once you have watched it fail on your own bench.</li>
+      <li><strong>Work through all nine bands yourself as a learner</strong>, handing in the same four pieces of evidence. It is the cheapest quality control available and it produces your first set of worked examples. Band 5 especially: the <code>delay</code> lesson is far easier to teach once you have watched it fail on your own bench.</li>
       <li><strong>Check the kits you actually bought.</strong> Band 3 needs an active buzzer, Band 5 needs a passive one, and Band 5 needs a full-size breadboard or two small ones. Every one of those has a documented fallback, but find out before a cohort starts, not during.</li>
       <li><strong>Budget consumables.</strong> LEDs and servos die, and jumper wires fail more often than anything else in the box, producing faults that look exactly like code bugs. Assume around 15% annual replacement.</li>
       <li><strong>Test the cable.</strong> Charge-only USB cables cost more first-week hours than any other single thing. Check every cable before it goes in a kit.</li>

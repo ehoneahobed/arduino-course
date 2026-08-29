@@ -1,0 +1,884 @@
+<!doctype html>
+<html lang="en" data-band="6">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Band 6: Things That Move · Arduino Ladder</title>
+  <meta name="description" content="A servo, a gate made of card, and the first problem that is not about code at all: a moving thing needs real power, and two power sources need one shared ground.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+  <link rel="stylesheet" href="../assets/course.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the lesson</a>
+<div class="topbar">
+  <a class="home" href="../index.html">Arduino Ladder <span>· Bozoma Innovation Hub</span></a>
+  <nav class="bandlinks" aria-label="Bands"><a href="../bands/band-0.html">0</a><a href="../bands/band-1.html">1</a><a href="../bands/band-2.html">2</a><a href="../bands/band-3.html">3</a><a href="../bands/band-4.html">4</a><a href="../bands/band-5.html">5</a><a href="../bands/band-6.html" aria-current="page">6</a><a href="../bands/band-7.html">7</a><a href="../bands/band-8.html">8</a></nav>
+</div>
+<div class="wrap" id="main">
+<nav aria-label="Sections">
+  <a href="#start">Start here</a>
+  <a href="#push">Think first</a>
+  <a href="#servo">What a servo is</a>
+  <a href="#build1">First movement</a>
+  <a href="#read">Read the code</a>
+  <a href="#knob">The knob drives it</a>
+  <a href="#jitter">Why it twitches</a>
+  <a href="#power">Power and ground</a>
+  <a href="#gate">Build the gate</a>
+  <a href="#closer">Look closer</a>
+  <a href="#motors">Motors</a>
+  <a href="#change">Change it</a>
+  <a href="#make">Make yours</a>
+  <a href="#check">Check yourself</a>
+  <a href="#recall">Say these out loud</a>
+  <a href="#problems">Problems</a>
+</nav>
+
+<header style="padding:3rem 0 1rem">
+  <p class="eyebrow">Bozoma Innovation Hub &nbsp;·&nbsp; Arduino Ladder &nbsp;·&nbsp; Band 6</p>
+  <h1 style="margin:.8rem 0">Things That Move</h1>
+  <p class="col sub" style="font-size:1.1em">Until now everything your board did was light or sound. Now it pushes something. The moment a program moves an object in the room, two new things become true, and neither of them is about code.</p>
+  <p class="col note" style="margin-top:.8rem">About 8 hours. Finish Bands 4 and 5 first. This band uses <code>map</code>, <code>millis</code> and your own functions as though you already know them, because you do.</p>
+</header>
+
+<section class="sketchbox">
+  <h2>Sketches for this band</h2>
+  <ul><li><a href="../sketches/b6_01_servo_sweep_given.ino">b6_01_servo_sweep_given.ino</a></li><li><a href="../sketches/b6_02_servo_knob.ino">b6_02_servo_knob.ino</a></li><li><a href="../sketches/b6_03_buggy_jitter.ino">b6_03_buggy_jitter.ino</a></li><li><a href="../sketches/b6_04_servo_gate_worked.ino">b6_04_servo_gate_worked.ino</a></li><li><a href="../sketches/b6_05_motor_driver.ino">b6_05_motor_driver.ino</a></li></ul>
+  <p>Click one to save it, or get every sketch at once from <a href="../downloads/arduino-ladder-sketches.zip" style="border:0;background:none;padding:0">the downloads page</a>. Each file opens with a plain-English header telling you what it does and how to wire it.</p>
+</section>
+
+
+<section class="part" id="start">
+  <div class="parthead"><span class="tag">Start here</span><h2>What changes when a program moves something</h2></div>
+  <div class="col stack">
+    <p>A light does not care. Ask it for half brightness and it gives you half brightness, instantly, every time, and it never gets tired or stuck.</p>
+    <p>A moving thing is different in two ways that will surprise you.</p>
+    <ul class="plain">
+      <li><strong>It takes time to get there.</strong> You tell it a position and it starts travelling. It arrives a moment later. Nothing in your code says so, and nothing warns you.</li>
+      <li><strong>It needs real power.</strong> A light draws a trickle. A motor pushing something draws far more than an Arduino pin can supply. Wire it the obvious way and the obvious way is wrong.</li>
+    </ul>
+
+    <h3 style="margin-top:.5rem">By the end you will be able to</h3>
+    <ul class="plain">
+      <li>Make a servo go to a position you choose, and say why it is a position and not a speed</li>
+      <li>Bring in code somebody else wrote, using a library, and read its documentation</li>
+      <li>Explain why a shivering reading makes a shivering arm, and stop it</li>
+      <li>Wire two power sources together correctly, and say what happens if you do not</li>
+      <li>Build a mechanism out of cardboard that responds to something happening in the room</li>
+    </ul>
+
+    <h3 style="margin-top:.6rem">What you need</h3>
+    <ul class="plain">
+      <li>Your board, USB cable and breadboard</li>
+      <li>An <strong>SG90 servo</strong>, the small blue one with three wires and a bag of white plastic arms</li>
+      <li>A potentiometer, one LED, one 220 ohm resistor, one push button</li>
+      <li>A battery pack, four AA cells, with two loose wires</li>
+      <li>Cardboard, scissors, tape, and a skewer or a straightened paper clip</li>
+      <li>About ten jumper wires</li>
+      <li><em>Optional:</em> a DC motor with an L293D chip, or a 28BYJ-48 stepper with a ULN2003 board</li>
+    </ul>
+    <div class="ifnot"><b>If you have no battery pack</b>You can do everything up to Part 7 on USB power alone. Part 8's gate will work too, as long as the arm is light card and it is not pushing against anything. What you will lose is the experience of the servo pulling the board&#8217;s voltage down until it resets, which is a useful thing to have felt once. If you can borrow four AA cells and a holder for one afternoon, borrow them.</div>
+    <div class="ifnot"><b>If you have no servo at all</b>Stop and get one before starting this band. There is no substitute in a normal kit, and the whole band is built on it. Bands 7 and 8 do not need it, so you can go on to Band 7 and come back.</div>
+  </div>
+</section>
+
+<section class="part" id="push">
+  <div class="parthead"><span class="tag">Part 1</span><h2>Think first: how hard is a push?</h2><span class="mins">15 min</span></div>
+  <div class="col stack">
+    <p>Before any wiring, spend ten minutes with your hands. This part has no board in it at all, and it is the reason the rest of the band makes sense.</p>
+
+    <div class="steps">
+      <div class="step"><div class="body">
+        <p><strong>Get a strip of card</strong> about as long as your hand and about two fingers wide. A piece of a cereal box or an exercise-book cover is ideal.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Pinch one end between your thumb and one finger</strong> so it sticks out sideways like a little gate. Now swing it up and down by turning your wrist.</p>
+        <div class="see"><b>You should see</b>It moves easily. Your wrist barely notices it.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Now put something on the far end.</strong> A coin, a rubber, a small stone. Swing it again.</p>
+        <div class="see"><b>You should see</b>It is noticeably harder, and it is hardest at the moment you start moving and at the moment you stop. Holding it still, halfway up, also takes effort. Notice that. <strong>Holding still is work too.</strong></div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Now hold the card still, halfway up, with the weight on it, for a full minute.</strong> Time it. Do not cheat.</p>
+        <div class="see"><b>You should see</b>Your fingers get tired, and the card starts to wobble even though you are trying to hold it still.</div>
+      </div></div>
+    </div>
+
+    <div class="callout">
+      <h5>Write these down</h5>
+      <ol class="num">
+        <li>Which was harder: moving the loaded card, or holding it still?</li>
+        <li>When your fingers got tired, did the card sag smoothly, or did it wobble?</li>
+        <li>If you made the card twice as long and kept the same weight on the end, would it get easier or harder? Try it and see rather than guessing.</li>
+      </ol>
+    </div>
+
+    <p>The servo you are about to use has exactly your problem. Holding a position is work, not rest. A long arm is much harder than a short one with the same weight on it. And when it runs short of power, it does not stop cleanly. <strong>It wobbles</strong>, exactly like your tired fingers.</p>
+    <p class="note">Keep this paper. In Part 7 your servo will wobble, and you will have two possible reasons for it rather than none.</p>
+  </div>
+</section>
+
+<section class="part" id="servo">
+  <div class="parthead"><span class="tag">Part 2</span><h2>What a servo is, and what it is not</h2><span class="mins">20 min</span></div>
+  <div class="col stack">
+    <p>Take the servo out of the box. It is a small plastic block with three wires coming out of one side and a ridged stub on top. There is a small bag of white plastic arms with it.</p>
+    <p>Those white arms are called <strong>horns</strong>. Push one onto the stub now, gently, so you can see which way it is pointing. Do not screw it down, and <strong>do not turn it with your fingers</strong>. The reason is at the bottom of this part.</p>
+
+    <figure>
+      <svg viewBox="0 0 640 400" role="img" aria-label="A small servo with its three wires named. The brown or black wire is ground, the red middle wire is power, and the orange or yellow wire is the signal that carries the angle.">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#C0503A"/></marker><marker id="ab" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#4A7FC8"/></marker><marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#3F8A55"/></marker></defs>
+<g fill="none" stroke="currentColor" stroke-width="1.6">
+  <rect x="150" y="150" width="150" height="120" rx="6"/>
+  <rect x="176" y="112" width="52" height="38" rx="4"/>
+  <circle cx="202" cy="112" r="15"/>
+  <line x1="202" y1="112" x2="202" y2="62"/>
+  <rect x="192" y="52" width="20" height="14" rx="3"/>
+  <line x1="150" y1="176" x2="126" y2="176"/><line x1="150" y1="244" x2="126" y2="244"/>
+  <circle cx="126" cy="176" r="5"/><circle cx="126" cy="244" r="5"/>
+</g>
+<g fill="none" stroke-width="2.6">
+  <path d="M300 190 C 350 190 360 196 400 196" stroke="currentColor"/>
+  <path d="M300 210 C 350 210 360 216 400 216" stroke="#C0503A"/>
+  <path d="M300 230 C 350 230 360 236 400 236" stroke="#A87A1E"/>
+</g>
+<g fill="none" stroke="currentColor" stroke-width="1.6">
+  <rect x="400" y="182" width="30" height="72" rx="3"/>
+  <line x1="410" y1="196" x2="424" y2="196"/><line x1="410" y1="216" x2="424" y2="216"/><line x1="410" y1="236" x2="424" y2="236"/>
+</g>
+<g fill="currentColor" font-size="13" font-family="Archivo, Arial, sans-serif">
+  <text x="445" y="200">Brown or black &#8212; <tspan font-weight="700">ground</tspan></text>
+  <text x="445" y="220">Red &#8212; <tspan font-weight="700">power</tspan></text>
+  <text x="445" y="240">Orange or yellow &#8212; <tspan font-weight="700">signal</tspan></text>
+  <text x="225" y="322" text-anchor="middle">The plug only fits one way round on the servo.</text>
+  <text x="225" y="342" text-anchor="middle">At the other end you place three wires yourself, so that is where mistakes live.</text>
+  <text x="202" y="42" text-anchor="middle">the horn, the arm that turns</text>
+</g>
+<g fill="currentColor" font-size="11" opacity="0.7" font-family="IBM Plex Mono, monospace">
+  <text x="118" y="180" text-anchor="end">screw hole</text>
+  <text x="118" y="248" text-anchor="end">screw hole</text>
+  <text x="415" y="272" text-anchor="middle">plug</text>
+</g>
+<text x="225" y="378" text-anchor="middle" fill="#C0503A" font-size="13" font-weight="700" font-family="Archivo, Arial, sans-serif">Red to 5V and brown to GND. Swap those two and you can damage the servo.</text>
+</svg>
+      <figcaption>The servo and its three wires. The plug fits the servo only one way round. At the other end you place three wires by hand, which is where mistakes happen.</figcaption>
+    </figure>
+
+    <div class="ifnot" style="margin-bottom:.4rem"><b>Get this one right before you plug anything in</b>The <strong>red</strong> wire is power and goes to 5V. The <strong>brown or black</strong> wire is ground and goes to GND. Swap those two and you can damage the servo permanently. Check twice. There is no undo.</div>
+
+    <h3 style="margin-top:.4rem">The idea that catches everybody</h3>
+    <p>A servo is <strong>not</strong> a motor you switch on and off. You do not tell it to spin. You tell it an <strong>angle</strong>, and it goes to that angle and holds there until you tell it a different one.</p>
+
+    <figure>
+      <svg viewBox="0 0 640 360" role="img" aria-label="A half circle showing the servo horn at three angles: 0 degrees pointing left, 90 degrees pointing straight up, and 180 degrees pointing right. The servo takes a position, not a speed.">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#C0503A"/></marker><marker id="ab" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#4A7FC8"/></marker><marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#3F8A55"/></marker></defs>
+<path d="M232 250 A 88 88 0 0 1 408 250" fill="none" stroke="currentColor" stroke-width="1.4" opacity="0.45"/>
+<line x1="220" y1="250" x2="420" y2="250" stroke="currentColor" stroke-width="1.4" opacity="0.45"/>
+<rect x="290" y="250" width="60" height="46" rx="4" fill="none" stroke="currentColor" stroke-width="1.6"/>
+<circle cx="320" cy="250" r="7" fill="none" stroke="currentColor" stroke-width="1.6"/>
+<line x1="320" y1="250" x2="232" y2="250" stroke="#C0503A" stroke-width="3"/><circle cx="232" cy="250" r="4" fill="#C0503A"/><text x="208" y="255" text-anchor="middle" fill="#C0503A" font-size="14" font-weight="700" font-family="Archivo, Arial, sans-serif">0</text><line x1="320" y1="250" x2="320" y2="162" stroke="#3F8A55" stroke-width="3"/><circle cx="320" cy="162" r="4" fill="#3F8A55"/><text x="320" y="143" text-anchor="middle" fill="#3F8A55" font-size="14" font-weight="700" font-family="Archivo, Arial, sans-serif">90</text><line x1="320" y1="250" x2="408" y2="250" stroke="#4A7FC8" stroke-width="3"/><circle cx="408" cy="250" r="4" fill="#4A7FC8"/><text x="432" y="255" text-anchor="middle" fill="#4A7FC8" font-size="14" font-weight="700" font-family="Archivo, Arial, sans-serif">180</text>
+<g fill="currentColor" font-size="13" font-family="Archivo, Arial, sans-serif">
+  <text x="320" y="330" text-anchor="middle">You tell it an <tspan font-weight="700">angle</tspan> and it goes there and holds. You never tell it how fast.</text>
+  <text x="320" y="60" text-anchor="middle">write(90) puts the horn straight up</text>
+</g>
+<g fill="currentColor" font-size="11" opacity="0.7" font-family="IBM Plex Mono, monospace">
+  <text x="320" y="288" text-anchor="middle">servo</text>
+</g>
+</svg>
+      <figcaption>Three angles. Zero puts the horn at one end of its travel, 180 at the other, 90 in the middle. There is no such thing as telling a servo to go fast or slow.</figcaption>
+    </figure>
+
+    <p>So a servo is a <strong>position machine</strong>, not a speed machine. To move it slowly, you send it a long list of angles, one degree apart, with a small wait between each. The slowness comes from you, not from it.</p>
+    <p>This is the single most useful sentence in the band, so read it twice: <strong>the servo has no idea it is moving slowly. It is going as fast as it can, to a target you keep changing.</strong></p>
+
+    <div class="words">
+      <h5>Words to know</h5>
+      <dl>
+        <dt>servo</dt><dd>A small motor with gears and a sensor inside, which goes to an angle you name and holds it.</dd>
+        <dt>horn</dt><dd>The white plastic arm you push onto the top of a servo. Kits come with several shapes.</dd>
+        <dt>angle</dt><dd>Where the horn should point, from 0 to 180. The unit is degrees.</dd>
+        <dt>library</dt><dd>Code somebody else wrote that you can use in your own sketch by naming it at the top.</dd>
+      </dl>
+    </div>
+
+    <div class="ifnot"><b>Do not force the horn round with your fingers</b>The gears inside are small plastic teeth and they strip. If the horn is pointing the wrong way, take it off the stub and put it back on in a different position. Never twist it while it is on.</div>
+  </div>
+</section>
+
+<section class="part" id="build1">
+  <div class="parthead"><span class="tag">Part 3</span><h2>Guess, then make it move</h2><span class="mins">30 min</span></div>
+  <div class="col stack">
+    <p>Here is the sketch you are about to run. Read it before you wire anything, and answer the four questions. Being wrong here is worth more than being right.</p>
+
+    <pre><code>#include &lt;Servo.h&gt;
+
+Servo gate;
+int servoPin = 9;
+
+void setup() {
+  gate.attach(servoPin);
+}
+
+void loop() {
+  for (int angle = 0; angle &lt;= 180; angle = angle + 1) {
+    gate.write(angle);
+    delay(15);
+  }
+
+  for (int angle = 180; angle &gt;= 0; angle = angle - 1) {
+    gate.write(angle);
+    delay(15);
+  }
+}</code></pre>
+
+    <div class="callout">
+      <h5>Guess before you run it</h5>
+      <ol class="num">
+        <li>How many times does <code>gate.write</code> run in one full trip out and back?</li>
+        <li>Roughly how long does one full trip take? You have everything you need to work it out.</li>
+        <li>What would happen if you changed both <code>15</code>s to <code>2</code>?</li>
+        <li>What would happen if you deleted both <code>delay</code> lines completely?</li>
+      </ol>
+      <p>Write your four answers down before you go on.</p>
+    </div>
+
+    <h3 style="margin-top:.6rem">Now wire it</h3>
+    <div class="ifnot" style="margin-bottom:.4rem"><b>Start from an empty board</b>Unplug the USB. Take everything from Band 5 off the breadboard and put it back in the box. For this part you need no breadboard at all: three wires go straight from the servo plug to the Arduino.</div>
+
+    <div class="steps">
+      <div class="step"><div class="body">
+        <p><strong>Take three jumper wires with a stiff pin at both ends.</strong> Look at the end of the servo's lead: it is a small plastic block with three <em>holes</em> in it, not pins. The Arduino's sockets are holes too. So you need a pin at each end, one for each.</p>
+        <div class="see"><b>You should see</b>Each wire's pin pushing firmly into one of the servo plug's three holes, and staying there when you let go.</div>
+        <div class="ifnot"><b>If some of your wires have a socket at one end</b>Those are for something else here. Set them aside and use the pin-at-both-ends kind. A socket will not grip anything at either end of this job.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Brown or black wire to GND</strong> on the Arduino. Any GND pin. There are three and they are all the same.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Red wire to 5V</strong> on the Arduino.</p>
+        <div class="ifnot"><b>Check this one twice</b>Red goes to the pin marked 5V. Not to VIN, not to 3V3. Look at the printing on the board, not at where you think it is.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Orange or yellow wire to pin 9.</strong></p>
+        <div class="see"><b>You should see</b>Three wires, each firm at both ends. Give each a gentle tug. Nothing should come away.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Push a horn onto the stub</strong> so it points somewhere you can see, then plug in the USB and upload <code>b6_01_servo_sweep_given.ino</code>.</p>
+        <div class="see"><b>You should see</b>The horn sweeps steadily from one end of its travel to the other, taking about three seconds each way, then comes back. It never stops. You will hear a soft whirr while it moves.</div>
+        <div class="ifnot"><b>If it twitches once and stops</b>The signal wire is not on pin 9, or it is in the wrong hole of the servo plug. Take the plug end off and look at which wire goes where.</div>
+        <div class="ifnot"><b>If it does nothing at all</b>Check the red and brown wires first. Then look at the small ON light on the Arduino: if it went out when you plugged the servo in, the servo is drawing more than the USB will give and the board has protected itself. Unplug, take the horn off, and try again with nothing attached to the horn.</div>
+        <div class="ifnot"><b>If it buzzes at the end of its travel and gets warm</b>Unplug it now. The horn is being asked to go past where it can physically reach, usually because it was pushed on at an odd angle. Take the horn off, run the sketch with no horn, watch which way the stub turns, and put the horn back on in a position that lets it swing freely.</div>
+      </div></div>
+    </div>
+
+    <details><summary>The answers to the four questions</summary><div class="inner">
+      <p><strong>1.</strong> 362 times. 181 angles going up, counting both 0 and 180, and 181 coming back.</p>
+      <p><strong>2.</strong> About five and a half seconds. 362 steps at 15 milliseconds each is 5430 milliseconds. Your stopwatch will say roughly that.</p>
+      <p><strong>3.</strong> It would sweep about seven times faster. It may also start to sound rough, because the servo is being given new targets faster than it can reach them.</p>
+      <p><strong>4.</strong> This is the interesting one. The <code>for</code> loop would run through all 181 angles in a few thousandths of a second. The servo cannot move that fast, so it would only ever see the last target. What you would actually see is the horn jumping between the two ends, or shivering somewhere in the middle, not a sweep. <strong>The waits are not decoration. They are what makes it a sweep.</strong></p>
+    </div></details>
+  </div>
+</section>
+
+<section class="part" id="read">
+  <div class="parthead"><span class="tag">Part 4</span><h2>Look closer: using somebody else's code</h2><span class="mins">30 min</span></div>
+  <div class="col stack">
+    <p>Three lines in that sketch are new, and all three are about the same idea.</p>
+
+    <h3>The line at the top</h3>
+    <pre><code>#include &lt;Servo.h&gt;</code></pre>
+    <p>This says: <em>before you read the rest of my sketch, go and fetch the file called Servo.h and read that first.</em> That file contains code somebody at Arduino wrote, tested, and gave away. It knows how to produce the exact signal a servo expects, which is fiddly and which you do not want to write.</p>
+    <p>A bundle of code like that is called a <strong>library</strong>. Take that line out and the word <code>Servo</code> means nothing, and the sketch will not compile.</p>
+
+    <div class="ifnot"><b>Where the file actually is</b>The Servo library comes with the Arduino software, so it is already on your computer and there is nothing to install. Other libraries you have to fetch yourself, using Tools, then Manage Libraries. You will do that in Band 7.</div>
+
+    <h3 style="margin-top:.6rem">The line that makes yours</h3>
+    <pre><code>Servo gate;</code></pre>
+    <p>This makes <strong>one servo of your own</strong> and calls it <code>gate</code>. The name is yours to choose. Call it <code>arm</code> or <code>lid</code> or <code>flap</code> if that describes your build better.</p>
+    <p>If you had two servos you would write two lines, with two names, and each would be steered separately.</p>
+
+    <h3 style="margin-top:.6rem">The two lines with a dot in them</h3>
+    <pre><code>gate.attach(servoPin);
+gate.write(angle);</code></pre>
+    <p>The dot means <em>belonging to</em>. Read <code>gate.write(90)</code> as &#8220;the write instruction <strong>belonging to gate</strong>, with the value 90&#8221;.</p>
+    <p>You have written <code>digitalWrite(7, HIGH)</code> many times, where the pin number is handed over every time. Here you told <code>gate</code> its pin <em>once</em>, in <code>attach</code>, and after that it remembers. Every later <code>gate.write</code> already knows which pin it is talking about.</p>
+    <p class="note">Think of <code>gate</code> as a thing that remembers its own pin. You told it once. Ask it to write and it already knows where to write to. You do not need a word for this yet. You need to be able to read the dot.</p>
+
+    <div class="callout">
+      <h5>Reading a library's instructions</h5>
+      <p>You will meet libraries you have never seen. The skill is not remembering them, it is looking them up. For any Arduino library the reference lives at <code>docs.arduino.cc</code> under Libraries, and every library lists the same four things:</p>
+      <ol class="num">
+        <li><strong>What to include</strong> at the top of your sketch.</li>
+        <li><strong>How to make one</strong>, the <code>Servo gate;</code> line.</li>
+        <li><strong>What instructions it has</strong>, and what values each one takes.</li>
+        <li><strong>Examples.</strong> Open File, then Examples, then Servo in the Arduino software. Those examples are on your computer already and they run.</li>
+      </ol>
+      <p>Servo has only a handful of instructions. Look them up now and write down what <code>read()</code> and <code>detach()</code> do. You will meet <code>detach()</code> at the end of Part 7, and use it in Part 11.</p>
+    </div>
+  </div>
+</section>
+
+<section class="part" id="knob">
+  <div class="parthead"><span class="tag">Part 5</span><h2>The knob drives the arm</h2><span class="mins">35 min</span></div>
+  <div class="col stack">
+    <p>A sweep is a demonstration. A sweep that answers to something in the room is a machine. The smallest step from one to the other is the potentiometer from Band 4.</p>
+
+    <div class="ifnot" style="margin-bottom:.4rem"><b>Before you start</b>USB unplugged. Every time.</div>
+
+    <div class="steps">
+      <div class="step"><div class="body">
+        <p><strong>Leave the servo exactly where it is</strong>, on GND, 5V and pin 9.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Put the potentiometer into the breadboard</strong> so its three legs land in <code>f5</code>, <code>f6</code> and <code>f7</code>. Press straight down on its body until it sits flat.</p>
+        <div class="see"><b>You should see</b>The knob standing up firmly, not rocking when you nudge it, with all three legs fully in.</div>
+        <div class="ifnot"><b>If the legs will not line up with three holes in a row</b>Some potentiometers have legs bent slightly outwards. Straighten them gently with your fingers until they are parallel, then try again.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Wire <code>j5</code> to the &#8722; rail</strong> and <strong><code>j7</code> to the + rail</strong>. These are the two outside legs, and either way round is fine: it only decides which way the knob turns.</p>
+        <p class="note">In this band, &#8220;the &#8722; rail&#8221; means the strip along the <strong>top</strong> edge, nearest row j. The + rail is the other strip up there. Pick both now and use only those two all band.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Wire <code>j6</code> to pin A0.</strong> That is the middle leg, and the middle leg is the one that carries the answer.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Wire the + rail to 5V and the &#8722; rail to GND.</strong> Both are needed. The knob is a divider and it has to have both ends.</p>
+        <div class="ifnot"><b>Check before you plug in</b>Follow the + rail wire with your finger and make sure it reaches 5V, then the &#8722; rail wire and make sure it reaches GND. If those two ever meet each other instead, you are joining 5V straight to ground, and that is the one wiring mistake that can damage the board.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Plug in, upload <code>b6_02_servo_knob.ino</code>, and open the serial monitor</strong> (Tools, then Serial Monitor, and check the box in the corner says 9600).</p>
+        <div class="see"><b>You should see</b>Two numbers streaming past, a reading from 0 to 1023 and an angle from 0 to 180. Turn the knob slowly and both change together. The horn follows your hand.</div>
+        <div class="ifnot"><b>If the angle jumps straight from 0 to 180 with nothing in between</b>Your middle wire is on an outside leg. The middle leg is the one that gives you everything in between.</div>
+        <div class="ifnot"><b>If the numbers drift on their own with your hand nowhere near</b>Check the + and &#8722; rail wires reach 5V and GND. A knob with only one end connected floats, exactly like the button pin in Band 3.</div>
+      </div></div>
+    </div>
+
+    <div class="callout">
+      <h5>Nothing here is new</h5>
+      <p><code>map(reading, 0, 1023, 0, 180)</code> is the same instruction you used in Band 4 to turn a knob reading into a brightness. The only difference is what is on the end of it. That is worth noticing: you have not learned a new idea, you have pointed an old one at a new thing.</p>
+    </div>
+  </div>
+</section>
+
+<section class="part" id="jitter">
+  <div class="parthead"><span class="tag">Part 6</span><h2>Now break it on purpose</h2><span class="mins">30 min</span></div>
+  <div class="col stack">
+    <p>Take your hand right off the knob. Do not touch the table. Listen.</p>
+    <div class="see"><b>What you will actually hear</b>A small buzzing, and if you look closely, the horn shivering by a degree or two. It never settles. Nothing is touching it and it will not hold still.</div>
+
+    <p>This is not a fault in your wiring, and swapping parts will not fix it. Upload <code>b6_03_buggy_jitter.ino</code>, which is the same sketch with the printing removed so you can hear it clearly, and let us find out why.</p>
+
+    <h3 style="margin-top:.5rem">Find the cause yourself</h3>
+    <div class="steps">
+      <div class="step"><div class="body">
+        <p><strong>Go back to <code>b6_02</code></strong>, which prints. Upload it, open the serial monitor, take your hand off the knob completely, and watch the numbers for twenty seconds without touching anything.</p>
+        <div class="see"><b>You should see</b>The reading does not sit still. It wanders by one or two, something like 511, 512, 511, 513, 512, over and over, with nothing touching the knob.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Now watch the angle column.</strong> Read twenty lines of it.</p>
+        <div class="see"><b>You should see</b>The angle changes too, usually by one degree, back and forth. 89, 90, 89, 90, 90.</div>
+      </div></div>
+    </div>
+
+    <div class="callout">
+      <h5>So who is at fault?</h5>
+      <ol class="num">
+        <li>Is the reading wrong?</li>
+        <li>Is <code>map</code> wrong?</li>
+        <li>Is the servo faulty?</li>
+        <li>What is the sketch doing with each of those readings?</li>
+      </ol>
+    </div>
+
+    <details><summary>The answer, after you have written yours</summary><div class="inner">
+      <p><strong>Nothing is wrong or faulty.</strong> A reading that wanders by one or two is normal and unavoidable. Every measurement of anything, anywhere, wobbles a little.</p>
+      <p>The fault is in the last question. <strong>The sketch acts on every single reading.</strong> Twenty times a second it says &#8220;go to 89&#8221;, then &#8220;go to 90&#8221;, then &#8220;go to 89&#8221;. The servo obeys. What you hear is a motor starting and stopping twenty times a second.</p>
+      <p>Say it in one sentence and keep the sentence: <strong>a shivering reading becomes a shivering arm, unless you decide it should not.</strong></p>
+      <p>This is a new class of problem. In every band so far, a wrong output meant a wrong input or a wrong line. Here the input is right, every line is right, and the result is still bad. The fault is in what you chose to do with a good reading.</p>
+    </div></details>
+
+    <h3 style="margin-top:.8rem">The fix has a name</h3>
+    <p>You have built this once before. In Band 4 you used two limits with a gap between them, so a light reading wobbling on the boundary could not flap the lamp on and off. Same idea, new place, and now it gets a name.</p>
+    <p>Only move when the new angle is <strong>far enough</strong> from where you already are to be worth moving for. That gap is called a <strong>deadband</strong>, and it looks like this:</p>
+    <pre><code>int deadband = 3;
+int lastAngle = -100;
+
+if (abs(wanted - lastAngle) &gt;= deadband) {
+  gate.write(wanted);
+  lastAngle = wanted;
+}</code></pre>
+    <p><code>abs</code> gives you the size of a number and throws away whether it was above or below. So <code>abs(89 - 90)</code> and <code>abs(91 - 90)</code> are both 1. You want to know how far apart they are, not which side.</p>
+    <p><code>lastAngle</code> starts at &#8722;100, which is not a real angle. That is on purpose. Any first reading is more than 3 away from &#8722;100, so the arm always moves once at the start. Without it, the arm would sit wherever it happened to be until you touched the knob.</p>
+
+    <div class="words">
+      <h5>Words to know</h5>
+      <dl>
+        <dt>deadband</dt><dd>A gap you decide on. A change smaller than the gap is ignored, so small wobbles do not become movement.</dd>
+        <dt><code>abs</code></dt><dd>Gives you the size of a number and throws away whether it was above or below zero. <code>abs(-3)</code> is 3.</dd>
+        <dt><code>detach</code></dt><dd>Stops the signal going to a servo. It goes limp, stops holding, and stops drawing much current.</dd>
+        <dt>driver board</dt><dd>A board that lets a small signal from a pin switch a large current from a battery. Needed for motors, not for servos.</dd>
+      </dl>
+    </div>
+
+    <div class="callout">
+      <h5>The cost, and there is always a cost</h5>
+      <p>With a deadband of 3, the arm can be up to 3 degrees away from where the knob says. It will not correct itself. You have traded a little accuracy for a lot of steadiness.</p>
+      <p>That is the right trade here and it is not always the right trade. Part 9 has you try three different values and listen to each. Think now about which you would choose for a gate, and which for a pointer on a dial, and why those are different answers.</p>
+    </div>
+  </div>
+</section>
+
+<section class="part" id="power">
+  <div class="parthead"><span class="tag">Part 7</span><h2>Power, and the wire everybody forgets</h2><span class="mins">35 min</span></div>
+  <div class="col stack">
+    <p>So far your servo has been running off the Arduino's own 5V pin, with nothing attached to the horn. That works. It stops working the moment the arm has a job to do.</p>
+
+    <h3 style="margin-top:.4rem">See it fail first</h3>
+    <div class="steps">
+      <div class="step"><div class="body">
+        <p><strong>Tape a strip of card to the horn</strong>, about the length of your hand. Put something small and heavy on the far end. A coin taped on is ideal. This is the loaded card from Part 1, now driven by the servo.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Upload <code>b6_01_servo_sweep_given.ino</code> again</strong> and watch the small ON light on the Arduino while the arm swings.</p>
+        <div class="see"><b>You should see</b>One of three things, and all three are the same problem: the arm moves in jerks rather than smoothly; or the ON light dips or flickers as the arm starts moving; or the board resets and the sweep starts again from the beginning.</div>
+        <div class="ifnot"><b>If none of that happens</b>Your load is too light to show it. Add more weight or a longer arm until something changes. It is worth seeing once.</div>
+      </div></div>
+    </div>
+
+    <p>Nothing is broken. The servo asked for more current than the Arduino's 5V pin can supply, and took what it could get. The voltage sagged for everyone on that pin, including the chip running your program.</p>
+    <p class="note">This is the same thing as your tired fingers in Part 1. Not enough force available, so the position is not held cleanly.</p>
+
+    <h3 style="margin-top:.6rem">The fix, and the trap inside the fix</h3>
+    <p>Give the servo its own power. A battery pack of four AA cells goes straight to the servo's red and brown wires, instead of the Arduino.</p>
+    <p>Do exactly that and nothing works at all. The servo twitches, or buzzes, or sits there. This is where almost everybody gets stuck, and the reason is one missing wire.</p>
+    <p><strong>You are going to build it wrong first, on purpose, and watch it fail.</strong> That takes two extra minutes and it is the difference between knowing this and having felt it.</p>
+
+    <figure>
+      <svg viewBox="0 0 660 430" role="img" aria-label="Two diagrams side by side. On the left, a battery pack and an Arduino with separate grounds: the servo jitters because the signal has nothing to be measured against. On the right, the two grounds are joined by a wire and the servo behaves.">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#C0503A"/></marker><marker id="ab" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#4A7FC8"/></marker><marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#3F8A55"/></marker></defs>
+<g font-size="13" fill="currentColor" font-family="Archivo, Arial, sans-serif" text-anchor="middle">
+  <text x="165" y="26" font-weight="700" fill="#C0503A">Grounds not joined</text>
+  <text x="495" y="26" font-weight="700" fill="#3F8A55">Grounds joined</text>
+</g>
+<g fill="none" stroke="currentColor" stroke-width="1.6">
+  <rect x="40" y="60" width="110" height="66" rx="5"/>
+  <rect x="40" y="200" width="110" height="66" rx="5"/>
+  <rect x="200" y="130" width="90" height="66" rx="5"/>
+  <rect x="370" y="60" width="110" height="66" rx="5"/>
+  <rect x="370" y="200" width="110" height="66" rx="5"/>
+  <rect x="530" y="130" width="90" height="66" rx="5"/>
+</g>
+<g font-size="11" fill="currentColor" font-family="IBM Plex Mono, monospace" text-anchor="middle">
+  <text x="95" y="98">Arduino</text><text x="95" y="238">battery pack</text><text x="245" y="168">servo</text>
+  <text x="425" y="98">Arduino</text><text x="425" y="238">battery pack</text><text x="575" y="168">servo</text>
+</g>
+<g fill="none" stroke-width="2.4">
+  <path d="M150 82 L200 82 L200 142" stroke="#A87A1E"/>
+  <path d="M150 226 L200 226 L200 184" stroke="#C0503A"/>
+  <path d="M480 82 L530 82 L530 142" stroke="#A87A1E"/>
+  <path d="M480 226 L530 226 L530 184" stroke="#C0503A"/>
+  <path d="M410 126 L410 163 L340 163 L340 232 L370 232" stroke="#3F8A55"/>
+</g>
+<g font-size="11" font-family="IBM Plex Mono, monospace">
+  <text x="176" y="76" fill="#A87A1E">signal</text>
+  <text x="176" y="248" fill="#C0503A">power</text>
+  <text x="506" y="76" fill="#A87A1E">signal</text>
+  <text x="506" y="248" fill="#C0503A">power</text>
+  <text x="336" y="152" fill="#3F8A55" text-anchor="end">GND to GND</text>
+</g>
+<g stroke="#C0503A" stroke-width="2.4" fill="none"><line x1="88" y1="150" x2="88" y2="196"/><line x1="72" y1="176" x2="104" y2="176"/></g>
+<circle cx="88" cy="173" r="26" fill="none" stroke="#C0503A" stroke-width="1.6" stroke-dasharray="5 4"/>
+<g font-size="12.5" fill="currentColor" font-family="Archivo, Arial, sans-serif">
+  <text x="30" y="316">The servo twitches, buzzes, or does</text>
+  <text x="30" y="334">nothing. Zero volts on the Arduino and</text>
+  <text x="30" y="352">zero volts on the battery are not the</text>
+  <text x="30" y="370">same zero, so the signal means nothing.</text>
+  <text x="360" y="316">One wire from an Arduino GND pin to the</text>
+  <text x="360" y="334">battery&#8217;s minus. Now both agree where</text>
+  <text x="360" y="352">zero is, so the signal has something to</text>
+  <text x="360" y="370">be measured against, and the servo obeys.</text>
+</g>
+<text x="330" y="412" text-anchor="middle" fill="currentColor" font-size="13" font-weight="700" font-family="Archivo, Arial, sans-serif">Two power sources still need one shared ground. This is the trap of the whole band.</text>
+</svg>
+      <figcaption>Two power sources with separate grounds, and the same two with their grounds joined. The signal wire carries a voltage, and a voltage is only ever a difference between two points. Without a shared ground there is no second point.</figcaption>
+    </figure>
+
+    <div class="callout">
+      <h5>Why the extra wire is needed, in plain words</h5>
+      <p>&#8220;Five volts&#8221; is not a thing a wire has on its own. It is always five volts <strong>compared with something</strong>, and that something is ground.</p>
+      <p>The Arduino's signal wire says &#8220;here is a pulse, five volts above <em>my</em> ground&#8221;. The servo hears it and asks &#8220;five volts above <em>my</em> ground?&#8221; If those two grounds are not joined, nobody has told the servo where the Arduino's zero is, and the answer is meaningless.</p>
+      <p>Joining the grounds does not power anything. It tells both halves what zero means, so the signal has something to be measured against.</p>
+    </div>
+
+    <div class="ifnot" style="margin-bottom:.4rem"><b>Before you start</b>USB unplugged, and the battery pack switched off or one cell taken out.</div>
+
+    <div class="ifnot" style="margin-bottom:.4rem"><b>Take the knob out first</b>Pull all three of the potentiometer's wires out completely, and take the potentiometer itself out of the board. You will put it back in Part 8, wired slightly differently.<br><br>This matters. In a moment the + rail becomes <strong>battery</strong> power, about six volts, and the knob's wire to A0 would carry that straight into the chip. An Arduino pin must never see more than five volts. Take it out now and you cannot make that mistake.</div>
+
+    <div class="steps">
+      <div class="step"><div class="body">
+        <p><strong>Take the servo's red wire off the Arduino's 5V pin</strong> and put it on the + rail of the breadboard. Take the brown wire off GND and put it on the &#8722; rail. Leave the orange signal wire on pin 9.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Battery pack red wire to the + rail. Battery pack black wire to the &#8722; rail.</strong></p>
+        <p>Now check it before any power goes anywhere. Put your finger on each of the four wires now on the rails in turn, follow it to both ends, and say out loud where it starts and where it finishes.</p>
+        <div class="see"><b>You should see</b>Two wires on the + rail, and both of them are red: one from the battery, one to the servo. Two wires on the &#8722; rail, and both are black or brown. Nothing else is on either rail at all.</div>
+        <div class="ifnot"><b>If a red and a black are on the same rail</b>Stop. Do not switch on. That joins the battery to itself through your board, which makes the cells hot very quickly. Take them both out and start this step again.</div>
+        <div class="ifnot"><b>Nothing else may touch the + rail now</b>The + rail is battery power, not Arduino power. Make sure the wire that used to run from + rail to the Arduino's 5V pin is <strong>out</strong>. Leaving it in joins the battery to the Arduino's supply, which is the one thing to avoid.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Now, deliberately, leave out the last wire.</strong> Plug in the USB, then switch the battery pack on, and upload the sweep sketch.</p>
+        <div class="see"><b>You should see</b>The arm does <em>not</em> sweep. It twitches, or buzzes quietly, or sits completely still. Everything is powered, the sketch is right, every wire in the table is in place, and nothing works.</div>
+        <p class="note">Look at it for a moment. This is exactly what you would see if the servo were broken, and it is the state that stops most people. Nothing is broken.</p>
+        <div class="ifnot"><b>If it sweeps anyway</b>Then something is still joining the two grounds: usually the servo's brown wire is still in an Arduino GND pin, or the &#8722; rail has a leftover wire to GND from an earlier build. Find it, take it out, and try again. It is worth seeing this fail once.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Now switch the battery off and add the wire that matters: one jumper from the &#8722; rail to any GND pin on the Arduino.</strong></p>
+        <p>This is the only wire joining the two halves. It carries no power. It carries an agreement.</p>
+        <div class="see"><b>You should see</b>Exactly two wires leaving the Arduino apart from the USB cable: the signal on pin 9, and this ground wire. Nothing on 5V at all.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Switch the battery back on.</strong> Nothing else has changed. One wire.</p>
+        <div class="see"><b>You should see</b>The loaded arm sweeps smoothly, the ON light stays steady, and the board does not reset. It will also be noticeably stronger: try gently resisting the arm with a finger and feel the difference.</div>
+        <div class="ifnot"><b>If it twitches or buzzes and goes nowhere</b>The ground wire between the &#8722; rail and the Arduino is missing, or one of its ends is not pushed in. This is the fault nine times out of ten. Check that one wire before you check anything else.</div>
+        <div class="ifnot"><b>If nothing happens at all</b>Check the battery pack is switched on and the cells are the right way round. Then check the servo's red wire really is in the + rail and not the &#8722; rail.</div>
+        <div class="ifnot"><b>If the servo gets hot</b>Switch off immediately. Red and brown are the wrong way round. Fix that before switching on again.</div>
+      </div></div>
+    </div>
+
+    <div class="callout">
+      <h5>The rule, worth writing on the wall</h5>
+      <p><strong>Two power sources, one shared ground.</strong> Always. Whether it is a servo, a motor, a light strip or another board entirely. If two things have to understand each other's signals, they must first agree where zero is.</p>
+      <p>You will meet this rule again every time you add anything with its own power for the rest of your life in electronics.</p>
+    </div>
+
+    <div class="ifnot"><b>One more instruction worth knowing</b><code>gate.detach()</code> stops the signal going out, and the servo goes limp and stops holding. It also stops drawing much current. If your build only needs to move now and then, <code>attach</code>, move, wait for it to arrive, then <code>detach</code>, and your batteries will last many times longer. It also stops the buzzing entirely while it is detached.</div>
+  </div>
+</section>
+
+<section class="part" id="gate">
+  <div class="parthead"><span class="tag">Part 8</span><h2>Build the gate</h2><span class="mins">60 min</span></div>
+  <div class="col stack">
+    <p>Now a whole device. A cardboard gate that sits where the knob puts it. Press the button and it opens all the way, then closes again three seconds later. A light shows whether it is open.</p>
+    <p>Nothing in it stops for long. The only wait anywhere is the 20 thousandths of a second that settles the button, which is the debounce from Band 3. You can turn the knob while it is closing, and the button is noticed the instant you press it.</p>
+
+    <h3 style="margin-top:.4rem">The pin plan</h3>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Part</th><th>Pin</th><th>Holes</th><th>Wiring</th></tr></thead>
+        <tbody>
+          <tr><td>Servo signal</td><td>9</td><td>&mdash;</td><td>Orange wire straight to pin 9</td></tr>
+          <tr><td>Servo power</td><td>&mdash;</td><td>&mdash;</td><td>Red to + rail, brown to &#8722; rail</td></tr>
+          <tr><td>Battery</td><td>&mdash;</td><td>&mdash;</td><td>Red to + rail, black to &#8722; rail</td></tr>
+          <tr><td>Ground link</td><td>GND</td><td>&mdash;</td><td>One wire, &#8722; rail to an Arduino GND pin</td></tr>
+          <tr><td>Knob</td><td>A0</td><td>legs in <code>f5</code>, <code>f6</code>, <code>f7</code></td><td>Wire <code>j5</code> to &#8722; rail; <code>j6</code> to A0; <code>j7</code> <strong>straight to the Arduino&#8217;s 5V pin</strong>, not to the + rail</td></tr>
+          <tr><td>Button</td><td>2</td><td>legs in <code>e19</code>, <code>e21</code>, <code>f19</code>, <code>f21</code></td><td>Wire <code>j19</code> to pin 2; wire <code>a21</code> to &#8722; rail</td></tr>
+          <tr><td>Light</td><td>7</td><td>long <code>b3</code>, short <code>b4</code></td><td>Resistor <code>a3</code> to <code>a1</code>; wire <code>b1</code> to pin 7; wire <code>a4</code> to &#8722; rail</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">The light's pin wire goes in <code>b1</code>, not <code>a1</code>. The resistor leg is already in <code>a1</code>, and <strong>a hole takes one leg only</strong>. The five holes in a column are joined underneath, so <code>b1</code> reaches the resistor perfectly well.</p>
+
+    <div class="ifnot" style="margin-bottom:.4rem"><b>Never put more than five volts on an Arduino pin</b>Look at the knob's row in that table again, because this is the one thing in Band 6 that can quietly damage your board.<br><br>The + rail now carries about <strong>six volts</strong> from four AA cells. The knob's middle leg goes to pin A0. Put the knob's end leg on the + rail and A0 sees up to six volts, and the chip is only built for five. It may work for a while and it may not, and you will not be told which.<br><br>So the knob's <code>j7</code> wire runs <strong>straight to the Arduino&#8217;s own 5V pin</strong>, on its own, and never to the + rail. Nothing on this breadboard except the servo and the battery touches the + rail.</div>
+
+    <div class="ifnot" style="margin-bottom:.4rem"><b>Before you start</b>USB unplugged and battery switched off.</div>
+
+    <h3 style="margin-top:.4rem">Build it in stages and test each one</h3>
+    <div class="steps">
+      <div class="step"><div class="body">
+        <p><strong>Stage one: the light.</strong> Wire it as in the table, then test it with <code>b0_01_blink_given.ino</code> from Band 0. That sketch has the number <code>13</code> in it three times. Change all three to <code>7</code>, then upload.</p>
+        <div class="see"><b>You should see</b>The light blinking on and off about once a second.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Stage two: the button.</strong> Seat it with its body over the middle channel and all four legs down, then test it with <code>b3_02_serial_watch.ino</code> from Band 3. Near the top it says <code>int buttonPin = 2;</code>, which is already right. Upload and open the serial monitor.</p>
+        <div class="see"><b>You should see</b>A steady stream of <code>1</code> while you are not touching it, changing to <code>0</code> for exactly as long as you hold it down.</div>
+        <div class="ifnot"><b>If it reads 0 all the time</b>The two wires are on a joined pair of legs rather than a diagonal. Move one wire so that the two end up <strong>diagonal</strong>: one in the top half of the board, one in the bottom half, and in different columns.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Stage three: the knob.</strong> Test it with <code>b6_02_servo_knob.ino</code>, which you already have.</p>
+        <div class="see"><b>You should see</b>The reading changing smoothly across the whole range as you turn.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Now make the arm out of card.</strong> Cut a strip about the length of your hand. Tape one end firmly to a horn and push the horn onto the servo. Then tape or glue the servo body down to something heavy, so it cannot walk about when the arm swings.</p>
+        <div class="see"><b>You should see</b>The arm swinging freely through its whole travel without hitting anything, and the servo body staying put when it moves.</div>
+        <div class="ifnot"><b>If the servo walks across the table</b>It is not held down. Tape it to a block of wood, a book, or the edge of the table itself. A mechanism that moves its own base is a mechanism that will not repeat.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Upload <code>b6_04_servo_gate_worked.ino</code>.</strong> Switch the battery on.</p>
+        <div class="see"><b>You should see</b>The arm sitting wherever the knob puts it, and holding <em>still</em>. Press the button and it swings all the way open and the light comes on. Three seconds later it closes back to where the knob says and the light goes out. Turn the knob while it is open: nothing happens until it closes, and then it goes to the new position.</div>
+        <p class="note">The knob only covers 0 to 120 degrees here, not the full 180. That is the line <code>knobMax</code> in the sketch, and it is on purpose: it keeps the closed positions well clear of the 180 the button opens to, so open always looks obviously different from closed. Change <code>knobMax</code> if your gate needs a different range.</p>
+        <div class="ifnot"><b>If it opens but never closes</b>The button is being read as held down. Test it again with the serial watch sketch from stage two.</div>
+        <div class="ifnot"><b>If it still buzzes when nothing is touching it</b>Increase <code>deadband</code> from 3 to 5, upload, and listen again. Different knobs are noisier than others.</div>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<section class="part" id="closer">
+  <div class="parthead"><span class="tag">Part 9</span><h2>Look closer</h2><span class="mins">35 min</span></div>
+  <div class="col stack">
+    <h3>a. Read <code>loop</code> first</h3>
+    <p>Open <code>b6_04</code> and go straight to the bottom. The whole of <code>loop</code> is this:</p>
+    <pre><code>void loop() {
+  checkButton();
+  moveGate();
+  showState();
+}</code></pre>
+    <p>Three lines, and you can say what the device does from reading them. That is not an accident and it is not decoration. It is the reason the sketch is easy to change.</p>
+    <p>Compare it with the alternative, where all of that is typed out in one long <code>loop</code>. Same behaviour, and you would have to read forty lines to find out what it is for.</p>
+
+    <h3 style="margin-top:.8rem">b. Fill this in by hand</h3>
+    <p>Assume <code>deadband</code> is 3 and <code>lastAngle</code> is currently 90. For each new wanted angle in order, say whether the servo moves and what <code>lastAngle</code> becomes.</p>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>wanted</th><th>abs(wanted &#8722; lastAngle)</th><th>Moves?</th><th>lastAngle after</th></tr></thead>
+        <tbody>
+          <tr><td>91</td><td></td><td></td><td></td></tr>
+          <tr><td>92</td><td></td><td></td><td></td></tr>
+          <tr><td>93</td><td></td><td></td><td></td></tr>
+          <tr><td>94</td><td></td><td></td><td></td></tr>
+          <tr><td>95</td><td></td><td></td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <details><summary>Answer, after you have filled it in</summary><div class="inner">
+      <p>91: gap 1, no move, stays 90. 92: gap 2, no move, stays 90. <strong>93: gap 3, moves, becomes 93.</strong> 94: gap 1, no move, stays 93. 95: gap 2, no move, stays 93.</p>
+      <p>Notice what that means. Turning the knob slowly does not give you a slow smooth movement. It gives you a movement every third degree. The arm steps rather than glides.</p>
+      <p>That is the cost of the deadband, and it is exactly the accuracy you traded away for steadiness. There is no setting that gives you both.</p>
+    </div></details>
+
+    <h3 style="margin-top:.8rem">c. Break it on purpose</h3>
+    <p>In your copy of <code>b6_04</code>, change <code>int deadband = 3;</code> to <code>int deadband = 0;</code>. Predict what will happen, then upload.</p>
+    <details><summary>Answer</summary><div class="inner">
+      <p>Every reading now passes the test, because any gap is at least 0. You are back to <code>b6_03</code> and the buzzing returns.</p>
+      <p>Worth seeing, because it proves the deadband is the thing doing the work, and not some other change you made at the same time.</p>
+      <p>Now try <strong>1</strong>, then <strong>3</strong>, then <strong>10</strong>, listening to each one and watching how closely the arm follows your hand.</p>
+      <p>At 1 it is almost as noisy as 0. At 3 it is quiet and follows well. At 10 it is completely silent and lands noticeably away from where you pointed.</p>
+      <p>Then try 30. The arm becomes almost useless: it only moves when you swing the knob a long way. Both extremes are bad, which is why the middle is a choice you make rather than a rule you follow. Write down which value you would pick for a gate and which for a pointer on a dial.</p>
+    </div></details>
+
+    <h3 style="margin-top:.8rem">d. The line that is easy to miss</h3>
+    <p>Inside <code>moveGate</code>, in the branch where the gate is <em>not</em> open, there is a line that says <code>openUntil = 0;</code>. Take it out, upload, and see what happens.</p>
+    <details><summary>Answer</summary><div class="inner">
+      <p>The gate closes on time, but the light never goes out. <code>showState</code> asks whether <code>openUntil</code> is above zero, and it still is. It holds a moment in the past, but a moment in the past is not zero.</p>
+      <p>This is a small bug of a very common kind. Two pieces of code disagreed about what a value meant. <code>moveGate</code> treated a past time as closed; <code>showState</code> treated any non-zero as open. Neither is wrong on its own.</p>
+      <p><strong>The lesson is not &#8220;remember that line&#8221;.</strong> It is that when one name means two things to two readers, one of them will be wrong. If you had used a separate <code>bool isOpen</code>, this bug could not have existed.</p>
+    </div></details>
+  </div>
+</section>
+
+<section class="part" id="motors">
+  <div class="parthead"><span class="tag">Part 10</span><h2>The other kinds of moving thing</h2><span class="mins">30 min</span></div>
+  <div class="col stack">
+    <p>This part is <strong>optional</strong>. Skip it if you have no motor and no driver board. Nothing later depends on it.</p>
+
+    <h3 style="margin-top:.4rem">Three kinds, and what each is for</h3>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Kind</th><th>What you tell it</th><th>Good for</th><th>Bad at</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Servo</strong></td><td>An angle, 0 to 180</td><td>Arms, gates, lids, pointers, anything that goes to a place and holds</td><td>Going round and round. Most cannot.</td></tr>
+          <tr><td><strong>DC motor</strong></td><td>On or off, and how fast</td><td>Wheels, fans, pumps. Anything that just needs to spin.</td><td>Stopping in a chosen place. It has no idea where it is.</td></tr>
+          <tr><td><strong>Stepper</strong></td><td>A number of steps</td><td>Turning an exact amount, over and over, all the way round</td><td>Speed, and it draws current even standing still.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 style="margin-top:.6rem">Why a motor cannot hang off a pin</h3>
+    <p>An Arduino pin can supply about twenty thousandths of an amp safely. A small DC motor wants ten to twenty times that at the moment it starts turning.</p>
+    <p>Connect one straight to a pin and you are not running a motor, you are damaging a chip. It may even appear to work for a while, which is worse, because you will not know when it stopped being fine.</p>
+    <p>A <strong>driver board</strong> solves it. Think of it as a switch that your pin operates and the battery powers. The small current gives the order. The big current does the work. The two never meet.</p>
+    <p class="note">This is the same shape as the ground rule from Part 7. Signal and power are different jobs, and the mistakes come from treating them as one.</p>
+
+    <div class="callout">
+      <h5>If you have an L293D and a DC motor</h5>
+      <p><code>b6_05_motor_driver.ino</code> has the full wiring in its header and runs the motor forwards, stops, backwards, stops. Read the header before you wire anything.</p>
+      <p>The idea inside is small. Two pins decide <em>direction</em>, by which of them is HIGH. A third pin, a <code>~</code> one, decides <em>speed</em> with <code>analogWrite</code>, exactly like brightness in Band 2.</p>
+    </div>
+    <div class="callout">
+      <h5>If you have a 28BYJ-48 stepper and a ULN2003 board</h5>
+      <p>The Stepper library comes with the Arduino software. Open File, then Examples, then Stepper, then <code>stepper_oneRevolution</code>. Set <code>stepsPerRevolution</code> to 2048 and wire the ULN2003's IN1 to IN4 to pins 8, 10, 9 and 11 in that order. The crossed order is not a mistake; it is the order the coils are in.</p>
+      <p>Your job here is to make the example run. Then write one sentence in your build log saying what a stepper gives you that a servo does not.</p>
+    </div>
+  </div>
+</section>
+
+<section class="part" id="change">
+  <div class="parthead"><span class="tag">Part 11</span><h2>Change it</h2><span class="mins">45 min</span></div>
+  <div class="col stack">
+    <p>Work on a copy of <code>b6_04_servo_gate_worked.ino</code>.</p>
+    <dl class="tier">
+      <dt>Bronze</dt><dd>Make the gate close <strong>slowly</strong> instead of snapping shut, over about a second, while the button still responds instantly during the whole close. You will need a name holding the angle it is travelling towards and a <code>millis</code> check that moves it one degree at a time.</dd>
+      <dt>Silver</dt><dd>Replace the knob with the light sensor from Band 4, so the gate closes as the room darkens. Then find your two thresholds by measuring, exactly as you did in Band 4, and write them in your log. Use a different number for opening and closing, so a reading that wobbles on the boundary does not flap the gate.</dd>
+      <dt>Gold</dt><dd>Make the servo <code>detach()</code> whenever it has been still for two seconds, and <code>attach()</code> again the moment it needs to move. Then measure the difference: run the gate on batteries for ten minutes with and without it, and say what changed. This is hard for an interesting reason, and finding that reason is the task.</dd>
+    </dl>
+    <div class="ifnot"><b>The interesting reason, if you get stuck on Gold</b>After <code>attach()</code> the servo has no idea where it is. It jumps to whatever angle you write first. So you must write the angle it was already at, before you write the new one, or the arm will snap across and back every time it wakes up.</div>
+  </div>
+</section>
+
+<section class="part" id="make">
+  <div class="parthead"><span class="tag">Make</span><h2>Make: a mechanism that answers to the room</h2><span class="mins">120 min</span></div>
+  <div class="col stack">
+    <div class="brief">
+      <h5>What to build</h5>
+      <p>Something made of cardboard that <strong>moves in response to something happening</strong>. A person watching must be able to tell what it is reacting to, without being told. Pick one, or bring your own:</p>
+      <ul class="plain">
+        <li>A physical gauge: a needle on a card dial that points at how bright, how near or how hot it is right now</li>
+        <li>A sorting gate: a chute that swings one way or the other depending on a sensor</li>
+        <li>A feeding hatch that opens for a fixed time on a button and closes itself</li>
+        <li>A signal arm for a model level crossing, with the lights from Band 1</li>
+        <li>A hand that waves when somebody comes near, using the knob for now and the distance sensor after Band 7</li>
+      </ul>
+      <h5 style="margin-top:.3rem">It is finished when all of these are true</h5>
+      <ul class="plain">
+        <li>It moves because of something in the room, not because of a timer</li>
+        <li>It holds still when it should be still, with no buzzing</li>
+        <li>The servo has its own power and one shared ground wire</li>
+        <li>The mechanism is fixed down and repeats the same movement every time</li>
+        <li>Somebody watching can say what it is reacting to, without you telling them. If you are working alone, this counts as passed when you leave it running somewhere you will pass tomorrow, come back to it cold, watch it for thirty seconds, and can still say what it is reacting to.</li>
+      </ul>
+    </div>
+
+    <h3>The test that matters most in this band</h3>
+    <p>Hand it to somebody, say nothing at all, and watch. Do not explain. Do not point.</p>
+    <p>Write down how long it takes them to work out what makes it move, and what they tried first. If they never work it out, that is the finding, and it is a finding about your build rather than about them.</p>
+    <div class="ifnot"><b>If you are doing this course alone</b>Leave it running somewhere you will pass it tomorrow, then come back and look at it cold, as though you had never seen it. Write down what you can tell about it from watching for thirty seconds. That is most of what a stranger would have got.</div>
+
+    <h3 style="margin-top:.8rem">Show your work</h3>
+    <p>Post a video of the mechanism reacting to something real, a photo of the wiring showing the ground link clearly, and your build log. Then look at one other person's mechanism and tell them one thing a stranger would misunderstand about it.</p>
+    <div class="ifnot"><b>If you are doing this course alone</b>There may be nobody to post to and nobody else's work to look at. That is fine, and it does not let you off this part. Do it this way instead: save the photos and the video into a folder named for this band, write the same notes into your build log, and then be your own second reader. Come back to your own sketch the next day, read it cold, and write down the one thing you would do differently now. That is the whole value of looking at somebody else's work, and you can get most of it from your own.</div>
+  </div>
+</section>
+
+<section class="part" id="check">
+  <div class="parthead"><span class="tag">Part 12</span><h2>Check yourself</h2><span class="mins">20 min</span></div>
+  <div class="col stack">
+    <p>Code you have not seen. Answer from reading only. Do not upload it.</p>
+    <pre><code>#include &lt;Servo.h&gt;
+
+Servo arm;
+
+int armPin = 9;
+int knobPin = A0;
+int lastAngle = 0;
+int deadband = 4;
+
+void setup() {
+  arm.attach(armPin);
+  Serial.begin(9600);
+}
+
+void loop() {
+  int reading = analogRead(knobPin);
+  int wanted = map(reading, 0, 1023, 0, 180);
+
+  if (wanted - lastAngle &gt;= deadband) {
+    arm.write(wanted);
+    lastAngle = wanted;
+  }
+
+  delay(20);
+}</code></pre>
+    <ol class="num">
+      <li>The knob is turned slowly all the way from one end to the other. Does the arm follow it the whole way?</li>
+      <li>Now the knob is turned slowly back again, from 180 towards 0. What does the arm do? Explain your answer using the line with <code>deadband</code> in it.</li>
+      <li><code>lastAngle</code> starts at 0 here rather than at &#8722;100. Give one situation where that makes a difference you could see.</li>
+      <li>The board is switched on with the knob already at the far end. The arm is physically sitting at 40 degrees. What happens in the first second?</li>
+      <li>Somebody removes the <code>delay(20)</code> to make it more responsive. What actually happens to the arm, and why?</li>
+      <li>The servo is powered from the Arduino&#8217;s 5V pin and has a long, heavy arm on it. The sketch is exactly as above. Name two different things you might see, and say which line of code is responsible for each.</li>
+    </ol>
+    <details><summary>Answers</summary><div class="inner">
+      <p><strong>1.</strong> Yes, roughly. Going up, <code>wanted</code> keeps getting bigger than <code>lastAngle</code>, so every four degrees the test is true and the arm steps forward.</p>
+      <p><strong>2.</strong> <strong>The arm does not move at all.</strong> Coming back down, <code>wanted</code> is smaller than <code>lastAngle</code>, so <code>wanted - lastAngle</code> is negative, and a negative number is never greater than 4. The missing <code>abs</code> means this arm can only ever go one way. <em>This is the question that matters most in this band. A deadband has to measure how far apart two numbers are, not which is bigger.</em></p>
+      <p><strong>3.</strong> If the knob is near 0 when the board starts, <code>wanted</code> is about 0 and <code>lastAngle</code> is already 0, so the test fails and the arm is never written to at all. It will sit wherever it physically happens to be until the knob is turned up by four degrees. Starting at &#8722;100 guarantees one write straight away.</p>
+      <p><strong>4.</strong> <code>wanted</code> is about 180 and <code>lastAngle</code> is 0, so the test passes on the very first round and the arm snaps from 40 to 180 in one movement, as fast as it can. That is normal for a servo: it does not know where it is until you first tell it where to be.</p>
+      <p><strong>5.</strong> <strong>Almost nothing changes,</strong> and that is the surprise. The knob is read thousands of times a second instead of fifty, but the deadband still says no unless the wanted angle is a full four degrees past the last one. Four degrees is a long way: the wobble you saw in Part 6 was about one. So with a still knob nothing is written at any speed, and with a turning knob the arm still steps once every four degrees, just as before.</p><p>Reading faster does not make a wobbling reading truer, and it does not get past a deadband. What the <code>delay</code> was buying here was almost nothing, and the thing actually controlling the movement is the <code>if</code>.</p>
+      <p><strong>6.</strong> Two answers, and they come from completely different places.</p><p><strong>Jerky movement, or the ON light dipping, or the board resetting</strong> is <strong>the wiring</strong>. A loaded servo draws more than the Arduino's 5V pin can supply. No line of code causes it and no line of code can fix it. The answer is a battery and a shared ground.</p><p><strong>The arm following the knob up but refusing to come back down</strong> is <strong>the code</strong>, and it is question 2 again. Nothing to do with the weight or the power at all.</p><p>Telling those two apart, quickly, is most of what Band 6 was for. When something moves badly, ask first whether it is short of power or short of instructions, because the two look similar and nothing you do to one helps the other.</p>
+    </div></details>
+  </div>
+</section>
+
+<section class="part" id="recall">
+  <div class="parthead"><span class="tag">Part 13</span><h2>Say these out loud</h2></div>
+  <div class="col stack">
+    <p>Part 12 was the real test. This is a warm-up for it, and a list to come back to. Say each of these out loud, to somebody or to yourself, without looking anything up.</p>
+    <ul class="plain">
+      <li>Say why <code>gate.write(90)</code> is a position and not a speed, and what makes a sweep slow</li>
+      <li>Name the three servo wires and say which two must never be swapped</li>
+      <li>Explain, to somebody who has not done this band, why an arm shivers when nothing is touching the knob</li>
+      <li>Say what a deadband costs you as well as what it buys you</li>
+      <li>Draw the ground link between a battery pack and an Arduino, and say what happens without it</li>
+      <li>Say why a DC motor needs a driver board and a servo does not <em>(only if you did Part 10)</em></li>
+    </ul>
+    <div class="callout">
+      <h5>The one sentence from this band</h5>
+      <p>A good reading does not have to be acted on. Deciding <em>when</em> to act is as much a part of the job as measuring.</p>
+      <p>That sentence is what separates Band 6 from Band 4. In Band 4 you learned to measure. Here you learned that measuring more often does not make a device better, and sometimes makes it worse.</p>
+    </div>
+  </div>
+  <div class="col stack" style="margin-top:1.2rem">
+    <div class="callout">
+      <h5>Still stuck after 30 minutes?</h5>
+      <p>Photograph the whole board from above in good light, so the ground link between the &#8722; rail and the Arduino is visible. Post that, your sketch, and one sentence on what you expected. In this band, say whether the servo is on USB power or battery power. That one detail answers most questions on its own.</p>
+      <div class="ifnot"><b>If there is nobody to send it to</b>Write the three things down anyway, in your build log: what you expected, what happened, and what you have already tried. Putting a problem into words solves a surprising number of them on its own. Then work down the problems table at the bottom of this page one more time, slowly. If it is still stuck, leave it until tomorrow and come back fresh. Do not sit and stare at it.</div>
+    </div>
+  </div>
+</section>
+
+<section class="part" id="problems">
+  <div class="parthead"><span class="tag">Problems</span><h2>When something goes wrong</h2></div>
+  <div class="col stack">
+    <div class="scroll">
+      <table>
+        <thead><tr><th>What you see</th><th>What it usually is</th><th>What to do</th></tr></thead>
+        <tbody>
+          <tr><td>Servo twitches and does nothing else</td><td>No shared ground</td><td>One wire from the &#8722; rail to an Arduino GND pin. See Part 7.</td></tr>
+          <tr><td>Servo buzzes with nothing touching it</td><td>No deadband, or too small a one</td><td>See Part 6. Raise <code>deadband</code> to 5 and listen again.</td></tr>
+          <tr><td>Board resets when the arm starts moving</td><td>Servo on the Arduino's 5V pin, under load</td><td>Give it its own battery. See Part 7.</td></tr>
+          <tr><td>Servo gets hot</td><td>Red and brown swapped, or the horn is jammed</td><td>Switch off at once. Check the two wires, then check the arm swings freely.</td></tr>
+          <tr><td>Arm jumps across when the sketch starts</td><td>Normal</td><td>The servo does not know where it is until you first write to it. Write the resting angle in <code>setup</code>.</td></tr>
+          <tr><td>Arm will only go part of the way</td><td>The horn was pushed on at an angle</td><td>Take the horn off, run the sweep with no horn, then refit it so its travel covers what you need.</td></tr>
+          <tr><td>Sketch will not compile, <code>Servo</code> not declared</td><td>Missing <code>#include &lt;Servo.h&gt;</code></td><td>Add it as the very first line.</td></tr>
+          <tr><td>Servo moves but the knob does nothing</td><td>Middle leg not on A0</td><td>The middle leg is the one that carries the answer. See Part 5.</td></tr>
+          <tr><td>Everything worked, then stopped after adding the battery</td><td>The + rail still runs to the Arduino's 5V pin</td><td>Take that wire out. The + rail is battery power now.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Done</span><h2>What you know now</h2></div>
+  <div class="col stack">
+    <p>Before this band, everything your programs did stayed inside the board or came out as light and sound. Now they push things, and that turned out to be a different kind of problem.</p>
+    <p>The code part was small. <code>attach</code>, <code>write</code>, and one <code>if</code> holding a deadband. Almost everything that went wrong in this band was electrical, or was a decision about when to act rather than how to act.</p>
+    <p>That is the shape of the rest of your life in this. The programs stop being the hard part surprisingly early.</p>
+
+    <h3 style="margin-top:.8rem">Before you move on, make sure you have</h3>
+    <ul class="plain">
+      <li>A photo of your mechanism, and a video of it reacting to something</li>
+      <li>A photo of the wiring where the ground link between the &#8722; rail and the Arduino is clearly visible</li>
+      <li>Your completed deadband table from Part 9b</li>
+      <li>Your notes from the loaded-card activity in Part 1</li>
+      <li>The three deadband values you tried in Part 9c, and which you would choose for a gate and which for a dial</li>
+      <li>Your build log for this band</li>
+      <li>Five or six correct answers in Part 12, including question 2</li>
+    </ul>
+    <p style="margin-top:.6rem"><strong>Next is Band 7: Distance and Display.</strong> The board gets a new sense, measuring how far away things are with sound you cannot hear, and it gets a screen of its own so it no longer needs a computer to tell you anything.</p>
+  </div>
+</section>
+
+
+<nav class="pager" aria-label="Bands">
+<a href="band-5.html"><span class="dir">Previous</span><span class="name">Band 5: Simon Says</span></a>
+<a class="next" href="band-7.html"><span class="dir">Next</span><span class="name">Band 7: Distance and Display &rarr;</span></a>
+</nav>
+
+<footer>
+  <p>Bozoma Innovation Hub &nbsp;&middot;&nbsp; Aiyinasi, Ellembelle District. Band 6 of nine. Every sketch used here was compiled and tested before it reached you.</p>
+</footer>
+
+</div>
+</body>
+</html>

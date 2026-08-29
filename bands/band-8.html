@@ -1,0 +1,819 @@
+<!doctype html>
+<html lang="en" data-band="8">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Band 8: Build for Nzemaland · Arduino Ladder</title>
+  <meta name="description" content="No new parts. A brief from a real person, criteria written before you build, a state machine, and an honest answer to whether it worked.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+  <link rel="stylesheet" href="../assets/course.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the lesson</a>
+<div class="topbar">
+  <a class="home" href="../index.html">Arduino Ladder <span>· Bozoma Innovation Hub</span></a>
+  <nav class="bandlinks" aria-label="Bands"><a href="../bands/band-0.html">0</a><a href="../bands/band-1.html">1</a><a href="../bands/band-2.html">2</a><a href="../bands/band-3.html">3</a><a href="../bands/band-4.html">4</a><a href="../bands/band-5.html">5</a><a href="../bands/band-6.html">6</a><a href="../bands/band-7.html">7</a><a href="../bands/band-8.html" aria-current="page">8</a></nav>
+</div>
+<div class="wrap" id="main">
+<nav aria-label="Sections">
+  <a href="#start">Start here</a>
+  <a href="#modes">Think first</a>
+  <a href="#states">One thing at a time</a>
+  <a href="#build1">Run the machine</a>
+  <a href="#flags">The other way</a>
+  <a href="#read">Look closer</a>
+  <a href="#brief">Briefs</a>
+  <a href="#criteria">Criteria first</a>
+  <a href="#worked">A worked capstone</a>
+  <a href="#failure">When power cuts</a>
+  <a href="#docs">Documenting it</a>
+  <a href="#change">Change it</a>
+  <a href="#make">Your capstone</a>
+  <a href="#evidence">Evidence</a>
+  <a href="#check">Check yourself</a>
+  <a href="#recall">Say these out loud</a>
+  <a href="#problems">Problems</a>
+</nav>
+
+<header style="padding:3rem 0 1rem">
+  <p class="eyebrow">Bozoma Innovation Hub &nbsp;·&nbsp; Arduino Ladder &nbsp;·&nbsp; Band 8</p>
+  <h1 style="margin:.8rem 0">Build for Nzemaland</h1>
+  <p class="col sub" style="font-size:1.1em">The last band. No new components, and that is the point. You already have everything you need to build something a person actually wants. What you do not yet have is a way to organise a device that does several things, and a way to find out honestly whether it works.</p>
+  <p class="col note" style="margin-top:.8rem">About 12 hours, and most of that is your own build. Finish Bands 5 and 7 first. Band 6 helps if your project moves something.</p>
+</header>
+
+<section class="sketchbox">
+  <h2>Sketches for this band</h2>
+  <ul><li><a href="../sketches/b8_01_states_given.ino">b8_01_states_given.ino</a></li><li><a href="../sketches/b8_02_buggy_flags.ino">b8_02_buggy_flags.ino</a></li><li><a href="../sketches/b8_03_tank_alarm_worked.ino">b8_03_tank_alarm_worked.ino</a></li><li><a href="../sketches/b8_04_project_skeleton.ino">b8_04_project_skeleton.ino</a></li></ul>
+  <p>Click one to save it, or get every sketch at once from <a href="../downloads/arduino-ladder-sketches.zip" style="border:0;background:none;padding:0">the downloads page</a>. Each file opens with a plain-English header telling you what it does and how to wire it.</p>
+</section>
+
+
+<section class="part" id="start">
+  <div class="parthead"><span class="tag">Start here</span><h2>What is different about this band</h2></div>
+  <div class="col stack">
+    <p>Every band so far handed you a brief. Build a signal tower. Build a lock. Build a game. You could always check your work by comparing it with the picture.</p>
+    <p>This time nobody gives you the brief. You go and find one, from a person with a problem, and the only way to know whether you succeeded is to give the finished thing back to them and watch.</p>
+    <p>That is a genuinely harder job, and it fails in ways that have nothing to do with code.</p>
+
+    <h3 style="margin-top:.5rem">Two things you need first</h3>
+    <ul class="plain">
+      <li><strong>A way to organise a device that does several things.</strong> Every project worth building has modes: waiting, working, warning, quiet. Written the obvious way, four modes become a tangle nobody can follow, including you next week. Parts 1 to 5 teach the way out.</li>
+      <li><strong>A way to be honest about whether it works.</strong> Everything works on the desk of the person who built it. Parts 6 to 10 are about finding out whether it works anywhere else.</li>
+    </ul>
+
+    <h3 style="margin-top:.5rem">By the end you will be able to</h3>
+    <ul class="plain">
+      <li>Break a device into states and write it so an impossible combination cannot happen</li>
+      <li>Turn something a person said into criteria you can actually check</li>
+      <li>Say what your device does when the power comes back</li>
+      <li>Draw wiring somebody else can follow without asking you a question</li>
+      <li>Watch a real person use your build without helping them</li>
+      <li>Judge your own work against criteria you wrote before you started</li>
+    </ul>
+
+    <h3 style="margin-top:.6rem">What you need</h3>
+    <ul class="plain">
+      <li>Everything from the previous bands. No new parts.</li>
+      <li>Card, tape, a box or a bottle, and whatever will make a housing that survives being carried</li>
+      <li>Paper, for the criteria and the wiring drawing. This band uses more paper than solder.</li>
+      <li>One real person with a real problem, and their patience for twenty minutes twice</li>
+    </ul>
+    <div class="ifnot"><b>If you cannot find a person</b>Then the person is you, and you have to be strict about it. Pick a problem you actually have, in a place you actually go, and write the brief before you know what you will build. Then test it a week later, cold, in that place. Being your own user is harder than it sounds, because you already know all the answers.</div>
+  </div>
+</section>
+
+<section class="part" id="modes">
+  <div class="parthead"><span class="tag">Part 1</span><h2>Think first: what is the kettle doing?</h2><span class="mins">20 min</span></div>
+  <div class="col stack">
+    <p>No board for this part. Pick a thing near you that has more than one behaviour: an electric kettle, a phone, a fan with a timer, a washing machine, a torch with modes.</p>
+
+    <div class="steps">
+      <div class="step"><div class="body">
+        <p><strong>Write down every different thing it can be doing.</strong> Not what it can do; what it is <em>being</em>, right now, at any given moment. For a kettle: sitting there, heating, boiled, empty and refusing.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Now for each one, write what makes it stop being that and become something else.</strong> Sitting there becomes heating when somebody presses the switch. Heating becomes boiled when the water is hot enough. Heating becomes sitting there if somebody lifts it off.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Then ask the awkward question: can it ever be two of them at once?</strong> Can a kettle be heating and boiled at the same time? Can it be empty-and-refusing while heating?</p>
+        <div class="see"><b>You should see</b>No. Not one pair of them can happen together. A kettle is always doing exactly one of those things, and never none of them either.</div>
+      </div></div>
+    </div>
+
+    <div class="callout">
+      <h5>Write these down</h5>
+      <ol class="num">
+        <li>How many different things can your object be doing? Most people find three to five.</li>
+        <li>Pick two of them. What exactly would it look like if it were doing both at once?</li>
+        <li>Is there a way for it to be doing none of them? What would that even look like?</li>
+        <li>When you plug it in after a power cut, which one is it doing? Who decided that?</li>
+      </ol>
+    </div>
+
+    <p>That last question is the one nobody thinks about and everybody meets. Your device will lose power. When it comes back, it will be doing something, and if you did not choose what, then it chose for you.</p>
+    <p class="note">Keep this paper. Part 3 turns it into code almost line for line.</p>
+  </div>
+</section>
+
+<section class="part" id="states">
+  <div class="parthead"><span class="tag">Part 2</span><h2>One thing at a time</h2><span class="mins">30 min</span></div>
+  <div class="col stack">
+    <p>What you just wrote down has a name. Each of those behaviours is a <strong>state</strong>, and a device that is always in exactly one of them is a <strong>state machine</strong>.</p>
+    <p>That sounds grand and it is not. It is one variable and a few branches. But choosing to write it that way changes what your device can do wrong, and that is why it is worth a whole part.</p>
+
+    <figure>
+      <svg viewBox="0 0 660 400" role="img" aria-label="Four boxes joined by arrows. Waiting goes to Armed when the button is pressed. Armed goes to Alarm when the water is high. Alarm goes to Snoozed when the button is pressed. Snoozed goes back to Armed after thirty seconds.">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#C0503A"/></marker><marker id="ab" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#4A7FC8"/></marker><marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#3F8A55"/></marker></defs>
+<rect x="70" y="60" width="180" height="72" rx="8" fill="none" stroke="currentColor" stroke-width="1.8"/><text x="160" y="92" text-anchor="middle" fill="currentColor" font-size="14" font-weight="700" font-family="Archivo, Arial, sans-serif">WAITING</text><text x="160" y="113" text-anchor="middle" fill="currentColor" font-size="11" opacity="0.7" font-family="IBM Plex Mono, monospace">lamp off</text><rect x="390" y="60" width="180" height="72" rx="8" fill="none" stroke="currentColor" stroke-width="1.8"/><text x="480" y="92" text-anchor="middle" fill="currentColor" font-size="14" font-weight="700" font-family="Archivo, Arial, sans-serif">ARMED</text><text x="480" y="113" text-anchor="middle" fill="currentColor" font-size="11" opacity="0.7" font-family="IBM Plex Mono, monospace">lamp on</text><rect x="390" y="230" width="180" height="72" rx="8" fill="none" stroke="currentColor" stroke-width="1.8"/><text x="480" y="262" text-anchor="middle" fill="currentColor" font-size="14" font-weight="700" font-family="Archivo, Arial, sans-serif">ALARM</text><text x="480" y="283" text-anchor="middle" fill="currentColor" font-size="11" opacity="0.7" font-family="IBM Plex Mono, monospace">buzzer + flash</text><rect x="70" y="230" width="180" height="72" rx="8" fill="none" stroke="currentColor" stroke-width="1.8"/><text x="160" y="262" text-anchor="middle" fill="currentColor" font-size="14" font-weight="700" font-family="Archivo, Arial, sans-serif">SNOOZED</text><text x="160" y="283" text-anchor="middle" fill="currentColor" font-size="11" opacity="0.7" font-family="IBM Plex Mono, monospace">quiet 30 s</text><path d="M250 82 L390 82" fill="none" stroke="#4A7FC8" stroke-width="2.2" marker-end="url(#ab)"/><text x="320" y="72" text-anchor="middle" fill="#4A7FC8" font-size="12" font-family="Archivo, Arial, sans-serif">button pressed</text><path d="M480 132 L480 230" fill="none" stroke="#C0503A" stroke-width="2.2" marker-end="url(#ar)"/><text x="486" y="186" text-anchor="start" fill="#C0503A" font-size="12" font-family="Archivo, Arial, sans-serif">water is high</text><path d="M390 266 L250 266" fill="none" stroke="#3F8A55" stroke-width="2.2" marker-end="url(#ag)"/><text x="320" y="288" text-anchor="middle" fill="#3F8A55" font-size="12" font-family="Archivo, Arial, sans-serif">button pressed</text><path d="M160 230 L160 132" fill="none" stroke="#A87A1E" stroke-width="2.2" marker-end="url(#a)"/><text x="154" y="186" text-anchor="end" fill="#A87A1E" font-size="12" font-family="Archivo, Arial, sans-serif">30 seconds up</text>
+<g fill="currentColor" font-size="13" font-family="Archivo, Arial, sans-serif">
+  <text x="330" y="348" text-anchor="middle">The board is in <tspan font-weight="700">exactly one box at a time</tspan>. An arrow is the only way out of a box,</text>
+  <text x="330" y="370" text-anchor="middle">and every arrow has something written on it that has to happen first.</text>
+</g>
+</svg>
+      <figcaption>A water tank alarm as four states. The boxes are what it is doing. The arrows are the only ways to move between them, and every arrow has a condition written on it.</figcaption>
+    </figure>
+
+    <p>Read that picture like a map. There is no arrow from WAITING straight to ALARM, so that jump cannot happen. Not &#8220;should not&#8221;. <strong>Cannot.</strong> There is no line to travel along.</p>
+
+    <h3 style="margin-top:.6rem">Why not just use true-or-false names?</h3>
+    <p>The obvious alternative is a name for each thing that might be true:</p>
+    <pre><code>bool armed = false;
+bool alarming = false;
+bool snoozed = false;</code></pre>
+    <p>That looks simpler and it is a trap. Three true-or-false names means <strong>eight combinations</strong>, and only four of them make any sense. The other four are nonsense that nothing prevents and nothing warns you about.</p>
+
+    <figure>
+      <svg viewBox="0 0 640 330" role="img" aria-label="Two ways to write the same job. On the left, a tangle of nested if statements with no name for what the device is doing. On the right, one variable holding the current state and one branch per state.">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#C0503A"/></marker><marker id="ab" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#4A7FC8"/></marker><marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#3F8A55"/></marker></defs>
+<g font-size="13" fill="currentColor" font-family="Archivo, Arial, sans-serif" text-anchor="middle">
+  <text x="160" y="24" font-weight="700" fill="#C0503A">Flags everywhere</text>
+  <text x="480" y="24" font-weight="700" fill="#3F8A55">One state</text>
+</g>
+<g font-size="11.5" fill="currentColor" font-family="IBM Plex Mono, monospace">
+  <text x="34" y="58">bool armed = false;</text>
+  <text x="34" y="78">bool alarming = false;</text>
+  <text x="34" y="98">bool snoozed = false;</text>
+  <text x="34" y="118">bool wasHigh = false;</text>
+  <text x="34" y="152">if (armed &amp;&amp; !snoozed) {</text>
+  <text x="34" y="172">  if (high &amp;&amp; !alarming) {</text>
+  <text x="34" y="192">    if (!wasHigh) { ... }</text>
+  <text x="34" y="212">  } else if (alarming) {</text>
+  <text x="34" y="232">    if (snoozed) { ... }</text>
+  <text x="354" y="58">int state = WAITING;</text>
+  <text x="354" y="112">if (state == WAITING) {</text>
+  <text x="354" y="132">  ...</text>
+  <text x="354" y="152">} else if (state == ARMED) {</text>
+  <text x="354" y="172">  ...</text>
+  <text x="354" y="192">} else if (state == ALARM) {</text>
+  <text x="354" y="212">  ...</text>
+  <text x="354" y="232">}</text>
+</g>
+<g fill="currentColor" font-size="12.5" font-family="Archivo, Arial, sans-serif">
+  <text x="34" y="272">Four true-or-false names means sixteen</text>
+  <text x="34" y="290">combinations. Most are nonsense, and</text>
+  <text x="34" y="308">nothing stops the board reaching one.</text>
+  <text x="354" y="272">One name, four values, four branches.</text>
+  <text x="354" y="290">Nonsense combinations cannot happen,</text>
+  <text x="354" y="308">because there is nothing to combine.</text>
+</g>
+</svg>
+      <figcaption>The same device written both ways. On the left, four flags and a nest of conditions. On the right, one name with four values and one branch each.</figcaption>
+    </figure>
+
+    <div class="callout">
+      <h5>Count it yourself</h5>
+      <p>Two true-or-false names: 2 &times; 2 = 4 combinations. Three: 2 &times; 2 &times; 2 = 8. Four: 16. Five: 32.</p>
+      <p>Every one you add <strong>doubles</strong> the number of situations your code has to survive. And you have to think of each one yourself, because nothing tells you when the device reaches a combination you never considered.</p>
+      <p>One state name with four values reaches four situations. Adding a fifth state makes five. Not ten. Five.</p>
+    </div>
+
+    <div class="words">
+      <h5>Words to know</h5>
+      <dl>
+        <dt>state</dt><dd>What a device is doing right now. Always exactly one, never two, never none.</dd>
+        <dt>state machine</dt><dd>A way of writing a program as a set of states and the conditions that move between them.</dd>
+        <dt>transition</dt><dd>Moving from one state to another. An arrow in the picture.</dd>
+        <dt>flag</dt><dd>A true-or-false name standing for one fact. Useful alone, dangerous in groups.</dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section class="part" id="build1">
+  <div class="parthead"><span class="tag">Part 3</span><h2>Guess, then run the machine</h2><span class="mins">40 min</span></div>
+  <div class="col stack">
+    <p>Here is the heart of <code>b8_01_states_given.ino</code>. Read it before running it.</p>
+    <pre><code>const int WAITING = 0;
+const int ARMED   = 1;
+const int ALARM   = 2;
+const int SNOOZED = 3;
+
+int state = WAITING;
+
+void enterState(int newState) {
+  state = newState;
+  stateSince = millis();
+
+  if (state == WAITING) digitalWrite(ledPin, LOW);
+  if (state == ARMED)   digitalWrite(ledPin, HIGH);
+  if (state == SNOOZED) digitalWrite(ledPin, LOW);
+
+  Serial.print("now in state ");
+  Serial.println(state);
+}</code></pre>
+
+    <div class="callout">
+      <h5>Guess before you run it</h5>
+      <ol class="num">
+        <li><code>WAITING</code> is just the number 0. Why bother giving it a name?</li>
+        <li>Why is there no line for <code>ALARM</code> inside <code>enterState</code>?</li>
+        <li><code>stateSince = millis()</code> happens on every change, whichever state you go to. What is it for?</li>
+        <li>Somewhere in this sketch is the only line that ever changes <code>state</code>. Why does having exactly one matter?</li>
+      </ol>
+    </div>
+
+    <div class="ifnot" style="margin-bottom:.4rem"><b>Start from an empty board</b>Unplug the USB. Take everything from Band 7 off the breadboard: the sensor, the screen, the buzzer, the knob and all their wires. This build needs two parts and you want to see them clearly.</div>
+
+    <div class="steps">
+      <div class="step"><div class="body">
+        <p><strong>The light.</strong> LED long leg into <code>b3</code>, short leg into <code>b4</code>. Resistor from <code>a3</code> to <code>a1</code>. Wire <code>b1</code> to pin 7. Wire <code>a4</code> to the &#8722; rail.</p>
+        <p class="note">The pin wire goes in <code>b1</code>, not <code>a1</code>, because the resistor leg is already in <code>a1</code> and a hole takes one leg only. Same column, same connection.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>The button.</strong> Four legs into <code>e19</code>, <code>e21</code>, <code>f19</code> and <code>f21</code>, body over the middle channel. Wire <code>j19</code> to pin 2. Wire <code>a21</code> to the &#8722; rail.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>One wire from the &#8722; rail to a GND pin.</strong></p>
+        <div class="see"><b>You should see</b>Two parts on the board, five wires in total, and nothing else.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Upload <code>b8_01_states_given.ino</code> and open the serial monitor</strong> (Tools, then Serial Monitor, 9600).</p>
+        <div class="see"><b>You should see</b><code>now in state 0</code> printed once. The light is off. Press the button: state 1, light on steady. Press again: state 2, light flashing fast. Press again: state 3, light off. Wait five seconds without touching anything: state 1 again, light back on steady.</div>
+        <div class="ifnot"><b>If one press moves it two states</b>The button is bouncing. Look at the <code>delay(20)</code> inside <code>buttonJustPressed</code> and make sure it is still there. That is the debounce from Band 3.</div>
+        <div class="ifnot"><b>If nothing prints at all</b>Serial monitor not at 9600, or the wrong board or port selected.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Now go round the whole cycle three times</strong>, watching the printed states, and check they always go 0, 1, 2, 3, 1, 2, 3, 1 and never anything else.</p>
+        <div class="see"><b>You should see</b>Exactly that. Press as fast as you like; you will not find a fifth number and you will not find two at once.</div>
+      </div></div>
+    </div>
+
+    <details><summary>The answers to the four questions</summary><div class="inner">
+      <p><strong>1.</strong> The board does not care. You do, in six months. <code>if (state == 2)</code> tells a reader nothing; <code>if (state == ALARM)</code> tells them everything. It is the same reason you gave your pin numbers names in Band 1, and you counted the benefit yourself then.</p>
+      <p><strong>2.</strong> Because ALARM flashes, and flashing is not one thing you set once. It is something that has to keep happening, so it lives in <code>runAlarm</code>, which is called over and over. <code>enterState</code> is only for what happens at the <em>moment</em> a state begins.</p>
+      <p><strong>3.</strong> So that any state can ask &#8220;how long have I been here?&#8221; SNOOZED uses it to leave after five seconds. Putting it in <code>enterState</code> means every state gets it for free and you cannot forget to set it.</p>
+      <p><strong>4.</strong> This is the important one. With one place that changes <code>state</code>, everything that must happen on a change happens there, once. Scatter <code>state = ALARM</code> across five places and you will eventually write one of them and forget the light, and the device will be in ALARM with the wrong light on, which is very hard to spot.</p>
+    </div></details>
+  </div>
+</section>
+
+<section class="part" id="flags">
+  <div class="parthead"><span class="tag">Part 4</span><h2>Now break it on purpose</h2><span class="mins">35 min</span></div>
+  <div class="col stack">
+    <p><code>b8_02_buggy_flags.ino</code> is the same device, wired the same way, written with three flags instead of one state.</p>
+    <p>It is not badly typed. Every line in it is reasonable on its own. Upload it and press the button slowly, watching both the light and the serial monitor.</p>
+
+    <div class="see"><b>What you will actually see</b>Press once: light on steady, and it prints <code>armed=1 alarming=0 snoozed=0</code>. Press twice: flashing. <strong>Press a third time and the light freezes</strong>, stuck at whatever it happened to be, for five whole seconds. The serial monitor says <code>armed=0 alarming=1 snoozed=1</code>.</div>
+
+    <div class="callout">
+      <h5>Find the fault yourself</h5>
+      <p>Look at the bottom of the sketch. There are three branches that write to the light:</p>
+      <pre><code>if (armed &amp;&amp; !alarming &amp;&amp; !snoozed) { ... }
+else if (armed &amp;&amp; alarming) { ... }
+else if (!armed &amp;&amp; !alarming) { ... }</code></pre>
+      <ol class="num">
+        <li>Take the combination the serial monitor printed: armed false, alarming true, snoozed true. Check it against each of the three branches in turn. How many match?</li>
+        <li>So which line of code writes to the light during those five seconds?</li>
+        <li>Now press a fourth time, and a fifth, and keep pressing. Can you ever get back to a steady light again?</li>
+        <li>Three flags. How many combinations are there? How many make sense?</li>
+      </ol>
+    </div>
+
+    <details><summary>The answer, after you have written yours</summary><div class="inner">
+      <p><strong>1. None of them match.</strong> The first needs armed true. The second needs armed true. The third needs alarming false. The combination armed=false with alarming=true fits nowhere.</p>
+      <p><strong>2. No line at all.</strong> That is the whole answer. The light is not off, and not on: it is untouched. Whatever it was doing when the freeze began is what it keeps doing, because nothing is writing to it.</p>
+      <p><strong>3. No, never.</strong> Once it has alarmed once, snoozing always lands it back in flashing, because nothing clears <code>alarming</code> on the way out. Press all day. The steady light is gone until you reset the board.</p>
+      <p><strong>4. Eight combinations. Four make sense.</strong> The code defends three of them. The other five were never thought about, and one of them is where the device is stuck.</p>
+      <p>Nothing here was a typing mistake, so no amount of careful typing would have prevented it. <strong>The fault is in the shape.</strong></p>
+    </div></details>
+
+    <div class="callout">
+      <h5>The comparison that matters</h5>
+      <p>Go back and look at <code>b8_01</code>. Ask yourself: could that sketch reach a state with no branch?</p>
+      <p>It could not, and not because it was written carefully. <code>state</code> is one name holding one of four values. There is no fifth value, so there is no unhandled case to reach. The bug in <code>b8_02</code> is not merely absent from <code>b8_01</code>; it is <strong>impossible</strong> there.</p>
+      <p>That is what people mean when they say a piece of code is well structured. Not that it is tidy. That whole families of mistakes cannot occur in it.</p>
+    </div>
+  </div>
+</section>
+
+<section class="part" id="read">
+  <div class="parthead"><span class="tag">Part 5</span><h2>Look closer: the shape you will reuse</h2><span class="mins">30 min</span></div>
+  <div class="col stack">
+    <p>Every state machine you write from here on, and probably for the rest of your life, has the same five pieces. Learn the shape, not the sketch.</p>
+
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Piece</th><th>What it is</th><th>In <code>b8_01</code></th></tr></thead>
+        <tbody>
+          <tr><td>The names</td><td>One <code>const int</code> per state, starting at 0</td><td><code>WAITING</code>, <code>ARMED</code>, <code>ALARM</code>, <code>SNOOZED</code></td></tr>
+          <tr><td>The one variable</td><td>Holds which state you are in, and nothing else</td><td><code>int state</code></td></tr>
+          <tr><td>The one door</td><td>The only place <code>state</code> ever changes. Sets outputs for the new state.</td><td><code>enterState()</code></td></tr>
+          <tr><td>One function per state</td><td>What to do while here, and what would make you leave</td><td><code>runWaiting()</code>, <code>runArmed()</code>, and so on</td></tr>
+          <tr><td>The dispatcher</td><td>A few lines in <code>loop</code> that call the right one</td><td>The <code>if</code> chain at the bottom</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 style="margin-top:.6rem">The rule about <code>enterState</code></h3>
+    <p>Look at what it does and notice something easy to miss: it sets the light for <em>every</em> state, including the ones where the light is off.</p>
+    <p>That is deliberate, and it is the same habit you learned in Band 1 when you wrote all three lights in every traffic state rather than only the ones that changed. <strong>Set every output every time.</strong> Leaving one out is how a buzzer gets stuck on, and it will be stuck on in exactly one rarely-used path that you will find at the worst moment.</p>
+    <p>In <code>b8_03</code> you can see this taken seriously: <code>enterState</code> starts by turning the buzzer and both lights off, and then switches on only what the new state needs.</p>
+
+    <h3 style="margin-top:.8rem">Fill this in by hand</h3>
+    <p>For <code>b8_01</code>, complete the table. Two of the boxes have no answer, and working out which two is the exercise.</p>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>From state</th><th>Button pressed</th><th>Five seconds pass</th></tr></thead>
+        <tbody>
+          <tr><td>WAITING</td><td></td><td></td></tr>
+          <tr><td>ARMED</td><td></td><td></td></tr>
+          <tr><td>ALARM</td><td></td><td></td></tr>
+          <tr><td>SNOOZED</td><td></td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <details><summary>Answer, after you have filled it in</summary><div class="inner">
+      <p>WAITING + button goes to ARMED; time does nothing. ARMED + button goes to ALARM; time does nothing. ALARM + button goes to SNOOZED; time does nothing. SNOOZED + button goes to WAITING; SNOOZED + five seconds goes to ARMED.</p>
+      <p>So the empty boxes are the first three in the time column. Only SNOOZED cares about time.</p>
+      <p><strong>A table like this is worth drawing for your own project before you write any code.</strong> It is quicker than writing the code and it finds the same mistakes. Every empty box is a question: is nothing really supposed to happen there?</p>
+    </div></details>
+
+    <div class="ifnot"><b>When you have more than five states</b>Two of them are probably the same thing with a different light on. Look for two states whose functions differ only in an output, and see whether one variable can tell them apart instead. Five is a lot. Ten means the shape is wrong.</div>
+  </div>
+</section>
+
+<section class="part" id="brief">
+  <div class="parthead"><span class="tag">Part 6</span><h2>Finding a brief worth building</h2><span class="mins">45 min</span></div>
+  <div class="col stack">
+    <p>Now the other half of the band. Everything above was about how to write it. The rest is about knowing what to write, and whether it worked.</p>
+    <p>A brief is not an idea you had. It is a problem <strong>somebody else has</strong>, described in <strong>their words</strong>, before you have thought of any solution.</p>
+
+    <div class="callout">
+      <h5>Briefs on offer, if you want one</h5>
+      <ul class="plain">
+        <li><strong>Water tank level alarm.</strong> Warns before the poly tank overflows, in time to close the valve.</li>
+        <li><strong>Poultry brooder temperature alarm.</strong> Warns when the chicks' house gets too cold at night.</li>
+        <li><strong>School bell or period timer.</strong> Rings at set times so nobody has to watch a clock.</li>
+        <li><strong>Borehole pump run indicator.</strong> Shows from the house whether the pump is actually running.</li>
+        <li><strong>Market stall night alarm.</strong> Notices if the stall cover is opened after closing.</li>
+        <li><strong>Charging kiosk queue light.</strong> Shows from a distance whether a slot is free.</li>
+      </ul>
+      <p>Every one of these is buildable with what is already in your box. None of them needs a part you do not have.</p>
+    </div>
+
+    <h3 style="margin-top:.6rem">Go and ask somebody</h3>
+    <p>Whether you take a brief from that list or bring your own, the next step is the same and it is not optional.</p>
+    <div class="steps">
+      <div class="step"><div class="body">
+        <p><strong>Find the person who has the problem</strong> and ask them to describe it. Not what they want you to build. What goes wrong now.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Write down what they said, in their words, in quotation marks.</strong> Do not tidy it. Do not turn it into a specification yet.</p>
+        <div class="see"><b>You should see</b>Something messier than you expected, containing at least one detail you would never have guessed. That detail is usually the most valuable thing in the whole conversation.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Ask three questions and write the answers down.</strong></p>
+        <ul class="plain">
+          <li>&#8220;When it goes wrong, what happens next? What do you do about it?&#8221;</li>
+          <li>&#8220;Where would this thing live, and who else is around it?&#8221;</li>
+          <li>&#8220;What have you already tried?&#8221;</li>
+        </ul>
+        <p class="note">The third question saves the most time. If somebody already tried something and it failed, find out why before you build the same thing again.</p>
+      </div></div>
+    </div>
+
+    <div class="ifnot"><b>The most common mistake in this part</b>Arriving with a solution already in mind and asking questions that confirm it. If you catch yourself saying &#8220;so would it help if it beeped?&#8221;, stop and ask &#8220;what happens now?&#8221; instead. You are trying to learn the problem, not sell the answer.</div>
+  </div>
+</section>
+
+<section class="part" id="criteria">
+  <div class="parthead"><span class="tag">Part 7</span><h2>Criteria, written before you build</h2><span class="mins">40 min</span></div>
+  <div class="col stack">
+    <p>Now turn what they said into a list of things you can <strong>check</strong>. This is the single most valuable half hour in the band, and it is the one people skip.</p>
+    <p>The reason to write criteria first is not organisation. It is honesty. Criteria written afterwards are always met, because you write down whatever you happened to achieve. Written first, they can tell you something you did not want to hear.</p>
+
+    <div class="words">
+      <h5>Words to know</h5>
+      <dl>
+        <dt>brief</dt><dd>A problem somebody else has, in their words, written down before you have thought of any solution.</dd>
+        <dt>criterion</dt><dd>One thing you can go and check, that decides whether the device works. More than one of them are criteria.</dd>
+        <dt>hysteresis</dt><dd>Using two numbers instead of one, so a reading has to move a real distance to change anything. You do not need the word. You do need the habit.</dd>
+        <dt>EEPROM</dt><dd>A small permanent memory in the chip that survives being switched off. For settings and totals, not for anything that changes every second.</dd>
+      </dl>
+    </div>
+
+    <h3 style="margin-top:.5rem">What makes a criterion checkable</h3>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Not checkable</th><th>Checkable</th><th>Why</th></tr></thead>
+        <tbody>
+          <tr><td>The alarm is loud enough</td><td>Can be heard from the next room with the door shut</td><td>Somebody can go and stand there</td></tr>
+          <tr><td>It warns in good time</td><td>Warns when the water is 15 cm from the top, which is about four minutes of filling</td><td>There is a number and a reason for it</td></tr>
+          <tr><td>It is easy to use</td><td>Somebody who has never seen it can silence it within ten seconds</td><td>You can watch and count</td></tr>
+          <tr><td>It is reliable</td><td>Ran for six hours overnight without a false alarm</td><td>You either did that or you did not</td></tr>
+          <tr><td>It handles power cuts</td><td>Comes back armed by itself, with nobody there to press anything</td><td>Pull the plug and see</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout">
+      <h5>Write five criteria for your own brief now</h5>
+      <p>Before any wiring. Before any code. Five is enough, and they must include these two:</p>
+      <ol class="num">
+        <li>One about what happens <strong>after a power cut</strong>.</li>
+        <li>One about whether a person who has never seen it can <strong>tell what it is doing</strong> without being told.</li>
+      </ol>
+      <p>Then show the list to the person whose problem it is and ask: &#8220;if it did all five of these, would that solve it?&#8221;</p>
+      <div class="see"><b>You should see</b>Either yes, in which case you now have a target, or a correction, in which case you have just saved yourself a week. Both answers are good. Only silence is bad.</div>
+    </div>
+
+    <p class="note">Put the list somewhere you will see it while you build. Tape it to the wall. Every time you are tempted to add a clever feature nobody asked for, the list is there to ask why.</p>
+  </div>
+</section>
+
+<section class="part" id="worked">
+  <div class="parthead"><span class="tag">Part 8</span><h2>A worked capstone, end to end</h2><span class="mins">60 min</span></div>
+  <div class="col stack">
+    <p>Read <code>b8_03_tank_alarm_worked.ino</code> from its first comment to its last line before you build anything. It is a whole project done properly and it is shorter than you would expect.</p>
+
+    <h3 style="margin-top:.4rem">The brief it came from</h3>
+    <p class="sub" style="font-style:italic">&#8220;Our poly tank overflows at night because nobody sees it filling. I want a warning while there is still time to close the valve, loud enough to hear from the next room, and I want to be able to shut it up without switching the whole thing off.&#8221;</p>
+    <p>Notice what is in there. A problem, a time constraint, a loudness constraint, and one specific complaint about a device they have used before: it could only be silenced by switching it off entirely. That last clause is where the SNOOZED state came from.</p>
+
+    <h3 style="margin-top:.6rem">How it measures water with no water sensor</h3>
+    <p>The ultrasonic sensor from Band 7, pointing straight down at the water from the top of the tank. A full tank means a <strong>short</strong> distance.</p>
+    <p>Nothing touches the water. Nothing corrodes. This is how real tank sensors work, and you already had the part.</p>
+    <p class="note">This is what the map means by &#8220;no new components required, and the constraint is the point&#8221;. Almost every problem in this list can be solved with something you already have, pointed at it differently.</p>
+
+    <h3 style="margin-top:.6rem">The two thresholds</h3>
+    <pre><code>int alarmLevel = 15;          // cm from the sensor. Measure yours.
+int clearLevel = 20;          // must fall below this to count as safe</code></pre>
+    <p>Two numbers, not one, and the reason is the same as the deadband in Band 6 and the light threshold in Band 4. With a single threshold of 15, a reading wobbling between 14 and 16 starts and stops the alarm several times a second.</p>
+    <p>With 15 to alarm and 20 to clear, the water has to genuinely fall by five centimetres before the alarm stops. The reading can wobble all it likes in between and nothing flaps.</p>
+    <div class="ifnot"><b>The name for this, if you want to look it up</b>It is called hysteresis. You do not need the word. You do need the habit, and you have now met it three times in three different bands, which is how you know it is a real idea and not a trick.</div>
+
+    <h3 style="margin-top:.8rem">Build it and test it</h3>
+    <div class="ifnot" style="margin-bottom:.4rem"><b>Before you start</b>USB unplugged. The wiring is in the sketch's header, hole by hole. Build it in stages and test each one, as you have every band since Band 3.</div>
+    <div class="steps">
+      <div class="step"><div class="body">
+        <p><strong>Build it and prove each state in turn</strong> with a bucket, or with a book you move towards the sensor to stand in for rising water.</p>
+        <div class="see"><b>You should see</b>Green light on, quiet. Bring the book within 15 cm: red light flashing and a beep in time with it. Press the button: quiet, green light back on, but it does <em>not</em> go off again for 30 seconds even though the book is still there. After 30 seconds, if the book is still close, it alarms again.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Now test the criterion nobody tests.</strong> With the alarm going, pull the USB cable out and put it straight back in.</p>
+        <div class="see"><b>You should see</b>It comes back on, green light, armed, all by itself. Within a second it notices the book is still there and alarms again. Nobody pressed anything.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Then test the awkward one.</strong> Take the book away entirely, wave your hand once across the sensor, and watch.</p>
+        <div class="see"><b>You should see</b>A brief alarm as your hand passes, then it clears. Ask yourself whether that is acceptable for a tank, and write your answer down. There is a real answer and it depends on the tank.</div>
+      </div></div>
+    </div>
+
+    <div class="callout">
+      <h5>The question to answer in your log</h5>
+      <p>Nothing in <code>b8_03</code> checks that the water is <em>still</em> high before alarming again after a snooze. It just goes back to ARMED and lets ARMED decide.</p>
+      <p>Is that a bug, or is it the right design? Argue both sides in three sentences, then say which you would ship and why.</p>
+      <details><summary>One way of thinking about it</summary><div class="inner">
+        <p>It is the right design, and the reason is that ARMED already knows how to decide. If SNOOZED also checked the water level, there would be two places in the sketch that decide what &#8220;too high&#8221; means, and one day somebody would change one and not the other.</p>
+        <p>Every rule about your device belongs in exactly one place. That is the same principle as the single <code>enterState</code>, and the same as putting the sensor's zero-means-far-away decision inside <code>readDistance</code> in Band 7.</p>
+        <p>If you argued the other way and gave a good reason, that is also fine. The point of the question is to have the argument.</p>
+      </div></details>
+    </div>
+  </div>
+</section>
+
+<section class="part" id="failure">
+  <div class="parthead"><span class="tag">Part 9</span><h2>What happens when the power cuts</h2><span class="mins">30 min</span></div>
+  <div class="col stack">
+    <p>Your device will lose power. In Aiyinasi it will lose power more than once a week. Every project in this band has to answer for that, and it is the criterion that separates a demonstration from something that can be left alone.</p>
+
+    <h3 style="margin-top:.4rem">The three questions</h3>
+    <ol class="num">
+      <li><strong>What state does it come back in?</strong> Whatever <code>setup</code> says. If <code>setup</code> says nothing, it is whatever the first value of your <code>state</code> variable happens to be, which is a decision you made by accident.</li>
+      <li><strong>Does that need a person?</strong> A device that comes back needing somebody to arm it is disarmed most of the time, because nobody knows the power came back.</li>
+      <li><strong>Does it forget anything that mattered?</strong> Counts, settings, the time. All of it is gone. Every number in your sketch goes back to what you typed.</li>
+    </ol>
+
+    <div class="callout">
+      <h5>The rule for this band</h5>
+      <p><strong>The state it comes back in should be the safe one, and it should get there without anybody.</strong></p>
+      <p>For an alarm, that means armed. Not off, not waiting for a button. Look at <code>b8_03</code>: there is no OFF state at all, and <code>setup</code> ends with <code>enterState(ARMED)</code>. That one line is criterion four.</p>
+    </div>
+
+    <h3 style="margin-top:.6rem">Test it properly, three times</h3>
+    <div class="steps">
+      <div class="step"><div class="body">
+        <p><strong>Cut the power while it is idle.</strong> Restore it. Does it come back doing the right thing?</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Cut the power while it is alarming.</strong> Restore it. Does it alarm again, or has it forgotten?</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Cut the power while it is snoozed.</strong> Restore it. This one usually surprises people.</p>
+        <div class="see"><b>You should see</b>The snooze is gone and it alarms immediately. Whether that is right is a decision, and now you have to make it deliberately rather than discover it in the middle of the night.</div>
+      </div></div>
+    </div>
+
+    <div class="ifnot"><b>If you need something remembered across a power cut</b>The chip has a small permanent memory called EEPROM that survives being switched off, and there is an EEPROM library that comes with the Arduino software. It holds a thousand or so numbers and can only be rewritten about a hundred thousand times, so it is for settings and totals, not for anything that changes every second. You do not need it to pass this band. Reach for it only if one of your criteria genuinely requires it.</div>
+  </div>
+</section>
+
+<section class="part" id="docs">
+  <div class="parthead"><span class="tag">Part 10</span><h2>Wiring somebody else can follow</h2><span class="mins">40 min</span></div>
+  <div class="col stack">
+    <p>A photograph of your breadboard is not documentation. It shows where the wires are, not what they are for, and a jumble of six identical red wires tells a reader nothing.</p>
+    <p>What another learner needs is a <strong>drawing plus a table</strong>, and both fit on one sheet of paper.</p>
+
+    <h3 style="margin-top:.4rem">The drawing</h3>
+    <p>Draw the breadboard as a rectangle. Mark the two rails and the middle channel. Draw each part roughly where it sits, and label it. Draw each wire as a line, and write on it where it goes.</p>
+    <p>It does not have to be beautiful. It has to be <strong>unambiguous</strong>. If two people could read it differently, it is not finished.</p>
+
+    <h3 style="margin-top:.6rem">The table</h3>
+    <p>Exactly like the pin plans in every band from 3 onwards, because those were written for the same reason.</p>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Part</th><th>Pin</th><th>Holes</th><th>Wiring</th><th>Why this pin</th></tr></thead>
+        <tbody>
+          <tr><td>Buzzer</td><td>6</td><td>long <code>b40</code>, short <code>b42</code></td><td><code>a40</code> to pin 6, <code>a42</code> to &#8722; rail</td><td>Any digital pin. 6 was free.</td></tr>
+          <tr><td>Servo</td><td>9</td><td>&mdash;</td><td>Orange to pin 9, red to + rail, brown to &#8722; rail</td><td>Any digital pin. But <code>Servo.h</code> stops <code>analogWrite</code> working on pins 9 and 10, and <code>tone</code> stops it working on 3 and 11.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">The last column is the one people leave out and the one a reader most needs. &#8220;Any pin, 6 was free&#8221; tells them they can move it. &#8220;Must be a <code>~</code> pin because it fades&#8221; tells them they cannot. Without that column, every pin looks equally sacred.</p>
+
+    <h3 style="margin-top:.6rem">The test for your documentation</h3>
+    <div class="callout">
+      <h5>Hand it over and walk away</h5>
+      <p>Give your drawing, your table and your parts to somebody who has done Band 3, and go and do something else. Do not hover. Do not answer questions.</p>
+      <p>Come back in twenty minutes. Whatever they got wrong is a fault in your documentation, not in them.</p>
+      <div class="see"><b>You should see</b>At least one thing they got wrong, and it will be somewhere you thought was obvious. That is the normal result and it is exactly what the exercise is for.</div>
+      <div class="ifnot"><b>If you are working alone</b>Take your sketch apart completely, put every part back in the box, wait a full day, and rebuild it from your own documentation only. No looking at photographs. A day is long enough to have forgotten the things you never wrote down.</div>
+    </div>
+
+    <h3 style="margin-top:.6rem">And the code</h3>
+    <p>Your sketch is documentation too. Three things make the difference, and you have been doing all three since Band 5:</p>
+    <ul class="plain">
+      <li><strong>A header comment</strong> saying what it does, the wiring hole by hole, and anything surprising.</li>
+      <li><strong>Names instead of numbers.</strong> Every number that could be tuned lives at the top with a name, once.</li>
+      <li><strong>Small functions.</strong> If <code>loop</code> is more than about ten lines, something in it wants a name.</li>
+    </ul>
+    <p><code>b8_04_project_skeleton.ino</code> is a blank version of all of this. Save a copy under your own name and start there.</p>
+  </div>
+</section>
+
+<section class="part" id="change">
+  <div class="parthead"><span class="tag">Part 11</span><h2>Change it</h2><span class="mins">50 min</span></div>
+  <div class="col stack">
+    <p>Before you build something of your own, change somebody else's. Work on a copy of <code>b8_03_tank_alarm_worked.ino</code>.</p>
+    <p>Each of these forces you to touch a different one of the five pieces from Part 5, which is the point of doing them in order.</p>
+    <dl class="tier">
+      <dt>Bronze</dt><dd>Add a fifth state, <code>TESTING</code>, that you reach by holding the button down for two seconds from <code>ARMED</code>. In it, the red light and the buzzer come on for three seconds and then it goes back to <code>ARMED</code>, whatever the water is doing. Every alarm needs a way to prove it still works without waiting for a real emergency, and every alarm you have ever met has one.</dd>
+      <dt>Silver</dt><dd>Make <code>alarmLevel</code> settable from a potentiometer instead of being typed into the sketch, and show the level it is currently set to on the serial monitor. Then say in your log what this makes better and what it makes worse. There is a real cost and it is not obvious.</dd>
+      <dt>Gold</dt><dd>Make the snooze survive a power cut, using the EEPROM library, so that a device switched off and on again during a snooze comes back still snoozed with the right amount of time left. This is hard for an interesting reason, and finding the reason is most of the task.</dd>
+    </dl>
+    <div class="ifnot"><b>The interesting reason, if you get stuck on Gold</b>The board does not know what time it is. <code>millis</code> starts again from zero every time it powers up, so a saved &#8220;snooze ends at 47000&#8221; is meaningless after a restart. You have to save how much snooze is <em>left</em>, not when it ends, and you have to write it often enough to be roughly right without wearing the EEPROM out.<br><br>That last sentence is the whole problem, and there is no clean answer. Write down the trade you chose.</div>
+    <div class="ifnot"><b>The cost hiding in Silver</b>A threshold you can turn is a threshold somebody can turn to the wrong place, including by accident, and the device will never tell them. A number typed into the sketch cannot be knocked. Convenience against reliability, and which one wins depends on who is standing next to it.</div>
+  </div>
+</section>
+
+<section class="part" id="make">
+  <div class="parthead"><span class="tag">Make</span><h2>Your capstone</h2><span class="mins">6 hours or more</span></div>
+  <div class="col stack">
+    <div class="brief">
+      <h5>What to build</h5>
+      <p>A device that solves a problem you can point at, for a person who is not you, tested by that person, housed well enough to live where it belongs.</p>
+      <p>No new components. Everything you need is in the box already, and the constraint is deliberate: it forces the interesting question, which is what to point your existing parts at.</p>
+      <h5 style="margin-top:.3rem">It is finished when all of these are true</h5>
+      <ul class="plain">
+        <li>It meets the five criteria you wrote in Part 7, and you can demonstrate each one</li>
+        <li>It is written as states, and you can name every state and every transition</li>
+        <li>It comes back doing the right thing after a power cut, with nobody present</li>
+        <li>Its housing survives being carried to where it lives and left there</li>
+        <li>Another learner built it from your documentation without asking you a question. If you are working alone, this counts as passed when you take your own build apart, wait a full day, and rebuild it from your documentation only, with no photographs.</li>
+        <li>The person whose problem it is has used it and told you what they think. If that person is you, this counts as passed when it has been installed where it belongs for a full week and you have written down whether you trusted it and whether you acted on what it told you.</li>
+      </ul>
+    </div>
+
+    <h3>How to spend the time</h3>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Stage</th><th>Roughly</th><th>What you are doing</th></tr></thead>
+        <tbody>
+          <tr><td>Brief and criteria</td><td>1 hour</td><td>Parts 6 and 7. Paper only. No parts on the desk.</td></tr>
+          <tr><td>States on paper</td><td>30 min</td><td>Boxes, arrows, and the table from Part 5. Still no parts.</td></tr>
+          <tr><td>Build in stages</td><td>2 hours</td><td>One part at a time, tested before the next. As every band since Band 3.</td></tr>
+          <tr><td>Make it survive</td><td>1 hour</td><td>Housing, mounting, taping the wires down where they leave the board, and the power-cut test.</td></tr>
+          <tr><td>Test with a person</td><td>30 min</td><td>Watch. Say nothing. Write everything down.</td></tr>
+          <tr><td>Fix what they found</td><td>1 hour</td><td>There will be something. There is always something.</td></tr>
+          <tr><td>Document and evaluate</td><td>1 hour</td><td>Part 10, then the honest write-up below.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Notice that an hour and a half of it happens before you touch a single wire, and two and a half hours happen after the code works. Most people spend all their time in the middle stage, which is why most projects work only on the desk of the person who built them.</p>
+
+    <h3 style="margin-top:.8rem">The test that matters most in the whole course</h3>
+    <p>Take it to where it belongs. Hand it to the person whose problem it is. Say one sentence, no more. Then <strong>be quiet and watch</strong>.</p>
+    <p>Do not help. Do not explain. Do not say &#8220;you just have to&#8221;. Let them be confused, and write down every second of it.</p>
+    <ul class="plain">
+      <li>What did they look at first?</li>
+      <li>What did they try that you did not expect?</li>
+      <li>At what moment did they understand what it was telling them, and how long did that take?</li>
+      <li>What did they ask you? Every question is a thing your device failed to say.</li>
+    </ul>
+    <p>Then ask them one question: <em>would you leave this switched on tonight?</em> The answer to that is worth more than everything else you will collect.</p>
+    <div class="ifnot"><b>If you are working alone</b>Install it where it belongs and leave it for a week without touching it. Then write down: did it still work, did you trust it, and did you actually use what it told you. A week of leaving something alone tests things no demonstration reaches, and it will find something.</div>
+
+    <h3 style="margin-top:.8rem">The honest evaluation</h3>
+    <p>One page, written against the criteria you wrote in Part 7, before you knew how it would turn out. For each of your five criteria, write which of these it is:</p>
+    <ul class="plain">
+      <li><strong>Met.</strong> With the evidence: what you did to check, and what happened.</li>
+      <li><strong>Partly met.</strong> With what is missing and what it would take.</li>
+      <li><strong>Not met.</strong> With why, honestly. A criterion you missed and understood is worth more than one you quietly rewrote.</li>
+    </ul>
+    <div class="ifnot"><b>The rule about changing criteria</b>You may not change them now. If you found halfway through that one was wrong, say so in the evaluation and explain what you learned. That is a better answer than a list of five green ticks, and any facilitator worth having will value it more.</div>
+  </div>
+</section>
+
+<section class="part" id="evidence">
+  <div class="parthead"><span class="tag">Evidence</span><h2>What to hand in</h2></div>
+  <div class="col stack">
+    <p>Five pieces. All of them producible on your own, all reviewable in ten minutes.</p>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Piece</th><th>What it is</th><th>What it proves</th></tr></thead>
+        <tbody>
+          <tr><td><strong>The thing itself</strong></td><td>A three-minute video of it working where it belongs, including the power-cut test</td><td>That it exists, and that it works somewhere other than your desk</td></tr>
+          <tr><td><strong>The brief and criteria</strong></td><td>Their words in quotation marks, and your five criteria, dated before the build</td><td>That you solved a real problem rather than an imagined one</td></tr>
+          <tr><td><strong>The documentation</strong></td><td>Wiring drawing, pin table with the why column, and your commented sketch</td><td>That somebody else could build it</td></tr>
+          <tr><td><strong>The build log</strong></td><td>What broke, what you tried, what fixed it, in order</td><td>That you debugged rather than copied. A log with no failures in it is a copied project.</td></tr>
+          <tr><td><strong>The evaluation</strong></td><td>One page against your own criteria, plus what the user said</td><td>That you can judge your own work without flattering it</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout">
+      <h5>The ninety-second explain</h5>
+      <p>One more thing, and it is the cheapest to record and the hardest to fake. A voice note, ninety seconds, walking through your own sketch.</p>
+      <p>Pick any line and say why it is there. If you cannot say why line 12 exists, the band is not earned yet, and it is far better to find that out now than in six months when somebody asks you to change it.</p>
+    </div>
+
+    <h3 style="margin-top:.6rem">Show your work</h3>
+    <p>Post all five pieces. Then look at one other person's capstone and do the hardest useful thing: build their project from their documentation alone and tell them exactly where you got stuck.</p>
+    <div class="ifnot"><b>If you are doing this course alone</b>There may be nobody to post to and nobody else's work to look at. That is fine, and it does not let you off this part. Do it this way instead: save the video, the photographs and all five documents into a folder named for this band, and then be your own second reader. Take the build apart, wait a day, and rebuild it from your own documentation only. Every point where you had to remember something rather than read it is a gap, and you should fix it before you call the band finished.</div>
+  </div>
+</section>
+
+<section class="part" id="check">
+  <div class="parthead"><span class="tag">Part 12</span><h2>Check yourself</h2><span class="mins">20 min</span></div>
+  <div class="col stack">
+    <p>Code you have not seen. Answer from reading only. Do not upload it.</p>
+    <pre><code>const int IDLE  = 0;
+const int OPEN  = 1;
+const int SHUT  = 2;
+
+int state = IDLE;
+int lampPin = 7;
+int buzzerPin = 6;
+int sensorPin = A0;
+
+unsigned long stateSince = 0;
+
+void enterState(int newState) {
+  state = newState;
+  stateSince = millis();
+
+  if (state == IDLE) digitalWrite(lampPin, LOW);
+  if (state == OPEN) {
+    digitalWrite(lampPin, HIGH);
+    tone(buzzerPin, 880);
+  }
+}
+
+void setup() {
+  pinMode(lampPin, OUTPUT);
+  pinMode(buzzerPin, OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  int reading = analogRead(sensorPin);
+
+  if (state == IDLE &amp;&amp; reading &gt; 600) enterState(OPEN);
+  if (state == OPEN &amp;&amp; reading &lt; 600) enterState(SHUT);
+  if (state == SHUT &amp;&amp; millis() - stateSince &gt; 2000) enterState(IDLE);
+}</code></pre>
+    <ol class="num">
+      <li>Three states are named. How many of them does <code>enterState</code> set the outputs for?</li>
+      <li>The device goes IDLE, then OPEN, then SHUT. Describe exactly what the lamp and the buzzer are doing once it reaches SHUT, and say why.</li>
+      <li>There is no <code>enterState</code> call in <code>setup</code>. Name one thing that is different because of that, in the first moment after the power comes on.</li>
+      <li>The sensor is sitting right on the boundary and its reading wobbles between 599 and 601. Follow what happens, round by round, and say what a person watching would see and hear.</li>
+      <li>Fix question 4 without adding a new state and without changing <code>loop</code>. Say which two numbers you would use and why they must be different.</li>
+      <li>Somebody says &#8220;this is fine, it only has three states, so nothing can go wrong&#8221;. Using questions 2 and 4, say in two sentences why having states is not by itself enough.</li>
+    </ol>
+    <details><summary>Answers</summary><div class="inner">
+      <p><strong>1.</strong> Two. <code>SHUT</code> has no line at all in <code>enterState</code>.</p>
+      <p><strong>2.</strong> <strong>The lamp stays on and the buzzer keeps sounding, for ever, until the state changes again.</strong> Nothing turns them off, because <code>enterState</code> never mentions <code>SHUT</code>. This is exactly the fault Part 5 warns about: <em>set every output every time, including the ones being switched off.</em> <em>This is the question that matters most in this band. A state machine does not protect you if the door out of it forgets something.</em></p>
+      <p><strong>3.</strong> Two things. <code>stateSince</code> is 0 rather than the moment the device started, so the two-second wait in SHUT is measured from the wrong place the first time round. And the lamp is never explicitly switched off, so at power-up it is in whatever state the pin happens to come up in rather than a state you chose.</p><p>A single <code>enterState(IDLE)</code> at the end of <code>setup</code> fixes both. It will not tell you what state you began in, though: unlike <code>b8_01</code>, this <code>enterState</code> has no <code>Serial.print</code> in it. Adding one is the second thing worth doing, and it is the single most useful line you can add to any state machine.</p>
+      <p><strong>4.</strong> 601 sends it to OPEN, so the lamp and buzzer come on. 599 sends it to SHUT, which silences nothing, so they stay on. Two seconds later it goes to IDLE and the lamp goes off but the buzzer is still sounding. Then 601 again and round it goes. A person sees the lamp flickering on and off every couple of seconds while the buzzer never stops. It looks broken and every single line is doing what it says.</p>
+      <p><strong>5.</strong> Two different numbers: go to OPEN above about 620, and back to SHUT only below about 580. The reading then has to move a real distance to change anything, so a wobble of one or two cannot flap it. They must be different, because a single boundary is a line the reading sits on, and any reading that sits on a line will cross it constantly. You met this in Band 4 with the light threshold, in Band 6 with the deadband, and in Part 8 of this band with <code>alarmLevel</code> and <code>clearLevel</code>.</p>
+      <p><strong>6.</strong> States stop the device being in a combination nobody thought about, and that is worth a lot. They do not stop you forgetting an output on the way into a state, and they do not stop a wobbling reading throwing you between two states many times a second.</p>
+    </div></details>
+  </div>
+</section>
+
+<section class="part" id="recall">
+  <div class="parthead"><span class="tag">Part 13</span><h2>Say these out loud</h2></div>
+  <div class="col stack">
+    <p>Part 12 was the real test. This is a warm-up for it, and a list to come back to. Say each of these out loud, to somebody or to yourself, without looking anything up.</p>
+    <ul class="plain">
+      <li>Draw your own project as boxes and arrows, and name every state and every transition</li>
+      <li>Say why three true-or-false names are more dangerous than one name with four values</li>
+      <li>Say why <code>enterState</code> sets every output, including the ones being switched off</li>
+      <li>Turn a sentence somebody said into a criterion that can be checked</li>
+      <li>Say what your device does when the power comes back, and why you chose that</li>
+      <li>Hand your documentation to a stranger and have them build it</li>
+      <li>Say one thing about your own build that is not good enough yet</li>
+    </ul>
+    <div class="callout">
+      <h5>The one sentence from this band</h5>
+      <p>It works on my desk is not a claim about the device. It is a claim about the desk.</p>
+    </div>
+
+  </div>
+  <div class="col stack" style="margin-top:1.2rem">
+    <div class="callout">
+      <h5>Still stuck after 30 minutes?</h5>
+      <p>Photograph the board from above, post your sketch, and say <strong>which state it was in when it went wrong</strong> and which state you expected. In this band that one detail is worth more than everything else, because it turns &#8220;it does not work&#8221; into a question somebody can answer.</p>
+      <div class="ifnot"><b>If there is nobody to send it to</b>Write the three things down anyway, in your build log: what you expected, what happened, and what you have already tried. Add a print inside <code>enterState</code> if there is not one, and watch the serial monitor while you reproduce the fault. The sequence of states it prints usually contains the answer.</div>
+    </div>
+  </div>
+</section>
+
+<section class="part" id="problems">
+  <div class="parthead"><span class="tag">Problems</span><h2>When something goes wrong</h2></div>
+  <div class="col stack">
+    <div class="scroll">
+      <table>
+        <thead><tr><th>What you see</th><th>What it usually is</th><th>What to do</th></tr></thead>
+        <tbody>
+          <tr><td>A light or buzzer stuck on in one state</td><td><code>enterState</code> does not set that output for that state</td><td>Set <strong>every</strong> output in <code>enterState</code>, including the ones being switched off. See Part 5.</td></tr>
+          <tr><td>The device freezes and no branch runs</td><td>Flags instead of one state</td><td>See Part 4. Rewrite it as one <code>state</code> variable.</td></tr>
+          <tr><td>One button press skips two states</td><td>Bounce</td><td>Only act on the moment of pressing, and debounce. Band 3, and <code>buttonJustPressed</code> in <code>b8_01</code>.</td></tr>
+          <tr><td>It alarms and clears repeatedly on the boundary</td><td>One threshold instead of two</td><td>Use a different number for going in and coming out. See Part 8.</td></tr>
+          <tr><td>Everything stops for a second at a time</td><td>A <code>delay</code> inside a state function</td><td><code>millis</code> and <code>stateSince</code>. Band 5, and every state machine here.</td></tr>
+          <tr><td>Works on the desk, fails where it lives</td><td>Light, temperature, mounting or power differ there</td><td>Recalibrate in place. Band 4 taught this and it is still true.</td></tr>
+          <tr><td>Comes back doing the wrong thing after a power cut</td><td><code>setup</code> does not choose a state</td><td>End <code>setup</code> with <code>enterState(...)</code> naming the safe one. See Part 9.</td></tr>
+          <tr><td>Wires fall out when it is carried</td><td>No strain relief</td><td>Tape every wire down where it leaves the board. A breadboard is not a permanent joint and never was.</td></tr>
+          <tr><td>Somebody used it wrongly</td><td>Not their fault</td><td>Write down exactly what they did. That is your best finding of the day.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:1rem">That is Band 8, and the end of the ladder. Go and build something nobody asked you to.</p>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Done</span><h2>What you know now</h2></div>
+  <div class="col stack">
+    <h3 style="margin-top:.8rem">And that is the ladder</h3>
+    <p>Nine bands. You started by making one light blink and not knowing which way round an LED goes. You can now measure the world, decide what a measurement means, move something in response, tell a person about it, organise a program that does several things at once, and find out honestly whether what you built is any use.</p>
+    <p>None of that is beginner work any more. The parts in your box have not changed since Band 0, and everything you can now do with them came from you.</p>
+    <p class="note">What comes next is not another band. It is a bigger problem, a part you have not used before, and the same six steps you have run nine times: think first, guess, run it, look closer, change it, make your own. That pattern is the thing you actually learned. The Arduino was only where you practised it.</p>
+    <h3 style="margin-top:.8rem">Before you call the ladder finished, make sure you have</h3>
+    <ul class="plain">
+      <li>All five pieces of evidence from the Evidence section, saved together in one folder</li>
+      <li>Your brief in the user&#8217;s own words, and your five criteria, written before you built anything</li>
+      <li>Your states drawn as boxes and arrows, and the transition table from Part 5</li>
+      <li>Your Bronze, Silver or Gold change to the tank alarm from Part 11, with the note on what it cost</li>
+      <li>Your ninety-second voice note explaining your own code</li>
+      <li>Your build log, with at least one thing that broke and what fixed it</li>
+      <li>Five or six correct answers in Part 12, including question 2</li>
+    </ul>
+  </div>
+</section>
+
+
+<nav class="pager" aria-label="Bands">
+<a href="band-7.html"><span class="dir">Previous</span><span class="name">Band 7: Distance and Display</span></a>
+<a class="next" href="../guide.html"><span class="dir">Next</span><span class="name">That is the whole ladder. Read the facilitator guide &rarr;</span></a>
+</nav>
+
+<footer>
+  <p>Bozoma Innovation Hub &nbsp;&middot;&nbsp; Aiyinasi, Ellembelle District. Band 8 of nine, and the end of the ladder. Every sketch used here was compiled and tested before it reached you.</p>
+</footer>
+</div>
+</body>
+</html>

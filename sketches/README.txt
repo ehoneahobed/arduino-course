@@ -1,22 +1,33 @@
 ==================================================================
-  ARDUINO SKETCHES  -  ALL 26 FILES, BANDS 0 TO 5
+  ARDUINO SKETCHES  -  ALL 41 FILES, BANDS 0 TO 8
   Bozoma Innovation Hub, Aiyinasi
 ==================================================================
 
-  This folder holds every sketch in the course. It is two packs
-  joined together, so you will find two sets of notes below:
-  bands 0, 1 and 2 first, then bands 3, 4 and 5.
+  This folder holds every sketch in the course. It is three packs
+  joined together, so you will find three sets of notes below:
+  bands 0 to 2 first, then bands 3 to 5, then bands 6 to 8.
 
-  26 files in all. Every one was compiled and tested for the
+  41 files in all. Every one was compiled and linked for the
   ATmega328P chip before it was given to you.
 
-  Three of them fail ON PURPOSE, and the course tells you which
-  and why:
+  Five of them misbehave ON PURPOSE, and the course tells you
+  which and why:
     b0_03_buggy_semicolon.ino  will not compile at all
     b3_03_toggle_buggy.ino     compiles, does the wrong thing
     b5_03_blocking_problem.ino compiles, does the wrong thing
+    b6_03_buggy_jitter.ino     compiles, will not hold still
+    b8_02_buggy_flags.ino      compiles, freezes and cannot heal
+
+  A sixth, b7_04_buggy_flicker.ino, works but is unpleasant to
+  look at, also on purpose.
 
   Everything else compiles cleanly and does what its header says.
+
+  LIBRARIES. Bands 0 to 5 need none. Band 6 uses Servo and Band 7
+  uses LiquidCrystal, and both of those come with the Arduino
+  software already. The ONLY one you may have to install is
+  LiquidCrystal_I2C, and only if your screen has a small board on
+  the back with four pins. Band 7 Part 6a walks you through it.
 
   ONE HOLE, ONE LEG. A breadboard hole takes one lead and no
   more. Where a resistor leg has a hole, the jumper wire goes in
@@ -257,6 +268,146 @@ ABOUT THESE FILES
   Two of them fail at their JOB on purpose, b3_03 and
   b5_03, and the bands tell you which and why. Neither of them
   fails to compile.
+
+  If a sketch does not do what its header says, the problem is
+  not the sketch. Work down the problems list at the bottom of
+  the band page, in order.
+
+
+
+==================================================================
+  ARDUINO SKETCHES FOR BANDS 6, 7 AND 8
+  Bozoma Innovation Hub, Aiyinasi
+  Pack 3 of 3: Move, Measure, Make
+==================================================================
+
+HOW TO OPEN THESE FILES
+
+  In the Arduino IDE, click File, then Open, and choose the file
+  you want. If the IDE says the file must be in a folder with the
+  same name, click yes and let it do it for you.
+
+  Every file has a long comment at the top telling you what it
+  does, how to wire it hole by hole, and which part of which band
+  it belongs to. Read that comment before you upload anything.
+
+
+LIBRARIES YOU NEED
+
+  Servo              comes with the Arduino software. Nothing
+                     to install. Used in Band 6.
+
+  LiquidCrystal      comes with the Arduino software. Nothing
+                     to install. For BARE 16-pin screens.
+
+  LiquidCrystal_I2C  YOU MUST INSTALL THIS ONE, and only if your
+                     screen has a small board on the back with
+                     four pins. Tools, then Manage Libraries,
+                     search for "LiquidCrystal I2C", and install
+                     the one by Frank de Brabander.
+
+  Band 7 has TWO of everything for the screen. Use the file that
+  matches the back of YOUR screen and ignore the other one.
+
+
+WHICH FILE IS WHICH
+
+  BAND 6  -  Things That Move  (servo)
+
+    b6_01_servo_sweep_given.ino
+      Sweeps the horn from end to end and back.
+      Your first moving thing. Three wires, no breadboard.
+
+    b6_02_servo_knob.ino
+      The knob sets the angle. Prints both numbers.
+
+    b6_03_buggy_jitter.ino
+      BUZZES ON PURPOSE. The arm will not hold still even with
+      your hand off the knob. Band 6 Part 6 explains why, and
+      the fix is called a deadband.
+
+    b6_04_servo_gate_worked.ino
+      The finished gate. Deadband, millis, four small functions.
+      Needs the battery pack and the shared ground wire.
+
+    b6_05_motor_driver.ino
+      OPTIONAL. A DC motor through an L293D driver board.
+      Skip it if you have no motor. Nothing later needs it.
+
+  BAND 7  -  Distance and Display  (ultrasonic, LCD)
+
+    b7_01_ping_given.ino
+      Prints the distance in centimetres. No screen needed.
+
+    b7_02_lcd_i2c_given.ino
+      Two lines of text. USE THIS if your screen has a small
+      board on the back with four pins.
+
+    b7_03_lcd_parallel_given.ino
+      The same two lines. USE THIS if your screen has sixteen
+      bare pins along the top. Twelve wires and a contrast knob.
+
+    b7_04_buggy_flicker.ino
+      FLICKERS ON PURPOSE. Written for the I2C screen. Band 7
+      Part 7 explains the two separate mistakes in it.
+
+    b7_05_bin_worked_i2c.ino
+    b7_05_bin_worked_parallel.ino
+      The finished parking guard. THE SAME DEVICE, TWICE.
+      Pick the one that matches your screen.
+      Note the sensor's Echo pin differs between them: pin 11
+      for I2C, pin 9 for parallel, because the bare screen
+      needs pin 11 for itself.
+
+  BAND 8  -  Build for Nzemaland  (state machines, capstone)
+
+    b8_01_states_given.ino
+      Four states, one button, one light. The shape you will
+      reuse for every project from here on.
+
+    b8_02_buggy_flags.ino
+      FREEZES ON PURPOSE. The same device written with three
+      true-or-false names instead of one state. Press three
+      times and watch the light stop being written to at all.
+
+    b8_03_tank_alarm_worked.ino
+      A whole capstone, end to end: a water tank alarm using
+      the Band 7 sensor pointed down at the water. Read its
+      header first; it explains the brief and the criteria.
+
+    b8_04_project_skeleton.ino
+      START YOUR OWN PROJECT FROM THIS FILE. It compiles as it
+      stands and does nothing, correctly. Work down the TODOs
+      from the top, beginning with the brief in words.
+
+
+FOUR THINGS THAT CATCH EVERYBODY
+
+  1. Two power sources need ONE SHARED GROUND. A servo running
+     off a battery still needs a wire from the battery's minus
+     to an Arduino GND pin. Without it the servo twitches and
+     nothing you change in the code will help.
+
+  2. A servo takes an ANGLE, never a speed. Slowness comes from
+     you sending many angles with waits between them.
+
+  3. A blank LCD is almost never a broken LCD. Turn the contrast
+     knob or the little blue screw slowly from one end to the
+     other BEFORE you suspect anything else.
+
+  4. A screen never wipes itself. Printing 99 where 100 was
+     leaves the old third character behind. Pad with spaces to
+     a fixed width.
+
+
+ABOUT THESE FILES
+
+  All fifteen were compiled and linked for the ATmega328P chip
+  before they were given to you. All fifteen compile cleanly.
+
+  Two of them fail at their JOB on purpose, b6_03 and b8_02,
+  and the bands tell you which and why. A third, b7_04, works
+  but is unpleasant to look at, also on purpose.
 
   If a sketch does not do what its header says, the problem is
   not the sketch. Work down the problems list at the bottom of

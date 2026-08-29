@@ -1,0 +1,928 @@
+<!doctype html>
+<html lang="en" data-band="7">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Band 7: Distance and Display · Arduino Ladder</title>
+  <meta name="description" content="Measuring distance with sound you cannot hear, and saying the answer on a screen of its own. Sixteen characters turns out to be a design problem.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+  <link rel="stylesheet" href="../assets/course.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the lesson</a>
+<div class="topbar">
+  <a class="home" href="../index.html">Arduino Ladder <span>· Bozoma Innovation Hub</span></a>
+  <nav class="bandlinks" aria-label="Bands"><a href="../bands/band-0.html">0</a><a href="../bands/band-1.html">1</a><a href="../bands/band-2.html">2</a><a href="../bands/band-3.html">3</a><a href="../bands/band-4.html">4</a><a href="../bands/band-5.html">5</a><a href="../bands/band-6.html">6</a><a href="../bands/band-7.html" aria-current="page">7</a><a href="../bands/band-8.html">8</a></nav>
+</div>
+<div class="wrap" id="main">
+<nav aria-label="Sections">
+  <a href="#start">Start here</a>
+  <a href="#echo">Think first</a>
+  <a href="#sensor">The sensor</a>
+  <a href="#build1">Measure something</a>
+  <a href="#read">Read the code</a>
+  <a href="#screen">The screen</a>
+  <a href="#build2">Wire the screen</a>
+  <a href="#flicker">Why it flickers</a>
+  <a href="#guard">Build the guard</a>
+  <a href="#closer">Look closer</a>
+  <a href="#change">Change it</a>
+  <a href="#make">Make yours</a>
+  <a href="#check">Check yourself</a>
+  <a href="#recall">Say these out loud</a>
+  <a href="#problems">Problems</a>
+</nav>
+
+<header style="padding:3rem 0 1rem">
+  <p class="eyebrow">Bozoma Innovation Hub &nbsp;·&nbsp; Arduino Ladder &nbsp;·&nbsp; Band 7</p>
+  <h1 style="margin:.8rem 0">Distance and Display</h1>
+  <p class="col sub" style="font-size:1.1em">Your board learns to measure how far away something is, using sound you cannot hear. Then it learns to say the answer on a screen of its own, instead of into a serial monitor nobody is watching. That second half is what turns a project into a device.</p>
+  <p class="col note" style="margin-top:.8rem">About 8 hours. Finish Bands 4 and 5 first. Band 6 is useful but not required: the servo here is optional.</p>
+</header>
+
+<section class="sketchbox">
+  <h2>Sketches for this band</h2>
+  <ul><li><a href="../sketches/b7_01_ping_given.ino">b7_01_ping_given.ino</a></li><li><a href="../sketches/b7_02_lcd_i2c_given.ino">b7_02_lcd_i2c_given.ino</a></li><li><a href="../sketches/b7_03_lcd_parallel_given.ino">b7_03_lcd_parallel_given.ino</a></li><li><a href="../sketches/b7_04_buggy_flicker.ino">b7_04_buggy_flicker.ino</a></li><li><a href="../sketches/b7_05_bin_worked_i2c.ino">b7_05_bin_worked_i2c.ino</a></li><li><a href="../sketches/b7_05_bin_worked_parallel.ino">b7_05_bin_worked_parallel.ino</a></li></ul>
+  <p>Click one to save it, or get every sketch at once from <a href="../downloads/arduino-ladder-sketches.zip" style="border:0;background:none;padding:0">the downloads page</a>. Each file opens with a plain-English header telling you what it does and how to wire it.</p>
+</section>
+
+
+<section class="part" id="start">
+  <div class="parthead"><span class="tag">Start here</span><h2>Why a screen changes everything</h2></div>
+  <div class="col stack">
+    <p>Everything you have measured so far has been reported to a serial monitor. That means the board has to be attached to a computer, and somebody has to be looking at the right window.</p>
+    <p>A device with its own screen is a different thing. Unplug it, carry it to the tank, and it still tells you what it knows. That is the whole difference between an experiment and something a person can use.</p>
+    <p>So this band does two jobs at once:</p>
+    <ul class="plain">
+      <li><strong>A new sense.</strong> Distance, measured with a click you cannot hear, and the arithmetic that turns a time into a length.</li>
+      <li><strong>A new output.</strong> Sixteen characters by two rows, which sounds like plenty and turns out to be a design problem all of its own.</li>
+    </ul>
+
+    <h3 style="margin-top:.5rem">By the end you will be able to</h3>
+    <ul class="plain">
+      <li>Measure a distance and say where every number in the calculation comes from</li>
+      <li>Tell the difference between &#8220;zero centimetres&#8221; and &#8220;I heard nothing&#8221;</li>
+      <li>Wire an LCD screen, of either kind, and get letters onto it</li>
+      <li>Explain why a screen flickers, and write to it in a way that does not</li>
+      <li>Fit a useful message into sixteen characters</li>
+      <li>Install a library you did not already have</li>
+    </ul>
+
+    <h3 style="margin-top:.6rem">What you need</h3>
+    <ul class="plain">
+      <li>Your board, USB cable and breadboard</li>
+      <li>An <strong>HC-SR04</strong> ultrasonic sensor, the one with two silver eyes and four pins</li>
+      <li>An <strong>LCD1602</strong> screen, either kind. Part 5 tells you which you have.</li>
+      <li>A passive buzzer, the one where you can see a small green circuit board underneath</li>
+      <li>A 10k potentiometer, <em>only</em> if your screen has sixteen bare pins</li>
+      <li>A tape measure or a ruler, and a wall</li>
+      <li>About twenty jumper wires</li>
+      <li><em>Optional:</em> a servo from Band 6, for a lid that opens</li>
+    </ul>
+    <div class="ifnot"><b>If you have no LCD screen</b>Everything in this band works with the serial monitor instead, and the sensor half is unaffected. Parts 5 to 7 become reading rather than building. What you will miss is the design problem of sixteen characters, which is genuinely worth meeting, so borrow one if you can.</div>
+  </div>
+</section>
+
+<section class="part" id="echo">
+  <div class="parthead"><span class="tag">Part 1</span><h2>Think first: shouting at a wall</h2><span class="mins">15 min</span></div>
+  <div class="col stack">
+    <p>No board for this part. You need a wall, a large open space, and a friend if you have one.</p>
+
+    <h3>If you have somewhere with an echo</h3>
+    <p>A long corridor, a big empty room, a wall across a field, the side of a building.</p>
+    <div class="steps">
+      <div class="step"><div class="body">
+        <p><strong>Stand well back from the wall and clap once, hard.</strong> Listen.</p>
+        <div class="see"><b>You should see</b>If you are far enough away, you hear your own clap come back a moment later. If you are too close, the two run together and you hear one sound.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Walk further back and clap again.</strong> Then further again.</p>
+        <div class="see"><b>You should see</b>The gap between the clap and its echo gets longer, and the further you go the more obvious it is.</div>
+      </div></div>
+    </div>
+
+    <h3 style="margin-top:.6rem">If there is nowhere with an echo</h3>
+    <p>Do it with a ball instead, which is the same experiment slowed down so you can see it.</p>
+    <div class="steps">
+      <div class="step"><div class="body">
+        <p><strong>Stand two big steps from a wall and roll a ball at it,</strong> hard enough to come back to you. Count out loud, one number per second, from the moment it leaves your hand to the moment it returns.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Now stand four big steps back and do exactly the same,</strong> rolling with the same strength.</p>
+        <div class="see"><b>You should see</b>Twice the distance takes roughly twice the count. Not exactly, because a rolling ball slows down. Sound does not, which is why sound is the better tool for this.</div>
+      </div></div>
+    </div>
+
+    <div class="callout">
+      <h5>Write these down</h5>
+      <ol class="num">
+        <li>What exactly did you measure? A distance, or something else?</li>
+        <li>The sound went to the wall <em>and came back</em>. So does your measurement describe the distance to the wall, or something else?</li>
+        <li>If you knew how fast sound travels, could you work out the distance from your time? Say how, in words, without doing any arithmetic.</li>
+        <li>You clapped in a room with a soft curtain on one wall and heard no echo at all. Does that mean the curtain is not there?</li>
+      </ol>
+    </div>
+
+    <p>That last question is the one that will save you an hour later. <strong>No echo does not mean nothing is there.</strong> It means nothing came back.</p>
+    <p>Soft things swallow the click. Angled things send it off sideways. Very close things get their echo back before the sensor has finished listening. Your sensor reports the same thing for all three as it does for an empty room.</p>
+    <p class="note">Keep the paper. In Part 3 your sensor will read 0, and you will already know what that means.</p>
+  </div>
+</section>
+
+<section class="part" id="sensor">
+  <div class="parthead"><span class="tag">Part 2</span><h2>What the sensor actually gives you</h2><span class="mins">20 min</span></div>
+  <div class="col stack">
+    <p>Take out the HC-SR04. It is a small board with two silver cylinders on the front, which look like eyes and are not. One is a tiny loudspeaker. The other is a tiny microphone.</p>
+    <p>Look at the four pins along the bottom edge. Their names are printed on the board itself: <code>VCC</code>, <code>Trig</code>, <code>Echo</code>, <code>GND</code>. Read them off your own board now rather than trusting any picture, including the one below.</p>
+
+    <figure>
+      <svg viewBox="0 0 660 400" role="img" aria-label="An ultrasonic sensor sends a click at a wall and listens for it to come back. The sound travels to the wall and back again, so the measured time covers twice the distance.">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#C0503A"/></marker><marker id="ab" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#4A7FC8"/></marker><marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#3F8A55"/></marker></defs>
+<g fill="none" stroke="currentColor" stroke-width="1.6">
+  <rect x="50" y="130" width="90" height="110" rx="5"/>
+  <circle cx="72" cy="160" r="17"/><circle cx="118" cy="160" r="17"/>
+  <rect x="560" y="60" width="26" height="270" rx="3"/>
+</g>
+<g font-size="11" fill="currentColor" font-family="IBM Plex Mono, monospace" text-anchor="middle">
+  <text x="72" y="164">T</text><text x="118" y="164">R</text>
+  <text x="95" y="222">HC-SR04</text><text x="573" y="350">wall</text>
+</g>
+<g fill="none" stroke-width="2.4">
+  <line x1="150" y1="150" x2="550" y2="150" stroke="#A87A1E" marker-end="url(#a)" opacity="0"/>
+  <line x1="150" y1="150" x2="548" y2="150" stroke="#A87A1E"/>
+  <path d="M540 144 L550 150 L540 156" stroke="#A87A1E" fill="none"/>
+  <line x1="548" y1="210" x2="150" y2="210" stroke="#4A7FC8"/>
+  <path d="M160 204 L150 210 L160 216" stroke="#4A7FC8" fill="none"/>
+</g>
+<g font-size="12.5" font-family="Archivo, Arial, sans-serif">
+  <text x="350" y="140" text-anchor="middle" fill="#A87A1E">the click goes out</text>
+  <text x="350" y="234" text-anchor="middle" fill="#4A7FC8">the echo comes back</text>
+</g>
+<g stroke="currentColor" stroke-width="1" opacity="0.5"><line x1="150" y1="262" x2="150" y2="290"/><line x1="548" y1="262" x2="548" y2="290"/><line x1="150" y1="278" x2="548" y2="278"/></g>
+<text x="349" y="270" text-anchor="middle" fill="currentColor" font-size="11" opacity="0.75" font-family="IBM Plex Mono, monospace">the distance you want</text>
+<g fill="currentColor" font-size="13" font-family="Archivo, Arial, sans-serif">
+  <text x="330" y="322" text-anchor="middle">The sensor gives you a <tspan font-weight="700">time</tspan>, in millionths of a second. It never gives you a distance.</text>
+  <text x="330" y="344" text-anchor="middle">Sound covers about <tspan font-weight="700">1 cm every 29 millionths of a second</tspan>, and the time you</text>
+  <text x="330" y="366" text-anchor="middle">measured covers the trip out <tspan font-style="italic">and</tspan> the trip back.</text>
+</g>
+<text x="330" y="392" text-anchor="middle" fill="#3F8A55" font-size="13" font-weight="700" font-family="IBM Plex Mono, monospace">distance in cm = time / 29 / 2</text>
+</svg>
+      <figcaption>The sensor sends a click and listens for it to come back. What it hands you is the length of time that took, and that time covers the journey there and the journey back.</figcaption>
+    </figure>
+
+    <h3 style="margin-top:.5rem">The two numbers, and where they come from</h3>
+    <p>Here is the line that turns the sensor's answer into centimetres. Every part of it means something.</p>
+    <pre><code>long cm = microseconds / 29 / 2;</code></pre>
+    <dl class="tier">
+      <dt>29</dt><dd>Sound travels about one centimetre every 29 millionths of a second in ordinary air. That is the speed of sound written upside down, in a form that is convenient here. Dividing by it turns a time into a length.</dd>
+      <dt>2</dt><dd>Your click went to the wall <em>and came back</em>. So the length you just calculated covers the distance twice. Halving it gives you the distance to the wall.</dd>
+    </dl>
+    <p><strong>Neither number is magic and neither should be copied without understanding.</strong> If you were measuring underwater the 29 would be completely different, because sound travels four times faster in water. The 2 would stay the same, because there and back is there and back wherever you are.</p>
+
+    <div class="callout">
+      <h5>Why 29 and not 0.034</h5>
+      <p>You may see this written as <code>cm = microseconds * 0.034 / 2</code> elsewhere. It is the same sum. 0.034 centimetres per microsecond is the speed of sound; 29 microseconds per centimetre is the same fact upside down.</p>
+      <p>Dividing by 29 keeps everything in whole numbers. This chip is much faster at those. It also brings back the trap from Band 4: <code>147 / 29 / 2</code> gives 2, not 2.53.</p>
+      <p>For a parking guard, whole centimetres are plenty. For something needing millimetres, you would keep the microseconds and scale them differently.</p>
+    </div>
+
+    <div class="words">
+      <h5>Words to know</h5>
+      <dl>
+        <dt>ultrasonic</dt><dd>Sound too high for a person to hear. This sensor uses it so that measuring does not make a noise.</dd>
+        <dt>microsecond</dt><dd>A millionth of a second. There are a thousand of them in a millisecond.</dd>
+        <dt><code>pulseIn</code></dt><dd>Waits for a pin to go HIGH, times how long it stays HIGH, and hands you that time in microseconds.</dd>
+        <dt>time of flight</dt><dd>Measuring a distance by timing how long something takes to get there and back. Radar and depth sounders work the same way.</dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section class="part" id="build1">
+  <div class="parthead"><span class="tag">Part 3</span><h2>Guess, then measure something</h2><span class="mins">40 min</span></div>
+  <div class="col stack">
+    <p>Read the sketch first. You have seen every instruction in it except two.</p>
+
+    <pre><code>digitalWrite(trigPin, LOW);
+delayMicroseconds(2);
+digitalWrite(trigPin, HIGH);
+delayMicroseconds(10);
+digitalWrite(trigPin, LOW);
+
+unsigned long microseconds = pulseIn(echoPin, HIGH, 25000);
+
+long cm = microseconds / 29 / 2;</code></pre>
+
+    <div class="callout">
+      <h5>Guess before you run it</h5>
+      <ol class="num">
+        <li><code>delayMicroseconds(10)</code>. You know <code>delay</code> counts in milliseconds. How long is this wait, as a fraction of a second?</li>
+        <li>What do you think happens if nothing at all is in front of the sensor? Give a number.</li>
+        <li>The <code>25000</code> at the end of <code>pulseIn</code> is a time limit. Using the 29 from Part 2, roughly how far away is that in centimetres? Show your working.</li>
+        <li>What would happen without that limit, if no echo ever came back?</li>
+      </ol>
+    </div>
+
+    <h3 style="margin-top:.6rem">Now wire it</h3>
+    <div class="ifnot" style="margin-bottom:.4rem"><b>Start from an empty board</b>Unplug the USB. Take everything from Band 6 off the breadboard: the servo wires, the knob, the light, the button, the resistor. Put them back in the box. Leave only the two rail wires if you like, but check where they go before you trust them.</div>
+
+    <div class="steps">
+      <div class="step"><div class="body">
+        <p><strong>Push the sensor into the breadboard.</strong> Its four pins go into <code>f20</code>, <code>f21</code>, <code>f22</code> and <code>f23</code>. Stand it up so the two silver eyes face away from the board.</p>
+        <p class="note">All four pins go in <strong>one block</strong>, rows f to j. The sensor is not wide enough to straddle the middle channel, and it does not need to: its four pins are separate anyway.</p>
+        <div class="see"><b>You should see</b>The sensor standing up firmly with all four pins fully in, and the eyes pointing out across the table rather than at the ceiling.</div>
+        <div class="ifnot"><b>If the pins will not go in</b>They are thicker than an LED's legs and need a firm push. Press on the <strong>board</strong> of the sensor, evenly, not on one pin. If it goes in crooked, pull it straight out and start again.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Check the pin order on your own board.</strong> Read the printing next to the pins. On almost all of them the order is <code>VCC</code>, <code>Trig</code>, <code>Echo</code>, <code>GND</code>, reading left to right with the eyes facing you. Column 20 is the leftmost one.</p>
+        <div class="ifnot"><b>If yours is in a different order</b>Follow your board, not this page. Wire each named pin to the place the table says, whichever column it lands in, and write down what you did.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Four wires:</strong> <code>j20</code> to 5V, <code>j21</code> to pin 10, <code>j22</code> to pin 11, <code>j23</code> to GND.</p>
+        <div class="see"><b>You should see</b>Four wires, each firm at both ends, going to four different places.</div>
+        <div class="ifnot"><b>Pin 11 may have to move later</b>Turn your screen over now and look at the back. If it is <strong>bare, with sixteen pins along the top and no small board on the back</strong>, then that screen is going to want pin 11 for itself in Part 6, and only one wire fits in a pin.<br><br>You can leave Echo on pin 11 for this part, because the screen is not wired yet. Part 6b will tell you when to move it to <strong>pin 9</strong>, and every sketch after that already expects it there. Write a note to yourself now so you are not surprised.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Plug in, upload <code>b7_01_ping_given.ino</code>, and open the serial monitor</strong> (Tools, then Serial Monitor, and check the box in the corner says 9600).</p>
+        <div class="see"><b>You should see</b>Two numbers streaming past about five times a second: a time in microseconds and a distance in centimetres. Put your hand in front of the sensor and watch both fall together. Take it away and watch them climb.</div>
+        <div class="ifnot"><b>If both numbers are always 0</b>Nothing is coming back. Point it at a wall, flat on, from about 30 cm. If it is still 0, check the Trig and Echo wires: they are easy to swap, and swapped they give exactly this.</div>
+        <div class="ifnot"><b>If the numbers are wild and jump about</b>Hold the sensor still. It is very sensitive to being tilted, and it will happily measure the ceiling or the table rather than what you meant.</div>
+        <div class="ifnot"><b>If nothing prints at all</b>The serial monitor is not at 9600, or the board is not selected. Check the box in the corner of the serial monitor window first.</div>
+      </div></div>
+    </div>
+
+    <details><summary>The answers to the four questions</summary><div class="inner">
+      <p><strong>1.</strong> Ten millionths of a second. A hundred thousand times shorter than <code>delay(1)</code>. That is why there is a separate instruction for it: <code>delay</code> cannot do waits this short.</p>
+      <p><strong>2.</strong> Most people say a very large number. The answer is <strong>0</strong>, and that surprises everybody. When no echo returns, <code>pulseIn</code> gives up and hands back 0. A reading of 0 means &#8220;I heard nothing&#8221;, which is the opposite of &#8220;something is touching me&#8221;.</p>
+      <p><strong>3.</strong> 25000 divided by 29 is about 862 centimetres of travel, and half of that is about <strong>4.3 metres</strong>. So anything further than about four metres reads as 0.</p>
+      <p><strong>4.</strong> Without a limit, <code>pulseIn</code> falls back to its own default, which is a <strong>whole second</strong>. It sits there for that second waiting for an echo that never comes, and while it waits <strong>nothing else on the board runs at all</strong>. That is the Band 5 problem in a new place: a single instruction that stops everything. Your own limit of 25000 turns a one-second stall into a twenty-five thousandth of a second one.</p>
+    </div></details>
+
+    <h3 style="margin-top:.8rem">Now check it against a real ruler</h3>
+    <p>A number on a screen is a claim. Claims get checked.</p>
+    <div class="steps">
+      <div class="step"><div class="body">
+        <p><strong>Lay a tape measure or ruler on the table with its zero right at the front of the sensor's eyes.</strong></p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Stand a book upright at 10 cm, flat side facing the sensor.</strong> Read the serial monitor. Write down what the sensor says next to what the ruler says.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Repeat at 20, 40, 80 and 150 cm.</strong> Fill in this table.</p>
+        <div class="scroll">
+          <table>
+            <thead><tr><th>Ruler says</th><th>Sensor says</th><th>Difference</th></tr></thead>
+            <tbody>
+              <tr><td>10 cm</td><td></td><td></td></tr>
+              <tr><td>20 cm</td><td></td><td></td></tr>
+              <tr><td>40 cm</td><td></td><td></td></tr>
+              <tr><td>80 cm</td><td></td><td></td></tr>
+              <tr><td>150 cm</td><td></td><td></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="see"><b>You should see</b>Agreement within a centimetre or two across the whole range. That is genuinely good for a part this cheap.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Now try three awkward things.</strong> Write down what happens for each one.</p>
+        <ol class="num">
+          <li>A folded towel or a jumper at 40 cm.</li>
+          <li>The book at 40 cm, but turned at a steep angle.</li>
+          <li>Your hand at 2 cm.</li>
+        </ol>
+        <div class="see"><b>You should see</b>The towel reads far away or 0, because soft things swallow the click. The angled book reads far away or 0, because the click bounces off sideways and never comes home. Your hand at 2 cm reads badly or not at all, because the sensor cannot hear an echo that arrives before it has finished shouting.</div>
+      </div></div>
+    </div>
+
+    <div class="callout">
+      <h5>This is the calibration lesson from Band 4, in a new coat</h5>
+      <p>In Band 4 you found that a light reading means nothing until you go and measure what it means in your room. Here you have found something slightly different and just as important.</p>
+      <p><strong>The sensor is accurate in the middle of its range and lies at both ends.</strong> It also lies about certain surfaces, at any distance at all.</p>
+      <p>So write two numbers in your build log: the closest and the furthest distance you would trust from your own sensor. Take them from your table, not from this page. Those two numbers belong to your build.</p>
+    </div>
+  </div>
+</section>
+
+<section class="part" id="read">
+  <div class="parthead"><span class="tag">Part 4</span><h2>Look closer: the shape of a measurement</h2><span class="mins">25 min</span></div>
+  <div class="col stack">
+    <p>Look at the five lines that start the measurement.</p>
+    <pre><code>digitalWrite(trigPin, LOW);
+delayMicroseconds(2);
+digitalWrite(trigPin, HIGH);
+delayMicroseconds(10);
+digitalWrite(trigPin, LOW);</code></pre>
+    <p>That is a <strong>pulse</strong>: off, on for exactly ten microseconds, off again.</p>
+    <p>The sensor's own instructions say it needs at least ten. The two microseconds of LOW at the start are there to make sure the pin has settled before the pulse begins.</p>
+    <p>You are not choosing these numbers. They come from the sheet the sensor's maker published, and reading such a sheet is a skill worth having. Search for &#8220;HC-SR04 datasheet&#8221; and look for the timing diagram. It will look hard to read, and you only need two lines of it.</p>
+    <div class="ifnot"><b>If you have no internet</b>You are not missing anything you need. The two numbers are already in front of you: <strong>2 microseconds LOW</strong> to settle the pin, then <strong>10 microseconds HIGH</strong> to start the measurement. Look up the sheet another day, when you are somewhere with a connection, purely to see what one looks like.</div>
+
+    <h3 style="margin-top:.6rem">Why <code>unsigned long</code> and not <code>int</code></h3>
+    <pre><code>unsigned long microseconds = pulseIn(echoPin, HIGH, 25000);</code></pre>
+    <p>You met this in Band 5 with <code>millis</code>, and the reason is the same. An ordinary <code>int</code> on this chip holds numbers up to 32767. The limit here is 25000, which fits, but only just, and a longer limit would not.</p>
+    <p class="note">The habit is worth keeping even when a number happens to fit today: anything holding a duration in microseconds or milliseconds is <code>unsigned long</code>. You will not remember which ones were tight.</p>
+
+    <h3 style="margin-top:.6rem">The function with a name</h3>
+    <p>In <code>b7_04</code> and <code>b7_05</code>, all of that lives in one place:</p>
+    <pre><code>long readDistance() {
+  ...
+  return microseconds / 29 / 2;
+}</code></pre>
+    <p>This is exactly what you learned to do in Band 5. Nine lines with one job, given a name, so that everywhere else in the sketch you can write <code>readDistance()</code> and be done.</p>
+    <p>Notice what else it buys you. Suppose you decide that a reading of 0 should mean &#8220;far away&#8221; rather than &#8220;touching&#8221;. You change that <strong>in one place</strong>.</p>
+    <p>That decision is a rule about your device. Rules about your device belong in one place each.</p>
+
+    <div class="callout">
+      <h5>A question to answer in your log</h5>
+      <p>In <code>b7_05</code>, <code>readDistance</code> turns a 0 into 999 before handing it back. In <code>b7_01</code> it does not.</p>
+      <p>Why is that right for one and wrong for the other? Answer in two sentences.</p>
+      <details><summary>Check your answer</summary><div class="inner">
+        <p><code>b7_01</code> is a measuring instrument. You want to see exactly what the sensor said, including 0, because you are learning what it does. Hiding the 0 would hide the lesson.</p>
+        <p><code>b7_05</code> is a device that has to act. Acting on a 0 as though it meant &#8220;touching&#8221; would make the guard scream at an empty room. So the decision &#8220;no echo means far away&#8221; is made once, on purpose, in the one place that reads the sensor.</p>
+      </div></details>
+    </div>
+  </div>
+</section>
+
+<section class="part" id="screen">
+  <div class="parthead"><span class="tag">Part 5</span><h2>Which screen do you have?</h2><span class="mins">20 min</span></div>
+  <div class="col stack">
+    <p>Take out the LCD and <strong>turn it over</strong>. What you see on the back decides everything about the next hour, so do this before reading further.</p>
+
+    <figure>
+      <svg viewBox="0 0 660 400" role="img" aria-label="The two kinds of LCD1602. The I2C kind has a small board on the back with four pins. The bare kind has sixteen pins along the top and needs a contrast knob.">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#C0503A"/></marker><marker id="ab" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#4A7FC8"/></marker><marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#3F8A55"/></marker></defs>
+<g font-size="13" fill="currentColor" font-family="Archivo, Arial, sans-serif" text-anchor="middle">
+  <text x="165" y="26" font-weight="700">With an I&#178;C board on the back</text>
+  <text x="495" y="26" font-weight="700">Bare, sixteen pins</text>
+</g>
+<g fill="none" stroke="currentColor" stroke-width="1.6">
+  <rect x="52" y="46" width="226" height="104" rx="5"/>
+  <rect x="70" y="62" width="190" height="60" rx="3"/>
+  <rect x="120" y="150" width="90" height="42" rx="3"/>
+  <rect x="382" y="46" width="226" height="104" rx="5"/>
+  <rect x="400" y="72" width="190" height="60" rx="3"/>
+</g>
+<g stroke="currentColor" stroke-width="1.6" fill="none"><line x1="400" y1="46" x2="400" y2="34"/><line x1="413" y1="46" x2="413" y2="34"/><line x1="426" y1="46" x2="426" y2="34"/><line x1="439" y1="46" x2="439" y2="34"/><line x1="452" y1="46" x2="452" y2="34"/><line x1="465" y1="46" x2="465" y2="34"/><line x1="478" y1="46" x2="478" y2="34"/><line x1="491" y1="46" x2="491" y2="34"/><line x1="504" y1="46" x2="504" y2="34"/><line x1="517" y1="46" x2="517" y2="34"/><line x1="530" y1="46" x2="530" y2="34"/><line x1="543" y1="46" x2="543" y2="34"/><line x1="556" y1="46" x2="556" y2="34"/><line x1="569" y1="46" x2="569" y2="34"/><line x1="582" y1="46" x2="582" y2="34"/><line x1="595" y1="46" x2="595" y2="34"/></g>
+<g stroke="currentColor" stroke-width="2" fill="none"><line x1="140" y1="192" x2="140" y2="206"/><line x1="157" y1="192" x2="157" y2="206"/><line x1="174" y1="192" x2="174" y2="206"/><line x1="191" y1="192" x2="191" y2="206"/></g>
+<g font-size="11" fill="currentColor" font-family="IBM Plex Mono, monospace" text-anchor="middle">
+  <text x="140" y="222">GND</text><text x="157" y="240">VCC</text><text x="174" y="222">SDA</text><text x="191" y="240">SCL</text>
+  <text x="495" y="26"></text>
+</g>
+<g fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="470" cy="216" r="20"/><line x1="470" y1="216" x2="470" y2="200"/>
+  <line x1="462" y1="236" x2="462" y2="252"/><line x1="470" y1="236" x2="470" y2="252"/><line x1="478" y1="236" x2="478" y2="252"/></g>
+<text x="470" y="272" text-anchor="middle" fill="currentColor" font-size="11" font-family="IBM Plex Mono, monospace">contrast knob</text>
+<g fill="currentColor" font-size="12.5" font-family="Archivo, Arial, sans-serif">
+  <text x="34" y="300">Four wires. Two are power, two carry</text>
+  <text x="34" y="318">the letters. Uses Arduino pins A4 and A5</text>
+  <text x="34" y="336">and nothing else. Start here if you have it.</text>
+  <text x="360" y="300">Twelve wires plus a knob. Every one has to</text>
+  <text x="360" y="318">be right before a single letter appears, and</text>
+  <text x="360" y="336">a wrong knob looks exactly like a dead screen.</text>
+</g>
+<text x="330" y="382" text-anchor="middle" fill="#C0503A" font-size="13" font-weight="700" font-family="Archivo, Arial, sans-serif">A blank screen is almost never a broken screen. Turn the knob first.</text>
+</svg>
+      <figcaption>The two kinds. One has a small board soldered to the back with four pins on it. The other is bare, with a strip of sixteen pins along the top edge and no board on the back.</figcaption>
+    </figure>
+
+    <div class="scroll">
+      <table>
+        <thead><tr><th>If the back has&hellip;</th><th>You have</th><th>You need</th><th>Go to</th></tr></thead>
+        <tbody>
+          <tr><td>A small green board soldered on, with four pins labelled GND VCC SDA SCL</td><td>The <strong>I&#178;C</strong> kind</td><td>4 wires. No potentiometer.</td><td>Part 6a</td></tr>
+          <tr><td>Nothing. Just a strip of 16 pins along the top of the screen itself</td><td>The <strong>bare</strong> kind</td><td>12 wires and a 10k potentiometer</td><td>Part 6b</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="ifnot"><b>If you have a bare screen and a loose four-pin board in the bag</b>They are meant to go together and somebody has to solder them. If you cannot solder, use the bare wiring in Part 6b. It works perfectly and it teaches you more. The cost is sixteen wires and a knob instead of four wires, so about twelve extra connections.</div>
+
+    <h3 style="margin-top:.6rem">The trap, before you build either one</h3>
+    <p>This is the single most common wasted evening in all of hobby electronics, and you can avoid it by reading one paragraph.</p>
+
+    <figure>
+      <svg viewBox="0 0 640 250" role="img" aria-label="Three pictures of the same screen. With the contrast knob too low the screen is blank. In the middle it shows the text. Too high and the screen is a row of solid blocks.">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#C0503A"/></marker><marker id="ab" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#4A7FC8"/></marker><marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#3F8A55"/></marker></defs>
+<g fill="none" stroke="currentColor" stroke-width="1.6">
+  <rect x="30" y="50" width="170" height="76" rx="4"/>
+  <rect x="235" y="50" width="170" height="76" rx="4"/>
+  <rect x="440" y="50" width="170" height="76" rx="4"/>
+</g>
+<text x="320" y="76" text-anchor="middle" fill="currentColor" font-size="15" font-family="IBM Plex Mono, monospace">Distance 42 cm</text>
+<g fill="currentColor" opacity="0.85"><rect x="450" y="62" width="8" height="16"/><rect x="460" y="62" width="8" height="16"/><rect x="470" y="62" width="8" height="16"/><rect x="480" y="62" width="8" height="16"/><rect x="490" y="62" width="8" height="16"/><rect x="500" y="62" width="8" height="16"/><rect x="510" y="62" width="8" height="16"/><rect x="520" y="62" width="8" height="16"/><rect x="530" y="62" width="8" height="16"/><rect x="540" y="62" width="8" height="16"/><rect x="550" y="62" width="8" height="16"/><rect x="560" y="62" width="8" height="16"/><rect x="570" y="62" width="8" height="16"/><rect x="580" y="62" width="8" height="16"/><rect x="590" y="62" width="8" height="16"/><rect x="600" y="62" width="8" height="16"/><rect x="450" y="92" width="8" height="16"/><rect x="460" y="92" width="8" height="16"/><rect x="470" y="92" width="8" height="16"/><rect x="480" y="92" width="8" height="16"/><rect x="490" y="92" width="8" height="16"/><rect x="500" y="92" width="8" height="16"/><rect x="510" y="92" width="8" height="16"/><rect x="520" y="92" width="8" height="16"/><rect x="530" y="92" width="8" height="16"/><rect x="540" y="92" width="8" height="16"/><rect x="550" y="92" width="8" height="16"/><rect x="560" y="92" width="8" height="16"/><rect x="570" y="92" width="8" height="16"/><rect x="580" y="92" width="8" height="16"/><rect x="590" y="92" width="8" height="16"/><rect x="600" y="92" width="8" height="16"/></g>
+<g font-size="12.5" fill="currentColor" font-family="Archivo, Arial, sans-serif" text-anchor="middle">
+  <text x="115" y="152" font-weight="700" fill="#C0503A">Knob too far one way</text>
+  <text x="115" y="172">Blank. Looks broken.</text>
+  <text x="115" y="190">It is not.</text>
+  <text x="320" y="152" font-weight="700" fill="#3F8A55">Somewhere in the middle</text>
+  <text x="320" y="172">Letters you can read.</text>
+  <text x="320" y="190">Stop here.</text>
+  <text x="525" y="152" font-weight="700" fill="#A87A1E">Knob too far the other way</text>
+  <text x="525" y="172">Solid blocks. Also</text>
+  <text x="525" y="190">not broken.</text>
+</g>
+<text x="320" y="228" text-anchor="middle" fill="currentColor" font-size="13" font-family="Archivo, Arial, sans-serif">Turn the knob slowly all the way from one end to the other before you change anything else.</text>
+</svg>
+      <figcaption>The same working screen at three contrast settings. Only the middle one is readable, and neither of the others means anything is broken.</figcaption>
+    </figure>
+
+    <p>Every one of these screens has a <strong>contrast</strong> adjustment. On the I&#178;C kind it is a tiny blue screw on the back. On the bare kind it is the potentiometer you are about to wire to pin 3.</p>
+    <p>Set wrongly, a perfectly working screen shows <strong>absolutely nothing</strong>. No hint. No faint text. Nothing at all, exactly as though it were dead.</p>
+    <div class="ifnot"><b>The rule</b>When a screen shows nothing, <strong>turn the contrast slowly from one end to the other before you change anything else.</strong> Not after checking the wiring. Before. It takes five seconds and it is the answer most of the time.</div>
+    <p class="note">Turn it too far the other way and you get a row of solid blocks. That is also not broken. Somewhere between blank and blocks is readable text, and the range is narrow.</p>
+  </div>
+</section>
+
+<section class="part" id="build2">
+  <div class="parthead"><span class="tag">Part 6</span><h2>Wire the screen and get letters on it</h2><span class="mins">50 min</span></div>
+  <div class="col stack">
+    <p>Do <strong>one</strong> of the two builds below, whichever matches the back of your screen. Then rejoin at Part 7.</p>
+
+    <h3 style="margin-top:.4rem">6a. The I&#178;C kind, four wires</h3>
+    <div class="callout">
+      <h5>First, install the library</h5>
+      <p>This one does not come with the Arduino software, so you have to fetch it once.</p>
+      <ol class="num">
+        <li>In the Arduino software, click <strong>Tools</strong>, then <strong>Manage Libraries</strong>.</li>
+        <li>Type <code>LiquidCrystal I2C</code> in the search box.</li>
+        <li>Find the one by <strong>Frank de Brabander</strong> and click <strong>Install</strong>.</li>
+      </ol>
+      <div class="see"><b>You should see</b>The word INSTALLED next to it in the list when it finishes. It takes a few seconds.</div>
+      <div class="ifnot"><b>If you have no internet on that computer</b>You can download the library as a .zip on any computer, carry it on a USB stick, and use Sketch, then Include Library, then Add .ZIP Library. Search the web for &#8220;LiquidCrystal_I2C github&#8221; and use the green Code button to download it.</div>
+    </div>
+
+    <div class="ifnot" style="margin-bottom:.4rem"><b>Before you start</b>USB unplugged.</div>
+    <div class="steps">
+      <div class="step"><div class="body">
+        <p><strong>Four wires, straight from the screen's four pins to the Arduino:</strong> GND to GND, VCC to 5V, SDA to <strong>A4</strong>, SCL to <strong>A5</strong>.</p>
+        <p class="note">A4 and A5 are not being used as ordinary analog pins here. On this chip they are the two pins used for talking to other boards, and you cannot choose different ones. Nothing else in your build may use A4 or A5 from now on.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Plug in and upload <code>b7_02_lcd_i2c_given.ino</code>.</strong></p>
+        <div class="see"><b>You should see</b>The backlight comes on, and two lines of text: <code>Bozoma Hub</code> on the top row and <code>Band 7 ready</code> on the bottom.</div>
+        <div class="ifnot"><b>If the backlight is on but there is no text</b>Contrast. Find the tiny blue screw on the back board and turn it slowly with a small screwdriver, all the way one way and then all the way the other. The text will appear somewhere in between. Do this before anything else.</div>
+        <div class="ifnot"><b>If you have done the contrast and there is still nothing</b>The address. Change <code>0x27</code> near the top of the sketch to <code>0x3F</code> and upload again. Those are the only two addresses these boards use, so one of them is right.</div>
+        <div class="ifnot"><b>If the backlight does not come on at all</b>Check GND and VCC. With those two wrong, nothing else can work and everything else looks fine.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Now break it on purpose, so you have seen it once.</strong> With the text showing, turn the little blue screw on the back slowly, all the way in one direction.</p>
+        <div class="see"><b>You should see</b>The words fade and then vanish completely. The backlight is still on and the screen looks exactly like a dead one. Nothing has changed in your wiring or your code.</div>
+        <p>Now turn it back until the words return, and stop there.</p>
+        <p class="note">Two minutes now, and the next time a screen goes blank on you, you will reach for that screw instead of pulling wires out. That is the whole reason for this step.</p>
+      </div></div>
+    </div>
+
+    <h3 style="margin-top:.9rem">6b. The bare kind, twelve wires and a knob</h3>
+    <p>This is the longest single build in the course. Do it in one sitting, slowly, and test in the middle rather than at the end.</p>
+    <div class="ifnot" style="margin-bottom:.4rem"><b>Read this before your first wire</b>The screen's pins are numbered 1 to 16 <strong>from the left as you look at the front</strong>, and the numbers are usually printed on the board. Find pin 1 and pin 16 on your own screen and mark which end is which with a scrap of tape. Getting this backwards means twelve wires in the wrong place.</div>
+
+    <div class="ifnot" style="margin-bottom:.4rem"><b>Before you start</b>USB unplugged.</div>
+    <div class="steps">
+      <div class="step"><div class="body">
+        <p><strong>Move the sensor's Echo wire first.</strong> Take the wire out of Arduino pin 11 and put it into <strong>pin 9</strong>. Leave its other end in <code>j22</code>.</p>
+        <p>The screen is about to take pin 11 for itself, and only one wire fits in an Arduino pin. Every sketch from here on already expects Echo on pin 9.</p>
+        <div class="see"><b>You should see</b>Arduino pins 11, 12, 5, 4, 3 and 2 all completely empty, ready for the screen. Only pins 9 and 10 have sensor wires in them.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Push the screen's pin strip into row <code>j</code></strong>, with its sixteen pins in columns 1 to 16. So screen pin 1 sits in <code>j1</code>, screen pin 2 in <code>j2</code>, and so on to <code>j16</code>. The numbers match, which makes everything after this easier.</p>
+        <p class="note">Row <code>j</code> on purpose. The screen's body will lie over the rows behind it, and every wire you are about to place goes into row <code>f</code> of the same column, which stays clear.</p>
+        <div class="see"><b>You should see</b>All sixteen pins in row j, the screen sitting level, and nothing bent underneath.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Put the 10k potentiometer in</strong> at <code>f30</code>, <code>f31</code>, <code>f32</code>. Wire <code>j30</code> to the &#8722; rail and <code>j32</code> to the + rail. Its middle leg is <code>f31</code>, and a wire from <code>j31</code> will go to the screen in a moment.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>The four power and contrast wires first.</strong> Do these before the six data wires, because they are the ones that let you test.</p>
+        <div class="scroll">
+          <table>
+            <thead><tr><th>Screen pin</th><th>Called</th><th>Wire from</th><th>To</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td>VSS</td><td><code>f1</code></td><td>&#8722; rail</td></tr>
+              <tr><td>2</td><td>VDD</td><td><code>f2</code></td><td>+ rail</td></tr>
+              <tr><td>3</td><td>V0</td><td><code>f3</code></td><td><code>j31</code>, the knob&#8217;s middle leg</td></tr>
+              <tr><td>5</td><td>RW</td><td><code>f5</code></td><td>&#8722; rail</td></tr>
+              <tr><td>15</td><td>A</td><td><code>f15</code></td><td>+ rail (backlight)</td></tr>
+              <tr><td>16</td><td>K</td><td><code>f16</code></td><td>&#8722; rail (backlight)</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Then + rail to 5V and &#8722; rail to GND.</p>
+        <p class="note">Every wire goes into row <code>f</code>, in the same column as the screen pin it belongs to. The screen's own pin is in row <code>j</code> of that column, and the column joins them underneath. One hole, one leg, exactly as in every band since Band 1.</p>
+        <div class="ifnot"><b>If your screen's backlight has no resistor</b>Most of these boards have a small resistor built in next to pins 15 and 16, and you can wire pin 15 straight to the + rail. Look closely at the back of yours near those two pins. If you cannot see one, put a <strong>220 ohm resistor</strong> in the pin 15 wire instead of a plain wire. It costs almost no brightness and it cannot then burn out.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Test now, before the other six wires.</strong> Plug in the USB, then turn the potentiometer slowly all the way from one end to the other and watch the screen.</p>
+        <div class="see"><b>You should see</b>At one extreme, nothing. Somewhere in the middle, <strong>a row of faint rectangles across the top line</strong>. That is the screen alive and asking for something to display. Leave the knob where those rectangles are just visible.</div>
+        <div class="ifnot"><b>If you never see rectangles anywhere in the knob's travel</b>Check pins 1, 2 and 3 and the two rail wires. Nothing else matters yet, because you have not wired anything else.</div>
+        <p class="note">Those rectangles are the best news in this build. They prove power and contrast are right, which is most of what goes wrong, and you now know it before adding six more wires.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Now the six data wires.</strong> Unplug the USB first.</p>
+        <div class="scroll">
+          <table>
+            <thead><tr><th>Screen pin</th><th>Called</th><th>Wire from</th><th>To Arduino pin</th></tr></thead>
+            <tbody>
+              <tr><td>4</td><td>RS</td><td><code>f4</code></td><td>12</td></tr>
+              <tr><td>6</td><td>E</td><td><code>f6</code></td><td>11</td></tr>
+              <tr><td>11</td><td>D4</td><td><code>f11</code></td><td>5</td></tr>
+              <tr><td>12</td><td>D5</td><td><code>f12</code></td><td>4</td></tr>
+              <tr><td>13</td><td>D6</td><td><code>f13</code></td><td>3</td></tr>
+              <tr><td>14</td><td>D7</td><td><code>f14</code></td><td>2</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note">Screen pins 7, 8, 9 and 10 stay empty, and that is correct, not a mistake. They are a faster way of talking to the screen that needs four more wires, and this way is fast enough.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Upload <code>b7_03_lcd_parallel_given.ino</code>.</strong> The LiquidCrystal library it uses already comes with the Arduino software, so there is nothing to install.</p>
+        <div class="see"><b>You should see</b><code>Bozoma Hub</code> on the top row and <code>Band 7 ready</code> on the bottom.</div>
+        <div class="ifnot"><b>If you see the row of rectangles but no words</b>One of the six data wires is wrong or loose. Check them against the table one at a time. The rectangles prove the screen is fine, so the fault is certainly in those six.</div>
+        <div class="ifnot"><b>If you see nothing at all now</b>You knocked the contrast knob while wiring. Turn it back until the rectangles appear, then look again.</div>
+        <div class="ifnot"><b>If the letters are scrambled or half a line</b>Two data wires are swapped. The order 12, 11, 5, 4, 3, 2 is RS, E, D4, D5, D6, D7, and the library expects them in that order.</div>
+      </div></div>
+    </div>
+
+    <div class="words">
+      <h5>Words to know</h5>
+      <dl>
+        <dt>I&#178;C</dt><dd>A way for two boards to talk over just two wires. Said &#8220;eye squared see&#8221;. On this chip it always uses pins A4 and A5.</dd>
+        <dt>address</dt><dd>A number that says which board on those two wires you mean, the way a house has a number. These screens are 0x27 or 0x3F.</dd>
+        <dt>contrast</dt><dd>How dark the letters are against their background. Set wrongly, a working screen shows nothing at all.</dd>
+        <dt>padding</dt><dd>Extra spaces printed after your text so the row always receives the same number of characters, and nothing old is left behind.</dd>
+      </dl>
+    </div>
+
+    <div class="callout">
+      <h5>Both kinds, same three instructions</h5>
+      <p>Whichever you wired, from here on the sketch talks to the screen the same way:</p>
+      <pre><code>screen.setCursor(0, 0);     // column 0, top row
+screen.print("Hello");
+screen.setCursor(0, 1);     // column 0, bottom row
+screen.print(42);</code></pre>
+      <p>Columns are numbered 0 to 15 and rows 0 to 1. Both start at zero, like the array positions in Band 3. <code>print</code> takes text in quotes or a number without them, exactly like <code>Serial.print</code>, which you already know.</p>
+    </div>
+  </div>
+</section>
+
+<section class="part" id="flicker">
+  <div class="parthead"><span class="tag">Part 7</span><h2>Now break it on purpose</h2><span class="mins">35 min</span></div>
+  <div class="col stack">
+    <p>Join the sensor and the screen together in the obvious way and something unpleasant happens.</p>
+
+    <div class="ifnot" style="margin-bottom:.4rem"><b>If you have the bare screen</b><code>b7_04</code> is written for the I&#178;C kind and will not run as it stands on yours. Read this part rather than running it. Everything it teaches is the same either way, and you will meet both faults for real in Part 8.<br><br>If you would rather run it, two changes are needed, not one: replace its top three lines with the two from <code>b7_03</code>, <em>and</em> change <code>int echoPin = 11;</code> to <code>9</code>, because your screen has pin 11.</div>
+
+    <p><strong>Upload <code>b7_04_buggy_flicker.ino</code></strong> with the sensor still on pins 10 and 11, as you wired it in Part 3. That is the I&#178;C screen's arrangement; if you have the bare screen your Echo wire moved to pin 9 in Part 6b, so read the box above rather than uploading this.</p>
+    <div class="see"><b>What you will actually see</b>The number is right, and the screen is horrible. It flickers hard enough to be tiring to look at, and reading the number takes effort.</div>
+
+    <div class="callout">
+      <h5>Work out why before you read on</h5>
+      <ol class="num">
+        <li>Look at the sketch. What is the first thing it does to the screen every round?</li>
+        <li>How long is the screen blank while that happens?</li>
+        <li>Hold the sensor perfectly still, so the number stops changing. Does the flicker stop?</li>
+        <li>What does that last answer tell you?</li>
+      </ol>
+    </div>
+
+    <details><summary>The answer, after you have written yours</summary><div class="inner">
+      <p><strong>Two mistakes, and they add up.</strong></p>
+      <p><strong>One.</strong> <code>screen.clear()</code> wipes all thirty-two character positions and takes about two milliseconds. Every round the screen is genuinely blank for a moment, and your eye sees it.</p>
+      <p><strong>Two.</strong> It rewrites the number <em>even when the number has not changed</em>. Question 3 is the giveaway: hold it still, the number stays at 42, and the flicker carries on regardless. Nothing on the screen needed to change and it changed anyway.</p>
+      <p>Notice the shape of this. It is Band 6's lesson again, in a completely different place. <strong>The reading was perfectly good. The fault was in acting on it when you did not need to.</strong></p>
+    </div></details>
+
+    <h3 style="margin-top:.8rem">The fix, and the trap inside the fix</h3>
+    <p>The obvious repair is to stop calling <code>clear()</code>. Do it: comment that line out and upload again.</p>
+    <div class="see"><b>You should see</b>The flicker is gone. And a new problem arrives.</div>
+    <p>Move the sensor so the reading goes from 100 down to 99.</p>
+    <div class="see"><b>You should see</b>The screen reads <code>990</code>. Or go from 42 to 8 and it reads <code>82</code>.</div>
+
+    <div class="callout">
+      <h5>Why, and this catches everybody once</h5>
+      <p><strong>A screen never wipes itself.</strong> Printing <code>99</code> where <code>100</code> was writes over the first two characters and leaves the third exactly as it was. The old <code>0</code> is still sitting there and it always will be.</p>
+      <p>So you cannot use <code>clear()</code>, because it flickers, and you cannot not use it, because of leftovers. The answer is neither.</p>
+    </div>
+
+    <p>Send a <strong>fixed width</strong> every time, padded with spaces. Here is the version from <code>b7_05</code>:</p>
+    <pre><code>if (cm &lt; 100) screen.print(" ");
+if (cm &lt; 10)  screen.print(" ");
+screen.print(cm);
+screen.print(" cm          ");</code></pre>
+    <p>The spaces are not decoration. They are an eraser, and they cost nothing, because those character positions were going to be written anyway.</p>
+    <p>The two <code>if</code> lines at the top are the part worth understanding. They make the <strong>number itself</strong> always three characters wide: <code>7</code> becomes <code>&nbsp;&nbsp;7</code>, <code>42</code> becomes <code>&nbsp;42</code>, and <code>742</code> is already 3. Without them a three-digit reading would send one character more than a two-digit one, and the row would stop adding up.</p>
+    <p>Put that together with only writing when the value actually changed, and you have a screen that is steady, correct, and never blank.</p>
+    <pre><code>if (cm == lastShown) {
+  return;
+}
+lastShown = cm;</code></pre>
+
+    <div class="ifnot"><b>Count it yourself</b>The screen is 16 characters wide, and the row must always receive exactly 16. Count it for a reading of 42:<br><br>One space from the first <code>if</code>, because 42 is under 100. Then <code>42</code>, which is 2. That is 3 so far, and the number is now three wide as promised. Then <code>" cm"</code> plus ten spaces, which is 13. Three plus thirteen is <strong>16</strong>.<br><br>Now do it for 7 and for 742 and check you get 16 both times.<br><br>Write too few and a long value leaves a leftover digit behind. Write too many and the extra characters go off the end into memory you cannot see, so the row quietly stops matching what you counted, which is harder to spot than the leftover.</div>
+  </div>
+</section>
+
+<section class="part" id="guard">
+  <div class="parthead"><span class="tag">Part 8</span><h2>Build the parking guard</h2><span class="mins">60 min</span></div>
+  <div class="col stack">
+    <p>Now a whole device. It measures how far away you are and tells you three ways at once.</p>
+    <ul class="plain">
+      <li>The number, on the bottom row.</li>
+      <li>A word saying what to do, on the top row.</li>
+      <li>A beep that gets faster as you close in, and becomes one solid tone under 10 cm.</li>
+    </ul>
+    <p>Three ways at once is the point. A driver is not looking at a screen, and a person across the room cannot hear a small buzzer. A device that reports one way only works for one person in one position.</p>
+
+    <h3 style="margin-top:.4rem">The pin plan</h3>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Part</th><th>Pin</th><th>Holes</th><th>Wiring</th></tr></thead>
+        <tbody>
+          <tr><td>Sensor VCC</td><td>5V</td><td><code>f20</code></td><td>Wire <code>j20</code> to 5V</td></tr>
+          <tr><td>Sensor Trig</td><td>10</td><td><code>f21</code></td><td>Wire <code>j21</code> to pin 10</td></tr>
+          <tr><td>Sensor Echo</td><td>11 or 9</td><td><code>f22</code></td><td>Wire <code>j22</code> to pin 11 (I&#178;C screen) or pin 9 (bare screen)</td></tr>
+          <tr><td>Sensor GND</td><td>GND</td><td><code>f23</code></td><td>Wire <code>j23</code> to the &#8722; rail</td></tr>
+          <tr><td>Buzzer</td><td>6</td><td>long <code>b40</code>, short <code>b42</code></td><td>Wire <code>a40</code> to pin 6; wire <code>a42</code> to &#8722; rail. No resistor.</td></tr>
+          <tr><td>Screen</td><td>&mdash;</td><td>&mdash;</td><td>Exactly as you wired it in Part 6. Do not move it.</td></tr>
+          <tr><td>Ground</td><td>GND</td><td>&mdash;</td><td>One wire from the &#8722; rail to a GND pin</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="ifnot" style="margin-bottom:.4rem"><b>Why the Echo pin is different for the two screens</b>The bare screen uses Arduino pins 12, 11, 5, 4, 3 and 2 for itself. Pin 11 is taken, so the sensor's Echo lives on pin 9 instead, and Part 6b had you move it. The I&#178;C screen uses only A4 and A5, so pin 11 is free and Echo stays there. <strong>The two worked sketches already have the right pin in them.</strong> Use the one that matches your screen and you do not have to think about it again.</div>
+
+    <div class="ifnot" style="margin-bottom:.4rem"><b>Before you start</b>USB unplugged. Every time.</div>
+
+    <div class="steps">
+      <div class="step"><div class="body">
+        <p><strong>Stage one: the buzzer.</strong> Long leg towards the pin. Test it with <code>b5_01_tone_given.ino</code> from Band 5, changing <code>buzzerPin</code> from 12 to 6 at the top.</p>
+        <div class="see"><b>You should see</b>Three notes rising, then a pause, over and over.</div>
+        <div class="ifnot"><b>If it clicks instead of playing notes</b>You have an active buzzer rather than a passive one. It still works for this build; you just get one fixed note instead of two different ones.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Stage two: check the sensor still works</strong> with <code>b7_01_ping_given.ino</code>, changing <code>echoPin</code> to 9 first if you have the bare screen.</p>
+        <div class="see"><b>You should see</b>Sensible distances in the serial monitor, matching your ruler as before.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Now upload the worked sketch for your screen.</strong> Use <code>b7_05_bin_worked_i2c.ino</code> if yours has the four-pin board on the back. Use <code>b7_05_bin_worked_parallel.ino</code> if it has sixteen bare pins.</p>
+        <div class="see"><b>You should see</b><code>Parking guard</code> for a second, then a word on the top row and a distance on the bottom. Walk your hand slowly in: <code>Clear</code>, then <code>Keep coming</code>, then <code>Nearly there</code>, then <code>STOP</code>. The beeping starts slow and speeds up, and becomes one solid tone under 10 cm. Take your hand away and it goes quiet and reads <code>--- cm</code>.</div>
+        <div class="ifnot"><b>If the screen shows <code>--- cm</code> and never changes</b>The sensor is reading 0, so the sketch is treating it as far away. Go back to stage two and get the sensor printing sensible numbers on its own first.</div>
+        <div class="ifnot"><b>If it beeps constantly with nothing in front of it</b>Something <em>is</em> in front of it: the sensor is pointing at the table, at the breadboard, or at a wire arching over it. Point it at open space and look along the line of the eyes to check.</div>
+        <div class="ifnot"><b>If the words change but the number is stuck</b>Look at <code>lastShown</code> in the sketch. If you have changed the screen-writing part, you may be updating the word but returning before the number.</div>
+      </div></div>
+    </div>
+
+    <h3 style="margin-top:.8rem">Fit it into sixteen characters</h3>
+    <p>Look at the top row. <code>Nearly there</code> is 12 characters and fits. Now try writing your own words for the four ranges, and find out how quickly sixteen runs out.</p>
+    <div class="callout">
+      <h5>The exercise</h5>
+      <p>Write four messages of your own, one for each range. Use whatever language your users actually speak. Each one must fit in 16 characters, and a stranger must be able to act on it at once. Count every character, including spaces.</p>
+      <p>Then ask somebody to read them cold and tell you what they would do. If they hesitate, the message is too long or too clever. Sixteen characters is a real constraint and it is a good teacher.</p>
+      <div class="ifnot"><b>If you are working alone</b>Write your four messages on a slip of paper, put it away, and look at it again tomorrow. Read each one and say out loud what you would do about it. Anything you have to read twice is too long or too clever, exactly as if somebody else had hesitated over it.</div>
+    </div>
+  </div>
+</section>
+
+<section class="part" id="closer">
+  <div class="parthead"><span class="tag">Part 9</span><h2>Look closer</h2><span class="mins">35 min</span></div>
+  <div class="col stack">
+    <h3>a. Read <code>loop</code> first</h3>
+    <pre><code>void loop() {
+  long cm = readDistance();
+  showDistance(cm);
+  updateBeep(cm);
+  delay(50);
+}</code></pre>
+    <p>Four lines: measure, show, beep, pause. Anyone can read that and say what the device does. Everything complicated is behind a name.</p>
+    <p>That <code>delay(50)</code> at the bottom is a blocking wait, and Band 5 taught you to be suspicious of those. Be suspicious of it. It means the beep timing can only be checked twenty times a second, so a beep can be up to 50 thousandths of a second late. On a beep that lasts 350, that is small enough to accept. <strong>That is a judgement, not an exemption.</strong> If your device needed millisecond timing, this <code>delay</code> would have to go.</p>
+
+    <h3 style="margin-top:.8rem">b. Follow the beeping by hand</h3>
+    <p>Assume <code>gapFor</code> returns 350 and <code>lastBeep</code> is currently 4000. Fill this in.</p>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>millis()</th><th>now &#8722; lastBeep</th><th>&#8805; 350?</th><th>Buzzer changes?</th><th>lastBeep after</th></tr></thead>
+        <tbody>
+          <tr><td>4100</td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>4300</td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>4350</td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>4500</td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>4700</td><td></td><td></td><td></td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <details><summary>Answer, after you have filled it in</summary><div class="inner">
+      <p>4100: gap 100, no, no change, stays 4000. 4300: gap 300, no, stays 4000. <strong>4350: gap 350, yes, buzzer flips, lastBeep becomes 4350.</strong> 4500: gap 150, no, stays 4350. <strong>4700: gap 350, yes, flips again, becomes 4700.</strong></p>
+      <p>So it flips every 350 milliseconds, which means on for 350 and off for 350, which is a full beep every 700. If you want a beep every 350 you halve the gap. Work out why before reading on: a beep is two flips, not one.</p>
+      <p>This is exactly the <code>millis</code> pattern from Band 5, and nothing about it is new. What is new is where you found it: the same shape solves a different problem.</p>
+    </div></details>
+
+    <h3 style="margin-top:.8rem">c. Break it on purpose</h3>
+    <p>In your copy, delete the line <code>lastBeep = now;</code> from inside the <code>if</code>. Predict, then upload.</p>
+    <details><summary>Answer</summary><div class="inner">
+      <p><code>lastBeep</code> stays at 0 forever, so <code>now - lastBeep</code> is always enormous and always bigger than the gap. The <code>if</code> is true on every single round, so the buzzer flips thousands of times a second.</p>
+      <p>You will not hear beeping. You will hear a rough continuous noise, because you are now switching the tone on and off faster than a beep.</p>
+      <p>This is the same bug as the one in Band 5 Part 10b. If you recognised it before uploading, that is the course doing its job.</p>
+    </div></details>
+
+    <h3 style="margin-top:.8rem">d. The number that decides everything</h3>
+    <p>Change <code>delay(50)</code> at the bottom of <code>loop</code> to <code>delay(500)</code>. Upload and walk your hand in.</p>
+    <details><summary>Answer</summary><div class="inner">
+      <p>The screen is calm and the guard is useless. It notices you half a second late, and the beeping becomes lumpy because the beep timing can only be checked twice a second.</p>
+      <p>Now try <code>delay(5)</code>. The screen becomes noisy again. The number flickers between 41 and 42 as the reading wobbles, and every wobble is a screen write.</p>
+      <p><strong>There is a right answer for your device and this page does not know it.</strong> It depends on how fast a car moves, how far away it starts, and how quickly a person can react. 50 is a reasonable starting point for a hand. Write down what you chose and why, in your log.</p>
+    </div></details>
+  </div>
+</section>
+
+<section class="part" id="change">
+  <div class="parthead"><span class="tag">Part 10</span><h2>Change it</h2><span class="mins">45 min</span></div>
+  <div class="col stack">
+    <p>Work on a copy of the worked sketch that matches your screen.</p>
+    <dl class="tier">
+      <dt>Bronze</dt><dd>Make the bottom row show a bar instead of a number: one block character for every 10 cm, up to sixteen. You will need a <code>for</code> loop and <code>screen.print((char)255)</code>, which prints a solid block. Then say in one sentence which is easier to read from three metres away, and why.</dd>
+      <dt>Silver</dt><dd>Add a <strong>smallest ever</strong> reading that is remembered and shown on the top row, with a button to reset it. This is genuinely useful for a parking guard: it tells you how close you actually got. Watch out for the reading of 0.</dd>
+      <dt>Gold</dt><dd>Take the average of the last five readings instead of using each one raw, and show that instead. The screen will become noticeably calmer. This is hard for an interesting reason: you need somewhere to keep five numbers and a way to throw the oldest away each time. An array from Band 3 and a position that wraps round will do it.</dd>
+    </dl>
+    <div class="ifnot"><b>A warning about Gold</b>Averaging makes a device calmer and slower. Both. If your guard averages five readings taken 50 milliseconds apart, it is telling you where the car was a quarter of a second ago. For a hand that is fine. For a reversing car it may not be. Say in your log which you would choose and why.</div>
+  </div>
+</section>
+
+<section class="part" id="make">
+  <div class="parthead"><span class="tag">Make</span><h2>Make: something a person reads and acts on</h2><span class="mins">120 min</span></div>
+  <div class="col stack">
+    <div class="brief">
+      <h5>What to build</h5>
+      <p>A device with a screen that <strong>somebody who is not you</strong> can walk up to, read, and know what to do about. Pick one, or bring your own:</p>
+      <ul class="plain">
+        <li>A parking guard for a real doorway, gate or vehicle, mounted where it would live</li>
+        <li>A bin that tells you how full it is, with the sensor in the lid pointing down</li>
+        <li>A queue counter for a charging kiosk: how many people, and roughly how long</li>
+        <li>A water level display for a tank or a bucket, reading in centimetres from the top</li>
+        <li>A doorway counter that adds one every time somebody passes</li>
+        <li>A smart bin whose lid opens on a servo when you come near, if you did Band 6</li>
+      </ul>
+      <h5 style="margin-top:.3rem">It is finished when all of these are true</h5>
+      <ul class="plain">
+        <li>The screen never flickers and never shows a leftover character</li>
+        <li>It behaves sensibly when the sensor hears nothing, rather than reporting zero</li>
+        <li>Every message fits in sixteen characters and needs no explanation</li>
+        <li>It is housed and mounted where it would actually be used, not lying on a desk</li>
+        <li>You measured its accuracy against a ruler and wrote the numbers down</li>
+        <li>Somebody read the screen and did the right thing without you saying anything. If you are working alone, this counts as passed when you photograph the screen from where a user would stand, look at the photograph a day later, and know what to do from the photograph alone.</li>
+      </ul>
+    </div>
+
+    <h3>The test that matters most in this band</h3>
+    <p>Put it where it belongs, hand nobody any instructions, and watch one person walk up to it.</p>
+    <p>Write down what they read first, how long before they acted, and whether they did the right thing. If they read the number before the word, your layout is telling them to. If they hesitated, count the characters in the message they hesitated over.</p>
+    <div class="ifnot"><b>If you are doing this course alone</b>Photograph the screen from where a user would stand, at the distance they would stand, then look at the photograph tomorrow. If you cannot tell what to do from the photograph, neither could they. This works better than you would expect, because a photograph strips away everything you know about your own build.</div>
+
+    <h3 style="margin-top:.8rem">Show your work</h3>
+    <p>Post four things: a video of somebody using it, a close photo of the screen with a real reading on it, your ruler-accuracy table, and your build log. Then look at one other person's screen layout and tell them one thing you had to read twice.</p>
+    <div class="ifnot"><b>If you are doing this course alone</b>There may be nobody to post to and nobody else's work to look at. That is fine, and it does not let you off this part. Do it this way instead: save the photos and the video into a folder named for this band, write the same notes into your build log, and then be your own second reader. Come back to your own sketch the next day, read it cold, and write down the one thing you would do differently now. That is the whole value of looking at somebody else's work, and you can get most of it from your own.</div>
+  </div>
+</section>
+
+<section class="part" id="check">
+  <div class="parthead"><span class="tag">Part 11</span><h2>Check yourself</h2><span class="mins">20 min</span></div>
+  <div class="col stack">
+    <p>Code you have not seen. Answer from reading only. Do not upload it.</p>
+    <pre><code>#include &lt;Wire.h&gt;
+#include &lt;LiquidCrystal_I2C.h&gt;
+
+LiquidCrystal_I2C screen(0x27, 16, 2);
+
+int trigPin = 10;
+int echoPin = 11;
+int lastCm = -1;
+
+void setup() {
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+  screen.init();
+  screen.backlight();
+}
+
+void loop() {
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+
+  unsigned long us = pulseIn(echoPin, HIGH);
+  int cm = us / 29 / 2;
+
+  if (cm != lastCm) {
+    lastCm = cm;
+    screen.setCursor(0, 0);
+    screen.print(cm);
+    screen.print(" cm");
+  }
+
+  delay(100);
+}</code></pre>
+    <ol class="num">
+      <li>The sensor is pointed at a wall 100 cm away, then slowly at one 99 cm away. What does the top row of the screen say?</li>
+      <li>The sensor is now pointed out of a window at open sky, so no echo ever comes back. What does the device do? Answer carefully: this is not a question about the screen.</li>
+      <li>Compare the <code>pulseIn</code> line with the one in <code>b7_01_ping_given.ino</code>. One value is missing here. Which, and what does leaving it out change?</li>
+      <li>The wall is 60 cm away and nothing is moving. Roughly how many times a second is the screen written to?</li>
+      <li><code>int cm</code> and <code>unsigned long us</code>. The wall is 3 metres away. Is <code>int</code> big enough to hold the answer? Show the arithmetic.</li>
+      <li>Somebody wants this to also sound a buzzer that beeps faster as things get nearer, and adds a <code>tone</code> and a <code>delay</code> inside the <code>if</code>. Name two separate things that will go wrong.</li>
+    </ol>
+    <details><summary>Answers</summary><div class="inner">
+      <p><strong>1.</strong> <code>99 cm</code> followed by a leftover, so it reads <code>99 cmm</code> or similar. <code>"100 cm"</code> is six characters and <code>"99 cm"</code> is five, so the sixth character from before is never written over. There is no padding here, and this is the fault Part 7 was about.</p>
+      <p><strong>2.</strong> <strong>It stops dead for a whole second, over and over.</strong> With no limit given, <code>pulseIn</code> uses its own default of one second, and it waits out every bit of that whenever no echo comes back. Nothing else on the board runs during that wait: not the screen, not a buzzer, nothing. So the loop that was running ten times a second now runs about once a second, and the screen keeps showing the last number it had, which makes it look like it is working perfectly. <em>This is the question that matters most in this band. A missing timeout does not give you a wrong number. It stops the whole board, and it does it silently.</em></p>
+      <p><strong>3.</strong> The third value, the timeout, which is <code>25000</code> in <code>b7_01</code>. With it, a missing echo returns 0 after about 25 thousandths of a second and everything carries on. Without it, the wait can be far longer, and the device stops for all of it.</p>
+      <p><strong>4.</strong> Almost never. The reading is steady, so <code>cm != lastCm</code> is false nearly every round and nothing is written. It only writes when the number genuinely changes, which is the correct behaviour and the point of <code>lastCm</code>.</p>
+      <p><strong>5.</strong> Yes, easily. 3 metres is 300 cm, and an <code>int</code> on this chip holds up to 32767. The reason <code>us</code> has to be <code>unsigned long</code> is different: the time for 3 metres is about 17400 microseconds, which fits, but the timeout and longer distances do not fit as comfortably, and durations are the thing that overflows first. Keep the habit.</p>
+      <p><strong>6.</strong> Two things, and they are both from earlier bands. <strong>One:</strong> a <code>delay</code> inside the <code>if</code> blocks, so the sensor stops being read while the beep is on, which is the Band 5 problem. <strong>Two:</strong> the beep would only ever happen when the number <em>changes</em>, because it is inside the <code>if</code>. Stand still at 20 cm and the warning goes silent, which is exactly when you most want it.</p>
+    </div></details>
+  </div>
+</section>
+
+<section class="part" id="recall">
+  <div class="parthead"><span class="tag">Part 12</span><h2>Say these out loud</h2></div>
+  <div class="col stack">
+    <p>Part 11 was the real test. This is a warm-up for it, and a list to come back to. Say each of these out loud, to somebody or to yourself, without looking anything up.</p>
+    <ul class="plain">
+      <li>Say where the 29 and the 2 come from in the distance calculation</li>
+      <li>Say what a reading of 0 means, and name two things that cause it</li>
+      <li>Name three surfaces this sensor is bad at, and say why</li>
+      <li>Explain why a screen flickers, and give the two-part fix</li>
+      <li>Say why printing <code>99</code> over <code>100</code> shows <code>990</code></li>
+      <li>Say what to try first when a screen shows nothing at all</li>
+      <li>Install a library you do not already have, without help</li>
+    </ul>
+    <div class="callout">
+      <h5>The one sentence from this band</h5>
+      <p>A measurement is a claim, and an unchecked claim is a guess with a number on it.</p>
+      <p>You checked yours against a ruler and found where it could be trusted and where it could not. Every device you build from here on deserves the same treatment, and most devices in the world never get it.</p>
+    </div>
+  </div>
+  <div class="col stack" style="margin-top:1.2rem">
+    <div class="callout">
+      <h5>Still stuck after 30 minutes?</h5>
+      <p>Photograph the board from above in good light, and photograph the screen itself showing whatever it is showing, even if that is nothing. Post both, plus one sentence on what you expected. Say which kind of screen you have. Nearly every screen question is answered by those two photographs together.</p>
+      <div class="ifnot"><b>If there is nobody to send it to</b>Write the three things down anyway, in your build log: what you expected, what happened, and what you have already tried. Putting a problem into words solves a surprising number of them on its own. Then work down the problems table at the bottom of this page one more time, slowly. If it is still stuck, leave it until tomorrow and come back fresh. Do not sit and stare at it.</div>
+    </div>
+  </div>
+</section>
+
+<section class="part" id="problems">
+  <div class="parthead"><span class="tag">Problems</span><h2>When something goes wrong</h2></div>
+  <div class="col stack">
+    <div class="scroll">
+      <table>
+        <thead><tr><th>What you see</th><th>What it usually is</th><th>What to do</th></tr></thead>
+        <tbody>
+          <tr><td>Screen shows nothing at all</td><td>Contrast</td><td>Turn the knob or the blue screw slowly from end to end. Do this <strong>first</strong>, every time. See Part 5.</td></tr>
+          <tr><td>Screen shows solid blocks on the top row</td><td>Contrast, the other way</td><td>Same knob, other direction. The screen is fine.</td></tr>
+          <tr><td>Backlight on, contrast done, still nothing (I&#178;C)</td><td>Wrong address</td><td>Change <code>0x27</code> to <code>0x3F</code> and upload again.</td></tr>
+          <tr><td>Rectangles show but no words (bare)</td><td>One of the six data wires</td><td>The rectangles prove power is right. Check pins 4, 6, 11, 12, 13, 14 against the table.</td></tr>
+          <tr><td>Distance always 0</td><td>Trig and Echo swapped, or nothing in range</td><td>Point it at a flat wall 30 cm away first. Then check those two wires.</td></tr>
+          <tr><td>Distance stuck at one number</td><td>The sensor is pointing at your own breadboard or a wire</td><td>Look along the line of the two eyes and clear everything in the way.</td></tr>
+          <tr><td>Readings jump wildly</td><td>The sensor is loose or tilting</td><td>Fix it down. A sensor that moves measures a different thing each time.</td></tr>
+          <tr><td>Screen flickers</td><td><code>clear()</code> every round</td><td>See Part 7. Write only when the value changed, and pad with spaces.</td></tr>
+          <tr><td>Old digits left on screen</td><td>Short text over long text</td><td>Pad to a fixed width with spaces. See Part 7.</td></tr>
+          <tr><td>Text wraps onto the wrong line</td><td>More than 16 characters</td><td>Count them, including your spaces.</td></tr>
+          <tr><td><code>LiquidCrystal_I2C</code> not declared</td><td>Library not installed</td><td>Tools, Manage Libraries, search, install. See Part 6a.</td></tr>
+          <tr><td>Everything freezes for a second at a time</td><td>No timeout on <code>pulseIn</code></td><td>The third value, <code>25000</code>, is not optional. Put it back.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Done</span><h2>What you know now</h2></div>
+  <div class="col stack">
+    <p>Your board can measure a distance now, and it can tell somebody about it without a computer in the room. Those two together are what a device is.</p>
+    <p>The more useful thing you learned is smaller and harder to see. You took a number your sensor gave you and you did not believe it until you had checked it against a ruler. Then you found the places it could be trusted and the places it could not, and wrote those down.</p>
+    <p>Most people never do that, and it is the difference between a project that works in a video and one that works in a room.</p>
+
+    <h3 style="margin-top:.8rem">Before you move on, make sure you have</h3>
+    <ul class="plain">
+      <li>A video of somebody using your device, and a close photo of the screen with a real reading on it</li>
+      <li>Your completed ruler-accuracy table from Part 3, all five rows</li>
+      <li>Your notes on the three awkward surfaces, and the two distances you decided you would trust</li>
+      <li>Your completed beep timing table from Part 9b</li>
+      <li>Your four sixteen-character messages, counted</li>
+      <li>Your build log for this band</li>
+      <li>Five or six correct answers in Part 11, including question 2</li>
+    </ul>
+    <p style="margin-top:.6rem"><strong>Next is Band 8: Build for Nzemaland.</strong> The last band, and the only one with no new parts in it. You find a problem somebody actually has, decide beforehand what would count as solving it, and then find out honestly whether you did.</p>
+  </div>
+</section>
+
+
+<nav class="pager" aria-label="Bands">
+<a href="band-6.html"><span class="dir">Previous</span><span class="name">Band 6: Things That Move</span></a>
+<a class="next" href="band-8.html"><span class="dir">Next</span><span class="name">Band 8: Build for Nzemaland &rarr;</span></a>
+</nav>
+
+<footer>
+  <p>Bozoma Innovation Hub &nbsp;&middot;&nbsp; Aiyinasi, Ellembelle District. Band 7 of nine. Every sketch used here was compiled and tested before it reached you.</p>
+</footer>
+
+</div>
+</body>
+</html>
