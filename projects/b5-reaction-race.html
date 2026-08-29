@@ -77,7 +77,7 @@
       </div></div>
       <div class="step"><div class="body">
         <p><strong>Upload <code>b5_06_reaction_race.ino</code></strong> and open the serial monitor at 9600.</p>
-        <div class="see"><b>You should see</b><code>Get ready...</code>, then the printed length of this round's wait, then that wait, which is somewhere between three and seven seconds, then the light comes on. Press the button and it prints your time in thousandths of a second and beeps. Then it goes round again, keeping your best.</div>
+        <div class="see"><b>You should see</b><code>Get ready...</code>, then the printed length of this round's wait, then that wait, which is somewhere between two and six seconds, then the light comes on. Press the button and it prints your time in thousandths of a second and beeps. Then it goes round again, keeping your best.</div>
         <div class="ifnot"><b>If it says &#8220;Too early&#8221; every single round</b>The button is reading as held down. Two of its wires are on a joined pair of legs rather than a diagonal: move one wire so the two are in different columns and different halves of the board.</div>
         <div class="ifnot"><b>If the light comes on but nothing happens when you press</b>The button is not being seen at all. Test it again with the serial watch sketch.</div>
         <div class="ifnot"><b>If the wait is the same length every single time</b>Read the Look closer section. Something is wired to A0.</div>
@@ -174,7 +174,8 @@
       <li>Your notes from the counting activity in Part 1</li>
       <li>Your before-and-after waits from the <code>randomSeed</code> experiment</li>
       <li>Your build log</li>
-      <li>Five or six correct answers in Part 13, the Check yourself questions, including question 4</li>
+      <li>Your completed timing table from Part 10a, done on paper with <code>b5_04</code>. This Swap does not replace it</li>
+      <li>Five or six correct answers in Part 13, the Check yourself questions, <strong>including question 4</strong></li>
     </ul>
     <p class="note">Part 13's question 4 is the one that matters most in the band: a <code>delay</code> hidden inside a function that looks like it is using <code>millis</code> properly from outside. You have now built both kinds of waiting on purpose, so you are in a better position to answer it than somebody who only built the game.</p>
   </div>

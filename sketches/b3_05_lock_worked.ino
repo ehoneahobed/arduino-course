@@ -18,8 +18,22 @@
 //       Wire b16 to pin 8. Wire a20 to minus rail.
 //     Red LED long b23, short b25. Resistor a23 to a21.
 //       Wire b21 to pin 9. Wire a25 to minus rail.
-//     Buzzer long b27, short b29. Wire a27 to pin 10.
-//       Wire a29 to minus rail. No resistor.
+//     Buzzer long b27, short b29.
+//       Wire a27 to pin 10.
+//       220 ohm resistor a29 to a31. Wire b31 to minus rail.
+//       The resistor is in the RETURN leg, which works exactly
+//       the same: one loop, one current. Column 25 belongs to
+//       the red light already.
+//       WHY A RESISTOR. An ACTIVE buzzer, which is the kind this
+//       band asks for, pulls about 25 to 30 thousandths of an amp
+//       and a pin is designed for 20. The 220 ohms costs a little
+//       volume and nothing else.
+//
+//     IF YOURS IS A PASSIVE BUZZER (small green board underneath
+//     rather than a solid black cover) it will only click here.
+//     Swap every digitalWrite(buzzerPin, HIGH) below for
+//     tone(buzzerPin, 1000), and every LOW for noTone(buzzerPin).
+//     That is Band 5's instruction arriving one band early.
 //
 //     One wire from the minus rail to a GND pin.
 //

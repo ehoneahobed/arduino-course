@@ -16,9 +16,16 @@
 //     Nothing is even running: no branch below matches, so no
 //     line touches the light at all.
 //
-//     TWO. Once it has alarmed once, it can NEVER go back to a
-//     steady light. Snooze always lands it back in flashing.
-//     Press it all day. You cannot get ARMED again.
+//     TWO. Once it has alarmed once, getting back to a steady
+//     light is pure luck. Snooze always lands it back in
+//     flashing. But two more presses INSIDE the frozen five
+//     seconds happen to walk the flags back to 1 0 0 and the
+//     steady light returns. Wait the five seconds out and any
+//     press puts you straight back into flashing.
+//
+//     That is worse than never. The device behaves differently
+//     depending on how fast you pressed, and nothing anywhere
+//     says so. Nobody can describe it, document it or repair it.
 //
 //   WHY
 //     Three true-or-false names instead of one state name.

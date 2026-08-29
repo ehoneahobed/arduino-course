@@ -61,7 +61,7 @@
 </section>
 
 <section class="part">
-  <div class="parthead"><span class="tag">Build</span><h2>Four wires</h2><span class="mins">20 min</span></div>
+  <div class="parthead"><span class="tag">Build</span><h2>Three colour wires, five in all</h2><span class="mins">20 min</span></div>
   <div class="col stack">
     <div class="ifnot" style="margin-bottom:.4rem"><b>Before you start</b>USB unplugged. Clear the board.</div>
 
@@ -98,7 +98,7 @@
 
     <div class="steps">
       <div class="step"><div class="body">
-        <p><strong>Upload <code>b2_05_rgb_module.ino</code></strong> and watch for a full cycle, which takes about half a minute.</p>
+        <p><strong>Upload <code>b2_05_rgb_module.ino</code></strong> and watch for a full cycle, which takes about twenty seconds.</p>
         <div class="see"><b>You should see</b>A sunrise: black, then a dim red glow, then red over the lagoon, then orange, then full daylight held for a few seconds, then evening and back to night. Every change smooth, with no jumps.</div>
         <div class="ifnot"><b>If it lights but runs backwards, bright when it should be dark</b>You have the <b>common-anode</b> kind, and its fourth pin is already on 5V, which is where it has to be. That is the only reason it lights at all: with the shared pin on the &#8722; rail a common-anode part cannot light in any state, because the shared leg has to sit <em>above</em> the three colour legs for anything to flow.<br><br>So the wiring is already right and moving it cannot help. What is left is the numbers, and they really are upside down: 5V on the shared leg means <code>255</code> puts five volts on both ends of the light and gives you nothing, while <code>0</code> gives you full brightness. Change the three lines inside <code>showColour</code>:<br><br><code>analogWrite(redPin, 255 - r);</code> and the same for green and blue.<br><br>Subtracting from 255 undoes exactly what the hardware did, and every number on every page then means what it says again. Band 2 Part 12 tells you the same two-part story: rewiring the shared leg to 5V is what makes it light, and it leaves 0 bright and 255 off.</div>
         <div class="ifnot"><b>If the colours are wrong but the fading is smooth</b>Your module's pins are in a different order. Swap the wires at the Arduino end until red is red, then write down which pin is which.</div>

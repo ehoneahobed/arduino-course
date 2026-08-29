@@ -153,9 +153,11 @@ void goToStep(long target) {
   <div class="col stack">
     <dl class="tier">
       <dt>Bronze</dt><dd>Make the button turn it <strong>anticlockwise</strong> instead, and then make a second button that turns it clockwise. Then say in one sentence why <code>atStep</code> does not need updating for either.</dd>
-      <dt>Silver</dt><dd>Turn the dial into a gauge for something real: the light sensor from Band 4, or the distance sensor from Band 7. Mark the card with the numbers you measure, not with numbers you assumed. That measuring step is the whole of Band 4 arriving in a new place.</dd>
+      <dt>Silver</dt><dd>Turn the dial into a gauge for something real: the light sensor from Band 4, or the distance sensor from Band 7. Mark the card with the numbers you measure, not with numbers you assumed. That measuring step is the whole of Band 4 arriving in a new place. <b>Read the box under this list before you wire it.</b></dd>
       <dt>Gold</dt><dd>Give it a <strong>home position</strong>. Add a button that returns the pointer to step 0 whatever it currently believes, and use it to fix the by-hand problem above. Then think about what would have to change for the device to find home <em>by itself</em> at switch-on, and write down what extra part you would need. Real machines have that part.</dd>
     </dl>
+    <div class="ifnot"><b>Any sensor you swap in takes its power from the Arduino's 5V pin, never from the + rail</b>Band 4 told you to run the light sensor's top leg to &#8220;the + rail&#8221;, and in Band 4 the + rail was five volts from the Arduino. <strong>In this band the + rail is about six volts from the battery.</strong> Feed a sensor from that and its middle leg can hand your analog pin nearly six volts. That is over the limit, and it does its damage quietly, with nothing to tell you. The knob's own 5V wire already goes to the right place, so take the knob out and put the sensor's power leg on that same wire. Its bottom leg goes to the &#8722; rail as before. A DHT11 is worse again: it is a five-and-a-half volt part, so six volts damages the sensor as well as the pin. <strong>The rule has not changed since Part 7: anything the Arduino reads is powered by the Arduino. The + rail is only for things that push.</strong></div>
+
     <div class="ifnot"><b>The answer to the Gold question, if you want to check yourself</b>A switch at the home position that the pointer presses when it reaches it. Switch on, turn slowly one way until the switch closes, and now you know where you are. Printers, scanners and 3D printers all do this every time you switch them on, and the noise they make while doing it is exactly this.</div>
   </div>
 </section>
@@ -169,7 +171,8 @@ void goToStep(long target) {
       <li>Your notes from the loaded-card activity in Part 1</li>
       <li>The deadband table from Part 9b, done with your stepper's numbers</li>
       <li>Your build log, including which way round the pin order caught you, if it did</li>
-      <li>Five or six correct answers in Part 12, the Check yourself questions</li>
+      <li>The three deadband values you tried in Part 9c, and which you would choose for a gate and which for a dial</li>
+      <li>Five or six correct answers in Part 12, the Check yourself questions, <strong>including question 2</strong></li>
     </ul>
     <p class="note">Part 12 asks about a servo sketch you have not built. Answer it anyway. Every idea in it is one you have used here: the deadband, the remembered position, and what happens when a reading is acted on too eagerly. If you can answer it having built the dial, you have understood the band rather than the build, which is the point.</p>
   </div>

@@ -50,7 +50,7 @@
 </section>
 
 <section class="part">
-  <div class="parthead"><span class="tag">Build</span><h2>Four wires</h2><span class="mins">20 min</span></div>
+  <div class="parthead"><span class="tag">Build</span><h2>Five wires, no resistors</h2><span class="mins">20 min</span></div>
   <div class="col stack">
     <div class="ifnot" style="margin-bottom:.4rem"><b>Before you start</b>USB unplugged. Leave your hand-wired tower on the board if there is room; you will want to compare them. If there is not, photograph it first.</div>
 
@@ -145,7 +145,7 @@
   <div class="col stack">
     <dl class="tier">
       <dt>Bronze</dt><dd>Give the module a real crossing's <strong>fifth state</strong>: a flashing green just before the yellow, three flashes in one second, warning drivers that the light is about to change. You will need more <code>showState</code> calls, not new ideas. Say in your log how many lines you added.</dd>
-      <dt>Silver</dt><dd><em>You need the hand-wired tower back on the board for this. If you took it down for room, rebuild it from your photograph first: that is a fair fifteen minutes, and it is also the last time you will ever wire three LEDs from nothing.</em> Run the module <em>and</em> the tower at the same time, as two crossings on the same road, so that one is red while the other is green. <strong>They cannot both use pins 9, 8 and 7.</strong> Move the module to pins <code>4</code>, <code>3</code> and <code>2</code>, change its three wires, and change the three lines at the top of the sketch that name them. Then you need six pin names, not three, and that is the moment naming your variables stops being a style rule and starts being the only way to keep track. Six pins, one sketch, and a real reason for the states to have names.</dd>
+      <dt>Silver</dt><dd><em>You need the hand-wired tower back on the board for this. If you took it down for room, rebuild it from your photograph first: that is a fair fifteen minutes, and it is also the last time you will ever wire three LEDs from nothing.</em> Run the module <em>and</em> the tower at the same time, as two crossings on the same road, so that one is red while the other is green. <strong>They cannot share a single pin.</strong> Look at your tower and write down which three pins it is actually on: if you did Band 1's Bronze task, its yellow light is on <b>pin 12</b> rather than pin 8. Then move the module to pins <code>4</code>, <code>3</code> and <code>2</code>, which nothing else uses, change its three wires, and change the three lines at the top of the sketch that name them. Then you need six pin names, not three, and that is the moment naming your variables stops being a style rule and starts being the only way to keep track. Six pins, one sketch, and a real reason for the states to have names.</dd>
       <dt>Gold</dt><dd>Make the yellow light on the module flash three times during the change state without altering how long that state lasts, and do it while the other tower's lights carry on correctly. This is the Band 1 Gold task with something else that must not be interrupted, which is a hint about Band 5.</dd>
     </dl>
   </div>

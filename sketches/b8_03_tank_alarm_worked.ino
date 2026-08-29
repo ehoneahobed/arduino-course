@@ -26,7 +26,15 @@
 //     Nothing touches the water. Nothing corrodes.
 //
 //   WIRING
-//     HC-SR04: VCC 5V, Trig pin 10, Echo pin 11, GND GND.
+//     HC-SR04 pins into f24, f25, f26, f27.
+//       NOT f20 to f23, which is where Band 7 put it: the button
+//       below sits in columns 19 and 21, and f21 would then hold
+//       a sensor pin AND a button leg. One hole, one leg.
+//       Wire j24 to the PLUS rail        (VCC)
+//       Wire j25 to pin 10               (Trig)
+//       Wire j26 to pin 11               (Echo)
+//       Wire j27 to the MINUS rail       (GND)
+//     One wire from the PLUS rail to the Arduino's 5V pin.
 //     Green LED long b3, short b4. Resistor a3 to a1.
 //       Wire b1 to pin 7. Wire a4 to minus rail.
 //     Red LED long b7, short b8. Resistor a7 to a5.
@@ -36,6 +44,11 @@
 //     Button legs e19, e21, f19, f21. Wire j19 to pin 2,
 //       wire a21 to the minus rail.
 //     One wire from the minus rail to a GND pin.
+//
+//     ALL RAIL WIRES GO TO THE TOP PAIR, nearest row j. The
+//     buzzer sits in rows a and b, so its minus wire is a long
+//     one that runs round the end of the board. Top and bottom
+//     rails are not joined to each other.
 //
 //   CRITERION 4, AND WHY IT IS THE INTERESTING ONE
 //     There is no OFF state in this machine. setup() enters ARMED
@@ -134,10 +147,15 @@ void runAlarm(long cm, bool pressed) {
   // Two different numbers on the way up and the way down, so a
   // reading that wobbles around 15 does not start and stop the
   // alarm twenty times a second.
+  // else if, not two separate ifs. A press landing on the same
+  // round as the water clearing must cause ONE change of state,
+  // not two. With two ifs the device ends up snoozed for thirty
+  // seconds when it should have gone straight back to armed.
+  // b8_01 makes exactly this point; here is where it bites.
   if (cm >= clearLevel) {
     enterState(ARMED);
   }
-  if (pressed) {
+  else if (pressed) {
     enterState(SNOOZED);
   }
 }

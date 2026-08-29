@@ -25,7 +25,7 @@
     <div><dt>Time</dt><dd>90 min</dd></div>
     <div><dt>You need</dt><dd>TM1637 display, HC-SR04, buzzer, 12 jumper wires (plus the Band 4 light sensor and its 10k resistor if you do Gold)</dd></div>
     <div><dt>At once</dt><dd>One per display</dd></div>
-    <div><dt>Before this</dt><dd>Finish Band 7 up to Part 4. This replaces the screen work in Parts 5 to 8, so come here if the sixteen-wire screen defeated you. If your screen has a small green board soldered to its back, do Part 6a instead: it is already four wires and you keep the letters.</dd></div>
+    <div><dt>Before this</dt><dd>Finish Band 7 up to Part 4. This replaces the screen work in Parts 5 to 8, so come here if the twelve-wire screen defeated you. If your screen has a small green board soldered to its back, do Part 6a instead: it is already four wires and you keep the letters.</dd></div>
   </dl>
 </header>
 
@@ -39,7 +39,7 @@
   <div class="col stack">
     <p>Band 7's core build puts the parking guard on an LCD. On the bare sixteen-pin kind that is twelve wires and a contrast knob, and it is the longest single build in the course.</p>
     <p>This is the same device on a four-digit display. <strong>Two Arduino pins instead of six, and four wires to the screen instead of twelve.</strong> Twelve wires on the whole board rather than twenty-two. And digits bright enough to read from across a room, which is a thing an LCD genuinely cannot do.</p>
-    <p>If the sixteen-wire screen defeated you, come here instead. Be honest with yourself about the trade, though. You do not get the padding bug, you do not get the contrast knob, you do not get the experience of finding one wrong wire among twelve, and <strong>you do not get the sixteen-character writing exercise</strong>, which is the best design problem in the band and cannot be done on four digits. Those are real losses. The Look closer section turns two of them into something you can write up, and the Done list below makes you do the writing exercise on paper anyway.</p>
+    <p>If the twelve-wire screen defeated you, come here instead. Be honest with yourself about the trade, though. You do not get the padding bug, you do not get the contrast knob, you do not get the experience of finding one wrong wire among twelve, and <strong>you do not get the sixteen-character writing exercise</strong>, which is the best design problem in the band and cannot be done on four digits. Those are real losses. The Look closer section turns two of them into something you can write up, and the Done list below makes you do the writing exercise on paper anyway.</p>
 
     <div class="which">
       <h4>Is this your display?</h4>
@@ -68,7 +68,7 @@
 <section class="part">
   <div class="parthead"><span class="tag">Build</span><h2>Four wires to the screen, twelve on the board</h2><span class="mins">30 min</span></div>
   <div class="col stack">
-    <div class="ifnot" style="margin-bottom:.4rem"><b>Before you start</b>USB unplugged. If the LCD is on the board, take it and its twelve wires off, and take out the contrast knob too. The sensor's own four holes stay where they are, but <strong>two of its wires move</strong>: its <code>VCC</code> goes to the + rail instead of straight to 5V, and its <code>Echo</code> goes back to pin 11 if Part 6b had you move it to pin 9. The table below has both.</div>
+    <div class="ifnot" style="margin-bottom:.4rem"><b>Before you start</b>USB unplugged. If the LCD is on the board, take it and its twelve wires off, and take out the contrast knob too. The sensor's own four holes stay where they are, but <strong>three of its wires move</strong>: its <code>VCC</code> goes to the + rail instead of straight to 5V, its <code>GND</code> goes to the &#8722; rail instead of straight to a GND pin, and its <code>Echo</code> goes back to pin 11 if Part 6b had you move it to pin 9. The table below has both.</div>
 
     <div class="steps">
       <div class="step"><div class="body">
@@ -90,13 +90,13 @@
               <tr><td>Sensor <code>Trig</code></td><td class="n">10</td><td></td></tr>
               <tr><td>Sensor <code>Echo</code></td><td class="n">11</td><td><b>Move it back to 11 if you got as far as Part 6b</b>, which had you put it on pin 9 because the LCD wanted pin 11 for itself. This display does not. Leaving it on 9 gives you a permanent <code>999</code> that looks exactly like a broken sensor.</td></tr>
               <tr><td>Sensor <code>GND</code></td><td>&#8722; rail</td><td></td></tr>
-              <tr><td>Buzzer</td><td class="n">6</td><td>Body in the board, long leg <code>b40</code>, short leg <code>b42</code>. Wire <code>a40</code> to pin 6, wire <code>a42</code> to the &#8722; rail. No resistor. If the legs will not reach two holes apart, use <code>b43</code> and <code>a43</code>.</td></tr>
+              <tr><td>Buzzer</td><td class="n">6</td><td>Body in the board, long leg <code>b40</code>, short leg <code>b42</code>. Wire <code>a40</code> to pin 6, wire <code>a42</code> to the &#8722; rail. No resistor. If the legs will not reach two holes apart, use <code>b40</code> and <code>b43</code>, and move the &#8722; rail wire to <code>a43</code>. <b>Never put both legs in the same numbered column</b>: the five holes in a column are one connection, so the buzzer would be shorted out and pin 6 joined straight to ground.</td></tr>
               <tr><td>Power</td><td>5V</td><td>One wire from the + rail to the Arduino's 5V pin</td></tr>
               <tr><td>Ground</td><td>GND</td><td>One wire from the &#8722; rail to a GND pin</td></tr>
             </tbody>
           </table>
         </div>
-        <div class="see"><b>You should see</b>Twelve wires when you have finished counting: four to the display, four to the sensor, two to the buzzer, and the two rail wires. The LCD version of this build has twenty.</div>
+        <div class="see"><b>You should see</b>Twelve wires when you have finished counting: four to the display, four to the sensor, two to the buzzer, and the two rail wires. The LCD version of this build has twenty-two.</div>
       </div></div>
       <div class="step"><div class="body">
         <p><strong>Upload <code>b7_06_guard_tm1637.ino</code>.</strong></p>
@@ -155,7 +155,7 @@
       </table>
     </div>
     <p><code>0x80</code> is the colon bit inside a digit. <code>0x40</code> is what <code>showNumberDecEx</code> wants you to hand it, and the library turns it into <code>0x80</code> on your behalf. Two numbers for one job, because two different people wrote the two functions. This is normal, and reading the library's own header file is how you settle arguments like this.</p>
-    <p>This sketch leaves the colon off. Band 7's clock project uses it, and blinking it once a second is what makes a display look like a clock rather than a number.</p>
+    <p>This sketch leaves the colon off. Turn it on with <code>showNumberDecEx(cm, 0x40)</code> if you want to see it. Blinking it once a second is what makes a four-digit display look like a clock rather than a number, and it is a few lines with a <code>millis</code> check if you ever build one.</p>
   </div>
 </section>
 

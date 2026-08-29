@@ -16,8 +16,13 @@
 //     Wire j7 to the minus rail.
 //
 //   NOTE
-//     Analog pins need the capital A. Writing 0 instead of A0 reads
-//     a completely different pin.
+//     Write the capital A on analog pins, every time.
+//     analogRead(0) happens to reach the same pin as
+//     analogRead(A0), so this one forgives you. But pinMode,
+//     digitalRead and digitalWrite do not: to them A0 means pin
+//     14 and 0 means pin 0, which are two different pins on two
+//     different edges of the board. Write the A and you never
+//     have to remember which is which.
 // ==================================================================
 
 int knobPin = A0;

@@ -66,7 +66,15 @@
 //     A machine that had to be exact would care a great deal.
 //
 //   IF IT TURNS THE WRONG WAY
-//     Check the pin order again. 8, 10, 9, 11.
+//     The pin order is already right; direction is the thing
+//     left. Swap the two wires on Arduino pins 8 and 9, so that
+//     IN1 goes to pin 9 and IN3 goes to pin 8. That reverses the
+//     order of the library's first pair, which reverses the
+//     direction.
+//     DO NOT swap 8 and 11. That gives you the buzzing instead.
+//
+//   IF IT BUZZES AND SHAKES AND GOES NOWHERE
+//     That IS the pin order. 8, 10, 9, 11. Four times out of five.
 //
 //   IT IGNORES YOU WHILE IT IS TURNING, AND THAT IS BAND 5 AGAIN
 //     dial.step() blocks. A full turn at speed 10 takes about six

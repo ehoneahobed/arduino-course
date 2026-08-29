@@ -77,6 +77,8 @@
     <h3 style="margin-top:.6rem">What you need</h3>
     <ul class="plain">
       <li>Everything from the previous bands. No new parts.</li>
+      <li><b>Band 6's battery pack, if your build moves anything.</b> Which means Band 6's rules come with it, and this is the band where nobody is checking your work: <b>the + rail is about six volts and no Arduino pin may ever touch it</b>; a knob's power leg goes straight to the Arduino's <b>5V</b> pin, never to the + rail; and <b>one wire</b> joins the &#8722; rail to an Arduino GND pin, always. Write those three lines onto your wiring drawing before you build anything, and check the finished board against them with the battery switched off.</li>
+      <li>The same <strong>full-size breadboard</strong> Bands 5 and 7 needed. This band's worked example runs out to column 42.</li>
       <li>Card, tape, a box or a bottle, and whatever will make a housing that survives being carried</li>
       <li>Paper, for the criteria and the wiring drawing. This band uses more paper than solder.</li>
       <li>One real person with a real problem, and their patience for twenty minutes twice</li>
@@ -235,7 +237,7 @@ void enterState(int newState) {
       </ol>
     </div>
 
-    <div class="ifnot" style="margin-bottom:.4rem"><b>Start from an empty board</b>Unplug the USB. Take everything from Band 7 off the breadboard: the sensor, the screen, the buzzer, the knob and all their wires. This build needs two parts and you want to see them clearly.</div>
+    <div class="ifnot" style="margin-bottom:.4rem"><b>Start from an empty board</b>Unplug the USB. Take everything from Band 7 off the breadboard: the sensor, the screen, the buzzer, the knob and all their wires. This build needs two parts and you want to see them clearly.<br><br><b>Both ends of every wire.</b> Pull them out of the Arduino header too, so nothing is left in the pins. A wire you forgot is invisible when you are looking at the breadboard, and one Arduino pin takes one wire.<br><br><b>Which rails this band means.</b> Your breadboard has two pairs, one along each long edge, and on most boards <strong>the two pairs are not joined to each other</strong>. In this band, &#8220;the + rail&#8221; and &#8220;the &#8722; rail&#8221; always mean the pair along the <strong>top</strong> edge, nearest row <code>j</code>. Pick that pair now and use only it. The buzzer sits down in rows <code>a</code> and <code>b</code>, so its rail wire is a long one that runs round the end of the board; run it rather than reaching for the nearer rail, because mixing the two pairs means nothing works and nothing looks wrong.</div>
 
     <div class="steps">
       <div class="step"><div class="body">
@@ -295,7 +297,8 @@ else if (!armed &amp;&amp; !alarming) { ... }</code></pre>
     <details><summary>The answer, after you have written yours</summary><div class="inner">
       <p><strong>1. None of them match.</strong> The first needs armed true. The second needs armed true. The third needs alarming false. The combination armed=false with alarming=true fits nowhere.</p>
       <p><strong>2. No line at all.</strong> That is the whole answer. The light is not off, and not on: it is untouched. Whatever it was doing when the freeze began is what it keeps doing, because nothing is writing to it.</p>
-      <p><strong>3. No, never.</strong> Once it has alarmed once, snoozing always lands it back in flashing, because nothing clears <code>alarming</code> on the way out. Press all day. The steady light is gone until you reset the board.</p>
+      <p><strong>3. Only by accident, and never on purpose, and that is worse than never.</strong> Snoozing always lands it back in flashing, because nothing clears <code>alarming</code> on the way out. But two more presses <em>inside</em> the frozen five seconds happen to walk the three flags back to <code>1 0 0</code>, and the steady light returns. Let the five seconds run out and any press puts you straight back into flashing.</p>
+      <p>Sit with that for a moment, because it is the real lesson. <strong>The behaviour depends on how fast you pressed.</strong> Nobody can describe this device, nobody can write instructions for it, and nobody can repair it, because the same button does different things depending on timing that is not written down anywhere. Write down the exact presses that got you back, and then notice that you could not have predicted them by reading the code. Neither could I.</p>
       <p><strong>4. Eight combinations. Four make sense.</strong> The code defends three of them. The other five were never thought about, and one of them is where the device is stuck.</p>
       <p>Nothing here was a typing mistake, so no amount of careful typing would have prevented it. <strong>The fault is in the shape.</strong></p>
     </div></details>
@@ -372,6 +375,19 @@ else if (!armed &amp;&amp; !alarming) { ... }</code></pre>
         <li><strong>Charging kiosk queue light.</strong> Shows from a distance whether a slot is free.</li>
       </ul>
       <p>Every one of these is buildable with what is already in your box. None of them needs a part you do not have.</p>
+    </div>
+
+    <div class="callout danger">
+      <h5>Nothing in this course goes near mains electricity, and nor do you</h5>
+      <p>Three of those briefs sit next to something that plugs into a wall: a bell, a pump, a charging kiosk. <strong>You do not wire onto any of them.</strong> Your board, your battery pack and everything you have built in nine bands work at six volts or less. Mains is hundreds of volts, it does not warn you, and it kills people who were sure they knew what they were doing.</p>
+      <p><strong>The rule for this band, and for everything you build after it.</strong> Never open, cut into, strip or connect anything to: a wall socket, a plug, a mains cable, a distribution board, a pump, a bell, a fridge, a fan that plugs in, or any wire you did not put there yourself.</p>
+      <p><strong>What you do instead is better engineering anyway.</strong> A device that senses from the outside is a device that cannot break the thing it is watching, and can be fitted by anybody, and removed in a second.</p>
+      <ul class="plain">
+        <li><b>Is the pump running?</b> Feel it, do not tap into it. A pump vibrates and it is loud. Tape the board's box to the pipe and sense the shake, or put the sound sensor near it.</li>
+        <li><b>Ring the bell.</b> Do not switch the bell. Use your own buzzer, loudly, or a light. A period timer that beeps is a period timer.</li>
+        <li><b>Is the charging slot free?</b> Do not touch the charger. Sense the phone with the distance sensor, or put a button under the shelf that the phone's weight presses.</li>
+      </ul>
+      <p class="note">If a brief seems to <em>need</em> you to switch mains, the brief is not finished yet. Go back to the person and ask what they would actually see, hear or feel if the thing were working. That answer is always something you can sense from outside, and it is always the honest version of the problem.</p>
     </div>
 
     <h3 style="margin-top:.6rem">Go and ask somebody</h3>
@@ -466,7 +482,7 @@ int clearLevel = 20;          // must fall below this to count as safe</code></p
     <div class="ifnot"><b>The name for this, if you want to look it up</b>It is called hysteresis. You do not need the word. You do need the habit, and you have now met it three times in three different bands, which is how you know it is a real idea and not a trick.</div>
 
     <h3 style="margin-top:.8rem">Build it and test it</h3>
-    <div class="ifnot" style="margin-bottom:.4rem"><b>Before you start</b>USB unplugged. The wiring is in the sketch's header, hole by hole. Build it in stages and test each one, as you have every band since Band 3.</div>
+    <div class="ifnot" style="margin-bottom:.4rem"><b>Before you start</b>USB unplugged. The wiring is in the sketch's header, hole by hole. <b>Read the sensor's holes there rather than reusing Band 7's.</b> Band 7 put the sensor in <code>f20</code> to <code>f23</code>, and the button in this build sits in columns 19 and 21, so <code>f21</code> would end up holding a sensor pin and a button leg at once. The sketch puts the sensor in <code>f24</code> to <code>f27</code> instead. <b>Every rail wire in this band goes to the top pair, nearest row <code>j</code>.</b> Build it in stages and test each one, as you have every band since Band 3.</div>
     <div class="steps">
       <div class="step"><div class="body">
         <p><strong>Build it and prove each state in turn</strong> with a bucket, or with a book you move towards the sensor to stand in for rising water.</p>
@@ -548,7 +564,7 @@ int clearLevel = 20;          // must fall below this to count as safe</code></p
         <thead><tr><th>Part</th><th>Pin</th><th>Holes</th><th>Wiring</th><th>Why this pin</th></tr></thead>
         <tbody>
           <tr><td>Buzzer</td><td>6</td><td>long <code>b40</code>, short <code>b42</code></td><td><code>a40</code> to pin 6, <code>a42</code> to &#8722; rail</td><td>Any digital pin. 6 was free.</td></tr>
-          <tr><td>Servo</td><td>9</td><td>&mdash;</td><td>Orange to pin 9, red to + rail, brown to &#8722; rail</td><td>Any digital pin. But <code>Servo.h</code> stops <code>analogWrite</code> working on pins 9 and 10, and <code>tone</code> stops it working on 3 and 11.</td></tr>
+          <tr><td>Servo</td><td>9</td><td>&mdash;</td><td>Orange to pin 9, red to + rail, brown to &#8722; rail. <b>The + rail here is the battery, about six volts.</b> Only the servo's red wire may touch it. Add the two rows Band 6 Part 7 made you write: one wire from the &#8722; rail to an Arduino GND pin, and any knob's power leg straight to the Arduino's 5V pin.</td><td>Any digital pin. But <code>Servo.h</code> stops <code>analogWrite</code> working on pins 9 and 10, and <code>tone</code> stops it working on 3 and 11.</td></tr>
         </tbody>
       </table>
     </div>

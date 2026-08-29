@@ -7,7 +7,7 @@
 //   screen instead of twelve, a shorter sketch, and digits you can
 //   read from across a room, which the LCD cannot manage.
 //
-//   If the sixteen-wire screen defeated you, come here. Be honest
+//   If the twelve-wire screen defeated you, come here. Be honest
 //   about the trade: you lose the padding bug, the contrast knob,
 //   the hunt for one wrong wire among twelve, and the sixteen-
 //   character writing exercise, which is the band's best design
@@ -124,16 +124,33 @@ void showDistance(long cm) {
   screen.showNumberDec(cm, false);   // false: no leading zeros
 }
 
+// ONE PLACE decides what the buzzer is doing, and it remembers.
+// Everything else asks this, so the note can be taken away for a
+// moment and put back exactly as it was.
+int nowPlaying = 0;                  // 0 means silent
+
+void setNote(int freq) {
+  if (freq == nowPlaying) {
+    return;                          // already doing that
+  }
+  nowPlaying = freq;
+  if (freq == 0) {
+    noTone(buzzerPin);
+  } else {
+    tone(buzzerPin, freq);
+  }
+}
+
 void updateBeep(long cm) {
   int gap = gapFor(cm);
 
   if (gap < 0) {
-    noTone(buzzerPin);
+    setNote(0);
     beeping = false;
     return;
   }
   if (gap == 0) {
-    tone(buzzerPin, 880);
+    setNote(880);
     beeping = true;
     return;
   }
@@ -142,11 +159,7 @@ void updateBeep(long cm) {
   if (now - lastBeep >= (unsigned long)gap) {
     lastBeep = now;
     beeping = !beeping;
-    if (beeping) {
-      tone(buzzerPin, 660);
-    } else {
-      noTone(buzzerPin);
-    }
+    setNote(beeping ? 660 : 0);
   }
 }
 
@@ -160,12 +173,20 @@ void setup() {
 }
 
 void loop() {
-  // Silence the buzzer while measuring. tone() runs an interrupt
-  // in the background, and pulseIn counts with interrupts on, so a
-  // fast beep makes the distance read very slightly long, exactly
-  // when you are closest and least want that.
-  noTone(buzzerPin);
+  // Silence the buzzer WHILE MEASURING ONLY. tone() runs an
+  // interrupt in the background, and pulseIn counts with
+  // interrupts on, so a fast beep makes the distance read very
+  // slightly long, exactly when you are closest and least want it.
+  //
+  // Then put the note straight back. Leaving it off would silence
+  // the buzzer for the rest of the round, and since the round is
+  // 50 thousandths of a second and a beep is meant to last 350,
+  // you would hear a tiny chirp instead of a beep. That was a real
+  // bug in this sketch, and it is the reason setNote exists.
+  int wasPlaying = nowPlaying;
+  setNote(0);
   long cm = readDistance();
+  setNote(wasPlaying);
 
   showDistance(cm);
   updateBeep(cm);

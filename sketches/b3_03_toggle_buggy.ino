@@ -5,7 +5,8 @@
 //     Press once, light on. Press again, light off.
 //
 //   WHAT IT ACTUALLY DOES
-//     Flickers madly while you hold the button, then lands on
+//     Goes DIM while you hold the button, because it flips far
+//     faster than your eye can follow, then lands on
 //     whichever state it happened to be in. Useless.
 //
 //     The logic is correct. Nothing is misspelled. Work out why

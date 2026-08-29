@@ -103,7 +103,7 @@
     <div class="callout danger">
       <h5>The diode is not optional, and the stripe faces the + rail</h5>
       <p>A spinning motor that is switched off becomes a generator for an instant and pushes a high voltage back down the wire it came from. This is the part that catches people out: <strong>PWM switches the motor off about a thousand times every second.</strong> So that spike is not a rare event at the end of the session. It happens a thousand times a second, the whole time the fan is running, straight into the transistor.</p>
-      <p>Use a <code>1N4001</code>, any other <code>1N400x</code>, or a <code>1N4148</code>. There is a stripe painted round one end. <strong>The striped end goes into the + rail.</strong> The plain end goes into <code>b14</code>, which is the collector row, so the diode sits across the motor.</p>
+      <p>Use a <code>1N4001</code>, or any other <code>1N400x</code>. Do not substitute a small glass <code>1N4148</code>: it is a signal diode rated for about a fifth of an amp, and this motor works it at or past that the whole time it runs. There is a stripe painted round one end. <strong>The striped end goes into the + rail.</strong> The plain end goes into <code>b14</code>, which is the collector row, so the diode sits across the motor.</p>
       <p>Fitted this way it does nothing at all while the motor is running, and only conducts for the instant the spike appears. That is why it looks pointless and is not.</p>
       <p class="note">A diode fitted the wrong way round carries the current that was supposed to go through the motor. So the first thing you notice is that <strong>the motor does not turn at all</strong>, and the second is that the diode and the transistor get hot within a few seconds of turning the knob up. If that happens, switch off immediately and look at the stripe. Check it twice before you switch on and you never meet this.</p>
     </div>
@@ -176,6 +176,8 @@
       <dt>Silver</dt><dd>Drive it from the temperature sensor instead of the knob, if you have the DHT11: hotter room, faster fan. You will need two thresholds rather than one, for the reason Band 4 gave you.</dd>
       <dt>Gold</dt><dd>Give the button a <strong>second job</strong>. Instead of one three second burst, make a short press step through three fixed speeds, slow then medium then fast then back to the knob. You will need a variable that remembers which of the four states you are in. You will also have to decide what should happen if somebody turns the knob while a fixed speed is running, and there is no right answer to that. Write down the rule you chose and one sentence saying why.</dd>
     </dl>
+    <div class="ifnot"><b>Any sensor you swap in takes its power from the Arduino's 5V pin, never from the + rail</b>Band 4 told you to run the light sensor's top leg to &#8220;the + rail&#8221;, and in Band 4 the + rail was five volts from the Arduino. <strong>In this band the + rail is about six volts from the battery.</strong> Feed a sensor from that and its middle leg can hand your analog pin nearly six volts. That is over the limit, and it does its damage quietly, with nothing to tell you. The knob's own 5V wire already goes to the right place, so take the knob out and put the sensor's power leg on that same wire. Its bottom leg goes to the &#8722; rail as before. A DHT11 is worse again: it is a five-and-a-half volt part, so six volts damages the sensor as well as the pin. <strong>The rule has not changed since Part 7: anything the Arduino reads is powered by the Arduino. The + rail is only for things that push.</strong></div>
+
     <div class="ifnot"><b>If your kit has no DHT11</b>Do Silver with the light sensor instead: brighter room, faster fan. The two thresholds are needed for exactly the same reason, and it is the reasoning Band 4 wants back from you, not the sensor.</div>
   </div>
 </section>
@@ -189,7 +191,8 @@
       <li>Your notes from the loaded-card activity in Part 1</li>
       <li>Your measured <code>minSpeed</code>, and how you found it</li>
       <li>Your build log, including whether the transistor legs caught you out</li>
-      <li>Five or six correct answers in Part 12, the Check yourself questions</li>
+      <li>The deadband table from Part 9b and the three values from Part 9c, done on the servo sketch even though you built the fan</li>
+      <li>Five or six correct answers in Part 12, the Check yourself questions, <strong>including question 2</strong></li>
     </ul>
   </div>
 </section>

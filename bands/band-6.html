@@ -212,6 +212,7 @@
         <dt>angle</dt><dd>Where the horn should point, from 0 to 180. The unit is degrees.</dd>
         <dt>library</dt><dd>Code somebody else wrote that you can use in your own sketch by naming it at the top.</dd>
       </dl>
+
     </div>
 
     <div class="ifnot"><b>Do not force the horn round with your fingers</b>The gears inside are small plastic teeth and they strip. If the horn is pointing the wrong way, take it off the stub and put it back on in a different position. Never twist it while it is on.</div>
@@ -349,6 +350,7 @@ gate.write(angle);</code></pre>
       </div></div>
       <div class="step"><div class="body">
         <p><strong>Wire <code>j5</code> to the &#8722; rail</strong> and <strong><code>j7</code> to the + rail</strong>. These are the two outside legs, and either way round is fine: it only decides which way the knob turns.</p>
+        <div class="ifnot"><b>Remember which leg is the power leg, because it changes in Part 7</b>Right now the + rail is five volts from the Arduino and everything is simple. In Part 7 a battery arrives and <strong>the + rail becomes about six volts</strong>, which no Arduino pin may ever see. At that point the knob's <em>power</em> leg, <code>j7</code> here, has to come off the + rail and go straight to the Arduino's own <strong>5V</strong> pin instead.<br><br>Learn it as a rule rather than a hole number, because you will meet it again in every build that has a battery: <strong>anything the Arduino reads is powered by the Arduino. The + rail is only for things that push.</strong> If you wire the knob the other way round, it is <code>j5</code> that has to move. Put a pencil mark on the power leg now.</div>
         <p class="note">In this band, &#8220;the &#8722; rail&#8221; means the strip along the <strong>top</strong> edge, nearest row j. The + rail is the other strip up there. Pick both now and use only those two all band.</p>
       </div></div>
       <div class="step"><div class="body">
@@ -721,9 +723,11 @@ if (abs(wanted - lastAngle) &gt;= deadband) {
     <p>Work on a copy of <code>b6_04_servo_gate_worked.ino</code>.</p>
     <dl class="tier">
       <dt>Bronze</dt><dd>Make the gate close <strong>slowly</strong> instead of snapping shut, over about a second, while the button still responds instantly during the whole close. You will need a name holding the angle it is travelling towards and a <code>millis</code> check that moves it one degree at a time.</dd>
-      <dt>Silver</dt><dd>Replace the knob with the light sensor from Band 4, so the gate closes as the room darkens. Then find your two thresholds by measuring, exactly as you did in Band 4, and write them in your log. Use a different number for opening and closing, so a reading that wobbles on the boundary does not flap the gate.</dd>
+      <dt>Silver</dt><dd>Replace the knob with the light sensor from Band 4, so the gate closes as the room darkens. Then find your two thresholds by measuring, exactly as you did in Band 4, and write them in your log. Use a different number for opening and closing, so a reading that wobbles on the boundary does not flap the gate. <b>Read the box under this list before you wire it.</b></dd>
       <dt>Gold</dt><dd>Make the servo <code>detach()</code> whenever it has been still for two seconds, and <code>attach()</code> again the moment it needs to move. Then measure the difference: run the gate on batteries for ten minutes with and without it, and say what changed. This is hard for an interesting reason, and finding that reason is the task.</dd>
     </dl>
+    <div class="ifnot"><b>Any sensor you swap in takes its power from the Arduino's 5V pin, never from the + rail</b>Band 4 told you to run the light sensor's top leg to &#8220;the + rail&#8221;, and in Band 4 the + rail was five volts from the Arduino. <strong>In this band the + rail is about six volts from the battery.</strong> Feed a sensor from that and its middle leg can hand your analog pin nearly six volts. That is over the limit, and it does its damage quietly, with nothing to tell you. The knob's own 5V wire already goes to the right place, so take the knob out and put the sensor's power leg on that same wire. Its bottom leg goes to the &#8722; rail as before. A DHT11 is worse again: it is a five-and-a-half volt part, so six volts damages the sensor as well as the pin. <strong>The rule has not changed since Part 7: anything the Arduino reads is powered by the Arduino. The + rail is only for things that push.</strong></div>
+
     <div class="ifnot"><b>The interesting reason, if you get stuck on Gold</b>After <code>attach()</code> the servo has no idea where it is. It jumps to whatever angle you write first. So you must write the angle it was already at, before you write the new one, or the arm will snap across and back every time it wakes up.</div>
   </div>
 </section>

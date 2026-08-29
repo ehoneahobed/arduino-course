@@ -73,7 +73,7 @@
       <li>One potentiometer, the round knob with three legs</li>
       <li>One light sensor, a small round part with a wiggly line on top. It may be called an LDR or a photoresistor.</li>
       <li>One resistor of 10 000 ohms. The stripes read brown, black, orange.</li>
-      <li>One LED and one 220 ohm resistor</li>
+      <li>One LED and one 220 ohm resistor. <b>A second LED, a second 220 ohm resistor, and a passive buzzer as well</b> if you are doing the rain alarm or the room monitor Swap instead of the night guard: both of those use a green light and a red light, and the rain alarm beeps. The buzzer is not otherwise a Band 4 part; it arrives properly in Band 5.</li>
       <li>Jumper wires</li>
     </ul>
 
@@ -268,7 +268,7 @@ void loop() {
     </div>
     <details><summary>Answers to 3 and 4, once you have written your guesses</summary><div class="inner">
       <p><strong>3.</strong> Not a mistake. Analog pins used for reading do not need <code>pinMode</code>. You can write it and it does no harm, but it is not required.</p>
-      <p><strong>4.</strong> Because there is already a pin called 0. Digital pin 0 and analog pin A0 are two different pins on two different edges of the board. The capital A is how you tell the board which one you mean. Leave it out and your sketch will quietly read the wrong pin.</p>
+      <p><strong>4.</strong> Because there is already a pin called 0. Digital pin 0 and analog pin A0 are two different pins on two different edges of the board, and the capital A is how you say which one you mean.<br><br>Here is the honest detail, because it will save you an argument one day. For <code>analogRead</code> alone, the board is forgiving, and <code>analogRead(0)</code> happens to reach the same pin as <code>analogRead(A0)</code>. But for <code>pinMode</code>, <code>digitalRead</code> and <code>digitalWrite</code>, <code>A0</code> means pin 14 and <code>0</code> means pin 0, and those really are two different pins. Write the capital A every time and you never have to remember which instructions forgive you and which do not.</p>
     </div></details>
   </div>
 </section>
@@ -276,7 +276,7 @@ void loop() {
 <section class="part" id="build1">
   <div class="parthead"><span class="tag">Part 5</span><h2>Build the knob and watch it</h2><span class="mins">25 min</span></div>
   <div class="col stack">
-    <div class="ifnot" style="margin-bottom:.4rem"><b>Two things before you start</b>USB unplugged. Also, <strong>take everything from Band 3 off the breadboard</strong> if it is still there. This band needs the top half of the board free.<br><br>And for this whole band, use the rails along the <strong>top</strong> edge for everything, the ones nearest row j. On most boards the top rails and the bottom rails are <strong>not joined to each other</strong>, so mixing them means nothing works and nothing looks wrong. Every build in this band puts its parts in rows f to j, so the top rails are the short journey.</div>
+    <div class="ifnot" style="margin-bottom:.4rem"><b>Two things before you start</b>USB unplugged. Also, <strong>take everything from Band 3 off, both ends</strong>: every part and every resistor out of the breadboard, <strong>and every jumper wire out of the Arduino header as well</strong>. When you have finished, nothing at all is in Arduino pins 2 to 10 and the board is bare.<br><br><b>Both ends of every wire.</b> Pulling a wire out of the breadboard and leaving its other end in the Arduino is the fault that catches everybody, because a leftover wire in an Arduino pin is invisible when you are looking at the breadboard. <b>One Arduino pin takes one wire</b>, so a wire you forgot will stop you dead later in the band and you will look for it on the board, where it is not. Band 3's red light is on <strong>pin 9</strong>, and Part 6 of this band needs pin 9.<br><br>And for this whole band, use the rails along the <strong>top</strong> edge for everything, the ones nearest row j. On most boards the top rails and the bottom rails are <strong>not joined to each other</strong>, so mixing them means nothing works and nothing looks wrong. Every build in this band puts its parts in rows f to j, so the top rails are the short journey.</div>
 
     <div class="steps">
       <div class="step"><div class="body">
@@ -336,7 +336,7 @@ void loop() {
 
     <div class="steps">
       <div class="step"><div class="body">
-        <p><strong>Add a light.</strong> LED long leg into <code>f20</code>, short leg into <code>f22</code>. Resistor from <code>j20</code> to <code>j18</code>. Wire <code>h18</code> to pin 9 (row <code>h</code>, because <code>j18</code> now holds the resistor leg and a hole takes one leg only). Wire <code>j22</code> to the &#8722; rail.</p>
+        <p><strong>Unplug the USB, then add a light.</strong> LED long leg into <code>f20</code>, short leg into <code>f22</code>. Resistor from <code>j20</code> to <code>j18</code>. Wire <code>h18</code> to pin 9 (row <code>h</code>, because <code>j18</code> now holds the resistor leg and a hole takes one leg only). Wire <code>j22</code> to the &#8722; rail.</p>
         <div class="ifnot"><b>If the light never comes on</b>Turn the LED round first, then check both legs are in different columns. This band puts everything in the top block, rows f to j, so the light's ground goes to the same &#8722; rail as the knob. If the knob still reads fine but the light is dead, it is the light, not the wiring to the board.</div>
       </div></div>
       <div class="step"><div class="body">
@@ -470,7 +470,7 @@ void loop() {
           <p><strong>The sketch stays on the board when you unplug it.</strong> You proved that in Band 0. So you can unplug, walk somewhere, plug back into a laptop or a power bank there, and it is already running.</p>
           <p><strong>Point the sensor the same way every time.</strong> Straight up at the ceiling or the sky is easiest to repeat. If you point it at a window in one place and at the floor in the next, your five numbers are not comparable and the whole table is wasted.</p>
         </div>
-        <div class="ifnot"><b>If you cannot carry a laptop about</b>Be careful here, because there is a trap. A power bank runs the board, but the serial monitor only shows numbers while the board is joined to a <em>computer</em>. So a power bank gets you a running board and no readings at all, and a photo taken before you leave shows the old room, not the new one.<br><br>Two ways round it, both fine:<br><br><strong>The simple way.</strong> Do only the places you can reach with the laptop. Three real measurements beat five imagined ones, and the rest of the band works perfectly with three rows in the table.<br><br><strong>The clever way.</strong> Make the board report without a screen. Add one line to the end of <code>loop</code> in <code>b4_03_light_read.ino</code>: <code>delay(2000);</code>, and add above it a short piece that blinks the on-board light on pin 13 once for each hundred in the reading. A reading of 380 gives three blinks, 720 gives seven. Go to the room, watch, count, come back. It is rough, and rough is enough: you are looking for &#8220;about 400 in here and about 800 out there&#8221;, not exact numbers.</div>
+        <div class="ifnot"><b>If you cannot carry a laptop about</b>Be careful here, because there is a trap. A power bank runs the board, but the serial monitor only shows numbers while the board is joined to a <em>computer</em>. So a power bank gets you a running board and no readings at all, and a photo taken before you leave shows the old room, not the new one.<br><br>Two ways round it, both fine:<br><br><strong>The simple way.</strong> Do only the places you can reach with the laptop. Three real measurements beat five imagined ones, and the rest of the band works perfectly with three rows in the table.<br><br><strong>The clever way.</strong> Make the board report without a screen, by blinking the light that is already soldered onto it. Open <code>b4_03_light_read.ino</code> and replace the whole of <code>loop</code> with this, then upload:<br><br><code>void loop() {</code><br><code>&nbsp; int reading = analogRead(lightPin);</code><br><code>&nbsp; int blinks = reading / 100;</code><br><code>&nbsp; for (int i = 0; i &lt; blinks; i = i + 1) {</code><br><code>&nbsp; &nbsp; digitalWrite(13, HIGH);</code><br><code>&nbsp; &nbsp; delay(200);</code><br><code>&nbsp; &nbsp; digitalWrite(13, LOW);</code><br><code>&nbsp; &nbsp; delay(300);</code><br><code>&nbsp; }</code><br><code>&nbsp; delay(2000);</code><br><code>}</code><br><br>Add <code>pinMode(13, OUTPUT);</code> to <code>setup</code> as well. Now a reading of 380 gives three blinks and 720 gives seven. Take the board and a power bank to the room, watch, count, come back.<br><br>That <code>reading / 100</code> throws the remainder away, which is exactly the trap you meet in Part 9. Here it is doing precisely what you want, and it is worth remembering that the same behaviour can be a bug in one place and the whole point in another. It is rough, and rough is enough: you are looking for &#8220;about 400 in here and about 800 out there&#8221;, not exact numbers.</div>
         <p class="note">If carrying a laptop about is awkward, do it in whatever three places you can reach. Three real measurements beat five imagined ones.</p>
       </div></div>
       <div class="step"><div class="body">
@@ -749,7 +749,7 @@ void loop() {
         <tr><td>Any calculation gives 0.00</td><td>Whole-number division</td><td>Put a decimal point on one of the numbers. See Part 9.</td></tr>
         <tr><td>The lamp is very dim at full</td><td>You mapped to 100 or 1023 instead of 255</td><td><code>analogWrite</code> wants 0 to 255. Check the last two numbers in your <code>map</code>.</td></tr>
         <tr><td>The lamp flickers near the switching point</td><td>Nothing is wrong. This is normal</td><td>It needs two limits with a gap. See Part 12, Gold.</td></tr>
-        <tr><td>It reads the wrong pin entirely</td><td>You wrote <code>0</code> instead of <code>A0</code></td><td>Analog pins always need the capital A.</td></tr>
+        <tr><td>A <code>digitalWrite</code> or <code>pinMode</code> acts on the wrong pin</td><td>You wrote <code>0</code> instead of <code>A0</code></td><td>For those instructions <code>A0</code> is pin 14 and <code>0</code> is pin 0. (<code>analogRead</code> forgives you and treats them the same, which is why this only bites later.) Always write the capital A.</td></tr>
         <tr><td>Everything was fine, now nothing works</td><td>The rail wire to 5V or GND has come out</td><td>This build needs power on the breadboard. Check both rail wires first.</td></tr>
       </tbody>
     </table>

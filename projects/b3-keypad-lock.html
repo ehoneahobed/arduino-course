@@ -59,6 +59,8 @@
     <h3>The keypad</h3>
     <p>Eight pins along one edge. <strong>Hold it with the buttons facing you and the right way up</strong>, so <code>1 2 3 A</code> is the top row. The pins are then, reading left to right:</p>
 
+    <div class="ifnot" style="margin-bottom:.4rem"><b>First, how the eight pins actually reach the Arduino</b>The keypad's pins are a <b>male</b> header, and so are both ends of an ordinary jumper wire, so they will not join to each other. Two ways round it, and both work.<br><br><b>If you have female-to-male wires</b> (a socket at one end, a pin at the other): push the socket end onto the keypad pin and the pin end into the Arduino. Eight wires, done.<br><br><b>If you do not</b>: push the keypad's eight pins into the breadboard, into row <code>a</code>, columns 20 to 27, left pin in <code>a20</code>. Then run an ordinary jumper from <code>b20</code>, <code>b21</code> and so on up to the Arduino pin the table names. That is eight wires as well, and it holds the keypad steady while you press it, which is worth something.</div>
+
     <div class="scroll">
       <table>
         <thead><tr><th>Position</th><th>What it is</th><th>Arduino pin</th></tr></thead>
@@ -99,6 +101,7 @@
       <div class="step"><div class="body">
         <p><strong>Install the Keypad library.</strong> Tools, then Manage Libraries, search for <code>Keypad</code>, and install the one by <strong>Mark Stanley and Alexander Brevig</strong>. Once, on one machine.</p>
         <div class="see"><b>You should see</b>The word INSTALLED next to it in the list.</div>
+        <div class="ifnot"><b>If that computer has no internet</b>Library Manager will simply find nothing, and the sketch will refuse to compile with a message ending <code>No such file or directory</code>. Nothing is broken. On any machine that does have a connection, search for the library, download it as a <b>.zip</b>, and carry it here on a phone or a USB stick. Then use <b>Sketch</b>, then <b>Include Library</b>, then <b>Add .ZIP Library</b>, and point it at the file. If your kit came with a folder of libraries on a stick or a disc, it is already in there. Do this <em>before</em> you wire anything, because without the library nothing you build can be tested.</div>
       </div></div>
       <div class="step"><div class="body">
         <p><strong>Stage one: prove every key works, before the lock is anywhere near it.</strong> Upload <code>b3_07_keypad_test.ino</code>, which does nothing at all but print, and open the serial monitor at 9600. Press every one of the sixteen keys in turn, reading along the rows.</p>
@@ -176,7 +179,9 @@
       <li>A video of a correct entry, a wrong entry, and the lockout</li>
       <li>Your build log, including which wires the row-and-column ordering caught you on</li>
       <li>Your answers to the two questions above, and your list of hesitations: the places where somebody using it stopped, guessed, or pressed the wrong thing. Watch another person if there is one. If you are on your own, film yourself using it while thinking aloud, then watch it back tomorrow, when you have forgotten what you meant. Both work. Building it and never watching anybody use it is the only option that does not.</li>
-      <li>Five or six correct answers in the band's Check yourself questions</li>
+      <li>Your completed edge-detection table from Part 12a, and your number from Bronze</li>
+      <li>The sentence &#8220;not pressed is 1, pressed is 0&#8221; in your glossary</li>
+      <li>Five or six correct answers in Part 15, the Check yourself questions, <strong>including question 6</strong></li>
     </ul>
     <p class="note">The Check yourself questions are about <code>INPUT_PULLUP</code>, edge detection, debounce and the one-equals-sign trap, and this build hides the first three of those behind a library. Answer them anyway. If you can, you have understood the band; if you cannot, go back and wire two loose buttons for twenty minutes, because the library will not always be there.</p>
   </div>

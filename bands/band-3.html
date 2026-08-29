@@ -348,7 +348,7 @@
       <div class="step"><div class="body">
         <p><strong>Watch the serial monitor without touching anything.</strong></p>
         <div class="see"><b>You should see</b>The numbers jumping about between 0 and 1 with no pattern. Nobody is pressing anything.</div>
-        <div class="ifnot"><b>If the numbers sit still at 1, or still at 0</b>Very common, and nothing is wrong. A short wire sometimes settles on one value. Pull <strong>the wire that runs from <code>a3</code> to the &#8722; rail</strong> out of the breadboard, leaving its other end in the rail, so one end dangles loose in the air. Then touch that loose end with a finger. Now they will jump about.<br><br>It is completely safe to touch. Five volts cannot hurt you.</div>
+        <div class="ifnot"><b>If the numbers sit still at 1, or still at 0</b>Very common, and nothing is wrong. A short wire sometimes settles on one value. Pull <strong>the wire that runs from <code>j1</code> to pin 2</strong> out of the breadboard at the <code>j1</code> end only, leaving its other end in <strong>pin 2</strong>, so one end dangles loose in the air. Then touch that loose end with a finger. Now they will jump about, because that wire is joined to the very pin the sketch is reading, and your body is acting as an aerial.<br><br>Pull the <em>other</em> wire, the one going to the &#8722; rail, and nothing interesting happens: that end sits at ground, which is a steady voltage, so there is nothing to drift.<br><br>It is completely safe to touch. Five volts cannot hurt you. This is also the one place in this whole course where you change a wire with the power on, and it is safe precisely because that wire goes nowhere except a pin.<br><br>Put the wire back in <code>j1</code> when you have seen it.</div>
       </div></div>
       <div class="step"><div class="body">
         <p><strong>Now wave your hand near the wire, or touch the wire with a finger.</strong> The numbers change even more.</p>
@@ -475,7 +475,7 @@ void loop() {
   <div class="parthead"><span class="tag">Part 6</span><h2>Build it and run it</h2><span class="mins">20 min</span></div>
   <div class="col stack">
     <p>Your button is already wired from Part 3. You only need to add one light.</p>
-    <div class="ifnot" style="margin-bottom:.4rem"><b>Before you start</b>USB unplugged.</div>
+    <div class="ifnot" style="margin-bottom:.4rem"><b>Before you start: clear the board</b>USB unplugged. Then take Band 2 off completely: the RGB LED, its three resistors and all five of its wires, and anything else still standing.<br><br>This is not tidiness. Band 2's RGB LED has legs in <code>f5</code> and <code>f7</code>, and this band's second button goes in exactly those two holes. A hole takes one leg, so a leftover leg there stops you before you start. Band 2 also leaves wires in <strong>Arduino pins 9, 10 and 11</strong>, and this band's lock needs 9 and 10.<br><br><b>Both ends of every wire.</b> Pulling a wire out of the breadboard and leaving its other end in the Arduino is the fault that catches everybody, because a leftover wire in an Arduino pin is invisible when you are looking at the breadboard. <b>One Arduino pin takes one wire</b>, so a wire you forgot will stop you dead later in the band and you will look for it on the board, where it is not.<br><br>When you are done, columns 1 to 29 are bare and Arduino pins 2 to 11 are empty.</div>
     <div class="steps">
       <div class="step"><div class="body">
         <p><strong>Add a green LED.</strong> Long leg into <code>b18</code>, short leg into <code>b20</code>.</p>
@@ -588,7 +588,7 @@ void loop() {
     <div class="steps">
       <div class="step"><div class="body">
         <p><strong>Press the button once, quickly, and let go.</strong></p>
-        <div class="see"><b>You should see</b>The light flickering wildly for as long as you hold the button down. When you let go, it lands on whichever state it happened to be in at that instant.<br><br><strong>Test it properly:</strong> press ten times, and after each press write down whether the light ended up on or off. You will get a roughly random list. There is no way to predict it, and pressing twice does not reliably get you back where you started.</div>
+        <div class="see"><b>You should see</b>The light go <strong>dim, and stay dim</strong>, for as long as you hold the button down. Not flickering, and not half brightness by design: it is flipping on and off far faster than your eye can follow, which is Band 2's PWM happening entirely by accident. When you let go, it lands on whichever state it happened to be in at that instant.<br><br><strong>Test it properly:</strong> press ten times, and after each press write down whether the light ended up on or off. You will get a roughly random list. There is no way to predict it, and pressing twice does not reliably get you back where you started.</div>
       </div></div>
     </div>
     <p><strong>Do not fix it yet.</strong> First work out why, in Part 9. Write down your best guess now.</p>
@@ -745,7 +745,7 @@ pinMode(5, INPUT_PULLUP);</code></pre>
           <tr><td>Button 4</td><td>5</td><td>columns 13 and 15</td><td>Wire <code>j13</code> to pin 5, <code>a15</code> to the &#8722; rail</td></tr>
           <tr><td>Green LED</td><td>8</td><td>long <code>b18</code>, short <code>b20</code></td><td>Resistor <code>a18</code> to <code>a16</code>, wire <code>b16</code> to pin 8, wire <code>a20</code> to the &#8722; rail</td></tr>
           <tr><td>Red LED</td><td>9</td><td>long <code>b23</code>, short <code>b25</code></td><td>Resistor <code>a23</code> to <code>a21</code>, wire <code>b21</code> to pin 9, wire <code>a25</code> to the &#8722; rail</td></tr>
-          <tr><td>Buzzer</td><td>10</td><td>long <code>b27</code>, short <code>b29</code></td><td>Wire <code>a27</code> to pin 10, wire <code>a29</code> to the &#8722; rail</td></tr>
+          <tr><td>Buzzer</td><td>10</td><td>long <code>b27</code>, short <code>b29</code></td><td>Wire <code>a27</code> to pin 10; 220 ohm resistor <code>a29</code> to <code>a31</code>; wire <code>b31</code> to the &#8722; rail</td></tr>
           <tr><td>Ground</td><td>GND</td><td>&mdash;</td><td>One wire from the &#8722; rail to a GND pin</td></tr>
         </tbody>
       </table>
@@ -783,7 +783,7 @@ pinMode(5, INPUT_PULLUP);</code></pre>
 <text x="623" y="105" text-anchor="middle" font-size="13" fill="currentColor" font-family="Archivo, Arial, sans-serif">GND pin</text>
 <text x="623" y="138" text-anchor="middle" font-size="11.5" fill="currentColor" opacity="0.75" font-family="Archivo, Arial, sans-serif">one wire only</text>
 </svg>
-      <figcaption>The two lights. Each has its own resistor and its own pin, and both return to the same minus rail. The buzzer wires the same way but with no resistor.</figcaption>
+      <figcaption>The two lights. Each has its own resistor and its own pin, and both return to the same minus rail. The buzzer wires the same way, and it gets a 220 ohm resistor too.</figcaption>
     </figure>
 
     <div class="ifnot" style="margin-bottom:.4rem"><b>Before you start</b>USB unplugged. Every time.</div>
@@ -813,10 +813,13 @@ pinMode(5, INPUT_PULLUP);</code></pre>
       <div class="step"><div class="body">
         <p><strong>Stage three: the buzzer.</strong> The active buzzer has a long leg and a short leg, just like an LED, and it only works one way round. Long leg towards the pin.</p>
         <p><strong>Push it into the board first:</strong> long leg into <code>b27</code>, short leg into <code>b29</code>. A buzzer is a tall black cylinder and its two legs are a few millimetres apart, so spread them to reach two columns apart, the same as the LEDs.</p>
+        <div class="ifnot"><b>If its legs are set wider and will not reach</b>Use <code>b27</code> and <code>b30</code> instead, and put the &#8722; rail wire in <code>a30</code>. Buzzers are made to two different leg spacings and both are common. Do not force the legs; they snap off flush with the case and the buzzer is then finished.</div>
         <div class="see"><b>You should see</b>The cylinder standing upright on the board, not leaning.</div>
-        <p>It needs no resistor. Now wire <code>a27</code> to pin 10 and <code>a29</code> to the &#8722; rail.</p>
+        <p><strong>Give it a resistor, unlike the buttons.</strong> Wire <code>a27</code> to pin 10 as before. Then put a <b>220 ohm resistor from <code>a29</code> to <code>a31</code></b>, and wire <code>b31</code> to the &#8722; rail. (<code>b31</code>, not <code>a31</code>: the resistor leg is in <code>a31</code> and a hole takes one leg.)</p>
+        <p class="note">The resistor sits in the buzzer's <em>return</em> leg rather than its pin leg, and that makes no difference at all: everything in a single loop carries the same current, so a resistor slows it down wherever you put it. You proved this in Band 1 Part 5 by moving an LED's resistor to the other side and watching nothing change. Column 25 is already the red light's, which is why the resistor goes down here.</p>
+        <div class="ifnot"><b>Why a buzzer gets a resistor when the buttons do not</b>An <em>active</em> buzzer, the kind this band asks for, pulls about twenty-five to thirty thousandths of an amp, and an Arduino pin is designed for twenty. It will work without the resistor and thousands of kits are used that way, but it is outside what the chip is built for, and this course does not ask you to do things it has told you not to do. The 220 ohms makes it a little quieter and nothing else. A <em>passive</em> buzzer pulls far less and does not need it, but leaving the resistor in costs you nothing.</div>
         <p><strong>Test it</strong> with <code>b0_01_blink_given.ino</code> from Band 0. That sketch has the number <code>13</code> in it three times. Change all three to <code>10</code>, then upload.</p>
-        <div class="ifnot"><b>If it makes no sound</b>Check the long leg is on the pin side. If it still does nothing, you may have a passive buzzer, which is the kind where you can see a small green circuit board underneath, rather than a solid black cover. A passive buzzer needs a different instruction, which you meet in Band 5. For now, use the lights alone and carry on. Nothing else is affected.</div>
+        <div class="ifnot"><b>If it makes no sound</b>Check the long leg is on the pin side. If it still does nothing, you probably have a <strong>passive</strong> buzzer: the kind where you can see a small green circuit board underneath, rather than a solid black cover. A passive buzzer has no note of its own, so switching the pin on just clicks it once.<br><br><strong>You are not stuck.</strong> Open <code>b3_05_lock_worked.ino</code> and make two swaps everywhere they appear: write <code>tone(buzzerPin, 1000);</code> in place of <code>digitalWrite(buzzerPin, HIGH);</code>, and <code>noTone(buzzerPin);</code> in place of <code>digitalWrite(buzzerPin, LOW);</code>. That is all. <code>tone</code> is Band 5's instruction and you are meeting it a band early; it pushes the buzzer back and forth for you, which is the job the active one does inside itself. The 1000 is the note, and you may change it.</div>
       </div></div>
 
       <div class="step"><div class="body">
@@ -1035,7 +1038,7 @@ void loop() {
         <tr><td>Strange symbols in the serial monitor</td><td>Baud rate mismatch</td><td>Set the serial monitor to 9600, the same as in <code>Serial.begin</code>.</td></tr>
         <tr><td>Upload suddenly fails and used to work</td><td>The serial monitor is holding the port</td><td>Close the serial monitor and upload again.</td></tr>
         <tr><td>An <code>if</code> always goes the same way</td><td>One equals sign instead of two</td><td>Search your sketch for <code>=</code> inside round brackets. It should almost always be <code>==</code>.</td></tr>
-        <tr><td>The buzzer makes no sound</td><td>Wrong way round, or it is a passive buzzer</td><td>Long leg to the pin. A passive buzzer needs Band 5's instruction and will stay silent here.</td></tr>
+        <tr><td>The buzzer makes no sound</td><td>Wrong way round, or it is a passive buzzer</td><td>Long leg to the pin. If it is passive, swap every <code>digitalWrite(buzzerPin, HIGH)</code> for <code>tone(buzzerPin, 1000)</code> and every <code>LOW</code> for <code>noTone(buzzerPin)</code>. Part 11 stage three explains it.</td></tr>
         <tr><td>The lock works once then jams</td><td><code>pressCount</code> not reset</td><td>See Part 12d.</td></tr>
       </tbody>
     </table>

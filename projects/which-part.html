@@ -23,7 +23,7 @@
   <p class="col sub" style="font-size:1.06em">Two sketches that tell you what is in your hand, for the two parts in this kit that come in more than one kind.</p>
   <dl class="projmeta">
     <div><dt>Time</dt><dd>25 min</dd></div>
-    <div><dt>You need</dt><dd>A buzzer, or an RGB light</dd></div>
+    <div><dt>You need</dt><dd>A buzzer and 2 jumper wires, or an RGB light with 3 &times; 220&#8486; resistors and 6 jumper wires</dd></div>
     <div><dt>At once</dt><dd>Everybody at once</dd></div>
     <div><dt>Before this</dt><dd>Nothing. Do this before Band 2, Band 3 or Band 5 if nobody has labelled your box.</dd></div>
   </dl>
@@ -39,12 +39,12 @@
   <div class="col stack">
     <p>Most of what is in your box is exactly one thing. A resistor is a resistor. An LED is an LED.</p>
     <p>Two parts are not like that. Each comes in two kinds that look almost the same and behave completely differently, and kits ship whichever kind was cheapest that month. If nobody has told you which you have, you will find out the hard way in the middle of a build.</p>
-    <p>These two sketches tell you in about ten minutes each. Do them once, write the answers on a slip of paper, and put the paper in the box.</p>
+    <p>Two sketches settle it: about ten minutes for the buzzer and fifteen for the RGB light. Do them once, write the answers on a slip of paper, and put the paper in the box.</p>
 
     <div class="callout">
       <h5>Who needs to do this</h5>
       <p><strong>The facilitator, once, for the whole hub</strong>, is ideal. Label the bags and nobody else ever has to think about it.</p>
-      <p>If you are working alone and nothing is labelled, do the buzzer one before Band 3 and the RGB one before Band 2. Ten minutes each, and both save you an hour of the wrong kind of confusion.</p>
+      <p>If you are working alone and nothing is labelled, do the buzzer one before Band 3 and the RGB one before Band 2. Twenty-five minutes for both, and they save you an hour of the wrong kind of confusion.</p>
     </div>
   </div>
 </section>
@@ -74,7 +74,7 @@
     <div class="steps">
       <div class="step"><div class="body">
         <p><strong>Wire it.</strong> If one leg is longer than the other, or one is marked <code>+</code>, that leg goes to pin 8 and the other to the &#8722; rail. <strong>If both legs are the same length and nothing is marked, either way round works</strong>, and that on its own is a hint that yours is the passive kind, because a bare piezo disc has no right way round. Then one wire from the &#8722; rail to a GND pin.</p>
-        <div class="ifnot"><b>About the resistor</b>Every band in this course wires the buzzer straight to a pin with no resistor, and that is fine for a passive one. An <strong>active</strong> buzzer pulls a little more, often twenty-five to thirty thousandths of an amp, and a pin is only comfortable up to twenty. It will work, and thousands of kits are used exactly like this. If you have a spare <b>100 ohm</b> resistor, putting it in the pin leg costs you nothing you can hear and keeps the pin inside its rating. Once you know which kind you have, decide once and wire it that way for the rest of the course.</div>
+        <div class="ifnot"><b>About the resistor</b>An <strong>active</strong> buzzer pulls about twenty-five to thirty thousandths of an amp, and an Arduino pin is designed for twenty. Band 3, the one band that asks for an active buzzer, puts a <b>220 ohm</b> resistor in its pin leg for that reason. A <strong>passive</strong> buzzer pulls far less and does not need one, which is why Bands 5, 7 and 8 wire it bare. Leaving a 220 ohm resistor in costs you a little volume and nothing else, so if you are unsure which kind you have, fit it. That is the safe direction to be wrong in.</div>
       </div></div>
       <div class="step"><div class="body">
         <p><strong>Upload <code>id_01_which_buzzer.ino</code></strong> and open the serial monitor (Tools, then Serial Monitor, 9600). Then <strong>listen while you read</strong>, because the sketch tells you what it is about to do before it does it.</p>
@@ -93,7 +93,7 @@
         <table>
           <thead><tr><th>Band</th><th>With a passive one</th><th>With an active one</th></tr></thead>
           <tbody>
-            <tr><td><b>Band 3</b>, the lock</td><td>Works fully. Use <code>tone(buzzerPin, 1000)</code> to beep and <code>noTone(buzzerPin)</code> to stop.</td><td>Works fully. Use <code>digitalWrite(buzzerPin, HIGH)</code> and <code>LOW</code> instead. The page gives you both lines.</td></tr>
+            <tr><td><b>Band 3</b>, the lock</td><td>Works, once you make two swaps. The sketch is written for an active buzzer, so change every <code>digitalWrite(buzzerPin, HIGH)</code> to <code>tone(buzzerPin, 1000)</code> and every <code>LOW</code> to <code>noTone(buzzerPin)</code>. Band 3 Part 11 stage three walks you through it.</td><td>Works as written. This is the kind Band 3 asks for.</td></tr>
             <tr><td><b>Band 5</b>, the game</td><td>Works fully. Four lights, four different notes.</td><td>Works, with one note instead of four. The game is still a game; you lose the pitch, which is a real loss but not a blocking one.</td></tr>
             <tr><td><b>Band 7</b>, the guard</td><td>Works fully. Beep rate <em>and</em> a rising note.</td><td>Works. You get the beep rate, which is the part that matters, and not the rising note.</td></tr>
           </tbody>
@@ -156,7 +156,7 @@
         </div>
         <div class="opt">
           <b>Common anode</b>
-          <p>The shared leg goes to <strong>5V</strong>. It is backwards: 0 is bright and 255 is off. Everything still works and one line changes.</p>
+          <p>The shared leg goes to <strong>5V</strong>. It is backwards: 0 is bright and 255 is off. Everything still works, but two things have to change: the shared leg moves to 5V, and then the numbers turn upside down in the code.</p>
         </div>
       </div>
     </div>
@@ -167,17 +167,18 @@
         <p><strong>Wire whichever one you have</strong>, following the wiring comment at the top of <code>id_02_which_rgb.ino</code>. It gives both, hole by hole.</p>
       </div></div>
       <div class="step"><div class="body">
-        <p><strong>Upload it and watch the light while you read the serial monitor.</strong> It shows red, green, blue, all-on, all-off, and names each one as it goes.</p>
+        <p><strong>Upload it, then open the serial monitor</strong> (click <b>Tools</b>, then <b>Serial Monitor</b>, and set the speed box at the bottom right to <b>9600</b>). Watch the light while you read the words it prints. It shows red, green, blue, all-on and all-off, and names each one as it goes.</p>
         <div class="see"><b>You should see</b>Three answers, and you want all three written down.<br><br><strong>Which way round.</strong> If &#8220;all on&#8221; looked white and &#8220;all off&#8221; looked dark, it is <strong>common cathode</strong> and there is nothing to change. If &#8220;all on&#8221; was dark and &#8220;all off&#8221; was white, it is <strong>common anode</strong>.<br><br><strong>Whether the colours are in the order the sketch thinks.</strong> If it said red and you saw green, your legs are in a different order. Nothing is broken.<br><br><strong>Which pin turned out to be which colour</strong>, if they were not in order. Write the three down.</div>
-        <div class="ifnot"><b>If it lights but only ever one colour</b>Two of your three resistors are not making contact, or two colour wires are in the same hole. A hole takes one leg only.</div>
-        <div class="ifnot"><b>If nothing lights in any of the steps, including &#8220;all on&#8221;</b>You almost certainly have a <strong>common anode</strong> part, whose shared leg wants 5V rather than ground. It is not dead. On a loose LED: take the wire running from <code>j6</code> to the &#8722; rail and move that end to the <code>+</code> rail, then run one new wire from the <code>+</code> rail to the Arduino's <strong>5V</strong> pin. Leave the three resistors and the three pin wires exactly where they are. Run the sketch again. It will light this time, and &#8220;all on&#8221; will now be the dark one. On a module: move the fourth pin's wire from GND to 5V and run it again.</div>
+        <div class="ifnot"><b>If only one colour ever lights</b>The other two resistors are not making contact. Check that both legs of each are pushed right home, and that each resistor really does bridge the LED's column and the pin wire's column.</div>
+        <div class="ifnot"><b>If two colours always come on together and never apart</b>Two colour legs are in the same column and are joined underneath. Move one. A hole takes one leg, and a column is one connection.</div>
+        <div class="ifnot"><b>If nothing lights in any of the steps, including &#8220;all on&#8221;</b>You almost certainly have a <strong>common anode</strong> part, whose shared leg wants 5V rather than ground. It is not dead. <b>Unplug the USB cable first.</b><br><br>On a loose LED: take the wire running from <code>j6</code> to the &#8722; rail and move that end to the <code>+</code> rail &#8212; the <b>outer</b> strip along the same top edge, the one marked with a red line and a <code>+</code>, not the inner one you have used all band. Then run one new wire from that same + rail to the Arduino's <strong>5V</strong> pin. Leave the three resistors and the three pin wires exactly where they are. On a module: move the fourth pin's wire from GND to 5V.<br><br><b>Then check it by eye before the USB goes back in.</b> This is the only step in the whole band that puts five volts onto the breadboard, and the one mistake that can damage the board is joining 5V to GND. So look: <b>no wire runs from the + rail to a GND pin</b>, and <b>no wire runs from the &#8722; rail to 5V</b>. If both of those are true, plug in. Run the sketch again. It will light this time, and &#8220;all on&#8221; will now be the dark one.</div>
         <div class="ifnot"><b>If it still does nothing after that</b>Now check the shared leg itself. On a loose LED it is the longest one, and it must be in <code>f6</code>. On a module it is the pin marked <code>-</code>, <code>GND</code>, <code>VCC</code> or <code>+</code>. Then check that the &#8722; rail really reaches a GND pin.</div>
       </div></div>
     </div>
 
     <div class="callout">
       <h5>If yours is common anode, there are two steps and you need both</h5>
-      <p>Everything in Band 2 still works. Pick one of these and stay with it.</p>
+      <p>Everything in Band 2 still works. Do both of these, in this order.</p>
       <p><strong>Step one, the wiring, and it is not optional.</strong> The shared leg must go to <strong>5V</strong>, as the box above described. A common-anode part with its shared leg on the &#8722; rail cannot light in any state at all, because the shared leg has to sit <em>above</em> the three colour legs for anything to flow through them. This is what <strong>Band 2 Part 12</strong> tells you to do, and it is what makes the light work.</p>
       <p><strong>Step two, the numbers, and this is the part people miss.</strong> Rewiring makes it light. It does not un-invert it. With 5V on the shared leg, <code>255</code> puts five volts on both ends of the light and you get nothing, while <code>0</code> gives you full brightness. So turn every number upside down inside <code>showColour</code> as well:</p>
       <pre><code>analogWrite(redPin, 255 - r);
@@ -190,7 +191,7 @@ analogWrite(bluePin, 255 - b);</code></pre>
 
     <div class="callout">
       <h5>The slip of paper</h5>
-      <p>Write these six things and put the paper in the box:</p>
+      <p>Write these seven things and put the paper in the box:</p>
       <ul class="plain">
         <li>Buzzer 1 is active or passive</li>
         <li>Buzzer 2 is active or passive</li>
@@ -200,7 +201,7 @@ analogWrite(bluePin, 255 - b);</code></pre>
         <li>Which pin is red, which is green, which is blue</li>
         <li>The date, so the next person knows whether to trust it</li>
       </ul>
-      <p>That is ten minutes now against an hour of everybody's confusion later, and it is the single highest-value thing a facilitator can do before a cohort starts.</p>
+      <p>That is twenty-five minutes now against an hour of everybody's confusion later, and it is the single highest-value thing a facilitator can do before a cohort starts.</p>
     </div>
   </div>
 </section>

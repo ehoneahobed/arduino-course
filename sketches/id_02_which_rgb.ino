@@ -34,9 +34,20 @@
 //
 //       IF NOTHING LIGHTS AT ALL IN ANY OF THE FIVE STEPS:
 //       yours is the COMMON ANODE kind, and its long leg wants
-//       5V rather than ground. Move the j6 wire from the MINUS
-//       rail to the PLUS rail, and run one wire from the PLUS
-//       rail to the Arduino's 5V pin. Run the sketch again.
+//       5V rather than ground.
+//
+//       UNPLUG THE USB FIRST. Move the j6 wire from the MINUS
+//       rail to the PLUS rail -- the OUTER strip along the same
+//       edge, the one marked with a red line and a + sign, not
+//       the inner one. Then run one wire from that same PLUS
+//       rail to the Arduino's 5V pin.
+//
+//       THEN CHECK BY EYE BEFORE PLUGGING BACK IN. This is the
+//       only step here that puts 5V onto the breadboard, and
+//       joining 5V to GND is the one mistake that damages the
+//       board. No wire from the PLUS rail to a GND pin. No wire
+//       from the MINUS rail to 5V. Both true? Plug in.
+//
 //       It will now light, and "all on" will be DARK.
 //
 //     RGB MODULE

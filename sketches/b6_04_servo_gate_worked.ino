@@ -60,6 +60,16 @@ int knobMax = 120;         // the knob covers 0..120, so "open" at 180
                            // always looks clearly different from shut
 int lastAngle = -100;      // impossible on purpose, so the first read always moves
 
+// NOTE FOR LATER, once you have met Band 5's millis rule.
+// This adds: openUntil = millis() + openFor. Band 5 taught you to
+// subtract instead, because millis wraps back round to zero after
+// about fifty days and the adding form then ends the wait
+// instantly. On a gate you switch on and off daily that will never
+// happen, which is why it is written the plain way here. On
+// anything left running for months it matters, and the fix is the
+// same shape as b5_06: remember WHEN it opened, then test
+// millis() - openedAt < openFor. Try rewriting it that way once
+// you have finished Part 9d, which uses this name as it stands.
 unsigned long openUntil = 0;   // 0 means "not open"
 unsigned long openFor = 3000;
 

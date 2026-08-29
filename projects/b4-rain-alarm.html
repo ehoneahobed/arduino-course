@@ -23,7 +23,7 @@
   <p class="col sub" style="font-size:1.06em">Washing on the line, and a number that goes <em>down</em> when it gets wet. Calibration you cannot avoid doing.</p>
   <dl class="projmeta">
     <div><dt>Time</dt><dd>95 min</dd></div>
-    <div><dt>You need</dt><dd>Rain sensor board and plate, 2 LEDs, 2 resistors, buzzer, 11 jumper wires</dd></div>
+    <div><dt>You need</dt><dd>Rain sensor board and plate, 2 LEDs, 2 resistors, passive buzzer, 11 jumper wires</dd></div>
     <div><dt>At once</dt><dd>One per rain sensor</dd></div>
     <div><dt>Before this</dt><dd>Finish Band 4 up to Part 9. This replaces the night guard in Part 10, and nothing earlier.</dd></div>
   </dl>
@@ -64,7 +64,7 @@
       <table>
         <thead><tr><th>Part</th><th>Goes to</th><th>Note</th></tr></thead>
         <tbody>
-          <tr><td>The sensor board itself</td><td>Push its pins into <code>a25</code> onwards, or reach it with jumper wires if its pins are on a right-angle header</td><td>Read the printing on <em>your</em> board. The pin order is not the same on every one.</td></tr>
+          <tr><td>The sensor board itself</td><td>Push its four pins into <code>a25</code>, <code>a26</code>, <code>a27</code>, <code>a28</code>. Its own pins fill those holes, so <b>your wires go into row <code>b</code> of the same columns</b>: <code>b25</code>, <code>b26</code> and so on. A hole takes one leg, and the five holes in a column are joined underneath.</td><td>Read the printing on <em>your</em> board and match each wire to the column its pin is in. The pin order is not the same on every board, so do not count positions.</td></tr>
           <tr><td>Sensor board <code>VCC</code></td><td>the + rail</td><td></td></tr>
           <tr><td>Sensor board <code>GND</code></td><td>the &#8722; rail</td><td></td></tr>
           <tr><td>Sensor board <code>AO</code></td><td>pin <code>A0</code></td><td>The one that gives a number. This is the one you want.</td></tr>
@@ -75,11 +75,14 @@
           <tr><td>Buzzer</td><td>long <code>b40</code>, short <code>b42</code>; wire <code>a40</code> to pin 6; wire <code>a42</code> to &#8722; rail</td><td>No resistor. If the legs will not reach two holes apart, use <code>b40</code> and <code>b43</code> and move the &#8722; wire to <code>a43</code>.</td></tr>
           <tr><td>Power</td><td>one wire, + rail to the Arduino 5V pin</td><td>The bottom pair of rails</td></tr>
           <tr><td>Ground</td><td>one wire, &#8722; rail to a GND pin</td><td>The bottom pair of rails</td></tr>
+          <tr><td colspan="3" class="note"><b>Check this twice before the USB goes in.</b> The + rail wire must be in the pin marked <b>5V</b> and the &#8722; rail wire in a pin marked <b>GND</b>. Swapped, the sensor board is powered backwards and is destroyed in seconds. If any part feels warm after you plug in, unplug at once and check those two wires before anything else.</td></tr>
         </tbody>
       </table>
     </div>
 
     <div class="ifnot" style="margin-bottom:.4rem"><b>Why <code>DO</code> stays empty, and why the little knob on the board is a trap</b>The board has a small screw on it and a pin marked <code>DO</code>. Together they give you a yes-or-no answer: wet or not wet, with the screw setting where the line is.<br><br>That sounds easier and it is worse for you. It moves the decision into a screw you cannot see, cannot write down, and cannot explain. <code>AO</code> gives you the number and makes you own the threshold, which is the entire subject of Band 4. <strong>Use <code>AO</code>. Ignore the screw.</strong></div>
+
+    <div class="ifnot" style="margin-bottom:.4rem"><b>This build wants the passive buzzer</b>The sketch uses <code>tone</code>, which needs the kind with a small green circuit board underneath. If yours is the <b>active</b> kind, the solid black one Band 3 asked for, it still works: it beeps at its own single note instead of the rising one. If you would rather it were exact, replace each <code>tone(buzzerPin, ...)</code> with <code>digitalWrite(buzzerPin, HIGH)</code> and each <code>noTone(buzzerPin)</code> with <code>digitalWrite(buzzerPin, LOW)</code>, and put a 220 ohm resistor in its pin leg as Band 3 does. Run <code>id_01_which_buzzer.ino</code> if you are not sure which you have.</div>
 
     <div class="steps">
       <div class="step"><div class="body">
@@ -160,7 +163,8 @@
       <li><strong>Your six-row measurement table</strong>, which is this band's real deliverable, and your two chosen numbers with a sentence on why</li>
       <li>Your guessed readings for all six states, written down <em>before</em> you measured, next to what you actually found</li>
       <li>Your build log</li>
-      <li>Five or six correct answers in the band's Check yourself questions</li>
+      <li>Both <code>analogRead</code> and <code>analogWrite</code> in your glossary, with their different ranges</li>
+      <li>Five or six correct answers in Part 14, the Check yourself questions, <strong>including question 6</strong></li>
     </ul>
   </div>
 </section>

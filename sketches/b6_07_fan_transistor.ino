@@ -55,7 +55,10 @@
 //     it gets hot while the motor stays weak.
 //
 //   *** THE DIODE IS NOT OPTIONAL ***
-//     A 1N4001 (or any 1N400x, or a 1N4148) goes ACROSS THE MOTOR:
+//     A 1N4001, or any other 1N400x, goes ACROSS THE MOTOR.
+//     Do NOT use a small glass 1N4148 here: it is a signal
+//     diode rated for about a fifth of an amp, and this motor
+//     works it at or past that the whole time it runs.
 //       stripe end   -> the PLUS rail
 //       other end    -> the collector
 //
@@ -124,7 +127,8 @@ int minSpeed = 60;     // below this the motor hums and does not turn
 int burstFor = 3000;
 int deadband = 6;      // ignore speed changes smaller than this
 
-unsigned long burstUntil = 0;
+unsigned long burstStartedAt = 0;
+bool bursting = false;
 int lastButton = HIGH;
 int lastSpeed = -100;  // impossible on purpose, so the first read acts
 
@@ -156,15 +160,20 @@ void setup() {
 
 void loop() {
   if (buttonJustPressed()) {
-    burstUntil = millis() + burstFor;
+    burstStartedAt = millis();
+    bursting = true;
     Serial.println("burst");
   }
 
+  // NOTE THE SUBTRACTION, as in Band 5. Writing
+  // millis() < burstStartedAt + burstFor would break once every
+  // fifty days when millis wraps round to zero, and it would
+  // break by ending the burst instantly. Subtract, every time.
   int speed;
-  if (burstUntil > 0 && millis() < burstUntil) {
+  if (bursting && millis() - burstStartedAt < (unsigned long)burstFor) {
     speed = 255;
   } else {
-    burstUntil = 0;
+    bursting = false;
     speed = speedFromKnob();
   }
 
