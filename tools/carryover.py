@@ -29,7 +29,7 @@ Two checks:
      clear removed the specific thing a given reference needs. It exists to
      put a human in front of the small number of places where it could have.
 """
-import io, re, sys, glob, os
+import io, re, sys, glob, os, hashlib
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(HERE, "projects"))
@@ -168,6 +168,14 @@ def scan(name, path, band_index):
     return clears, refs
 
 
+def key_of(page, snip):
+    """Identify a reviewed edge by WHAT IT SAYS, not by what line it is on.
+    Line numbers move every time anything above them is edited, and a reviewed
+    list that goes stale on every edit is a list nobody will trust."""
+    norm = re.sub(r"\s+", " ", snip.strip().strip(".")).lower()
+    return "%s %s" % (page, hashlib.md5((page + "|" + norm).encode("utf-8")).hexdigest()[:10])
+
+
 def snippet(t, at, w=96):
     a = max(0, at - 18)
     return ("..." if a else "") + t[a:a + w] + ("..." if a + w < len(t) else "")
@@ -230,11 +238,12 @@ def main():
                 between.append((ck, ci, cn, cs))
         if not between:
             continue
-        if "%s:%d" % (pn, pi) in reviewed:
+        if key_of(pn, ps) in reviewed:
             skipped += 1
             continue
         edges += 1
         print("- %s:%d  assumes: %s" % (pn, pi, ps))
+        print("        key: %s" % key_of(pn, ps))
         for ck, ci, cn, cs in between[-3:]:
             print("        cleared at %s:%d  %s" % (cn, ci, cs))
     print()

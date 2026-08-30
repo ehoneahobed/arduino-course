@@ -1,59 +1,4 @@
-<!doctype html>
-<html lang="en" data-band="5">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Reaction race · Swap · Arduino Ladder</title>
-  <meta name="description" content="Every Band 5 idea with one light and one button. Functions, tone, random and millis, a quarter of the wiring.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
-  <link rel="stylesheet" href="../assets/course.css">
-</head>
-<body>
-<a class="skip" href="#main">Skip to the project</a>
-<div class="topbar">
-  <a class="home" href="../index.html">Arduino Ladder <span>· Bozoma Innovation Hub</span></a>
-  <nav class="bandlinks" aria-label="Bands"><a href="../bands/band-0.html">0</a><a href="../bands/band-1.html">1</a><a href="../bands/band-2.html">2</a><a href="../bands/band-3.html">3</a><a href="../bands/band-4.html">4</a><a href="../bands/band-5.html" aria-current="page">5</a><a href="../bands/band-6.html">6</a><a href="../bands/band-7.html">7</a><a href="../bands/band-8.html">8</a></nav>
-</div>
-<div class="wrap" id="main">
-<header style="padding:2.6rem 0 1rem">
-  <p class="eyebrow">Band 5 &nbsp;·&nbsp; Simon Says</p>
-  <h1 style="margin:.7rem 0 .5rem"><span class="ptype swap">Swap</span> &nbsp;Reaction race</h1>
-  <p class="col sub" style="font-size:1.06em">Every Band 5 idea with one light and one button. Functions, tone, random and millis, a quarter of the wiring.</p>
-  <dl class="projmeta">
-    <div><dt>Time</dt><dd>100 min</dd></div>
-    <div><dt>You need</dt><dd>1 LED, 1 resistor, 1 button, buzzer, 7 jumper wires</dd></div>
-    <div><dt>At once</dt><dd>Everybody at once</dd></div>
-    <div><dt>Before this</dt><dd>Finish Band 5 up to Part 8. This replaces Simon Says as the build you are assessed on.</dd></div>
-  </dl>
-</header>
-
-<section class="sketchbox">
-  <h2>Sketches for this project</h2>
-  <ul><li><a href="../sketches/b5_06_reaction_race.ino">b5_06_reaction_race.ino</a></li></ul>
-  <p>Every file opens with a plain-English header saying what it does and how to wire it, hole by hole.</p>
-</section>
-<section class="part">
-  <div class="parthead"><span class="tag">Why</span><h2>The whole band, a quarter of the wiring</h2></div>
-  <div class="col stack">
-    <p>Simon Says needs four lights, four buttons, four resistors and a buzzer, joined by about twenty wires. That is thirteen parts, and if it does not work you have thirteen suspects.</p>
-    <p>This build needs one light, one button and a buzzer. It teaches <strong>every single idea in Band 5</strong>:</p>
-    <ul class="plain">
-      <li>Functions you write yourself, with values handed in and answers handed back</li>
-      <li><code>tone</code> and pitch</li>
-      <li><code>random</code>, and why it needs seeding</li>
-      <li><code>millis</code>, and the difference between waiting and watching</li>
-      <li>A job broken into pieces small enough to name</li>
-    </ul>
-    <p class="note">If four buttons is more wiring than you want to fight with today, come here. You are not taking an easier band. You are taking the same band with less to go wrong at the bench, which is a reasonable thing to want.</p>
-  </div>
-</section>
-
-<section class="part">
-  <div class="parthead"><span class="tag">Build</span><h2>Seven wires</h2><span class="mins">25 min</span></div>
-    <figure class="wiring">
-      <svg viewBox="0 -64 1372 730" role="img" aria-label="Reaction race" style="width:1372px; max-width:100%; min-width:560px">
+<svg viewBox="0 -64 1372 730" role="img" aria-label="Band 5 Part 4: four lights, four buttons, one buzzer" style="width:1372px; max-width:100%; min-width:560px">
 <defs><circle id="bh" r="3.6" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/><rect id="sk" x="-6.5" y="-6.5" width="13" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1" opacity=".5"/></defs>
 <rect x="100" y="18" width="1196" height="376" rx="7" fill="none" stroke="currentColor" stroke-width="1.3" opacity=".55"/>
 <rect x="100" y="200" width="1196" height="26" fill="currentColor" opacity=".07"/>
@@ -726,19 +671,31 @@
 <use href="#sk" x="202" y="517"/>
 <use href="#sk" x="224" y="517"/>
 <use href="#sk" x="246" y="517"/>
+<rect x="239.5" y="510.5" width="13" height="13" rx="2" fill="#2E7D46" opacity=".18"/>
+<rect x="239.5" y="510.5" width="13" height="13" rx="2" fill="none" stroke="#2E7D46" stroke-width="1.6"/>
 <use href="#sk" x="268" y="517"/>
+<rect x="261.5" y="510.5" width="13" height="13" rx="2" fill="#2E7D46" opacity=".18"/>
+<rect x="261.5" y="510.5" width="13" height="13" rx="2" fill="none" stroke="#2E7D46" stroke-width="1.6"/>
 <use href="#sk" x="290" y="517"/>
+<rect x="283.5" y="510.5" width="13" height="13" rx="2" fill="#2E7D46" opacity=".18"/>
+<rect x="283.5" y="510.5" width="13" height="13" rx="2" fill="none" stroke="#2E7D46" stroke-width="1.6"/>
 <use href="#sk" x="312" y="517"/>
+<rect x="305.5" y="510.5" width="13" height="13" rx="2" fill="#2E7D46" opacity=".18"/>
+<rect x="305.5" y="510.5" width="13" height="13" rx="2" fill="none" stroke="#2E7D46" stroke-width="1.6"/>
 <use href="#sk" x="334" y="517"/>
 <rect x="327.5" y="510.5" width="13" height="13" rx="2" fill="#2E7D46" opacity=".18"/>
 <rect x="327.5" y="510.5" width="13" height="13" rx="2" fill="none" stroke="#2E7D46" stroke-width="1.6"/>
 <use href="#sk" x="378" y="517"/>
-<rect x="371.5" y="510.5" width="13" height="13" rx="2" fill="#2E7D46" opacity=".18"/>
-<rect x="371.5" y="510.5" width="13" height="13" rx="2" fill="none" stroke="#2E7D46" stroke-width="1.6"/>
 <use href="#sk" x="400" y="517"/>
 <use href="#sk" x="422" y="517"/>
+<rect x="415.5" y="510.5" width="13" height="13" rx="2" fill="#2E7D46" opacity=".18"/>
+<rect x="415.5" y="510.5" width="13" height="13" rx="2" fill="none" stroke="#2E7D46" stroke-width="1.6"/>
 <use href="#sk" x="444" y="517"/>
+<rect x="437.5" y="510.5" width="13" height="13" rx="2" fill="#2E7D46" opacity=".18"/>
+<rect x="437.5" y="510.5" width="13" height="13" rx="2" fill="none" stroke="#2E7D46" stroke-width="1.6"/>
 <use href="#sk" x="466" y="517"/>
+<rect x="459.5" y="510.5" width="13" height="13" rx="2" fill="#2E7D46" opacity=".18"/>
+<rect x="459.5" y="510.5" width="13" height="13" rx="2" fill="none" stroke="#2E7D46" stroke-width="1.6"/>
 <use href="#sk" x="488" y="517"/>
 <rect x="481.5" y="510.5" width="13" height="13" rx="2" fill="#2E7D46" opacity=".18"/>
 <rect x="481.5" y="510.5" width="13" height="13" rx="2" fill="none" stroke="#2E7D46" stroke-width="1.6"/>
@@ -771,12 +728,66 @@
 <line x1="156" y1="285" x2="156" y2="295" stroke="#8E4C21" stroke-width="1.6" opacity=".85"/>
 <text x="152" y="281" font-size="9.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">220</text>
 <text x="152" y="281" font-size="9.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="#8E4C21" opacity="1">220</text>
-<path d="M 126 300 L 126 409 Q 126 418 117 418 L 55 418 Q 46 418 46 427 L 46 459 Q 46 468 55 468 L 369 468 Q 378 468 378 477 L 378 517" fill="none" stroke="#2E7D46" stroke-width="1.9" opacity=".9"/>
-<circle cx="378" cy="517" r="2.6" fill="#2E7D46"/>
+<path d="M 126 300 L 126 409 Q 126 418 117 418 L 55 418 Q 46 418 46 427 L 46 459 Q 46 468 55 468 L 479 468 Q 488 468 488 477 L 488 517" fill="none" stroke="#2E7D46" stroke-width="1.9" opacity=".9"/>
+<circle cx="488" cy="517" r="2.6" fill="#2E7D46"/>
 <circle cx="126" cy="300" r="2.6" fill="#2E7D46"/>
 <line x1="204" y1="322" x2="204" y2="354" stroke="#3D6FA8" stroke-width="1.9" opacity=".9"/>
 <circle cx="204" cy="354" r="2.6" fill="#3D6FA8"/>
 <circle cx="204" cy="322" r="2.6" fill="#3D6FA8"/>
+<line x1="282" y1="300" x2="290" y2="272" stroke="currentColor" stroke-width="2.2"/>
+<line x1="308" y1="300" x2="300" y2="272" stroke="currentColor" stroke-width="1.3"/>
+<path d="M 285 264 a 10 10 0 0 1 20 0 v 8 h -20 z" fill="#2E7D46" opacity=".85" stroke="currentColor" stroke-width="1"/>
+<text x="271" y="303.5" font-size="11" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">+</text>
+<text x="271" y="303.5" font-size="11" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".9">+</text>
+<polyline points="282,322 282,290 230,290 230,322" fill="none" stroke="currentColor" stroke-width="1.5"/>
+<rect x="243" y="285" width="26" height="10" rx="3" fill="#8E4C21" opacity=".2" stroke="currentColor" stroke-width="1"/>
+<line x1="249" y1="285" x2="249" y2="295" stroke="#8E4C21" stroke-width="1.6" opacity=".85"/>
+<line x1="253" y1="285" x2="253" y2="295" stroke="#8E4C21" stroke-width="1.6" opacity=".85"/>
+<line x1="260" y1="285" x2="260" y2="295" stroke="#8E4C21" stroke-width="1.6" opacity=".85"/>
+<text x="256" y="281" font-size="9.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">220</text>
+<text x="256" y="281" font-size="9.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="#8E4C21" opacity="1">220</text>
+<path d="M 230 300 L 230 417 Q 230 426 221 426 L 47 426 Q 38 426 38 435 L 38 451 Q 38 460 47 460 L 457 460 Q 466 460 466 469 L 466 517" fill="none" stroke="#2E7D46" stroke-width="1.9" opacity=".9"/>
+<circle cx="466" cy="517" r="2.6" fill="#2E7D46"/>
+<circle cx="230" cy="300" r="2.6" fill="#2E7D46"/>
+<line x1="308" y1="322" x2="308" y2="354" stroke="#3D6FA8" stroke-width="1.9" opacity=".9"/>
+<circle cx="308" cy="354" r="2.6" fill="#3D6FA8"/>
+<circle cx="308" cy="322" r="2.6" fill="#3D6FA8"/>
+<line x1="386" y1="300" x2="394" y2="272" stroke="currentColor" stroke-width="2.2"/>
+<line x1="412" y1="300" x2="404" y2="272" stroke="currentColor" stroke-width="1.3"/>
+<path d="M 389 264 a 10 10 0 0 1 20 0 v 8 h -20 z" fill="#C9971C" opacity=".85" stroke="currentColor" stroke-width="1"/>
+<text x="375" y="303.5" font-size="11" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">+</text>
+<text x="375" y="303.5" font-size="11" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".9">+</text>
+<polyline points="386,322 386,290 334,290 334,322" fill="none" stroke="currentColor" stroke-width="1.5"/>
+<rect x="347" y="285" width="26" height="10" rx="3" fill="#8E4C21" opacity=".2" stroke="currentColor" stroke-width="1"/>
+<line x1="353" y1="285" x2="353" y2="295" stroke="#8E4C21" stroke-width="1.6" opacity=".85"/>
+<line x1="357" y1="285" x2="357" y2="295" stroke="#8E4C21" stroke-width="1.6" opacity=".85"/>
+<line x1="364" y1="285" x2="364" y2="295" stroke="#8E4C21" stroke-width="1.6" opacity=".85"/>
+<text x="360" y="281" font-size="9.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">220</text>
+<text x="360" y="281" font-size="9.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="#8E4C21" opacity="1">220</text>
+<path d="M 334 300 L 334 425 Q 334 434 325 434 L 39 434 Q 30 434 30 443 L 30 443 Q 30 452 39 452 L 435 452 Q 444 452 444 461 L 444 517" fill="none" stroke="#2E7D46" stroke-width="1.9" opacity=".9"/>
+<circle cx="444" cy="517" r="2.6" fill="#2E7D46"/>
+<circle cx="334" cy="300" r="2.6" fill="#2E7D46"/>
+<line x1="412" y1="322" x2="412" y2="354" stroke="#3D6FA8" stroke-width="1.9" opacity=".9"/>
+<circle cx="412" cy="354" r="2.6" fill="#3D6FA8"/>
+<circle cx="412" cy="322" r="2.6" fill="#3D6FA8"/>
+<line x1="490" y1="300" x2="498" y2="272" stroke="currentColor" stroke-width="2.2"/>
+<line x1="516" y1="300" x2="508" y2="272" stroke="currentColor" stroke-width="1.3"/>
+<path d="M 493 264 a 10 10 0 0 1 20 0 v 8 h -20 z" fill="#3D6FA8" opacity=".85" stroke="currentColor" stroke-width="1"/>
+<text x="479" y="303.5" font-size="11" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">+</text>
+<text x="479" y="303.5" font-size="11" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".9">+</text>
+<polyline points="490,322 490,290 438,290 438,322" fill="none" stroke="currentColor" stroke-width="1.5"/>
+<rect x="451" y="285" width="26" height="10" rx="3" fill="#8E4C21" opacity=".2" stroke="currentColor" stroke-width="1"/>
+<line x1="457" y1="285" x2="457" y2="295" stroke="#8E4C21" stroke-width="1.6" opacity=".85"/>
+<line x1="461" y1="285" x2="461" y2="295" stroke="#8E4C21" stroke-width="1.6" opacity=".85"/>
+<line x1="468" y1="285" x2="468" y2="295" stroke="#8E4C21" stroke-width="1.6" opacity=".85"/>
+<text x="464" y="281" font-size="9.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">220</text>
+<text x="464" y="281" font-size="9.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="#8E4C21" opacity="1">220</text>
+<path d="M 438 300 L 438 401 Q 438 410 429 410 L 63 410 Q 54 410 54 419 L 54 467 Q 54 476 63 476 L 413 476 Q 422 476 422 485 L 422 517" fill="none" stroke="#2E7D46" stroke-width="1.9" opacity=".9"/>
+<circle cx="422" cy="517" r="2.6" fill="#2E7D46"/>
+<circle cx="438" cy="300" r="2.6" fill="#2E7D46"/>
+<line x1="516" y1="322" x2="516" y2="354" stroke="#3D6FA8" stroke-width="1.9" opacity=".9"/>
+<circle cx="516" cy="354" r="2.6" fill="#3D6FA8"/>
+<circle cx="516" cy="322" r="2.6" fill="#3D6FA8"/>
 <line x1="594" y1="234" x2="594" y2="227" stroke="currentColor" stroke-width="1.6"/>
 <line x1="646" y1="234" x2="646" y2="227" stroke="currentColor" stroke-width="1.6"/>
 <line x1="594" y1="184" x2="594" y2="199" stroke="currentColor" stroke-width="1.6"/>
@@ -785,12 +796,54 @@
 <circle cx="620" cy="213" r="6.5" fill="currentColor" opacity=".25" stroke="currentColor" stroke-width="1"/>
 <text x="656" y="217" font-size="9" text-anchor="start" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">button</text>
 <text x="656" y="217" font-size="9" text-anchor="start" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".8">button</text>
-<path d="M 594 96 L 594 -27 Q 594 -36 585 -36 L 47 -36 Q 38 -36 38 -27 L 38 451 Q 38 460 47 460 L 479 460 Q 488 460 488 469 L 488 517" fill="none" stroke="#2E7D46" stroke-width="1.9" opacity=".9"/>
-<circle cx="488" cy="517" r="2.6" fill="#2E7D46"/>
+<path d="M 594 96 L 594 -19 Q 594 -28 585 -28 L 55 -28 Q 46 -28 46 -19 L 46 459 Q 46 468 55 468 L 325 468 Q 334 468 334 477 L 334 517" fill="none" stroke="#2E7D46" stroke-width="1.9" opacity=".9"/>
+<circle cx="334" cy="517" r="2.6" fill="#2E7D46"/>
 <circle cx="594" cy="96" r="2.6" fill="#2E7D46"/>
 <line x1="646" y1="322" x2="646" y2="354" stroke="#3D6FA8" stroke-width="1.9" opacity=".9"/>
 <circle cx="646" cy="354" r="2.6" fill="#3D6FA8"/>
 <circle cx="646" cy="322" r="2.6" fill="#3D6FA8"/>
+<line x1="724" y1="234" x2="724" y2="227" stroke="currentColor" stroke-width="1.6"/>
+<line x1="776" y1="234" x2="776" y2="227" stroke="currentColor" stroke-width="1.6"/>
+<line x1="724" y1="184" x2="724" y2="199" stroke="currentColor" stroke-width="1.6"/>
+<line x1="776" y1="184" x2="776" y2="199" stroke="currentColor" stroke-width="1.6"/>
+<rect x="720" y="198" width="60" height="30" rx="3" fill="currentColor" opacity=".13" stroke="currentColor" stroke-width="1.1"/>
+<circle cx="750" cy="213" r="6.5" fill="currentColor" opacity=".25" stroke="currentColor" stroke-width="1"/>
+<text x="786" y="217" font-size="9" text-anchor="start" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">button</text>
+<text x="786" y="217" font-size="9" text-anchor="start" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".8">button</text>
+<path d="M 724 96 L 724 -27 Q 724 -36 733 -36 L 1349 -36 Q 1358 -36 1358 -27 L 1358 451 Q 1358 460 1349 460 L 321 460 Q 312 460 312 469 L 312 517" fill="none" stroke="#2E7D46" stroke-width="1.9" opacity=".9"/>
+<circle cx="312" cy="517" r="2.6" fill="#2E7D46"/>
+<circle cx="724" cy="96" r="2.6" fill="#2E7D46"/>
+<line x1="776" y1="322" x2="776" y2="354" stroke="#3D6FA8" stroke-width="1.9" opacity=".9"/>
+<circle cx="776" cy="354" r="2.6" fill="#3D6FA8"/>
+<circle cx="776" cy="322" r="2.6" fill="#3D6FA8"/>
+<line x1="854" y1="234" x2="854" y2="227" stroke="currentColor" stroke-width="1.6"/>
+<line x1="906" y1="234" x2="906" y2="227" stroke="currentColor" stroke-width="1.6"/>
+<line x1="854" y1="184" x2="854" y2="199" stroke="currentColor" stroke-width="1.6"/>
+<line x1="906" y1="184" x2="906" y2="199" stroke="currentColor" stroke-width="1.6"/>
+<rect x="850" y="198" width="60" height="30" rx="3" fill="currentColor" opacity=".13" stroke="currentColor" stroke-width="1.1"/>
+<circle cx="880" cy="213" r="6.5" fill="currentColor" opacity=".25" stroke="currentColor" stroke-width="1"/>
+<text x="916" y="217" font-size="9" text-anchor="start" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">button</text>
+<text x="916" y="217" font-size="9" text-anchor="start" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".8">button</text>
+<path d="M 854 96 L 854 -35 Q 854 -44 863 -44 L 1357 -44 Q 1366 -44 1366 -35 L 1366 443 Q 1366 452 1357 452 L 299 452 Q 290 452 290 461 L 290 517" fill="none" stroke="#2E7D46" stroke-width="1.9" opacity=".9"/>
+<circle cx="290" cy="517" r="2.6" fill="#2E7D46"/>
+<circle cx="854" cy="96" r="2.6" fill="#2E7D46"/>
+<line x1="906" y1="322" x2="906" y2="354" stroke="#3D6FA8" stroke-width="1.9" opacity=".9"/>
+<circle cx="906" cy="354" r="2.6" fill="#3D6FA8"/>
+<circle cx="906" cy="322" r="2.6" fill="#3D6FA8"/>
+<line x1="984" y1="234" x2="984" y2="227" stroke="currentColor" stroke-width="1.6"/>
+<line x1="1036" y1="234" x2="1036" y2="227" stroke="currentColor" stroke-width="1.6"/>
+<line x1="984" y1="184" x2="984" y2="199" stroke="currentColor" stroke-width="1.6"/>
+<line x1="1036" y1="184" x2="1036" y2="199" stroke="currentColor" stroke-width="1.6"/>
+<rect x="980" y="198" width="60" height="30" rx="3" fill="currentColor" opacity=".13" stroke="currentColor" stroke-width="1.1"/>
+<circle cx="1010" cy="213" r="6.5" fill="currentColor" opacity=".25" stroke="currentColor" stroke-width="1"/>
+<text x="1046" y="217" font-size="9" text-anchor="start" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">button</text>
+<text x="1046" y="217" font-size="9" text-anchor="start" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".8">button</text>
+<path d="M 984 96 L 984 -11 Q 984 -20 993 -20 L 1333 -20 Q 1342 -20 1342 -11 L 1342 467 Q 1342 476 1333 476 L 277 476 Q 268 476 268 485 L 268 517" fill="none" stroke="#2E7D46" stroke-width="1.9" opacity=".9"/>
+<circle cx="268" cy="517" r="2.6" fill="#2E7D46"/>
+<circle cx="984" cy="96" r="2.6" fill="#2E7D46"/>
+<line x1="1036" y1="322" x2="1036" y2="354" stroke="#3D6FA8" stroke-width="1.9" opacity=".9"/>
+<circle cx="1036" cy="354" r="2.6" fill="#3D6FA8"/>
+<circle cx="1036" cy="322" r="2.6" fill="#3D6FA8"/>
 <line x1="1140" y1="300" x2="1158" y2="334" stroke="currentColor" stroke-width="2.1"/>
 <line x1="1192" y1="300" x2="1174" y2="334" stroke="currentColor" stroke-width="1.3"/>
 <circle cx="1166" cy="334" r="15" fill="currentColor" opacity=".14" stroke="currentColor" stroke-width="1.2"/>
@@ -799,24 +852,48 @@
 <text x="1153" y="326" font-size="11" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".9">+</text>
 <text x="1166" y="362" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">buzzer</text>
 <text x="1166" y="362" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".8">buzzer</text>
-<path d="M 1140 322 L 1140 425 Q 1140 434 1149 434 L 1357 434 Q 1366 434 1366 443 L 1366 443 Q 1366 452 1357 452 L 343 452 Q 334 452 334 461 L 334 517" fill="none" stroke="#2E7D46" stroke-width="1.9" opacity=".9"/>
-<circle cx="334" cy="517" r="2.6" fill="#2E7D46"/>
+<path d="M 1140 322 L 1140 409 Q 1140 418 1149 418 L 1341 418 Q 1350 418 1350 427 L 1350 459 Q 1350 468 1341 468 L 255 468 Q 246 468 246 477 L 246 517" fill="none" stroke="#2E7D46" stroke-width="1.9" opacity=".9"/>
+<circle cx="246" cy="517" r="2.6" fill="#2E7D46"/>
 <circle cx="1140" cy="322" r="2.6" fill="#2E7D46"/>
 <line x1="1192" y1="322" x2="1192" y2="354" stroke="#3D6FA8" stroke-width="1.9" opacity=".9"/>
 <circle cx="1192" cy="354" r="2.6" fill="#3D6FA8"/>
 <circle cx="1192" cy="322" r="2.6" fill="#3D6FA8"/>
-<path d="M 224 605 L 224 635 Q 224 644 215 644 L 33 644 Q 24 644 24 635 L 24 363 Q 24 354 33 354 L 152 354" fill="none" stroke="#3D6FA8" stroke-width="2.1" opacity=".95"/>
+<path d="M 224 605 L 224 651 Q 224 660 215 660 L 17 660 Q 8 660 8 651 L 8 363 Q 8 354 17 354 L 152 354" fill="none" stroke="#3D6FA8" stroke-width="2.1" opacity=".95"/>
 <circle cx="224" cy="605" r="2.8" fill="#3D6FA8"/>
 <circle cx="152" cy="354" r="2.8" fill="#3D6FA8"/>
 <circle cx="126" cy="322" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
 <text x="126" y="337" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">a1</text>
 <text x="126" y="337" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">a1</text>
+<circle cx="386" cy="322" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="386" y="337" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">a11</text>
+<text x="386" y="337" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">a11</text>
+<circle cx="412" cy="322" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="412" y="337" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">a12</text>
+<text x="412" y="337" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">a12</text>
+<circle cx="438" cy="322" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="438" y="337" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">a13</text>
+<text x="438" y="337" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">a13</text>
+<circle cx="490" cy="322" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="490" y="337" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">a15</text>
+<text x="490" y="337" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">a15</text>
+<circle cx="516" cy="322" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="516" y="337" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">a16</text>
+<text x="516" y="337" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">a16</text>
 <circle cx="646" cy="322" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
 <text x="646" y="337" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">a21</text>
 <text x="646" y="337" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">a21</text>
+<circle cx="776" cy="322" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="776" y="337" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">a26</text>
+<text x="776" y="337" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">a26</text>
 <circle cx="178" cy="322" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
 <text x="178" y="337" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">a3</text>
 <text x="178" y="337" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">a3</text>
+<circle cx="906" cy="322" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="906" y="337" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">a31</text>
+<text x="906" y="337" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">a31</text>
+<circle cx="1036" cy="322" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="1036" y="337" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">a36</text>
+<text x="1036" y="337" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">a36</text>
 <circle cx="204" cy="322" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
 <text x="204" y="337" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">a4</text>
 <text x="204" y="337" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">a4</text>
@@ -826,9 +903,36 @@
 <circle cx="1192" cy="322" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
 <text x="1192" y="337" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">a42</text>
 <text x="1192" y="337" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">a42</text>
+<circle cx="230" cy="322" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="230" y="337" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">a5</text>
+<text x="230" y="337" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">a5</text>
+<circle cx="282" cy="322" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="282" y="337" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">a7</text>
+<text x="282" y="337" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">a7</text>
+<circle cx="308" cy="322" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="308" y="337" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">a8</text>
+<text x="308" y="337" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">a8</text>
+<circle cx="334" cy="322" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="334" y="337" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">a9</text>
+<text x="334" y="337" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">a9</text>
 <circle cx="126" cy="300" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
 <text x="126" y="315" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">b1</text>
 <text x="126" y="315" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">b1</text>
+<circle cx="386" cy="300" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="386" y="315" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">b11</text>
+<text x="386" y="315" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">b11</text>
+<circle cx="412" cy="300" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="412" y="315" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">b12</text>
+<text x="412" y="315" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">b12</text>
+<circle cx="438" cy="300" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="438" y="315" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">b13</text>
+<text x="438" y="315" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">b13</text>
+<circle cx="490" cy="300" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="490" y="315" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">b15</text>
+<text x="490" y="315" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">b15</text>
+<circle cx="516" cy="300" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="516" y="315" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">b16</text>
+<text x="516" y="315" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">b16</text>
 <circle cx="178" cy="300" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
 <text x="178" y="315" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">b3</text>
 <text x="178" y="315" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">b3</text>
@@ -841,21 +945,78 @@
 <circle cx="1192" cy="300" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
 <text x="1192" y="315" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">b42</text>
 <text x="1192" y="315" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">b42</text>
+<circle cx="230" cy="300" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="230" y="315" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">b5</text>
+<text x="230" y="315" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">b5</text>
+<circle cx="282" cy="300" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="282" y="315" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">b7</text>
+<text x="282" y="315" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">b7</text>
+<circle cx="308" cy="300" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="308" y="315" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">b8</text>
+<text x="308" y="315" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">b8</text>
+<circle cx="334" cy="300" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="334" y="315" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">b9</text>
+<text x="334" y="315" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">b9</text>
 <circle cx="594" cy="234" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
 <text x="594" y="249" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">e19</text>
 <text x="594" y="249" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">e19</text>
 <circle cx="646" cy="234" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
 <text x="646" y="249" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">e21</text>
 <text x="646" y="249" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">e21</text>
+<circle cx="724" cy="234" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="724" y="249" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">e24</text>
+<text x="724" y="249" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">e24</text>
+<circle cx="776" cy="234" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="776" y="249" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">e26</text>
+<text x="776" y="249" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">e26</text>
+<circle cx="854" cy="234" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="854" y="249" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">e29</text>
+<text x="854" y="249" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">e29</text>
+<circle cx="906" cy="234" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="906" y="249" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">e31</text>
+<text x="906" y="249" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">e31</text>
+<circle cx="984" cy="234" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="984" y="249" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">e34</text>
+<text x="984" y="249" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">e34</text>
+<circle cx="1036" cy="234" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="1036" y="249" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">e36</text>
+<text x="1036" y="249" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">e36</text>
 <circle cx="594" cy="184" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
 <text x="594" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">f19</text>
 <text x="594" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">f19</text>
 <circle cx="646" cy="184" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
 <text x="646" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">f21</text>
 <text x="646" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">f21</text>
+<circle cx="724" cy="184" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="724" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">f24</text>
+<text x="724" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">f24</text>
+<circle cx="776" cy="184" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="776" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">f26</text>
+<text x="776" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">f26</text>
+<circle cx="854" cy="184" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="854" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">f29</text>
+<text x="854" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">f29</text>
+<circle cx="906" cy="184" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="906" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">f31</text>
+<text x="906" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">f31</text>
+<circle cx="984" cy="184" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="984" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">f34</text>
+<text x="984" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">f34</text>
+<circle cx="1036" cy="184" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="1036" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">f36</text>
+<text x="1036" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">f36</text>
 <circle cx="594" cy="96" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
 <text x="594" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">j19</text>
 <text x="594" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">j19</text>
+<circle cx="724" cy="96" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="724" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">j24</text>
+<text x="724" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">j24</text>
+<circle cx="854" cy="96" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="854" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">j29</text>
+<text x="854" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">j29</text>
+<circle cx="984" cy="96" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="984" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">j34</text>
+<text x="984" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">j34</text>
 <text x="136" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">SCL</text>
 <text x="136" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">SCL</text>
 <text x="158" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">SDA</text>
@@ -866,26 +1027,26 @@
 <text x="202" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">GND</text>
 <text x="224" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">13</text>
 <text x="224" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">13</text>
-<text x="246" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">12</text>
-<text x="246" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">12</text>
-<text x="268" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">11</text>
-<text x="268" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">11</text>
-<text x="290" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">10</text>
-<text x="290" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">10</text>
-<text x="312" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">9</text>
-<text x="312" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">9</text>
+<text x="246" y="533" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">12</text>
+<text x="246" y="533" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="#2E7D46" opacity=".95">12</text>
+<text x="268" y="533" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">11</text>
+<text x="268" y="533" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="#2E7D46" opacity=".95">11</text>
+<text x="290" y="533" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">10</text>
+<text x="290" y="533" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="#2E7D46" opacity=".95">10</text>
+<text x="312" y="533" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">9</text>
+<text x="312" y="533" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="#2E7D46" opacity=".95">9</text>
 <text x="334" y="533" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">8</text>
 <text x="334" y="533" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="#2E7D46" opacity=".95">8</text>
-<text x="378" y="533" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">7</text>
-<text x="378" y="533" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="#2E7D46" opacity=".95">7</text>
+<text x="378" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">7</text>
+<text x="378" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">7</text>
 <text x="400" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">6</text>
 <text x="400" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">6</text>
-<text x="422" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">5</text>
-<text x="422" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">5</text>
-<text x="444" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">4</text>
-<text x="444" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">4</text>
-<text x="466" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">3</text>
-<text x="466" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">3</text>
+<text x="422" y="533" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">5</text>
+<text x="422" y="533" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="#2E7D46" opacity=".95">5</text>
+<text x="444" y="533" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">4</text>
+<text x="444" y="533" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="#2E7D46" opacity=".95">4</text>
+<text x="466" y="533" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">3</text>
+<text x="466" y="533" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="#2E7D46" opacity=".95">3</text>
 <text x="488" y="533" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">2</text>
 <text x="488" y="533" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="#2E7D46" opacity=".95">2</text>
 <text x="510" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">1</text>
@@ -919,159 +1080,3 @@
 <text x="422" y="593" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">A5</text>
 <text x="422" y="593" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">A5</text>
 </svg>
-      <figcaption>Seven wires. Band 5's board with everything but one light, one button and the buzzer taken off.</figcaption>
-    </figure>
-  <div class="col stack">
-    <div class="words" style="margin-bottom:.6rem"><b>Which rail pair</b>Your board has two + rails and two &#8722; rails, one pair along each long edge, and on most boards <b>the two pairs are not joined to each other</b>. On this page, &#8220;the rail&#8221; always means the pair along the <b>bottom</b> edge, nearest row <code>a</code>, the same pair Band 5 uses, and the one your parts sit next to. Put every rail wire on that pair and it works; split them across both and nothing lights, with nothing visibly wrong.</div>
-    <div class="ifnot" style="margin-bottom:.4rem"><b>Before you start</b>USB unplugged. Clear the board completely, including anything left from Band 4. A0 in particular must have <strong>nothing</strong> wired to it, and the reason is in the Look closer section.</div>
-
-    <div class="scroll">
-      <table>
-        <thead><tr><th>Part</th><th>Pin</th><th>Holes</th><th>Wiring</th></tr></thead>
-        <tbody>
-          <tr><td>Light</td><td class="n">7</td><td>long <code>b3</code>, short <code>b4</code></td><td>Resistor <code>a3</code> to <code>a1</code>; wire <code>b1</code> to pin 7; wire <code>a4</code> to &#8722; rail</td></tr>
-          <tr><td>Button</td><td class="n">2</td><td>legs in <code>e19</code>, <code>e21</code>, <code>f19</code>, <code>f21</code></td><td>Wire <code>j19</code> to pin 2; wire <code>a21</code> to &#8722; rail</td></tr>
-          <tr><td>Buzzer</td><td class="n">8</td><td>long <code>b40</code>, short <code>b42</code></td><td>Wire <code>a40</code> to pin 8; wire <code>a42</code> to &#8722; rail. No resistor. If the legs will not reach two holes apart, use <code>b40</code> and <code>b43</code>, and move the &#8722; wire to <code>a43</code>.</td></tr>
-          <tr><td>Ground</td><td>GND</td><td>&mdash;</td><td>One wire from the &#8722; rail to a GND pin</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p class="note">The light's pin wire goes in <code>b1</code>, not <code>a1</code>: the resistor leg is already there and <strong>a hole takes one leg only</strong>.</p>
-
-    <div class="ifnot" style="margin-bottom:.4rem"><b>If your buzzer is the active kind</b>The two different sounds in the sketch will come out as the same note, because an active buzzer cannot change pitch. The game is completely unaffected. Run <code>id_01_which_buzzer.ino</code> if you are not sure which you have, and if you would rather it were silent, delete the two <code>beep</code> lines.</div>
-
-    <div class="steps">
-      <div class="step"><div class="body">
-        <p><strong>Test the light and the button separately first</strong>, exactly as Band 5's staged build tells you to. Blink on pin 7, then the serial watch sketch on pin 2.</p>
-        <div class="see"><b>You should see</b>The light blinking once a second, and then a steady <code>1</code> changing to <code>0</code> for as long as you hold the button.</div>
-      </div></div>
-      <div class="step"><div class="body">
-        <p><strong>Upload <code>b5_06_reaction_race.ino</code></strong> and open the serial monitor at 9600.</p>
-        <div class="see"><b>You should see</b><code>Get ready...</code>, then the printed length of this round's wait, then that wait, which is somewhere between two and six seconds, then the light comes on. Press the button and it prints your time in thousandths of a second and beeps. Then it goes round again, keeping your best.</div>
-        <div class="ifnot"><b>If it says &#8220;Too early&#8221; every single round</b>The button is reading as held down. Two of its wires are on a joined pair of legs rather than a diagonal: move one wire so the two are in different columns and different halves of the board.</div>
-        <div class="ifnot"><b>If the light comes on but nothing happens when you press</b>The button is not being seen at all. Test it again with the serial watch sketch.</div>
-        <div class="ifnot"><b>If the wait is the same length every single time</b>Read the Look closer section. Something is wired to A0.</div>
-      </div></div>
-      <div class="step"><div class="body">
-        <p><strong>Play it ten times and write down your best.</strong> Then hand it to somebody else and watch them play, without explaining anything.</p>
-        <div class="ifnot"><b>If there is nobody to hand it to</b>Play it ten more times with your <em>other</em> hand, and ten more with your eyes shut until the buzzer sounds. Both make you a fresh user of your own device, which is most of what watching somebody else buys you. Write down the three sets of times and what surprised you. If you can, film yourself playing and watch it back; you will see hesitations you did not feel.</div>
-        <div class="see"><b>You should see</b>Times somewhere between 200 and 350 thousandths of a second once you have settled down. Under 150 means you guessed rather than reacted, and the sketch cannot tell the difference. Only you know. Write down your real best, not your luckiest.</div>
-      </div></div>
-    </div>
-  </div>
-</section>
-
-<section class="part">
-  <div class="parthead"><span class="tag">Look closer</span><h2>Four small ideas, one at a time</h2><span class="mins">35 min</span></div>
-  <div class="col stack">
-
-    <h3>a. Read <code>loop</code> first</h3>
-    <p>Go to the bottom of the sketch. The whole round is there and it reads like a description of the game: get ready, wait a random time, check for cheating, light on, time the press, compare with the best. Everything complicated is behind a name.</p>
-
-    <h3 style="margin-top:.8rem">b. The function that hands back an answer</h3>
-    <pre><code>unsigned long timeOnePress() {
-  unsigned long startedAt = millis();
-  while (!isPressed()) {
-    if (millis() - startedAt &gt; 10000) {
-      return 0;
-    }
-  }
-  return millis() - startedAt;
-}</code></pre>
-    <p>This one starts with <code>unsigned long</code> rather than <code>void</code>, because it <strong>hands something back</strong>. That is what <code>return</code> does, and it is the half of functions that Band 5 Part 5 introduces.</p>
-    <p>Inside it is a <code>while</code> loop that does nothing but watch. That is blocking, on purpose, and it is fine here because there is genuinely nothing else the game needs to do while it waits for a press. <strong>Band 5 taught you when blocking is a problem; this is what it looks like when it is not.</strong></p>
-    <p>The <code>if</code> in the middle is the one escape. After ten seconds with no press it gives up and hands back <code>0</code>, and <code>loop</code> reads that <code>0</code> as &#8220;no press seen&#8221; and starts the round again. Without it, a badly wired button would leave the board sitting there for ever looking dead, with no message and nothing to work from. <strong>Any loop that waits for the outside world needs a way out that does not depend on the outside world.</strong> Write that in your log; it is one of the most useful sentences in the course.</p>
-
-    <h3 style="margin-top:.8rem">c. The function that catches cheating</h3>
-    <pre><code>bool waitWithoutCheating(unsigned long howLong) {
-  unsigned long startedAt = millis();
-  while (millis() - startedAt &lt; howLong) {
-    if (isPressed()) {
-      return false;
-    }
-  }
-  return true;
-}</code></pre>
-    <div class="callout">
-      <h5>Answer before you read on</h5>
-      <ol class="num">
-        <li>Why could this not have been written with <code>delay(howLong)</code>?</li>
-        <li>It hands back <code>true</code> or <code>false</code>. What do those two mean here, in words?</li>
-        <li>There are two <code>return</code> lines. What happens to the rest of the function when the first one runs?</li>
-      </ol>
-      <details><summary>Check your answers</summary><div class="inner">
-        <p><strong>1.</strong> Because <code>delay</code> stops everything. During a <code>delay</code> the button cannot be watched, so an early press would be invisible and the cheat would go unnoticed. This is exactly the Band 5 lesson: <em>waiting</em> and <em>watching while time passes</em> are different things, and only one of them lets you notice anything.</p>
-        <p><strong>2.</strong> <code>true</code> means the wait finished properly. <code>false</code> means somebody pressed during it. The name is written so that the <code>if</code> in <code>loop</code> reads almost like English.</p>
-        <p><strong>3.</strong> Nothing else runs. <code>return</code> leaves the function immediately, which is why the cheat case does not fall through into the honest one.</p>
-      </div></details>
-    </div>
-
-    <h3 style="margin-top:.8rem">d. Why A0 must be empty</h3>
-    <pre><code>randomSeed(analogRead(A0));</code></pre>
-    <p><code>random</code> is not really random. It runs a calculation, and from the same starting point it produces the same sequence every time. Without seeding, this game would wait exactly the same series of times after every power-up, and you could learn them.</p>
-    <p><code>analogRead</code> on a pin with nothing connected gives a drifting, meaningless number, because the pin is floating. You met floating pins in Band 3 as a problem. <strong>Here it is the solution.</strong> Meaningless is exactly what a seed needs to be.</p>
-    <div class="callout">
-      <h5>Prove it to yourself</h5>
-      <ol class="num">
-        <li>Comment out the <code>randomSeed</code> line and upload. Play four rounds and write down the four waits, which the sketch prints for you at the start of each round.</li>
-        <li>Press the reset button on the Arduino. Play four more rounds and write those down.</li>
-      </ol>
-      <div class="see"><b>You should see</b>The same four waits, in the same order, every time you reset. Then put the line back and do it again, and they differ.</div>
-      <div class="ifnot"><b>If they still repeat with the line put back</b>Then <code>A0</code> is not floating enough on your board to be a good seed. It happens: a pin sitting near a steady voltage gives a nearly steady reading, and a nearly steady seed gives a nearly repeating game. Make sure nothing at all is in <code>A0</code>, then try touching the pin with your finger, which makes it drift much more. If you want a seed you can rely on, the honest answer is that a floating pin is a cheap trick rather than a good source, and real programs use the time of the first button press instead. Try that: call <code>randomSeed(millis())</code> just after the player's very first press, and say in your log why the moment a human presses a button is a better source of unpredictability than a wire.</div>
-    </div>
-  </div>
-</section>
-
-<section class="part">
-  <div class="parthead"><span class="tag">Change it</span><h2>Make it yours</h2><span class="mins">40 min</span></div>
-  <div class="col stack">
-    <dl class="tier">
-      <dt>Bronze</dt><dd>Make it a game of five rounds that then prints your <strong>average</strong> as well as your best. You will need somewhere to keep a running total and a count, and you will meet whole-number division from Band 4 on the way.</dd>
-      <dt>Silver</dt><dd>Make it a <strong>two-player game</strong>: a second button, and whoever presses first wins the round. This is harder than it sounds. You cannot use <code>timeOnePress</code> as it stands, because it watches only one button, and the honest fix is to write a function that watches both and hands back which one won.</dd>
-      <dt>Gold</dt><dd>Add a <strong>false start</strong> that is properly fair. First <strong>move the LED's pin wire from pin 7 to pin 6</strong> and change <code>ledPin</code> to match, because pin 6 has a <code>~</code> and pin 7 does not, and you cannot dim a light on a pin without one. Then light the LED dimly for a moment at a random point before the real signal, and count a press during that as a fault. Then, using <code>millis</code> throughout, make sure the game never stops responding, even during the penalty.</dd>
-    </dl>
-    <div class="ifnot"><b>If you do Silver, one thing worth noticing</b>Your function will have to hand back <em>which</em> button won, not just how long it took. So it needs to give back two things at once, and a single <code>return</code> hands back one thing. There are two honest ways out. The first is to hand the function two places to write its answers into: open <code>b4_07_room_monitor.ino</code> even if you never built it, and look at <code>dht.read(&amp;temperature, &amp;humidity, NULL)</code>, which is exactly that. The second is to make one thing that holds both, which C++ calls a <code>struct</code>. Neither is taught in this course. Read about one of them, use it, and say in your log which you chose and why.</div>
-  </div>
-</section>
-
-<section class="part">
-  <div class="parthead"><span class="tag">Done</span><h2>You still owe Band 5 the same evidence</h2></div>
-  <div class="col stack">
-    <p>This Swap replaces Simon Says as the build you are assessed on. To claim Band 5 you still need:</p>
-    <ul class="plain">
-      <li>A video of somebody playing it, which may be you if you are working alone, and your own best time</li>
-      <li>The list of your own functions with one sentence each saying what they do</li>
-      <li>Your notes from the counting activity in Part 1</li>
-      <li>Your before-and-after waits from the <code>randomSeed</code> experiment</li>
-      <li>Your build log</li>
-      <li>Your completed timing table from Part 10a, done on paper with <code>b5_04</code>. This Swap does not replace it</li>
-      <li>Five or six correct answers in Part 13, the Check yourself questions, <strong>including question 4</strong></li>
-    </ul>
-    <p class="note">Part 13's question 4 is the one that matters most in the band: a <code>delay</code> hidden inside a function that looks like it is using <code>millis</code> properly from outside. You have now built both kinds of waiting on purpose, so you are in a better position to answer it than somebody who only built the game.</p>
-  </div>
-</section>
-
-<section class="ship">
-  <h2>Ship it</h2>
-  <p><b>One video under sixty seconds, and one post of five lines.</b> You built something
-  different from the person next to you, so your video is the one nobody else in the room can
-  post. Say in the post which build you chose <em>and why</em> &#8212; that choice is itself
-  worth a line.</p>
-  <p><b>The four shots:</b> three seconds of the thing still, fifteen of you doing something to
-  it, fifteen of it responding all the way to the end, and ten of your measurement or the thing
-  that went wrong first.</p>
-  <p><a href="show-your-work.html">Show your work</a> has the template and the three checks to
-  make before anything goes public. Tag it <code>#BozomaBuilds</code>.</p>
-</section>
-
-<nav class="pager" aria-label="Back">
-  <a href="../bands/band-5.html">Back to Band 5</a>
-</nav>
-
-<footer>
-  <p>Bozoma Innovation Hub &nbsp;·&nbsp; Aiyinasi, Ellembelle District. Swap project. Every sketch used here was compiled and tested before it reached you.</p>
-</footer>
-
-</div>
-</body>
-</html>

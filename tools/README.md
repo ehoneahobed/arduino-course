@@ -75,3 +75,26 @@ Leaving out that last line is an error, not a silent omission:
 
 Flesch-Kincaid by hand, counting the boxed prose that the older `read2.py` skipped.
 The course sits around grade 4.2 and every page should stay under 6.
+
+## `diagrams.py` and `inject_wiring.py` — the wiring pictures
+
+`diagrams.py` holds every board in the course, defined once, in the same hole
+names the pages use. Nothing in it is drawn freehand: each build was transcribed
+from its page with the quoted sentence beside it.
+
+    python3 diagrams.py --check    run the guards and the hole diff, write nothing
+    python3 diagrams.py            write wiring/*.svg
+
+`--check` does two things. Every generator guard runs on every build, so a hole
+collision or an unfed rail is an error rather than a picture. Then every hole in
+every picture is checked against the `<code>` holes on its own page: a diagram
+cannot show a hole the page never names. Three pages failed that on the first run
+and all three were the page's fault, not the diagram's, saying "b20, b21 and so
+on" where a beginner has to count.
+
+`inject_wiring.py` places each diagram on its page. An anchor must appear exactly
+once or it refuses to run, because a picture beside the wrong build is worse than
+no picture. Re-running replaces rather than duplicates.
+
+The build scripts substitute `<!--SVG:wire_NAME-->` from `wiring/`, so the order
+is: `diagrams.py` then `inject_wiring.py` then the build.

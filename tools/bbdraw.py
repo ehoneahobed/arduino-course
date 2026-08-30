@@ -32,7 +32,7 @@ Y_RAIL_BOT = (Y_BOT0 + 5 * DY + 10, Y_BOT0 + 5 * DY + 30)
 BOARD_BOTTOM = Y_RAIL_BOT[1] + 24
 
 # ---- Arduino geometry -----------------------------------------------------
-UNO_GAP = 74                 # clear air between breadboard and Arduino
+UNO_GAP = 58                 # clear air between breadboard and Arduino
 UNO_Y0 = BOARD_BOTTOM + UNO_GAP
 UNO_H = 118
 UNO_DX = 22
@@ -124,7 +124,74 @@ class Board:
         self.sockets = {}       # arduino socket -> what it feeds
         self.fed = set()        # rails that something actually drives
         self.used_rails = set() # rails that something expects to be live
+        self.batt = None        # a battery pack feeding the rails
         self._gut = 0
+        self._pad_top = 64      # room for the lanes wires leave the board by
+        self._pad_bot = 46
+
+    # ---- multi-leg parts ----
+    def btn(self, *legs):
+        """A 4-leg push button. Its body sits over the middle channel."""
+        for h in legs:
+            self._claim(h, "button leg")
+        self.parts.append(("btn", legs, None, None, "", None))
+        return self
+
+    def pot(self, a, b, c, label="knob"):
+        """A 3-leg potentiometer. b is the middle leg, the one that answers."""
+        for h in (a, b, c):
+            self._claim(h, "%s leg" % label)
+        self.parts.append(("pot", (a, b, c), None, None, label, None))
+        return self
+
+    def buz(self, plus, minus, label="buzzer"):
+        self._claim(plus, "buzzer long leg")
+        self._claim(minus, "buzzer short leg")
+        self.parts.append(("buz", (plus, minus), None, None, label, None))
+        return self
+
+    def npn(self, e, b, c, label="transistor"):
+        for h, n in ((e, "emitter"), (b, "base"), (c, "collector")):
+            self._claim(h, "transistor %s" % n)
+        self.parts.append(("npn", (e, b, c), None, None, label, None))
+        return self
+
+    def blk(self, label, *holes, **kw):
+        """Any module or multi-pin part. Its body stands off the board edge, so
+        it never sits on top of the holes other parts need."""
+        for h in holes:
+            self._claim(h, "%s pin" % label)
+        if holes:
+            top = any(parse(h)[0] in ROWS_TOP for h in holes)
+            if top:
+                self._pad_top = max(self._pad_top, 150)
+            else:
+                self._pad_bot = max(self._pad_bot, 130)
+        rails = tuple(kw.pop("rails", ()))
+        if kw:
+            raise TypeError("blk got unexpected %s" % list(kw))
+        for r in rails:
+            if r not in RAILS:
+                raise ValueError("bad rail %r" % r)
+            self.used_rails.add(r)
+        self.parts.append(("blk", holes, rails, None, label, None))
+        return self
+
+    def battery(self, plus_rail, minus_rail, label="6 V battery pack"):
+        """A battery pack feeding the rails. Its + rail is NOT Arduino 5V, and
+        the diagram says so, because that is the rule Band 6 is built on."""
+        for r in (plus_rail, minus_rail):
+            if r not in RAILS:
+                raise ValueError("bad rail %r" % r)
+        if not plus_rail.startswith("+") or not minus_rail.startswith("-"):
+            raise ValueError("POLARITY: battery wants a + rail and a - rail, got %s and %s"
+                             % (plus_rail, minus_rail))
+        self.batt = (plus_rail, minus_rail, label)
+        self.fed.add(plus_rail)
+        self.fed.add(minus_rail)
+        self._pad_bot = max(self._pad_bot, 130)
+        self.parts.append(("batt", (plus_rail, minus_rail), None, None, label, None))
+        return self
 
     # ---- placement, each of which claims its holes ----
     def _claim(self, hole, what):
@@ -229,10 +296,19 @@ class Board:
         ux0 = bx
         w = max(gut_r + 30, ux0 + uno_w + 30)
         h = (UNO_Y0 + UNO_H + 46) if self.uno else (BOARD_BOTTOM + 20)
+        h += self._pad_bot
         self._ux0 = ux0
+        self._body_top = -self._pad_top + 30     # where an off-board module sits
+        self._body_bot = (BOARD_BOTTOM + 26) if not self.uno else (BOARD_BOTTOM + 26)
 
-        o = ['<svg viewBox="0 0 %g %g" role="img" aria-label="%s">'
-             % (w, h, self.title or "Wiring diagram"),
+        # A 12-column board and a 45-column board are very different pictures.
+        # Each renders at its own natural size rather than being stretched to
+        # fill, and on a narrow screen the figure scrolls instead of shrinking
+        # the hole names past reading.
+        o = ['<svg viewBox="0 %g %g %g" role="img" aria-label="%s" '
+             'style="width:%gpx; max-width:100%%; min-width:%gpx">'
+             % (-self._pad_top, w, h + self._pad_top, self.title or "Wiring diagram",
+                w, min(w, 560)),
              '<defs><circle id="bh" r="3.6" fill="none" stroke="%s" stroke-width="1" opacity=".45"/>'
              '<rect id="sk" x="-6.5" y="-6.5" width="13" height="13" rx="2" fill="none" '
              'stroke="%s" stroke-width="1" opacity=".5"/></defs>' % (INK, INK)]
@@ -265,7 +341,7 @@ class Board:
 
         # ---- Arduino ----
         if self.uno:
-            o.extend(self._draw_uno(ux0, uno_w))
+            o.extend(self._draw_uno(ux0, uno_w, self._pad_bot))
 
         # ---- wires and parts, under the hole labels ----
         for p in self.parts:
@@ -278,7 +354,7 @@ class Board:
                      % (hx, hy, INK))
             o.extend(_txt(hx, hy + 15, "9", INK, "middle", hole))
         if self.uno:
-            o.extend(self._uno_labels(self._ux0))
+            o.extend(self._uno_labels(self._ux0, self._pad_bot))
         o.append("</svg>")
         return "\n".join(o)
 
@@ -292,7 +368,8 @@ class Board:
 
     def _sock_xy(self, key):
         hdr, i = key
-        return self._ux0 + 36 + i * UNO_DX, (DIG_Y if hdr == "dig" else PWR_Y)
+        return (self._ux0 + 36 + i * UNO_DX,
+                (DIG_Y if hdr == "dig" else PWR_Y) + self._pad_bot)
 
     def _rail_touch(self, rail):
         """Where a feed wire lands on a rail. Left end, so it stays clear."""
@@ -303,21 +380,21 @@ class Board:
         self._gut += 1
         return (self._gut % 4) * 8
 
-    def _draw_uno(self, ux0, uno_w):
+    def _draw_uno(self, ux0, uno_w, dy=0):
         o = []
         o.append('<rect x="%g" y="%g" width="%g" height="%g" rx="8" fill="%s" opacity=".05"/>'
-                 % (ux0, UNO_Y0, uno_w, UNO_H, INK))
+                 % (ux0, (UNO_Y0+dy), uno_w, UNO_H, INK))
         o.append('<rect x="%g" y="%g" width="%g" height="%g" rx="8" fill="none" stroke="%s" '
-                 'stroke-width="1.3" opacity=".6"/>' % (ux0, UNO_Y0, uno_w, UNO_H, INK))
+                 'stroke-width="1.3" opacity=".6"/>' % (ux0, (UNO_Y0+dy), uno_w, UNO_H, INK))
         o.append('<rect x="%g" y="%g" width="34" height="22" rx="3" fill="none" stroke="%s" '
-                 'stroke-width="1" opacity=".5"/>' % (ux0 - 12, UNO_Y0 + 16, INK))
+                 'stroke-width="1" opacity=".5"/>' % (ux0 - 12, (UNO_Y0+dy) + 16, INK))
         o.append('<text x="%g" y="%g" font-size="8.5" fill="%s" opacity=".55" text-anchor="middle" '
-                 'font-family="IBM Plex Mono,monospace">USB</text>' % (ux0 + 5, UNO_Y0 + 30, INK))
+                 'font-family="IBM Plex Mono,monospace">USB</text>' % (ux0 + 5, (UNO_Y0+dy) + 30, INK))
         o.append('<text x="%g" y="%g" font-size="11" fill="%s" opacity=".55" text-anchor="middle" '
                  'letter-spacing="1.6" font-family="Archivo,Arial,sans-serif">ARDUINO UNO</text>'
-                 % (ux0 + uno_w / 2, UNO_Y0 + UNO_H / 2 + 4, INK))
-        for hdr_key, pins, y, above in (("dig", DIG_PINS, DIG_Y, True),
-                                        ("pwr", PWR_PINS, PWR_Y, False)):
+                 % (ux0 + uno_w / 2, (UNO_Y0+dy) + UNO_H / 2 + 4, INK))
+        for hdr_key, pins, y, above in (("dig", DIG_PINS, (DIG_Y+dy), True),
+                                        ("pwr", PWR_PINS, (PWR_Y+dy), False)):
             for i, name in enumerate(pins):
                 if name is None:
                     continue
@@ -331,11 +408,11 @@ class Board:
                              'stroke-width="1.6"/>' % (x - 6.5, y - 6.5, GRN))
         return o
 
-    def _uno_labels(self, ux0):
+    def _uno_labels(self, ux0, dy=0):
         """Drawn last, so a jumper can never sit on top of a pin name."""
         o = []
-        for hdr_key, pins, y, above in (("dig", DIG_PINS, DIG_Y, True),
-                                        ("pwr", PWR_PINS, PWR_Y, False)):
+        for hdr_key, pins, y, above in (("dig", DIG_PINS, (DIG_Y+dy), True),
+                                        ("pwr", PWR_PINS, (PWR_Y+dy), False)):
             for i, name in enumerate(pins):
                 if name is None:
                     continue
@@ -365,8 +442,7 @@ class Board:
                        'stroke="%s" stroke-width="1"/>' % (mx - 10, by, col, INK))
             # "long" sits outboard of the anode leg, never between the legs
             side = -1 if ax <= cx else 1
-            out.extend(_txt(ax + side * 15, ay - 2, "8.5", INK,
-                            "end" if side < 0 else "start", "long", opacity=".85"))
+            out.extend(_txt(ax + side * 11, ay + 3.5, "11", INK, "middle", "+", opacity=".9"))
             if label:
                 out.append('<text x="%g" y="%g" font-size="10" fill="%s" text-anchor="middle" '
                            'font-family="Archivo,Arial,sans-serif">%s</text>' % (mx, by - 7, col, label))
@@ -389,9 +465,8 @@ class Board:
             if q in RAILS:
                 col = colour or (RED if q.startswith("+") else BLU)
                 qy = _rail_y(q)
-                out.append('<path d="M %g %g C %g %g %g %g %g %g" fill="none" stroke="%s" '
-                           'stroke-width="1.9" opacity=".9"/>'
-                           % (ax, ay, ax, (ay + qy) / 2, ax + 11, (ay + qy) / 2, ax, qy, col))
+                out.append('<line x1="%g" y1="%g" x2="%g" y2="%g" stroke="%s" stroke-width="1.9" '
+                           'opacity=".9"/>' % (ax, ay, ax, qy, col))
                 out.append('<circle cx="%g" cy="%g" r="2.6" fill="%s"/>' % (ax, qy, col))
             elif is_hole(q):
                 col = colour or INK
@@ -404,11 +479,16 @@ class Board:
                 col = colour or GRN
                 sx, sy = self._sock_xy(_k)
                 n = self._nudge()
-                # leave the board by whichever side is nearer, so a jumper never
-                # lies across rows it has nothing to do with
+                # Leave the board by your OWN column, not sideways along a row.
+                # Every hole in a column is the same node, so a vertical run
+                # tells no lie, and it never looks like it is touching a row it
+                # has nothing to do with.
+                up = parse(a)[0] in ROWS_TOP
+                exit_y = (-20 - n) if up else (BOARD_BOTTOM + 12 + n)
                 gx = (gut_l - n) if ax < (gut_l + gut_r) / 2 else (gut_r + n)
-                lane = (UNO_Y0 - 26 - n) if sy == DIG_Y else (UNO_Y0 + UNO_H + 24 + n)
-                pts = [(ax, ay), (gx, ay), (gx, lane), (sx, lane), (sx, sy)]
+                lane = ((UNO_Y0 + self._pad_bot - 26 - n) if sy == DIG_Y + self._pad_bot
+                        else (UNO_Y0 + self._pad_bot + UNO_H + 24 + n))
+                pts = [(ax, ay), (ax, exit_y), (gx, exit_y), (gx, lane), (sx, lane), (sx, sy)]
                 out.append('<path d="%s" fill="none" stroke="%s" stroke-width="1.9" opacity=".9"/>'
                            % (_rpath(pts), col))
                 out.append('<circle cx="%g" cy="%g" r="2.6" fill="%s"/>' % (sx, sy, col))
@@ -421,13 +501,130 @@ class Board:
             sx, sy = self._sock_xy(_k)
             rx, ry = self._rail_touch(rail)
             n = self._nudge()
-            lane = UNO_Y0 + UNO_H + 24 + n
+            lane = UNO_Y0 + self._pad_bot + UNO_H + 24 + n
             px = gut_l - 30 - n          # power keeps an outer lane of its own
             pts = [(sx, sy), (sx, lane), (px, lane), (px, ry), (rx, ry)]
             out.append('<path d="%s" fill="none" stroke="%s" stroke-width="2.1" opacity=".95"/>'
                        % (_rpath(pts), col))
             out.append('<circle cx="%g" cy="%g" r="2.8" fill="%s"/>' % (sx, sy, col))
             out.append('<circle cx="%g" cy="%g" r="2.8" fill="%s"/>' % (rx, ry, col))
+        elif kind == "btn":
+            holes = p[1]
+            xs = [self._xy(h)[0] for h in holes]
+            ys = [self._xy(h)[1] for h in holes]
+            cx, cy = (min(xs) + max(xs)) / 2, (Y_CHANNEL + 13)
+            half = max(14, (max(xs) - min(xs)) / 2 + 4)
+            for h in holes:
+                hx, hy = self._xy(h)
+                out.append('<line x1="%g" y1="%g" x2="%g" y2="%g" stroke="%s" stroke-width="1.6"/>'
+                           % (hx, hy, hx, cy + (14 if hy > cy else -14), INK))
+            out.append('<rect x="%g" y="%g" width="%g" height="30" rx="3" fill="%s" opacity=".13" '
+                       'stroke="%s" stroke-width="1.1"/>' % (cx - half, cy - 15, half * 2, INK, INK))
+            out.append('<circle cx="%g" cy="%g" r="6.5" fill="%s" opacity=".25" stroke="%s" '
+                       'stroke-width="1"/>' % (cx, cy, INK, INK))
+            out.extend(_txt(cx + half + 6, cy + 4, "9", INK, "start", "button", opacity=".8"))
+        elif kind == "pot":
+            (a, b, c) = p[1]
+            label = p[4]
+            xs = [self._xy(h)[0] for h in (a, b, c)]
+            ay = self._xy(a)[1]
+            up = parse(a)[0] in ROWS_TOP
+            by = ay - 42 if up else ay + 42
+            for h in (a, b, c):
+                hx, hy = self._xy(h)
+                out.append('<line x1="%g" y1="%g" x2="%g" y2="%g" stroke="%s" stroke-width="1.6"/>'
+                           % (hx, hy, hx, by + (11 if up else -11), INK))
+            out.append('<rect x="%g" y="%g" width="%g" height="22" rx="3" fill="%s" opacity=".13" '
+                       'stroke="%s" stroke-width="1.1"/>'
+                       % (min(xs) - 8, by - 11, max(xs) - min(xs) + 16, INK, INK))
+            out.append('<circle cx="%g" cy="%g" r="8" fill="none" stroke="%s" stroke-width="1.3"/>'
+                       % (self._xy(b)[0], by, INK))
+            out.append('<line x1="%g" y1="%g" x2="%g" y2="%g" stroke="%s" stroke-width="1.5"/>'
+                       % (self._xy(b)[0], by, self._xy(b)[0] + 5, by - 6, INK))
+            out.extend(_txt(max(xs) + 14, by + 4, "9", INK, "start", label, opacity=".85"))
+        elif kind == "buz":
+            (pl, mi) = p[1]
+            px, py = self._xy(pl)
+            mx_, my_ = self._xy(mi)
+            up = parse(pl)[0] in ROWS_TOP
+            cx, cy = (px + mx_) / 2, (min(py, my_) - 34) if up else (max(py, my_) + 34)
+            for h, sign in ((pl, "+"), (mi, "")):
+                hx, hy = self._xy(h)
+                out.append('<line x1="%g" y1="%g" x2="%g" y2="%g" stroke="%s" stroke-width="%s"/>'
+                           % (hx, hy, cx + (-8 if sign else 8), cy, INK, "2.1" if sign else "1.3"))
+            out.append('<circle cx="%g" cy="%g" r="15" fill="%s" opacity=".14" stroke="%s" '
+                       'stroke-width="1.2"/>' % (cx, cy, INK, INK))
+            out.append('<circle cx="%g" cy="%g" r="3" fill="none" stroke="%s" stroke-width="1"/>'
+                       % (cx, cy, INK))
+            out.extend(_txt(cx - 13, cy + (16 if up else -8), "11", INK, "middle", "+", opacity=".9"))
+            out.extend(_txt(cx, (cy - 21) if up else (cy + 28), "9", INK, "middle", "buzzer",
+                            opacity=".8"))
+        elif kind == "npn":
+            (e, b, c) = p[1]
+            xs = [self._xy(h)[0] for h in (e, b, c)]
+            ay = self._xy(e)[1]
+            up = parse(e)[0] in ROWS_TOP
+            by = ay - 40 if up else ay + 40
+            for h, nm in ((e, "E"), (b, "B"), (c, "C")):
+                hx, hy = self._xy(h)
+                out.append('<line x1="%g" y1="%g" x2="%g" y2="%g" stroke="%s" stroke-width="1.6"/>'
+                           % (hx, hy, hx, by + (10 if up else -10), INK))
+                out.extend(_txt(hx, hy + (-8 if up else 16), "8", INK, "middle", nm, opacity=".7"))
+            x0, x1 = min(xs) - 8, max(xs) + 8
+            out.append('<path d="M %g %g L %g %g A 12 12 0 0 %d %g %g Z" fill="%s" opacity=".16" '
+                       'stroke="%s" stroke-width="1.1"/>'
+                       % (x0, by + (10 if up else -10), x1, by + (10 if up else -10),
+                          1 if up else 0, x0, by + (10 if up else -10), INK, INK))
+            out.extend(_txt(x1 + 6, by + 4, "9", INK, "start", "transistor", opacity=".8"))
+        elif kind == "blk":
+            holes = p[1]
+            label = p[4]
+            if not holes:
+                return out
+            xs = [self._xy(h)[0] for h in holes]
+            ys = [self._xy(h)[1] for h in holes]
+            up = parse(holes[0])[0] in ROWS_TOP
+            by = self._body_top if up else (BOARD_BOTTOM + 84)
+            x0, x1 = min(xs) - 10, max(xs) + 10
+            if x1 - x0 < 90:
+                mid = (x0 + x1) / 2
+                x0, x1 = mid - 45, mid + 45
+            for h in holes:
+                hx, hy = self._xy(h)
+                out.append('<line x1="%g" y1="%g" x2="%g" y2="%g" stroke="%s" stroke-width="1.5" '
+                           'opacity=".85"/>' % (hx, hy, hx, by + (16 if up else -16), INK))
+            out.append('<rect x="%g" y="%g" width="%g" height="32" rx="4" fill="%s" opacity=".13" '
+                       'stroke="%s" stroke-width="1.2"/>' % (x0, by - 16, x1 - x0, INK, INK))
+            out.extend(_txt((x0 + x1) / 2, by + 4, "10", INK, "middle", label, mono=False,
+                            opacity=".92"))
+            for k, rail in enumerate(p[2] or ()):
+                col = RED if rail.startswith("+") else BLU
+                ry = _rail_y(rail)
+                sx = x0 + 18 + k * 26
+                rx = self._cx(min(self.c1, self.c0 + 1 + k))
+                lane = (by - 26) if up else (by + 26)
+                gx = self._cx(self.c0) - 62 - k * 9
+                pts = [(sx, by + (-16 if up else 16)), (sx, lane), (gx, lane), (gx, ry), (rx, ry)]
+                out.append('<path d="%s" fill="none" stroke="%s" stroke-width="2" opacity=".95"/>'
+                           % (_rpath(pts), col))
+                out.append('<circle cx="%g" cy="%g" r="2.6" fill="%s"/>' % (rx, ry, col))
+        elif kind == "batt":
+            plus_rail, minus_rail = p[1]
+            label = p[4]
+            bx0 = self._cx(self.c1) - 150
+            by = BOARD_BOTTOM + 84
+            out.append('<rect x="%g" y="%g" width="150" height="30" rx="4" fill="%s" opacity=".12" '
+                       'stroke="%s" stroke-width="1.2"/>' % (bx0, by - 15, INK, INK))
+            out.extend(_txt(bx0 + 75, by + 4, "10", INK, "middle", label, mono=False, opacity=".92"))
+            for rail, dx, col in ((plus_rail, 34, RED), (minus_rail, 116, BLU)):
+                rx = self._cx(self.c1) - 4 if rail.startswith("+") else self._cx(self.c1) - 30
+                ry = _rail_y(rail)
+                lane = self._cx(self.c1) + (26 if rail.startswith("+") else 44)
+                pts = [(bx0 + dx, by - 15), (bx0 + dx, by - 34), (lane, by - 34),
+                       (lane, ry), (rx, ry)]
+                out.append('<path d="%s" fill="none" stroke="%s" stroke-width="2.1" opacity=".95"/>'
+                           % (_rpath(pts), col))
+                out.append('<circle cx="%g" cy="%g" r="2.8" fill="%s"/>' % (rx, ry, col))
         elif kind == "link":
             _, a, b, _c, label, _k = p
             col = RED if a.startswith("+") else BLU

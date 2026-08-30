@@ -4,50 +4,58 @@
 # that page is fixed and its edge is listed here because the clear now exempts the button.
 # Delete a line to put that edge back in the report.
 #
-# page:line
-Band 2:398
-Band 3:310
-Band 3:311
-Band 3:600
-Band 4:463
-Band 4:635
-Band 6:601
-Band 7:537
-Band 7:621
-Band 8:191
-Band 8:425
-Band 8:429
-Band 8:503
-b2-rgb-module:143
-b2-rgb-module:68
-b3-keypad-lock:112
-b3-keypad-lock:82
-b4-room-monitor:67
-b5-reaction-race:34
-b5-reaction-race:76
-b6-fan-transistor:128
-b6-fan-transistor:13
-b6-stepper-dial:70
-bench-multimeter:134
-bench-multimeter:57
-bench-ohms-law:110
-bench-series-parallel:140
-practice-crossing:46
-practice-crossing:48
-practice-crossing:64
-practice-crossing:83
-practice-dimmer:35
-practice-morse:10
-practice-morse:40
-practice-morse:41
-practice-morse:60
-practice-pomodoro:36
-practice-siren:18
-practice-siren:29
-practice-siren:42
-practice-toggle-lamp:17
-practice-toggle-lamp:19
-practice-toggle-lamp:30
-which-part:146
-which-part:151
-which-part:60
+# Keyed by what the sentence SAYS, not what line it is on, so an edit
+# anywhere above an edge does not make it look new again.
+#
+# page  key
+Band 2 56f6339c82
+Band 2 ea15e5aa5a
+Band 3 3ce1113e08
+Band 3 3faf583330
+Band 3 e32e64fc5e
+Band 4 0fff65b39d
+Band 4 a84ec28f75
+Band 6 ee58e4e5e7
+Band 7 7689a4646a
+Band 7 bda6241f15
+Band 8 7962224129
+Band 8 aea378fa7e
+Band 8 d821e7bd40
+Band 8 f8f083d4d5
+b2-rgb-module 9404138fb9
+b2-rgb-module d00b233427
+b3-keypad-lock 7df16f21c7
+b3-keypad-lock 8b0905427b
+b4-room-monitor d7335b11e2
+b5-reaction-race 0129149d4c
+b5-reaction-race 32dad58f9e
+b6-fan-transistor 469524fb21
+b6-fan-transistor 4cbb441b51
+b6-stepper-dial f09aadee6f
+bench-multimeter 51888843c1
+bench-multimeter f7669903aa
+bench-ohms-law 7fc16985ee
+bench-series-parallel a428f8c0b2
+practice-crossing 0cfdb01a47
+practice-crossing 323b78b727
+practice-crossing 392abe271e
+practice-crossing 43c99bb2d0
+practice-crossing b3157d3bab
+practice-dimmer 8ef66514ee
+practice-morse 5b8960c04f
+practice-morse 5b991c7b0f
+practice-morse 987fd57983
+practice-morse d4f9b4cd8c
+practice-morse ee96f21de3
+practice-morse f179cab732
+practice-pomodoro b145f3467b
+practice-siren 3298cd4d83
+practice-siren 37be845c7f
+practice-siren e37613faad
+practice-toggle-lamp 4547be447a
+practice-toggle-lamp c2779d606d
+practice-toggle-lamp dc4b125657
+practice-toggle-lamp dd2ff645b9
+which-part 23c91d58be
+which-part 4a6aff778b
+which-part 4c7021dd20

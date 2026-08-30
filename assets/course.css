@@ -157,6 +157,22 @@ footer{border-top:1px solid var(--line); padding-top:1.6rem; margin-top:3.5rem; 
 a{color:var(--accent-ink)}
 :focus-visible{outline:2px solid var(--accent); outline-offset:2px}
 
+/* generated wiring diagrams. A board can run to 45 columns, so the figure
+   breaks out of the reading column to the full page width and, past that,
+   scrolls inside itself rather than making the page scroll sideways. */
+figure.wiring{
+  margin:1.3rem 0 1.6rem;
+  width:min(var(--wide), calc(100vw - 2.5rem));
+  max-width:none;
+  overflow-x:auto;
+}
+figure.wiring svg{padding:.9rem .8rem}
+figure.wiring figcaption{
+  font-size:.92rem; color:var(--muted); margin-top:.55rem;
+  line-height:1.55; max-width:var(--measure);
+}
+@media (max-width:760px){ figure.wiring{width:calc(100vw - 2.5rem)} }
+
 
 /* ---------- added for the standalone site ---------- */
 [data-band="0"]{--bc:var(--b0)} [data-band="1"]{--bc:var(--b1)} [data-band="2"]{--bc:var(--b2)}

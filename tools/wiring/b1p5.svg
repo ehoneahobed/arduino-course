@@ -1,94 +1,4 @@
-<!doctype html>
-<html lang="en" data-band="1">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Using a multimeter · Bench · Arduino Ladder</title>
-  <meta name="description" content="Four measurements on a circuit you already built, the one mistake that blows the fuse, and how to turn the board itself into a voltmeter until your meter arrives.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
-  <link rel="stylesheet" href="../assets/course.css">
-</head>
-<body>
-<a class="skip" href="#main">Skip to the project</a>
-<div class="topbar">
-  <a class="home" href="../index.html">Arduino Ladder <span>· Bozoma Innovation Hub</span></a>
-  <nav class="bandlinks" aria-label="Bands"><a href="../bands/band-0.html">0</a><a href="../bands/band-1.html" aria-current="page">1</a><a href="../bands/band-2.html">2</a><a href="../bands/band-3.html">3</a><a href="../bands/band-4.html">4</a><a href="../bands/band-5.html">5</a><a href="../bands/band-6.html">6</a><a href="../bands/band-7.html">7</a><a href="../bands/band-8.html">8</a></nav>
-</div>
-<div class="wrap" id="main">
-<header style="padding:2.6rem 0 1rem">
-  <p class="eyebrow">Band 1 &nbsp;·&nbsp; Signal Tower</p>
-  <h1 style="margin:.7rem 0 .5rem"><span class="ptype bench">Bench</span> &nbsp;Using a multimeter</h1>
-  <p class="col sub" style="font-size:1.06em">Four measurements on a circuit you already built, the one mistake that blows the fuse, and how to turn the board itself into a voltmeter until your meter arrives.</p>
-  <dl class="projmeta">
-    <div><dt>Time</dt><dd>70 min</dd></div>
-    <div><dt>You need</dt><dd>A multimeter if the hub has one yet, your Band 1 light, a 10k&#8486; resistor, 2 jumper wires, and your whole bag of jumper wires for the continuity test</dd></div>
-    <div><dt>At once</dt><dd>One per multimeter, or everybody at once on the no-meter path</dd></div>
-    <div><dt>Before this</dt><dd>Finish Band 1 up to Part 5. Do this one before the other two Bench lessons; they both use its numbers.</dd></div>
-  </dl>
-</header>
-
-<section class="sketchbox">
-  <h2>Sketches for this project</h2>
-  <ul><li><a href="../sketches/bench_voltmeter.ino">bench_voltmeter.ino</a></li></ul>
-  <p>Every file opens with a plain-English header saying what it does and how to wire it, hole by hole.</p>
-</section>
-<section class="part">
-  <div class="parthead"><span class="tag">Why</span><h2>An instrument tells you what is, not what should be</h2></div>
-  <div class="col stack">
-    <p>Everything you have done so far, you have judged by eye. The light came on, or it did not. That gets you a long way and then it stops.</p>
-    <p>It stops at questions like these, and you will meet all of them in this course:</p>
-    <ul class="plain">
-      <li>The light is dimmer than it was yesterday. Is it, or do I think it is?</li>
-      <li>This resistor has faded stripes. Is it the 220 or the 10k?</li>
-      <li>Nothing works. Is the wire broken inside, or is it in the wrong hole?</li>
-      <li>The page says twenty thousandths of an amp. Am I near that, or nowhere near?</li>
-    </ul>
-    <p>A multimeter answers all four in about ten seconds each. <strong>It is the difference between believing this course and checking it</strong>, and you should want to check it.</p>
-
-    <div class="callout">
-      <h5>Nothing in this course can hurt you, and that is worth saying once</h5>
-      <p>Everything here runs at five volts, or six once the battery arrives in Band 6. You can hold both probes, touch any wire, and put your fingers anywhere on the board. It will do nothing at all.</p>
-      <p>Mains electricity is a completely different thing and this course never goes near it. <strong>Do not use your multimeter on anything that plugs into a wall</strong>, whatever the dial says it can do. That is not a skill this course teaches and it is not one to teach yourself.</p>
-    </div>
-  </div>
-</section>
-
-<section class="part">
-  <div class="parthead"><span class="tag">Look closer</span><h2>The dial, and the two rules</h2><span class="mins">15 min</span></div>
-  <div class="col stack">
-    <p>A multimeter is three instruments in one box, and the dial says which one you are holding. Ignore most of the settings. You need three.</p>
-
-    <div class="scroll">
-      <table>
-        <thead><tr><th>Setting</th><th>Marked</th><th>What it answers</th><th>How you connect it</th></tr></thead>
-        <tbody>
-          <tr><td><b>Voltage</b></td><td><code>V</code> with a straight line, or <code>DCV</code>. Use the 20 range.</td><td>How hard is it pushing, between here and here?</td><td>Touch the two probes to two points. <b>Leave the circuit switched on and connected.</b></td></tr>
-          <tr><td><b>Current</b></td><td><code>mA</code>. Use the 200m range.</td><td>How much is flowing through this wire?</td><td><b>Break the circuit</b> and put the meter in the gap, so everything flows through it.</td></tr>
-          <tr><td><b>Resistance</b></td><td><code>&#8486;</code>. Use the 2k range for a 220, the 20k range for a 10k.</td><td>How narrow is this?</td><td><b>Power off, part out of the board.</b> Touch one probe to each leg.</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <p>The black probe goes in the socket marked <code>COM</code> and stays there for everything. The red probe moves between two sockets, and <strong>which socket it is in matters more than the dial does</strong>.</p>
-
-    <div class="callout danger">
-      <h5>The one mistake that breaks the meter, and everybody makes it once</h5>
-      <p>The red probe has two possible sockets. One is for volts and ohms. The other is for <strong>current</strong>, and in that socket <em>the meter is a piece of wire</em>. It is designed to be. That is how it lets current through so it can count it.</p>
-      <p>So if the red probe is in the current socket and you touch the two probes across 5V and GND, you have joined 5V straight to GND through the meter. That is a short circuit. <strong>The meter has a fuse inside for exactly this, and you will blow it.</strong> Replacing it means opening the meter and finding the right fuse, which in Aiyinasi is an afternoon you did not plan.</p>
-      <p><strong>The habit that prevents it, for the rest of your life:</strong> the moment you finish measuring current, move the red probe back to the voltage socket. Do it before you put the meter down, every single time. Then the meter is always safe to grab.</p>
-      <p class="note">If the display goes dead in current mode and reads nothing at all no matter what you touch, the fuse has already gone. That is the symptom. Nothing else is broken.</p>
-    </div>
-
-    <div class="ifnot"><b>Turn it off when you finish</b>A multimeter left on the resistance setting flattens its battery in a few days, and a flat meter that still switches on gives readings that are simply wrong rather than absent. If yours has no auto-off, take the habit now.</div>
-  </div>
-</section>
-
-<section class="part">
-  <div class="parthead"><span class="tag">Build</span><h2>Four measurements on a circuit you already have</h2><span class="mins">35 min</span></div>
-    <figure class="wiring">
-      <svg viewBox="0 -64 593.2 730" role="img" aria-label="Bench: the light, rebuilt to be measured" style="width:593.2px; max-width:100%; min-width:560px">
+<svg viewBox="0 -64 593.2 730" role="img" aria-label="Band 1 Part 5: one light on pin 8" style="width:593.2px; max-width:100%; min-width:560px">
 <defs><circle id="bh" r="3.6" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/><rect id="sk" x="-6.5" y="-6.5" width="13" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1" opacity=".5"/></defs>
 <rect x="100" y="18" width="390" height="376" rx="7" fill="none" stroke="currentColor" stroke-width="1.3" opacity=".55"/>
 <rect x="100" y="200" width="390" height="26" fill="currentColor" opacity=".07"/>
@@ -324,6 +234,8 @@
 <use href="#sk" x="290" y="517"/>
 <use href="#sk" x="312" y="517"/>
 <use href="#sk" x="334" y="517"/>
+<rect x="327.5" y="510.5" width="13" height="13" rx="2" fill="#2E7D46" opacity=".18"/>
+<rect x="327.5" y="510.5" width="13" height="13" rx="2" fill="none" stroke="#2E7D46" stroke-width="1.6"/>
 <use href="#sk" x="378" y="517"/>
 <use href="#sk" x="400" y="517"/>
 <use href="#sk" x="422" y="517"/>
@@ -336,8 +248,6 @@
 <use href="#sk" x="158" y="605"/>
 <use href="#sk" x="180" y="605"/>
 <use href="#sk" x="202" y="605"/>
-<rect x="195.5" y="598.5" width="13" height="13" rx="2" fill="#2E7D46" opacity=".18"/>
-<rect x="195.5" y="598.5" width="13" height="13" rx="2" fill="none" stroke="#2E7D46" stroke-width="1.6"/>
 <use href="#sk" x="224" y="605"/>
 <rect x="217.5" y="598.5" width="13" height="13" rx="2" fill="#2E7D46" opacity=".18"/>
 <rect x="217.5" y="598.5" width="13" height="13" rx="2" fill="none" stroke="#2E7D46" stroke-width="1.6"/>
@@ -361,8 +271,8 @@
 <line x1="208" y1="59" x2="208" y2="69" stroke="#8E4C21" stroke-width="1.6" opacity=".85"/>
 <text x="204" y="55" font-size="9.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">220</text>
 <text x="204" y="55" font-size="9.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="#8E4C21" opacity="1">220</text>
-<path d="M 178 140 L 178 -19 Q 178 -28 169 -28 L 55 -28 Q 46 -28 46 -19 L 46 643 Q 46 652 55 652 L 193 652 Q 202 652 202 643 L 202 605" fill="none" stroke="#2E7D46" stroke-width="1.9" opacity=".9"/>
-<circle cx="202" cy="605" r="2.6" fill="#2E7D46"/>
+<path d="M 178 140 L 178 -19 Q 178 -28 169 -28 L 55 -28 Q 46 -28 46 -19 L 46 459 Q 46 468 55 468 L 325 468 Q 334 468 334 477 L 334 517" fill="none" stroke="#2E7D46" stroke-width="1.9" opacity=".9"/>
+<circle cx="334" cy="517" r="2.6" fill="#2E7D46"/>
 <circle cx="178" cy="140" r="2.6" fill="#2E7D46"/>
 <line x1="256" y1="96" x2="256" y2="54" stroke="#3D6FA8" stroke-width="1.9" opacity=".9"/>
 <circle cx="256" cy="54" r="2.6" fill="#3D6FA8"/>
@@ -406,8 +316,8 @@
 <text x="290" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">10</text>
 <text x="312" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">9</text>
 <text x="312" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">9</text>
-<text x="334" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">8</text>
-<text x="334" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">8</text>
+<text x="334" y="533" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">8</text>
+<text x="334" y="533" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="#2E7D46" opacity=".95">8</text>
 <text x="378" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">7</text>
 <text x="378" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">7</text>
 <text x="400" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">6</text>
@@ -430,8 +340,8 @@
 <text x="158" y="593" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">RST</text>
 <text x="180" y="593" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">3V3</text>
 <text x="180" y="593" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">3V3</text>
-<text x="202" y="593" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">5V</text>
-<text x="202" y="593" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="#2E7D46" opacity=".95">5V</text>
+<text x="202" y="593" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">5V</text>
+<text x="202" y="593" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">5V</text>
 <text x="224" y="593" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">GND</text>
 <text x="224" y="593" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="#2E7D46" opacity=".95">GND</text>
 <text x="246" y="593" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">GND</text>
@@ -451,151 +361,3 @@
 <text x="422" y="593" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">A5</text>
 <text x="422" y="593" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">A5</text>
 </svg>
-      <figcaption>Band 1's light, with its far end moved to 5V so it stays on while you measure it.</figcaption>
-    </figure>
-  <div class="col stack">
-    <p>Every hole on this page is in the top half of the board, rows <code>f</code> to <code>j</code>, so <b>use the rail pair along the top edge, nearest row <code>j</code></b>, the pair Band 1 uses. Your board has two pairs and on most boards they are not joined to each other. Rebuild Band 1's single light, from Part 5, if it is not still on the board: LED long leg <code>f5</code>, short leg <code>f6</code>, resistor <code>j5</code> to <code>j3</code>, wire <code>h3</code> to pin 8, wire <code>j6</code> to the &#8722; rail, and one wire from the &#8722; rail to a GND pin.</p>
-
-    <div class="ifnot" style="margin-bottom:.4rem"><b>One change first: make the light stay on</b>Unplug the USB. <b>Follow the wire that comes out of <code>h3</code></b> and take its other end out of the Arduino. That is <b>pin 8</b> if you only ever built the Part 5 light, and <b>pin 9</b> if you went on to build the three-light tower in Part 6, which moved it. Put that end into the <b>5V</b> pin instead, and leave the breadboard end in <code>h3</code>.<br><br>If the tower is still standing, take its other two pin wires out of the Arduino as well, so that nothing else is connected while you measure. Plug back in.<br><br>The light is now on and stays on, with no sketch running at all. That is worth a moment: <strong>a digital pin is nothing more than a 5V supply the program can switch.</strong> You have just removed the switch and kept the supply.</div>
-
-    <h3 style="margin-top:.5rem">1. Resistance, with the power off</h3>
-    <div class="steps">
-      <div class="step"><div class="body">
-        <p><strong>Unplug the USB. Pull the resistor right out of the board.</strong> Both legs. It has to be out.</p>
-        <div class="ifnot"><b>Why out</b>Left in the board, the meter's own tiny test current finds every other path through your circuit as well, and reads the whole lot together. You get a number, it looks plausible, and it is not the resistor. This catches experienced people.</div>
-      </div></div>
-      <div class="step"><div class="body">
-        <p><strong>Dial to <code>&#8486;</code>, 2k range. Touch one probe to each leg.</strong> Hold the legs, not the probe tips, or you measure yourself as well.</p>
-        <div class="see"><b>You should see</b>Something close to 220 and not exactly 220. Perhaps 217, perhaps 226. <b>Write down what yours says.</b></div>
-        <div class="ifnot"><b>That gap is not an error, it is the specification</b>Resistors are sold with a tolerance, usually five per cent, and the last stripe says which. A 220 that measures 226 is a perfectly good 220. Nothing in electronics is the number on the label, and getting used to that now saves you from chasing faults that are not there.</div>
-      </div></div>
-      <div class="step"><div class="body">
-        <p><strong>Now measure the 10k one and compare.</strong> Switch to the 20k range first.</p>
-        <div class="see"><b>You should see</b>Around 10,000, displayed as <code>9.87</code> or similar because the range is in thousands. Read the range setting before you believe a number: the same three digits mean different things on different ranges.</div>
-      </div></div>
-    </div>
-
-    <h3 style="margin-top:.8rem">2. Voltage, with the power on</h3>
-    <p>Put the resistor back. Plug in. Dial to <code>V</code>, 20 range, red probe in the voltage socket.</p>
-    <div class="scroll">
-      <table>
-        <thead><tr><th>Put the probes on</th><th>You are measuring</th><th>Expect roughly</th></tr></thead>
-        <tbody>
-          <tr><td>Column 3 and the &#8722; rail</td><td>The whole circuit</td><td class="n">5 V</td></tr>
-          <tr><td>Column 3 and column 5</td><td>Across the resistor</td><td class="n">3 V</td></tr>
-          <tr><td>Column 5 and column 6</td><td>Across the LED</td><td class="n">2 V</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="see"><b>You should see</b>The bottom two adding up to the top one. Three and two make five. <strong>Not roughly. Actually.</strong> Write all three numbers down; you will need them in the next Bench lesson.</div>
-    <div class="ifnot"><b>If a reading comes out negative</b>Swap the probes. The minus sign only means you had them the other way round, and the size of the number is still right. That is useful rather than annoying: it tells you which way round the circuit is.</div>
-    <div class="ifnot"><b>If the LED reading is nearer 3 volts than 2</b>Then yours is a blue, white or some green LED, and those need more push to light than a red one does. That is not a fault and the next lesson explains what it changes.</div>
-
-    <h3 style="margin-top:.8rem">3. Current, by breaking the circuit</h3>
-    <p>This is the one people find strange, and the strangeness is the lesson. To measure flow you have to <em>be in the pipe</em>, not beside it.</p>
-    <div class="steps">
-      <div class="step"><div class="body">
-        <p><strong>Unplug the USB. Move the red probe into the current socket. Dial to <code>200m</code>.</strong></p>
-      </div></div>
-      <div class="step"><div class="body">
-        <p><strong>Take the wire out of <code>j6</code></strong>, the one that runs to the &#8722; rail, and leave the other end in the rail. There is now a gap in the circuit.</p>
-      </div></div>
-      <div class="step"><div class="body">
-        <p><strong>Put the meter in the gap.</strong> Red probe touching <code>j6</code>, black probe touching the loose end of the wire you just pulled. Now plug in the USB.</p>
-        <div class="see"><b>You should see</b>The light comes on, because the meter has completed the circuit, and the display shows something around <b>13 or 14</b>. That is thousandths of an amp flowing through your light, and through the meter, and through you into the record you are about to write down.</div>
-        <div class="ifnot"><b>If the light does not come on and the meter reads zero</b>One probe is not making contact. Press harder, and check you really did put the red probe in the current socket.</div>
-      </div></div>
-      <div class="step"><div class="body">
-        <p><strong>Unplug. Put the wire back in <code>j6</code>. Move the red probe back to the voltage socket.</strong></p>
-        <p class="note">That last sentence is the habit. Do it now, while you are thinking about it.</p>
-      </div></div>
-    </div>
-
-    <h3 style="margin-top:.8rem">4. Continuity, which you will use more than the other three put together</h3>
-    <p>Find the setting with a sound-wave symbol, or the one marked with a diode shape. On this setting the meter <strong>beeps when the two probes are joined by anything</strong>.</p>
-    <div class="steps">
-      <div class="step"><div class="body">
-        <p><strong>Touch the two probes together.</strong> It beeps. That is the whole idea.</p>
-      </div></div>
-      <div class="step"><div class="body">
-        <p><strong>Now test every jumper wire in your box, one end to the other.</strong> It takes four minutes for a whole bag.</p>
-        <div class="see"><b>You should see</b>Nearly all of them beep. <strong>One or two probably will not</strong>, and those are the ones that have been quietly wasting people's evenings. Bend each wire near the plastic while you hold the probes on: a wire that beeps straight and goes silent when bent is broken inside and looks perfect.</div>
-        <div class="ifnot"><b>Throw the dead ones away, do not put them back</b>A broken jumper wire produces a fault that looks exactly like a code bug, and it is the single most expensive thing in the box. Cut them in half so nobody rescues them from the bin.</div>
-      </div></div>
-    </div>
-  </div>
-</section>
-
-<section class="part">
-  <div class="parthead"><span class="tag">Change it</span><h2>Until your meter arrives</h2><span class="mins">20 min</span></div>
-  <div class="col stack">
-    <p>If the meters have not reached the hub yet, you are not stuck. <strong>The board in front of you is already a voltmeter</strong>, and turning it into one takes two wires and a sketch somebody else wrote.</p>
-
-    <div class="steps">
-      <div class="step"><div class="body">
-        <p><strong>Wire it.</strong> One wire from <code>A0</code> to nowhere yet: that is your probe, and you will touch its loose end to whatever you want to measure. One wire from a <code>GND</code> pin to the &#8722; rail, if it is not already there.</p>
-      </div></div>
-      <div class="step"><div class="body">
-        <p><strong>Upload <code>bench_voltmeter.ino</code></strong> and open the serial monitor at 9600.</p>
-        <div class="see"><b>You should see</b>A number twice a second.<br><br><b>Before you touch anything it wanders about on its own</b>, all over the range, and that is correct rather than broken: an unconnected pin has nothing to measure, so it reports whatever it happens to pick up out of the air. You met the same thing in Band 3 as a floating pin. It settles the instant the probe touches something.<br><br>Touch the probe wire to the &#8722; rail and it reads about <code>0.00</code>. Touch it to the 5V pin and it reads about <code>5.00</code>. Now touch it to column 5 of your light circuit, and then to column 6.</div>
-      </div></div>
-      <div class="step"><div class="body">
-        <p><strong>Work out the voltage across the LED by subtracting.</strong> Column 5 minus column 6.</p>
-        <div class="ifnot"><b>Why you have to subtract, and a real multimeter does not</b>This is worth understanding rather than working around. A multimeter measures <strong>between its two probes</strong>, wherever they are. The board can only measure <strong>between the probe and ground</strong>, because ground is the only thing it can compare against.<br><br>So the board gives you every voltage counted from ground, and you get the difference across a part by measuring both of its ends and taking one from the other. That is not a trick. It is what a voltage <em>is</em>: a difference between two points, and never a property of one point on its own.</div>
-      </div></div>
-    </div>
-
-    <div class="callout">
-      <h5>Three things the board cannot do, said honestly</h5>
-      <ul class="plain">
-        <li><strong>It cannot measure current.</strong> There is no way round this one. Until you have a meter, you work current out with the arithmetic in the next Bench lesson, which is a good enough answer and a better exercise.</li>
-        <li><strong>It cannot measure resistance.</strong> Read the colour stripes.</li>
-        <li><strong>It cannot check its own ruler.</strong> The board works out volts by comparing against its own 5V supply. If that supply is really 4.8, every reading is out by the same four per cent and nothing on the board can tell you. A multimeter has its own reference and can. That is the honest reason to want one.</li>
-      </ul>
-      <p class="note">None of that makes the board useless. It reads to about a hundredth of a volt and it is right there. Use it, write your numbers down, and check a few of them again when the meters land.</p>
-    </div>
-
-    <div class="callout danger">
-      <h5>Never put the probe wire on the + rail after Band 6</h5>
-      <p>From Band 6 onward the + rail carries about <strong>six volts</strong> from the battery pack. <code>A0</code> is an Arduino pin and no Arduino pin may ever see more than five. Touching the probe there damages the board quietly, with nothing to tell you.</p>
-      <p>This voltmeter is for five-volt circuits only. On the battery side of a Band 6 build, use a real multimeter or do not measure.</p>
-    </div>
-  </div>
-</section>
-
-<section class="part">
-  <div class="parthead"><span class="tag">Done</span><h2>What to keep</h2></div>
-  <div class="col stack">
-    <p>Write these in your build log. The next two Bench lessons both use them.</p>
-    <ul class="plain">
-      <li>Your resistor's real measured value, and how far off 220 it was</li>
-      <li>The three voltages: whole circuit, across the resistor, across the LED</li>
-      <li>Your current reading in thousandths of an amp, if you had a meter</li>
-      <li>How many dead jumper wires you found</li>
-    </ul>
-    <p class="note">The three voltages are the important ones. In the next lesson you will work out, on paper, what the current should have been, and then compare it with what you measured. Those two numbers agreeing is the moment electronics stops being a set of instructions and starts being something you can predict.</p>
-  </div>
-</section>
-
-<section class="ship">
-  <h2>Ship it</h2>
-  <p><b>This one is a measurement, so post the measurement.</b> A photograph of your meter
-  showing what your 220 ohm resistor <em>actually</em> reads, or your table with the predictions
-  you got wrong still visible, is a better post than a finished build. Almost nobody publishes
-  the part where they checked.</p>
-  <p><b>The five lines still work.</b> What you measured, what you expected, the gap between
-  them, the number itself, and what you will do differently now you know.</p>
-  <p><a href="show-your-work.html">Show your work</a> has the template. Tag it <code>#BozomaBuilds</code>.</p>
-</section>
-
-<nav class="pager" aria-label="Back">
-  <a href="../bands/band-1.html">Back to Band 1</a>
-</nav>
-
-<footer>
-  <p>Bozoma Innovation Hub &nbsp;·&nbsp; Aiyinasi, Ellembelle District. Bench project. Every sketch used here was compiled and tested before it reached you.</p>
-</footer>
-
-</div>
-</body>
-</html>
