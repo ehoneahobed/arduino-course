@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en" data-band="5">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The siren · Practice · Arduino Ladder</title>
+  <meta name="description" content="Band 2's fade, heard instead of seen. Then finding out why even steps in the number are not even steps in the sound.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+  <link rel="stylesheet" href="../assets/course.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the project</a>
+<div class="topbar">
+  <a class="home" href="../index.html">Arduino Ladder <span>· Bozoma Innovation Hub</span></a>
+  <nav class="bandlinks" aria-label="Bands"><a href="../bands/band-0.html">0</a><a href="../bands/band-1.html">1</a><a href="../bands/band-2.html">2</a><a href="../bands/band-3.html">3</a><a href="../bands/band-4.html">4</a><a href="../bands/band-5.html" aria-current="page">5</a><a href="../bands/band-6.html">6</a><a href="../bands/band-7.html">7</a><a href="../bands/band-8.html">8</a></nav>
+</div>
+<div class="wrap" id="main">
+<header style="padding:2.6rem 0 1rem">
+  <p class="eyebrow">Band 5 &nbsp;·&nbsp; Simon Says</p>
+  <h1 style="margin:.7rem 0 .5rem"><span class="ptype practice">Practice</span> &nbsp;The siren</h1>
+  <p class="col sub" style="font-size:1.06em">Band 2's fade, heard instead of seen. Then finding out why even steps in the number are not even steps in the sound.</p>
+  <dl class="projmeta">
+    <div><dt>Time</dt><dd>20 min</dd></div>
+    <div><dt>You need</dt><dd>1 <b>passive</b> buzzer, 3 jumper wires (plus a potentiometer if you do the Silver)</dd></div>
+    <div><dt>At once</dt><dd>Everybody at once</dd></div>
+    <div><dt>Before this</dt><dd>Finish Band 5 up to Part 4, which is where the buzzer gets wired. Needs the <b>passive</b> buzzer; run <code>id_01_which_buzzer.ino</code> if you are not sure which you have. <b>No sketch is given.</b></dd></div>
+  </dl>
+</header>
+
+<section class="sketchbox">
+  <h2>Sketches for this project</h2>
+  <ul></ul>
+  <p>Every file opens with a plain-English header saying what it does and how to wire it, hole by hole.</p>
+</section>
+<section class="part">
+  <div class="parthead"><span class="tag">The job</span><h2>A siren that sounds like a siren</h2></div>
+  <div class="col stack">
+    <p>Sweep the note up, then sweep it back down, over and over. Two loops and one buzzer.</p>
+    <p>You have written this before without knowing it. <strong>Band 2's fade is the same program.</strong> A <code>for</code> loop walks a number from low to high, and something changes as it goes. There the something was brightness. Here it is pitch.</p>
+
+    <div class="callout danger">
+      <h5>This one needs the passive buzzer</h5>
+      <p>The kind with a small green circuit board visible underneath, not the sealed black one. An <strong>active</strong> buzzer has its own note built in and will simply beep at you no matter what number you give it, which makes a sweep impossible.</p>
+      <p>Run <code>id_01_which_buzzer.ino</code> from <a href="which-part.html">Which part have I got?</a> if you are not sure. It takes ten minutes and it answers this for the rest of the course.</p>
+    </div>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Build</span><h2>Build it, then find out why it sounds wrong</h2><span class="mins">20 min</span></div>
+  <div class="col stack">
+    <div class="ifnot" style="margin-bottom:.4rem"><b>Wiring</b>One buzzer, one pin, one wire to the &#8722; rail. Band 5 Part 4 has it. That is the whole circuit and there is nothing to get wrong.</div>
+
+    <p>Write it yourself. A <code>for</code> loop from a low number up to a high one, calling <code>tone</code> with the loop's number, and a short <code>delay</code> inside so each step is audible. Then a second loop going back down.</p>
+    <p>Start with <strong>200 up to 2000, in steps of 10, with 5 thousandths of a second on each</strong>. Get that running before you change anything.</p>
+    <p class="note">That is 181 steps, so about nine tenths of a second up and the same back. <strong>Before you read on, work out how much of that nine tenths is spent between 200 and 400, and how much between 1000 and 2000.</strong> The answer is the whole of the next section.</p>
+
+    <div class="see"><b>You should see, or rather hear</b>A sweep, of about nine tenths of a second each way. And, almost certainly, <strong>something that does not sound like a siren</strong>: it flies through the bottom and then drags through the top half. It sounds mechanical rather than urgent.</div>
+
+    <div class="callout">
+      <h5>Why, and it is the same reason as the lamp</h5>
+      <p>Your ear does not hear in even steps any more than your eye sees in them. <strong>Going from 200 to 400 sounds like a big change. Going from 1800 to 2000 barely sounds like a change at all</strong>, even though both are 200.</p>
+      <p>What your ear notices is <em>doubling</em>. 200 to 400 is a doubling and so is 1000 to 2000, and those two sound like the same size of jump. That is what a musician means by an octave, and Band 5 Part 2 said the same thing about 262 and 523.</p>
+      <p><strong>Now do the counting.</strong> 200 to 400 is twenty steps, so a tenth of a second. 1000 to 2000 is a hundred steps, so half a second. <strong>Both are one octave, and one takes five times as long as the other.</strong> That is why it flies through the bottom and drags at the top.</p>
+      <p><strong>So even steps in the number are not even steps in the sound.</strong> This is exactly what the dimmable lamp taught you about brightness, and the Bench lesson on Ohm's law taught you about resistors. Three different places, same fact about you.</p>
+      <div class="ifnot"><b>Do something about it</b>Two honest fixes and they are different. Either <b>multiply instead of adding</b>, so each step is the last one times about 1.02 rather than plus 10, which makes every step the same size to your ear. Or keep adding but <b>shorten the delay as the number rises</b>, so the top octave does not take five times as long as the bottom one. Try both. They sound different from each other, and saying <em>how</em> they differ is the real answer to this page.</div>
+    </div>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Change it</span><h2>Two ways further</h2></div>
+  <div class="col stack">
+    <dl class="tier">
+      <dt>Bronze</dt><dd>Make <strong>two</strong> sirens with the same code and different numbers: one that sounds urgent, and one you would be willing to have in the room for an hour. Play both to somebody and ask which is which without telling them. Write down what actually made the difference, because it is probably not what you expected.</dd>
+      <dt>Silver</dt><dd>Put the knob on it, so the knob sets how fast the sweep goes. Then notice that the siren stops responding to the knob <em>during</em> a sweep, because <code>delay</code> is in the way. That is the whole of Band 5 Part 7 in one annoying observation, and fixing it with <code>millis</code> is genuinely hard here. Try it and say what made it hard.</dd>
+    </dl>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Done</span><h2>Keep</h2></div>
+  <div class="col stack">
+    <ul class="plain">
+      <li>Your first version's numbers and what it sounded like, in words</li>
+      <li>Which of the two fixes you chose, and why</li>
+      <li>One sentence linking this to the dimmable lamp, if you built that one</li>
+    </ul>
+  </div>
+</section>
+
+<section class="ship">
+  <h2>Ship it</h2>
+  <p><b>This one is yours.</b> Nobody handed you a sketch for it, so the code in your video is
+  code you wrote. Say that in the post, because it is the difference between somebody who can
+  follow a tutorial and somebody who can build a thing, and it is the difference an employer
+  is looking for.</p>
+  <p><b>The four shots</b> as usual, and make the fourth one count: the check this page asked
+  you to run, or the version that did not work first. <b>Put a line of your own code on screen
+  for three seconds.</b> Almost nobody does, and it is the most convincing three seconds in the
+  video.</p>
+  <p><a href="show-your-work.html">Show your work</a> has the template. Tag it <code>#BozomaBuilds</code>.</p>
+</section>
+
+<nav class="pager" aria-label="Back">
+  <a href="../bands/band-5.html">Back to Band 5</a>
+</nav>
+
+<footer>
+  <p>Bozoma Innovation Hub &nbsp;·&nbsp; Aiyinasi, Ellembelle District. Practice project. Every sketch used here was compiled and tested before it reached you.</p>
+</footer>
+
+</div>
+</body>
+</html>

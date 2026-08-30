@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en" data-band="5">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Morse code · Practice · Arduino Ladder</title>
+  <meta name="description" content="Send a message somebody else can actually read. The test is not that it beeps; it is that a person holding the chart can write down what you sent.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+  <link rel="stylesheet" href="../assets/course.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the project</a>
+<div class="topbar">
+  <a class="home" href="../index.html">Arduino Ladder <span>· Bozoma Innovation Hub</span></a>
+  <nav class="bandlinks" aria-label="Bands"><a href="../bands/band-0.html">0</a><a href="../bands/band-1.html">1</a><a href="../bands/band-2.html">2</a><a href="../bands/band-3.html">3</a><a href="../bands/band-4.html">4</a><a href="../bands/band-5.html" aria-current="page">5</a><a href="../bands/band-6.html">6</a><a href="../bands/band-7.html">7</a><a href="../bands/band-8.html">8</a></nav>
+</div>
+<div class="wrap" id="main">
+<header style="padding:2.6rem 0 1rem">
+  <p class="eyebrow">Band 5 &nbsp;·&nbsp; Simon Says</p>
+  <h1 style="margin:.7rem 0 .5rem"><span class="ptype practice">Practice</span> &nbsp;Morse code</h1>
+  <p class="col sub" style="font-size:1.06em">Send a message somebody else can actually read. The test is not that it beeps; it is that a person holding the chart can write down what you sent.</p>
+  <dl class="projmeta">
+    <div><dt>Time</dt><dd>35 min</dd></div>
+    <div><dt>You need</dt><dd>1 buzzer of either kind, or 1 LED and its resistor, 3 jumper wires. A 220&#8486; resistor as well if your buzzer is the active kind. (A button and <code>millis</code> for the Silver.)</dd></div>
+    <div><dt>At once</dt><dd>Everybody at once</dd></div>
+    <div><dt>Before this</dt><dd>Finish Band 5 up to Part 5, where you write your own instructions. <b>No sketch is given.</b></dd></div>
+  </dl>
+</header>
+
+<section class="sketchbox">
+  <h2>Sketches for this project</h2>
+  <ul></ul>
+  <p>Every file opens with a plain-English header saying what it does and how to wire it, hole by hole.</p>
+</section>
+<section class="part">
+  <div class="parthead"><span class="tag">The job</span><h2>Send a message somebody else can read</h2></div>
+  <div class="col stack">
+    <p>Make the buzzer, or a light, send <strong>SOS</strong>. Then make it send your own initials.</p>
+    <p>The test is not that it beeps. The test is that <strong>somebody holding the chart, who has not seen your code, can write down what you sent.</strong></p>
+
+    <div class="callout">
+      <h5>Why this is the right place to practise writing your own functions</h5>
+      <p>Morse is two things repeated: a dot and a dash. You will type them dozens of times. <strong>Anything you are about to type dozens of times is a function waiting to be written</strong>, and this is the smallest, clearest example of that in the whole course.</p>
+      <p>Band 5 Part 5 showed you how. This page does not show you again.</p>
+    </div>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Think first</span><h2>The timing is the whole specification</h2><span class="mins">10 min</span></div>
+  <div class="col stack">
+    <p>Morse is not &#8220;short beep, long beep&#8221;. It is a set of exact ratios, and if you get them wrong nobody can read it, which is the only test that matters.</p>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Thing</th><th>How long</th></tr></thead>
+        <tbody>
+          <tr><td>A dot</td><td class="n">1</td></tr>
+          <tr><td>A dash</td><td class="n">3</td></tr>
+          <tr><td>Gap between the parts of one letter</td><td class="n">1</td></tr>
+          <tr><td>Gap between two letters</td><td class="n">3</td></tr>
+          <tr><td>Gap between two words</td><td class="n">7</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>Pick what 1 is worth in thousandths of a second, and everything else follows.</strong> Two hundred is a good place to start. Then a dot is 200, a dash is 600, and a letter gap is 600.</p>
+    <div class="ifnot"><b>The gap everybody forgets</b>The silence <em>inside</em> a letter and the silence <em>between</em> letters are different lengths, and that is the only thing telling a listener where one letter stops. Get those two the same and you send one endless letter that nobody can split up. This is the bug to expect.</div>
+    <p class="note">The letters you need for SOS: <code>S</code> is three dots. <code>O</code> is three dashes.</p>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Build</span><h2>Build it, then hand it to somebody</h2><span class="mins">25 min</span></div>
+  <div class="col stack">
+    <div class="ifnot" style="margin-bottom:.4rem"><b>Wiring</b>One buzzer, or one light with its resistor. Band 5 Part 4 for the buzzer, Band 1 Part 5 for the light. That is the entire circuit.</div>
+    <div class="ifnot" style="margin-bottom:.4rem"><b>Either kind of buzzer works here, with one change if yours is active</b>Morse needs sound and silence rather than a particular note, so both kinds do the job. If yours is <b>passive</b>, use <code>tone</code> and <code>noTone</code>, and Band 5 Part 4's bare wiring is right. If yours is <b>active</b>, <code>digitalWrite</code> is enough &#8212; but <strong>put a 220 ohm resistor in its pin leg</strong>, as Band 3 does, because an active buzzer pulls about thirty thousandths of an amp and a pin is built for twenty.<br><br>Not sure which you have? Fit the resistor. It costs a little volume and nothing else.</div>
+
+    <div class="see"><b>The check, and it is a person</b>Write out the chart for the three letters you are sending. Hand it to somebody who has not watched you build this. Run it. <strong>They should be able to write down your three letters.</strong> If they cannot, your gaps are wrong, and no amount of looking at your own code will show you that.</div>
+    <div class="ifnot"><b>If there is nobody to hand it to</b>Record it on your phone. Watch it back <em>tomorrow</em>, with the chart, having half forgotten what you sent. That is a surprisingly honest test, because by then you are a stranger to it.</div>
+
+    <details><summary>The shape, if you are stuck</summary><div class="inner">
+      <pre><code>void dot()  { /* on for one unit, off for one unit  */ }
+void dash() { /* on for three units, off for one unit */ }
+void letterGap() { /* silence, and how long? */ }</code></pre>
+      <p>Notice that <code>dot</code> and <code>dash</code> each end with their own gap built in. That is a decision, not the only way, and it makes the letter gap shorter than you might expect. Work out by how much.</p>
+    </div></details>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Change it</span><h2>Two ways further</h2></div>
+  <div class="col stack">
+    <dl class="tier">
+      <dt>Bronze</dt><dd>Send a whole word, with the seven-unit word gap in it, and have a second person read it back. Then halve your unit and see at what speed they stop being able to.</dd>
+      <dt>Silver</dt><dd>Go the other way: a <strong>button you tap</strong>, and the serial monitor prints a dot for a short press and a dash for a long one. You will have to decide where short stops and long starts, and then measure your own tapping to choose it. That is Band 4's calibration lesson arriving in a place nobody expects it. <em>(You need <code>millis</code> to time a press, so come back to this one after Band 5 Part 7. You will also need a button and its wiring from Band 3 Part 3.)</em></dd>
+    </dl>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Done</span><h2>Keep</h2></div>
+  <div class="col stack">
+    <ul class="plain">
+      <li>Your chosen unit length, and what a dash and each gap came out as</li>
+      <li>What your reader wrote down, next to what you actually sent</li>
+      <li>Your functions, and one sentence on what you would have typed without them</li>
+    </ul>
+  </div>
+</section>
+
+<section class="ship">
+  <h2>Ship it</h2>
+  <p><b>This one is yours.</b> Nobody handed you a sketch for it, so the code in your video is
+  code you wrote. Say that in the post, because it is the difference between somebody who can
+  follow a tutorial and somebody who can build a thing, and it is the difference an employer
+  is looking for.</p>
+  <p><b>The four shots</b> as usual, and make the fourth one count: the check this page asked
+  you to run, or the version that did not work first. <b>Put a line of your own code on screen
+  for three seconds.</b> Almost nobody does, and it is the most convincing three seconds in the
+  video.</p>
+  <p><a href="show-your-work.html">Show your work</a> has the template. Tag it <code>#BozomaBuilds</code>.</p>
+</section>
+
+<nav class="pager" aria-label="Back">
+  <a href="../bands/band-5.html">Back to Band 5</a>
+</nav>
+
+<footer>
+  <p>Bozoma Innovation Hub &nbsp;·&nbsp; Aiyinasi, Ellembelle District. Practice project. Every sketch used here was compiled and tested before it reached you.</p>
+</footer>
+
+</div>
+</body>
+</html>

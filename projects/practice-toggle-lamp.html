@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en" data-band="3">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The toggle lamp, from nothing · Practice · Arduino Ladder</title>
+  <meta name="description" content="One button, one lamp, press to toggle. You did it in Band 3 with the code in front of you. Do it again with nothing in front of you.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+  <link rel="stylesheet" href="../assets/course.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the project</a>
+<div class="topbar">
+  <a class="home" href="../index.html">Arduino Ladder <span>· Bozoma Innovation Hub</span></a>
+  <nav class="bandlinks" aria-label="Bands"><a href="../bands/band-0.html">0</a><a href="../bands/band-1.html">1</a><a href="../bands/band-2.html">2</a><a href="../bands/band-3.html" aria-current="page">3</a><a href="../bands/band-4.html">4</a><a href="../bands/band-5.html">5</a><a href="../bands/band-6.html">6</a><a href="../bands/band-7.html">7</a><a href="../bands/band-8.html">8</a></nav>
+</div>
+<div class="wrap" id="main">
+<header style="padding:2.6rem 0 1rem">
+  <p class="eyebrow">Band 3 &nbsp;·&nbsp; Combination Lock</p>
+  <h1 style="margin:.7rem 0 .5rem"><span class="ptype practice">Practice</span> &nbsp;The toggle lamp, from nothing</h1>
+  <p class="col sub" style="font-size:1.06em">One button, one lamp, press to toggle. You did it in Band 3 with the code in front of you. Do it again with nothing in front of you.</p>
+  <dl class="projmeta">
+    <div><dt>Time</dt><dd>25 min</dd></div>
+    <div><dt>You need</dt><dd>1 LED, 1 resistor, 1 button, 5 jumper wires (plus a second button if you do the Silver, and a <code>~</code> pin for the Bronze)</dd></div>
+    <div><dt>At once</dt><dd>Everybody at once</dd></div>
+    <div><dt>Before this</dt><dd>Finish Band 3 up to Part 9. <b>This page gives you no sketch.</b> That is deliberate.</dd></div>
+  </dl>
+</header>
+
+<section class="sketchbox">
+  <h2>Sketches for this project</h2>
+  <ul></ul>
+  <p>Every file opens with a plain-English header saying what it does and how to wire it, hole by hole.</p>
+</section>
+<section class="part">
+  <div class="parthead"><span class="tag">The job</span><h2>One button, one lamp, press to toggle</h2></div>
+  <div class="col stack">
+    <p>The smallest useful device there is. Press once, light on. Press again, light off. It should work a hundred times out of a hundred.</p>
+    <p>You did this in Band 3 with the band's code in front of you. <strong>Do it again with nothing in front of you</strong>, and find out how much of it you actually own.</p>
+    <div class="callout">
+      <h5>Why the smallest job is a good one to repeat</h5>
+      <p>There is exactly one hard idea in it and no wiring to hide behind. If your toggle is unreliable you cannot blame the circuit, because the circuit is a button and a light.</p>
+      <p>The hard idea is that <strong>a button that is held down is down for thousands of rounds of <code>loop</code></strong>, and a toggle that reacts to <em>down</em> instead of <em>the moment it goes down</em> will flip thousands of times and land wherever it likes.</p>
+    </div>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Build</span><h2>Build it, then measure whether it works</h2><span class="mins">25 min</span></div>
+  <div class="col stack">
+    <div class="ifnot" style="margin-bottom:.4rem"><b>Wiring</b><b>Band 3 Part 3</b> for the button, hole by hole, in the middle of the serial-monitor part. <b>Band 1 Part 5</b> for the light. Two parts, two pins, one resistor. Go and read those rather than trusting a summary here.</div>
+
+    <div class="ifnot" style="margin-bottom:.4rem"><b>One thing the two bands do not agree on, and it will cost you an evening</b>Band 3 puts its button in columns <b>1 and 3</b>. Band 1's light uses column <b>3</b> for its resistor. Same column, so a button leg would join straight onto the light's pin and the button would read the light instead of your finger. Nothing would look wrong.<br><br><b>So move the button along: columns 25 and 27</b>, wired exactly the way Band 3 Part 3 does it at 1 and 3. Legs in <code>f25</code>, <code>f27</code>, <code>e25</code>, <code>e27</code>. Wire <code>j25</code> to pin 2, and <code>a27</code> to the &#8722; rail.<br><br><b>And use the top &#8722; rail for everything</b>, the one nearest row <code>j</code>, because that is the one Band 1 uses. Band 3 used the bottom one. On most boards the two are not joined, so the button's ground wire is a long one running the length of the board. Run it rather than reaching for the near rail.</div>
+
+    <p>Write it from scratch. Do not open Band 3's sketch until you have something that runs.</p>
+
+    <div class="callout">
+      <h5>The check is a count, not a feeling</h5>
+      <p>&#8220;It seems to work&#8221; is how a bouncy button gets shipped. So count.</p>
+      <ol class="num">
+        <li>Press it <strong>twenty times</strong>, deliberately, pausing between each. Count out loud.</li>
+        <li>The light should have changed state twenty times, so it ends up back where it started.</li>
+      </ol>
+      <p><strong>Then make the test tell you more than that.</strong> Counting only whether it ends up right catches an odd number of extra presses and misses an even number, which is roughly half of real bounce. Add a running count with <code>Serial.println</code> and read the last number. It should say 20. Serial is Band 3 Part 3.</p>
+      <div class="see"><b>You should see</b>The light off at the end, if it started off. <strong>If it ends up on, one of your twenty presses counted twice</strong>, and that is bounce. You did not feel it happen and the count is the only reason you know.</div>
+      <div class="ifnot"><b>If you get twenty out of twenty first time</b>Take your debounce out and do it again. If it still works, your button is a good one, and you have learned something useful: <strong>a fault you cannot reproduce is not a fault you have fixed.</strong> Put the debounce back anyway, because the next button will not be this one.</div>
+    </div>
+
+    <details><summary>The two things it needs, if you are stuck</summary><div class="inner">
+      <p><b>One.</b> A variable holding what the button read <em>last</em> time round, so you can tell the difference between &#8220;it is down&#8221; and &#8220;it has just gone down&#8221;.</p>
+      <p><b>Two.</b> A short wait after you notice a change, so the mechanical clatter inside the switch has finished before you look again. Twenty to fifty thousandths of a second is plenty.</p>
+      <p>Band 3 Parts 8 and 9 are where both of those come from. Read them again rather than copying the sketch.</p>
+    </div></details>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Change it</span><h2>Two ways further</h2></div>
+  <div class="col stack">
+    <dl class="tier">
+      <dt>Bronze</dt><dd>Make the lamp <strong>fade</strong> on and off over half a second instead of snapping, using Band 2's <code>analogWrite</code>. Move the light to a <code>~</code> pin first. Then notice that the button stops responding during the fade, and say why in one sentence. That sentence is Band 5 arriving.</dd>
+      <dt>Silver</dt><dd>Add a second button that does not toggle but <strong>always turns it off</strong>, however the lamp got on. Two inputs, one state, and now you have to think about what happens when both are pressed together.</dd>
+    </dl>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Done</span><h2>Keep</h2></div>
+  <div class="col stack">
+    <ul class="plain">
+      <li>Your count out of twenty, before and after adding the debounce</li>
+      <li>Your code, written without looking at the band's</li>
+      <li>One sentence on the difference between &#8220;the button is down&#8221; and &#8220;the button has just gone down&#8221;</li>
+    </ul>
+  </div>
+</section>
+
+<section class="ship">
+  <h2>Ship it</h2>
+  <p><b>This one is yours.</b> Nobody handed you a sketch for it, so the code in your video is
+  code you wrote. Say that in the post, because it is the difference between somebody who can
+  follow a tutorial and somebody who can build a thing, and it is the difference an employer
+  is looking for.</p>
+  <p><b>The four shots</b> as usual, and make the fourth one count: the check this page asked
+  you to run, or the version that did not work first. <b>Put a line of your own code on screen
+  for three seconds.</b> Almost nobody does, and it is the most convincing three seconds in the
+  video.</p>
+  <p><a href="show-your-work.html">Show your work</a> has the template. Tag it <code>#BozomaBuilds</code>.</p>
+</section>
+
+<nav class="pager" aria-label="Back">
+  <a href="../bands/band-3.html">Back to Band 3</a>
+</nav>
+
+<footer>
+  <p>Bozoma Innovation Hub &nbsp;·&nbsp; Aiyinasi, Ellembelle District. Practice project. Every sketch used here was compiled and tested before it reached you.</p>
+</footer>
+
+</div>
+</body>
+</html>

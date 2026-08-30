@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en" data-band="8">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The pomodoro timer · Practice · Arduino Ladder</title>
+  <meta name="description" content="Two states, one buzzer, and the habit that makes every slow device testable: build it in fast-forward, then change two numbers.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+  <link rel="stylesheet" href="../assets/course.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the project</a>
+<div class="topbar">
+  <a class="home" href="../index.html">Arduino Ladder <span>· Bozoma Innovation Hub</span></a>
+  <nav class="bandlinks" aria-label="Bands"><a href="../bands/band-0.html">0</a><a href="../bands/band-1.html">1</a><a href="../bands/band-2.html">2</a><a href="../bands/band-3.html">3</a><a href="../bands/band-4.html">4</a><a href="../bands/band-5.html">5</a><a href="../bands/band-6.html">6</a><a href="../bands/band-7.html">7</a><a href="../bands/band-8.html" aria-current="page">8</a></nav>
+</div>
+<div class="wrap" id="main">
+<header style="padding:2.6rem 0 1rem">
+  <p class="eyebrow">Band 8 &nbsp;·&nbsp; Build for Nzemaland</p>
+  <h1 style="margin:.7rem 0 .5rem"><span class="ptype practice">Practice</span> &nbsp;The pomodoro timer</h1>
+  <p class="col sub" style="font-size:1.06em">Two states, one buzzer, and the habit that makes every slow device testable: build it in fast-forward, then change two numbers.</p>
+  <dl class="projmeta">
+    <div><dt>Time</dt><dd>40 min</dd></div>
+    <div><dt>You need</dt><dd>1 buzzer, 3 jumper wires. The whole circuit. A 220&#8486; resistor as well if your buzzer is the active kind, and a button for the Bronze.</dd></div>
+    <div><dt>At once</dt><dd>Everybody at once</dd></div>
+    <div><dt>Before this</dt><dd>Finish Band 5 up to Part 7 for <code>millis</code>, and read <b>Band 8 Part 2</b> on states, which needs no board and no earlier band. Do this before the capstone. <b>No sketch is given.</b></dd></div>
+  </dl>
+</header>
+
+<section class="sketchbox">
+  <h2>Sketches for this project</h2>
+  <ul></ul>
+  <p>Every file opens with a plain-English header saying what it does and how to wire it, hole by hole.</p>
+</section>
+<section class="part">
+  <div class="parthead"><span class="tag">The job</span><h2>A timer you would actually use</h2></div>
+  <div class="col stack">
+    <p>Twenty-five minutes of work, then five minutes of rest, then round again. A different sound at each change so you know which one just started, without looking.</p>
+    <p>One buzzer. That is the entire circuit, and everything hard about this is in the code.</p>
+
+    <div class="callout">
+      <h5>This is the smallest state machine there is, and Band 8 is about state machines</h5>
+      <p>Two states: <strong>working</strong> and <strong>resting</strong>. Nothing else. A device is in exactly one of them at any moment, and it moves between them for exactly one reason, which is that enough time has passed.</p>
+      <p>Band 8's tank alarm has four states and <strong>five</strong> ways to move between them: four presses that walk round the cycle, and one that fires on its own when the snooze runs out. Build this two-state one first and that one stops looking frightening.</p>
+    </div>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Think first</span><h2>The habit this page is really teaching</h2><span class="mins">10 min</span></div>
+  <div class="col stack">
+    <div class="callout danger">
+      <h5>You cannot test this by waiting twenty-five minutes</h5>
+      <p>If you did, one round of testing costs you half an hour, and you will need ten rounds. That is a lost day, and at the end of it you will still not have tested what happens after four cycles.</p>
+      <p><strong>So put both times in named variables at the top, and set them to seconds while you build.</strong> Twenty-five seconds of work and five seconds of rest. Now a full cycle takes half a minute and you can test properly. When it is right, change two numbers and nothing else.</p>
+      <p>That is not a shortcut. <strong>It is how the thing is supposed to be written</strong>, and it is one of the most useful habits in this entire course. Every device that waits for something slow should be buildable in fast-forward, and if yours cannot be, the numbers are buried where they should not be.</p>
+    </div>
+
+    <p>Two more things to settle on paper before you write anything:</p>
+    <ol class="num">
+      <li><strong><code>delay</code> or <code>millis</code>?</strong> A <code>delay</code> of twenty-five minutes works and does exactly one thing. Could you add a button that skips to the break? Answer that and you have chosen.</li>
+      <li><strong>What does it do at the change?</strong> Two different sounds, and they have to be different enough to tell apart from the next room, which is where you will be.</li>
+    </ol>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Build</span><h2>Build it in fast-forward, then run it for real</h2><span class="mins">30 min</span></div>
+  <div class="col stack">
+    <div class="ifnot" style="margin-bottom:.4rem"><b>Wiring</b>One buzzer on one pin, and its wire to the &#8722; rail. Band 5 Part 4 has it. A <b>passive</b> buzzer is better here, because it lets you make the two sounds properly different, and Band 5's bare wiring is right for it.<br><br>An <b>active</b> one works too, with one change: <strong>put a 220 ohm resistor in its pin leg</strong>, as Band 3 does. An active buzzer pulls about thirty thousandths of an amp and a pin is built for twenty. With one you can only vary how long the sound is, not what note it is, so make one change a single beep and the other three quick ones.</div>
+
+    <div class="steps">
+      <div class="step"><div class="body">
+        <p><strong>Build it with seconds, and watch five whole cycles.</strong> That is two and a half minutes of your life.</p>
+        <div class="see"><b>The check</b>Work, sound, rest, different sound, work again. <strong>Five times round</strong>, with each phase the length you set &#8212; time one of them with a stopwatch or a phone &#8212; and no state ever getting stuck.</div>
+        <div class="ifnot"><b>If the second cycle is wrong but the first was fine</b>Almost always the moment you change state you forgot to write down <em>when</em> the new state started, so the second one measures from the wrong place. This is the commonest fault in every state machine anybody writes, including Band 8's.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Now change the two numbers to twenty-five and five minutes, and use it for one real cycle.</strong> Actually work for the twenty-five. Actually stop for the five.</p>
+        <div class="see"><b>You should see</b>Two things, and the second is the interesting one. That it still works, and <strong>that you now have opinions about it.</strong> The sound was too quiet, or the break was too short, or you wanted a warning before the end. Write those down: that is what testing a device on yourself is for, and it is exactly what Band 8 asks you to do with somebody else.</div>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Change it</span><h2>Two ways further</h2></div>
+  <div class="col stack">
+    <dl class="tier">
+      <dt>Bronze</dt><dd>Add a button that <strong>skips to the next state immediately</strong>. If you used <code>delay</code>, you will now find out why this page asked you that question, and the honest answer is to rewrite it with <code>millis</code>.</dd>
+      <dt>Silver</dt><dd>Add a <strong>long break every fourth work session</strong>, which is what the real method says. That means a third state and something that counts, and it is genuinely a step up. Draw the three states and the arrows between them on paper before you write a line, exactly as Band 8 will make you.</dd>
+    </dl>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Done</span><h2>Keep</h2></div>
+  <div class="col stack">
+    <ul class="plain">
+      <li>Your two named time variables, and the fact that you tested in seconds</li>
+      <li>Your drawing of the states and the arrows, even for two states</li>
+      <li>What you thought of it after one real cycle, written as complaints rather than praise</li>
+    </ul>
+    <p class="note">Those complaints are the most valuable thing on this page. A device you have used is a device you have opinions about, and Band 8 is entirely about getting those opinions from somebody who is not you.</p>
+  </div>
+</section>
+
+<section class="ship">
+  <h2>Ship it</h2>
+  <p><b>This one is yours.</b> Nobody handed you a sketch for it, so the code in your video is
+  code you wrote. Say that in the post, because it is the difference between somebody who can
+  follow a tutorial and somebody who can build a thing, and it is the difference an employer
+  is looking for.</p>
+  <p><b>The four shots</b> as usual, and make the fourth one count: the check this page asked
+  you to run, or the version that did not work first. <b>Put a line of your own code on screen
+  for three seconds.</b> Almost nobody does, and it is the most convincing three seconds in the
+  video.</p>
+  <p><a href="show-your-work.html">Show your work</a> has the template. Tag it <code>#BozomaBuilds</code>.</p>
+</section>
+
+<nav class="pager" aria-label="Back">
+  <a href="../bands/band-8.html">Back to Band 8</a>
+</nav>
+
+<footer>
+  <p>Bozoma Innovation Hub &nbsp;·&nbsp; Aiyinasi, Ellembelle District. Practice project. Every sketch used here was compiled and tested before it reached you.</p>
+</footer>
+
+</div>
+</body>
+</html>

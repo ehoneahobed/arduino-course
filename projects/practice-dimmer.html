@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en" data-band="4">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The dimmable lamp · Practice · Arduino Ladder</title>
+  <meta name="description" content="A knob and a light, with three traps in it you can find with a pen before you find them with the board. One of them is Band 6 arriving two bands early.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+  <link rel="stylesheet" href="../assets/course.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the project</a>
+<div class="topbar">
+  <a class="home" href="../index.html">Arduino Ladder <span>· Bozoma Innovation Hub</span></a>
+  <nav class="bandlinks" aria-label="Bands"><a href="../bands/band-0.html">0</a><a href="../bands/band-1.html">1</a><a href="../bands/band-2.html">2</a><a href="../bands/band-3.html">3</a><a href="../bands/band-4.html" aria-current="page">4</a><a href="../bands/band-5.html">5</a><a href="../bands/band-6.html">6</a><a href="../bands/band-7.html">7</a><a href="../bands/band-8.html">8</a></nav>
+</div>
+<div class="wrap" id="main">
+<header style="padding:2.6rem 0 1rem">
+  <p class="eyebrow">Band 4 &nbsp;·&nbsp; Night Guard</p>
+  <h1 style="margin:.7rem 0 .5rem"><span class="ptype practice">Practice</span> &nbsp;The dimmable lamp</h1>
+  <p class="col sub" style="font-size:1.06em">A knob and a light, with three traps in it you can find with a pen before you find them with the board. One of them is Band 6 arriving two bands early.</p>
+  <dl class="projmeta">
+    <div><dt>Time</dt><dd>35 min</dd></div>
+    <div><dt>You need</dt><dd>1 LED on a <code>~</code> pin, 1 resistor, 1 potentiometer, 7 jumper wires (plus the light sensor and its 10k&#8486; if you do the Silver)</dd></div>
+    <div><dt>At once</dt><dd>Everybody at once</dd></div>
+    <div><dt>Before this</dt><dd>Finish Band 2 and Band 4 up to Part 6. <b>No sketch is given.</b></dd></div>
+  </dl>
+</header>
+
+<section class="sketchbox">
+  <h2>Sketches for this project</h2>
+  <ul></ul>
+  <p>Every file opens with a plain-English header saying what it does and how to wire it, hole by hole.</p>
+</section>
+<section class="part">
+  <div class="parthead"><span class="tag">The job</span><h2>A lamp you can turn down</h2></div>
+  <div class="col stack">
+    <p>A knob and a light. Turn the knob and the light follows, smoothly, over the whole travel. Right down means off. Right up means full.</p>
+    <p>That sounds like the easiest thing on this page and it has three traps in it, all of which you can find with a pen before you find them with the board.</p>
+    <p class="note"><strong>You have built a version of this already.</strong> <code>b4_02_pot_dim_led.ino</code>, in Band 4 Part 6, is a knob-driven lamp. Do it from scratch this time without opening that file, and the three traps below are exactly the ones that sketch quietly solved for you while you were reading it.</p>
+
+    <div class="scroll">
+      <table>
+        <thead><tr><th>You need</th><th>You already did it in</th></tr></thead>
+        <tbody>
+          <tr><td><code>analogWrite</code> and why the pin needs a <code>~</code></td><td>Band 2, Parts 2 and 5</td></tr>
+          <tr><td><code>analogRead</code>, and the 0 to 1023 it gives you</td><td>Band 4, Parts 3 and 5</td></tr>
+          <tr><td><code>map</code>, for turning one range into another</td><td>Band 4, Part 6</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Think first</span><h2>Three traps, on paper</h2><span class="mins">10 min</span></div>
+  <div class="col stack">
+    <ol class="num">
+      <li><strong>The two ranges are not the same size.</strong> <code>analogRead</code> hands you 0 to 1023. <code>analogWrite</code> wants 0 to 255. Feed one straight into the other and only the first quarter of the knob behaves.<br><br><strong>Predict what the other three quarters do</strong>, and write your prediction down before you build it. Does the lamp just stay bright once it passes 255? Something stranger? Then build it and turn the knob slowly from stop to stop, <em>counting how many times the light goes from full bright to dark</em>. Most people's prediction is wrong, and the real answer tells you something true about how the board stores a number.</li>
+      <li><strong>Your knob probably does not reach both ends.</strong> Most do not quite make 0, and most do not quite make 1023. If yours stops at 12, your lamp never goes fully off. <strong>You will have to measure your own knob</strong>, exactly as Band 4 made you measure your own room.</li>
+      <li><strong>Your eye is not a straight line.</strong> Going from 0 to 60 looks like an enormous change. Going from 195 to 255 looks like almost nothing. So a knob that is mathematically even will not feel even, and no amount of careful code fixes that, because the unevenness is in you.</li>
+    </ol>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Build</span><h2>Build it, measure it, then fix what you find</h2><span class="mins">25 min</span></div>
+  <div class="col stack">
+    <div class="ifnot" style="margin-bottom:.4rem"><b>Wiring, and use these two parts and not the ones you might expect</b><b>Band 4 Part 5</b> for the knob, and <b>Band 4 Part 6</b> for the light. Both hole by hole, both inside what you have already done.<br><br>Not Band 1 Part 5 for the light, even though that is the one you remember. Band 1 puts its LED in <code>f5</code> and <code>f6</code>, and Band 4 puts the knob's legs in <code>f5</code>, <code>f6</code> and <code>f7</code>. <strong>Same holes.</strong> Band 4 Part 6 already moved the light out of the way, to <code>f20</code> and <code>f22</code>, and it already put it on <b>pin 9</b>, which has the <code>~</code> this build needs. It also uses the same top &#8722; rail as the knob.</div>
+
+    <div class="steps">
+      <div class="step"><div class="body">
+        <p><strong>First, print your knob before you drive anything with it.</strong> Turn it slowly all the way from one stop to the other, watching the serial monitor.</p>
+        <div class="see"><b>Write down two numbers</b>The lowest it ever shows and the highest it ever shows. <strong>These are yours and nobody else's.</strong> Somebody at the next table will have different ones.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Now drive the lamp,</strong> using your two measured numbers rather than 0 and 1023.</p>
+        <div class="see"><b>The check</b>Right down, the light is <strong>completely off</strong>. Not a faint glow. Right up, it is full. Everywhere in between it moves.</div>
+        <div class="ifnot"><b>If it will not go fully off</b>Your bottom number is wrong, or you used 0 when your knob's floor is 12. Two ways out and they are not the same: widen the range you mapped from, or add a line that says <em>below some reading, write a real zero</em>. The second is more honest about what you want, and it is the same shape as the deadband you meet in Band 6.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Hold the knob completely still and watch the light for thirty seconds.</strong></p>
+        <div class="see"><b>Watch the serial monitor first, not the light.</b> The reading wanders by a count or two with nothing touching the knob. That is the thing that is real.<br><br>Then look at the lamp. You may see a faint shimmer in the dim third, and <strong>you may see nothing at all</strong>: two counts out of 1023 is under half a step out of 255, which is often invisible. Either way the wobble is there and it is being written to the light on every round.</div>
+        <div class="ifnot"><b>Fixing that is optional here and compulsory in Band 6</b>The fix is to ignore any change smaller than a few counts. It has a name, and Band 6 spends a whole part on it, because on a servo the same wobble makes an arm buzz instead of a lamp shimmer. <strong>You have just met the problem two bands before the lesson.</strong> Write down what you saw so you recognise it when it is named.</div>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Change it</span><h2>Two ways further</h2></div>
+  <div class="col stack">
+    <dl class="tier">
+      <dt>Bronze</dt><dd>Make the bottom half of the knob's travel cover the bottom quarter of the brightness, so the dim end gets more room. Your eye will thank you. Then say in one sentence why that is a better lamp and a worse instrument.</dd>
+      <dt>Silver</dt><dd>Swap the knob for the light sensor, so the lamp gets <strong>brighter as the room gets darker</strong>. Careful: that is not just reversing the numbers, because a lamp that lights the room it is measuring will chase itself. Point it away, and write down what happened when you did not.</dd>
+    </dl>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Done</span><h2>Keep</h2></div>
+  <div class="col stack">
+    <ul class="plain">
+      <li>Your knob's two real numbers, lowest and highest</li>
+      <li>Your prediction for trap 1, written before you built it</li>
+      <li>What you saw when you held the knob still, in your own words</li>
+    </ul>
+  </div>
+</section>
+
+<section class="ship">
+  <h2>Ship it</h2>
+  <p><b>This one is yours.</b> Nobody handed you a sketch for it, so the code in your video is
+  code you wrote. Say that in the post, because it is the difference between somebody who can
+  follow a tutorial and somebody who can build a thing, and it is the difference an employer
+  is looking for.</p>
+  <p><b>The four shots</b> as usual, and make the fourth one count: the check this page asked
+  you to run, or the version that did not work first. <b>Put a line of your own code on screen
+  for three seconds.</b> Almost nobody does, and it is the most convincing three seconds in the
+  video.</p>
+  <p><a href="show-your-work.html">Show your work</a> has the template. Tag it <code>#BozomaBuilds</code>.</p>
+</section>
+
+<nav class="pager" aria-label="Back">
+  <a href="../bands/band-4.html">Back to Band 4</a>
+</nav>
+
+<footer>
+  <p>Bozoma Innovation Hub &nbsp;·&nbsp; Aiyinasi, Ellembelle District. Practice project. Every sketch used here was compiled and tested before it reached you.</p>
+</footer>
+
+</div>
+</body>
+</html>

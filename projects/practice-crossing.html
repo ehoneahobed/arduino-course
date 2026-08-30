@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en" data-band="3">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>A crossing that waits to be asked · Practice · Arduino Ladder</title>
+  <meta name="description" content="Band 1's tower plus Band 3's button, and the one design decision that separates a toy from something you would put on a road.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+  <link rel="stylesheet" href="../assets/course.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the project</a>
+<div class="topbar">
+  <a class="home" href="../index.html">Arduino Ladder <span>· Bozoma Innovation Hub</span></a>
+  <nav class="bandlinks" aria-label="Bands"><a href="../bands/band-0.html">0</a><a href="../bands/band-1.html">1</a><a href="../bands/band-2.html">2</a><a href="../bands/band-3.html" aria-current="page">3</a><a href="../bands/band-4.html">4</a><a href="../bands/band-5.html">5</a><a href="../bands/band-6.html">6</a><a href="../bands/band-7.html">7</a><a href="../bands/band-8.html">8</a></nav>
+</div>
+<div class="wrap" id="main">
+<header style="padding:2.6rem 0 1rem">
+  <p class="eyebrow">Band 3 &nbsp;·&nbsp; Combination Lock</p>
+  <h1 style="margin:.7rem 0 .5rem"><span class="ptype practice">Practice</span> &nbsp;A crossing that waits to be asked</h1>
+  <p class="col sub" style="font-size:1.06em">Band 1's tower plus Band 3's button, and the one design decision that separates a toy from something you would put on a road.</p>
+  <dl class="projmeta">
+    <div><dt>Time</dt><dd>40 min</dd></div>
+    <div><dt>You need</dt><dd>3 LEDs, 3 resistors, 1 button, 9 jumper wires (plus a fourth LED and resistor if you do the Bronze)</dd></div>
+    <div><dt>At once</dt><dd>Everybody at once</dd></div>
+    <div><dt>Before this</dt><dd>Finish Band 1 and Band 3 up to Part 9. <b>No sketch is given.</b> The wiring is in the two bands you have already done.</dd></div>
+  </dl>
+</header>
+
+<section class="sketchbox">
+  <h2>Sketches for this project</h2>
+  <ul></ul>
+  <p>Every file opens with a plain-English header saying what it does and how to wire it, hole by hole.</p>
+</section>
+<section class="part">
+  <div class="parthead"><span class="tag">The job</span><h2>A crossing that waits for somebody to ask</h2></div>
+  <div class="col stack">
+    <p>Your signal tower from Band 1 runs the same sequence for ever whether anybody is there or not. Every real crossing in the world has a button on the post.</p>
+    <p><strong>Build one.</strong> Cars get green by default. Somebody presses. The lights change to let them cross, then go back to the cars.</p>
+    <div class="callout">
+      <h5>A Practice page does not tell you how</h5>
+      <p>A <span class="ptype practice">Practice</span> page gives you the job, the check, and the one thing worth thinking about. <strong>The wiring and the code are yours.</strong> That is the whole point of it: you have been reading working code for four bands, and at some point you have to write some.</p>
+      <p>You already know every piece of this. Nothing here is new.</p>
+    </div>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>You need</th><th>You already did it in</th></tr></thead>
+        <tbody>
+          <tr><td>Three lights on three pins, and the idea that each step is one <em>state</em></td><td>Band 1, Parts 6 and 7</td></tr>
+          <tr><td>A button wired by the diagonal rule, and read with <code>INPUT_PULLUP</code> so that pressed is 0</td><td>Band 3, Parts 3 and 4</td></tr>
+          <tr><td>Noticing the <em>moment</em> a button goes down, not that it is down</td><td>Band 3, Part 9</td></tr>
+          <tr><td>A variable that remembers something between one round and the next</td><td>Band 3, Part 8</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Think first</span><h2>The one decision that makes this hard</h2><span class="mins">10 min</span></div>
+  <div class="col stack">
+    <p>The obvious version is: press the button, lights change. Write that down and then think about what it would do on a real road.</p>
+    <div class="callout danger">
+      <h5>A crossing that changes the instant you press it kills people</h5>
+      <p>A car doing fifty is thirty metres from the line when the light goes green to red with no yellow. <strong>A real crossing never obeys the button immediately.</strong> It remembers that somebody asked, and it changes at the next moment that is safe: after the green has run its minimum time, and always through the yellow.</p>
+      <p>So the press does not cause the change. <strong>The press sets a flag, and the sequence looks at the flag when it reaches a point where changing is safe.</strong> That is the idea worth carrying out of this page, and it is worth far more than the traffic light: it is how you handle any input that arrives at a moment you were not ready for.</p>
+    </div>
+    <p><strong>Answer these three on paper before you write any code.</strong> There is no single right answer to any of them, and a real crossing designer argues about all three.</p>
+    <ol class="num">
+      <li>Somebody presses while the cars are already stopped. What should happen? Nothing? A second crossing queued up? Something else?</li>
+      <li>Somebody presses, then presses four more times because nothing happened yet. Does that make it come faster?</li>
+      <li>How long is the walk phase, and how did you decide? Time yourself crossing a road of about that width.</li>
+    </ol>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Build</span><h2>Build it, and then prove it</h2><span class="mins">30 min</span></div>
+  <div class="col stack">
+    <div class="ifnot" style="margin-bottom:.4rem"><b>Wiring</b><b>Band 1 Part 6</b> has the three lights, hole by hole. <b>Band 3 Part 3</b> has the button, in the middle of the serial-monitor part. Keep every light's own resistor.</div>
+
+    <div class="ifnot" style="margin-bottom:.4rem"><b>One thing the two bands do not agree on, and it will cost you an evening</b>Band 3 puts its button in columns <b>1 and 3</b>. Band 1's light uses column <b>3</b> for its resistor. Same column, so a button leg would join straight onto the light's pin and the button would read the light instead of your finger. Nothing would look wrong.<br><br><b>So move the button along: columns 25 and 27</b>, wired exactly the way Band 3 Part 3 does it at 1 and 3. Legs in <code>f25</code>, <code>f27</code>, <code>e25</code>, <code>e27</code>. Wire <code>j25</code> to pin 2, and <code>a27</code> to the &#8722; rail.<br><br><b>And use the top &#8722; rail for everything</b>, the one nearest row <code>j</code>, because that is the one Band 1 uses. Band 3 used the bottom one. On most boards the two are not joined, so the button's ground wire is a long one running the length of the board. Run it rather than reaching for the near rail.</div>
+
+    <div class="see"><b>The check, and do all four</b>
+      <ol class="num" style="margin:.5rem 0 0">
+        <li>Leave it alone for two full minutes. The cars keep their green and nothing changes on its own.</li>
+        <li>Press once during green. It changes <b>within a few seconds</b>, through the yellow, never straight to red.</li>
+        <li>Press five times quickly. It does exactly what it did for one press.</li>
+        <li>Press while the walk phase is already running. Whatever you decided in question 1, that is what it does, every time.</li>
+      </ol>
+    </div>
+
+    <div class="callout danger">
+      <h5>Band 1's sequence cannot be used as it stands, and finding out why is half this page</h5>
+      <p>Band 1's tower is four blocks with <code>delay(5000)</code> and <code>delay(1500)</code> in them. <strong>While a <code>delay</code> is running, the board is frozen.</strong> It is not looking at anything. A button pressed during those five seconds is never seen at all, and it does not queue up: the moment simply passes.</p>
+      <p>So the sequence you already have cannot listen. Two things follow.</p>
+      <p><strong>One: the cars' green is not part of the cycle.</strong> It is where the device <em>waits</em>. Check 1 below says nothing may change on its own, so the four Band 1 blocks are your <em>walk sequence</em>, run once when somebody asks. They are not the idle state.</p>
+      <p><strong>Two: any waiting you do has to keep watching.</strong> Instead of one long <code>delay</code>, use a <code>for</code> loop of short ones and look at the button on every pass. The <code>for</code> loop is Band 2 Part 4.</p>
+      <pre><code>// wait about this many tenths of a second,
+// but keep looking at the button the whole time
+void waitWatching(int tenths) {
+  for (int i = 0; i &lt; tenths; i = i + 1) {
+    lookAtButton();
+    delay(100);
+  }
+}</code></pre>
+      <p class="note">This is a workaround and it is worth knowing that. Band 5 Part 7 gives you the real answer, <code>millis</code>, and when you meet it you will already know exactly what problem it solves, because you will have felt it here.</p>
+    </div>
+
+    <details><summary>If you are properly stuck, a skeleton</summary><div class="inner">
+      <p>Not the answer. The shape, with the decisions left out.</p>
+      <pre><code>bool somebodyAsked = false;
+int lastButton = HIGH;
+
+void lookAtButton() {
+  // read it, and set somebodyAsked to true
+  // on the MOMENT it goes down. Band 3 Part 9.
+}
+
+void loop() {
+  // 1. IDLE. Cars green, everything else off.
+  //    Sit here watching the button until somebodyAsked.
+
+  // 2. Minimum green, so a press does not stop
+  //    the cars instantly. waitWatching(...)
+
+  // 3. The walk sequence: your four Band 1 blocks,
+  //    through the yellow, never straight to red.
+
+  // 4. somebodyAsked = false, and back to idle.
+}</code></pre>
+      <p class="note">Notice where <code>somebodyAsked = false</code> sits. Put it at the top instead and every press is thrown away before it is used; put it nowhere and the crossing runs for ever. Both are worth doing on purpose once, so that you have seen them.</p>
+    </div></details>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Change it</span><h2>Two ways further</h2></div>
+  <div class="col stack">
+    <dl class="tier">
+      <dt>Bronze</dt><dd>Add a light for the person crossing, not the cars: on during the walk phase, flashing for the last three seconds. Now you have two audiences and they must never both be told to go.</dd>
+      <dt>Silver</dt><dd>Add a <strong>minimum time between crossings</strong>, so that pressing again the instant the cars get their green back does not stop them immediately. Say in your log what you chose and what a driver would think of it.</dd>
+    </dl>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Done</span><h2>Keep</h2></div>
+  <div class="col stack">
+    <ul class="plain">
+      <li>Your three answers from Think first, written before you built</li>
+      <li>Your code, which is yours, with a comment saying where the flag is cleared and why there</li>
+      <li>One sentence: what would go wrong if the button changed the lights immediately</li>
+    </ul>
+  </div>
+</section>
+
+<section class="ship">
+  <h2>Ship it</h2>
+  <p><b>This one is yours.</b> Nobody handed you a sketch for it, so the code in your video is
+  code you wrote. Say that in the post, because it is the difference between somebody who can
+  follow a tutorial and somebody who can build a thing, and it is the difference an employer
+  is looking for.</p>
+  <p><b>The four shots</b> as usual, and make the fourth one count: the check this page asked
+  you to run, or the version that did not work first. <b>Put a line of your own code on screen
+  for three seconds.</b> Almost nobody does, and it is the most convincing three seconds in the
+  video.</p>
+  <p><a href="show-your-work.html">Show your work</a> has the template. Tag it <code>#BozomaBuilds</code>.</p>
+</section>
+
+<nav class="pager" aria-label="Back">
+  <a href="../bands/band-3.html">Back to Band 3</a>
+</nav>
+
+<footer>
+  <p>Bozoma Innovation Hub &nbsp;·&nbsp; Aiyinasi, Ellembelle District. Practice project. Every sketch used here was compiled and tested before it reached you.</p>
+</footer>
+
+</div>
+</body>
+</html>
