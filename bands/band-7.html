@@ -648,12 +648,13 @@ lastShown = cm;</code></pre>
       <table>
         <thead><tr><th>Part</th><th>Pin</th><th>Holes</th><th>Wiring</th></tr></thead>
         <tbody>
-          <tr><td>Sensor VCC</td><td>+ rail</td><td><code>f20</code></td><td>Wire <code>j20</code> to the <b>+ rail</b>, not straight to 5V; you moved it there in Part 6. The screen wants 5V too, and one Arduino pin takes one wire.</td></tr>
+          <tr><td>Sensor VCC</td><td>+ rail</td><td><code>f20</code></td><td>Wire <code>j20</code> to the <b>+ rail</b>, not straight to 5V; you moved it there in Part 6, and the row below runs the + rail to 5V. The screen wants 5V too, and one Arduino pin takes one wire.</td></tr>
           <tr><td>Sensor Trig</td><td>10</td><td><code>f21</code></td><td>Wire <code>j21</code> to pin 10</td></tr>
           <tr><td>Sensor Echo</td><td>11 or 9</td><td><code>f22</code></td><td>Wire <code>j22</code> to pin 11 (I&#178;C screen) or pin 9 (bare screen)</td></tr>
           <tr><td>Sensor GND</td><td>GND</td><td><code>f23</code></td><td>Wire <code>j23</code> to the &#8722; rail</td></tr>
           <tr><td>Buzzer</td><td>6</td><td>long <code>b40</code>, short <code>b42</code></td><td>Wire <code>a40</code> to pin 6; wire <code>a42</code> to &#8722; rail. No resistor.</td></tr>
           <tr><td>Screen</td><td>&mdash;</td><td>&mdash;</td><td>Exactly as you wired it in Part 6. Do not move it.</td></tr>
+          <tr><td>Power the + rail</td><td>5V</td><td>&mdash;</td><td>One wire from the <b>+ rail</b> to the 5V pin. If you skipped Parts 5 to 7 because you have no screen, this is the wire you have never run, and without it the sensor's VCC row above connects to dead metal.</td></tr>
           <tr><td>Ground</td><td>GND</td><td>&mdash;</td><td>One wire from the &#8722; rail to a GND pin</td></tr>
         </tbody>
       </table>

@@ -51,7 +51,7 @@
 <section class="part">
   <div class="parthead"><span class="tag">Build</span><h2>Build it, then find out why it sounds wrong</h2><span class="mins">20 min</span></div>
   <div class="col stack">
-    <div class="ifnot" style="margin-bottom:.4rem"><b>Wiring</b>One buzzer, one pin, one wire to the &#8722; rail. Band 5 Part 4 has it. That is the whole circuit and there is nothing to get wrong.</div>
+    <div class="ifnot" style="margin-bottom:.4rem"><b>Wiring</b>One buzzer, one pin, one wire to the &#8722; rail. Band 5 Part 4 has it, hole by hole. Band 5 works on the <b>bottom</b> &#8722; rail, the one nearest row <code>a</code>, so use that one.<br><br>Two wires, not one. The buzzer's wire reaches the rail, and <b>a second wire runs from that same rail to a GND pin</b>. A rail with nothing feeding it is dead metal, and this is the wire people leave out when a build looks too simple to check.</div>
 
     <p>Write it yourself. A <code>for</code> loop from a low number up to a high one, calling <code>tone</code> with the loop's number, and a short <code>delay</code> inside so each step is audible. Then a second loop going back down.</p>
     <p>Start with <strong>200 up to 2000, in steps of 10, with 5 thousandths of a second on each</strong>. Get that running before you change anything.</p>

@@ -83,7 +83,7 @@
     <h3 style="margin-top:.6rem">What you need</h3>
     <ul class="plain">
       <li>Everything from the previous bands. No new parts.</li>
-      <li><b>Band 6's battery pack, if your build moves anything.</b> Which means Band 6's rules come with it, and this is the band where nobody is checking your work: <b>the + rail is about six volts and no Arduino pin may ever touch it</b>; a knob's power leg goes straight to the Arduino's <b>5V</b> pin, never to the + rail; and <b>one wire</b> joins the &#8722; rail to an Arduino GND pin, always. Write those three lines onto your wiring drawing before you build anything, and check the finished board against them with the battery switched off.</li>
+      <li><b>Band 6's battery pack, if your build moves anything.</b> Which means Band 6's rules come with it, and this is the band where nobody is checking your work. <b>Battery red to the + rail, battery black to the &#8722; rail</b>, or the rails are dead metal and nothing you build will move; <b>the + rail is then about six volts and no Arduino pin may ever touch it</b>; a knob's power leg goes straight to the Arduino's <b>5V</b> pin, never to the + rail; and <b>one more wire</b>, separate from the battery's black one, joins the &#8722; rail to an Arduino GND pin, always, or the Arduino and the battery share no ground and your signals have no way home. Write those four lines onto your wiring drawing before you build anything, and check the finished board against them with the battery switched off.</li>
       <li>The same <strong>full-size breadboard</strong> Bands 5 and 7 needed. This band's worked example runs out to column 42.</li>
       <li>Card, tape, a box or a bottle, and whatever will make a housing that survives being carried</li>
       <li>Paper, for the criteria and the wiring drawing. This band uses more paper than solder.</li>
@@ -572,7 +572,9 @@ int clearLevel = 20;          // must fall below this to count as safe</code></p
         <thead><tr><th>Part</th><th>Pin</th><th>Holes</th><th>Wiring</th><th>Why this pin</th></tr></thead>
         <tbody>
           <tr><td>Buzzer</td><td>6</td><td>long <code>b40</code>, short <code>b42</code></td><td><code>a40</code> to pin 6, <code>a42</code> to &#8722; rail</td><td>Any digital pin. 6 was free.</td></tr>
-          <tr><td>Servo</td><td>9</td><td>&mdash;</td><td>Orange to pin 9, red to + rail, brown to &#8722; rail. <b>The + rail here is the battery, about six volts.</b> Only the servo's red wire may touch it. Add the two rows Band 6 Part 7 made you write: one wire from the &#8722; rail to an Arduino GND pin, and any knob's power leg straight to the Arduino's 5V pin.</td><td>Any digital pin. But <code>Servo.h</code> stops <code>analogWrite</code> working on pins 9 and 10, and <code>tone</code> stops it working on 3 and 11.</td></tr>
+          <tr><td>Battery pack</td><td>&mdash;</td><td>&mdash;</td><td><b>Red wire to the + rail. Black wire to the &#8722; rail.</b> Without these two the + rail is dead metal and nothing moves. Band 6 Part 7 has the same two rows; Part 3 of this band took them off the board, so put them back.</td><td>&mdash;</td></tr>
+          <tr><td>Ground link</td><td>GND</td><td>&mdash;</td><td>One wire from the &#8722; rail to an Arduino GND pin. Not optional, and not the same wire as the battery's black one. Without it the Arduino and the battery have no ground in common, and pin 9's signal has no way home.</td><td>&mdash;</td></tr>
+          <tr><td>Servo</td><td>9</td><td>&mdash;</td><td>Orange to pin 9, red to + rail, brown to &#8722; rail. <b>The + rail here is the battery, about six volts.</b> Only the servo's red wire may touch it. And any knob's power leg goes straight to the Arduino's 5V pin, never to the + rail.</td><td>Any digital pin. But <code>Servo.h</code> stops <code>analogWrite</code> working on pins 9 and 10, and <code>tone</code> stops it working on 3 and 11.</td></tr>
         </tbody>
       </table>
     </div>

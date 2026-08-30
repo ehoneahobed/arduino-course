@@ -55,6 +55,7 @@
   <div class="parthead"><span class="tag">Build</span><h2>Wire it</h2><span class="mins">35 min</span></div>
   <div class="col stack">
     <div class="ifnot" style="margin-bottom:.4rem"><b>Before you start</b>USB unplugged, battery switched off. Clear the servo off the board.</div>
+    <div class="words" style="margin-bottom:.6rem"><b>Which rails, and it matters more here than anywhere</b>Your board has two + rails and two &#8722; rails, one pair along each long edge, and on most boards <b>the top pair and the bottom pair are not joined to each other</b>. On this page, <b>the + rail and the &#8722; rail always mean the pair along the top edge, the ones nearest row <code>j</code></b>, the same pair Band 6 used. That includes the wires that start down in rows <code>a</code> and <code>b</code>: <code>a12</code>, <code>a4</code> and <code>a21</code> all run the long way round to the <em>top</em> &#8722; rail, past the end of the board. It is a longer wire and it is the right one.<br><br>Get this wrong and the failure is silent. Put the battery's black wire on one strip and the knob's <code>j5</code> on the other, and the knob has no ground of its own, <code>A0</code> reads nonsense, and this page's own troubleshooting will tell you the knob is broken when the knob is fine.</div>
 
     <div class="which">
       <h4>Read the number on the transistor before you power anything</h4>
