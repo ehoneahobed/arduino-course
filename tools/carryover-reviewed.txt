@@ -1,0 +1,53 @@
+# Carry-over edges already reviewed. carryover.py hides these and reports only new ones.
+# Reviewed 2026-08-30 against the full page text. One REAL defect came out of this list
+# (Band 3:310, the button Part 6 claimed was wired while its own clear box removed it);
+# that page is fixed and its edge is listed here because the clear now exempts the button.
+# Delete a line to put that edge back in the report.
+#
+# page:line
+Band 2:398
+Band 3:310
+Band 3:311
+Band 3:600
+Band 4:463
+Band 4:635
+Band 6:601
+Band 7:537
+Band 7:621
+Band 8:191
+Band 8:425
+Band 8:429
+Band 8:503
+b2-rgb-module:143
+b2-rgb-module:68
+b3-keypad-lock:112
+b3-keypad-lock:82
+b4-room-monitor:67
+b5-reaction-race:34
+b5-reaction-race:76
+b6-fan-transistor:128
+b6-fan-transistor:13
+b6-stepper-dial:70
+bench-multimeter:134
+bench-multimeter:57
+bench-ohms-law:110
+bench-series-parallel:140
+practice-crossing:46
+practice-crossing:48
+practice-crossing:64
+practice-crossing:83
+practice-dimmer:35
+practice-morse:10
+practice-morse:40
+practice-morse:41
+practice-morse:60
+practice-pomodoro:36
+practice-siren:18
+practice-siren:29
+practice-siren:42
+practice-toggle-lamp:17
+practice-toggle-lamp:19
+practice-toggle-lamp:30
+which-part:146
+which-part:151
+which-part:60

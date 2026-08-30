@@ -54,6 +54,7 @@
 <section class="part">
   <div class="parthead"><span class="tag">Build</span><h2>Wire it</h2><span class="mins">40 min</span></div>
   <div class="col stack">
+    <div class="words" style="margin-bottom:.6rem"><b>Which rail pair</b>Your board has two + rails and two &#8722; rails, one pair along each long edge, and on most boards <b>the two pairs are not joined to each other</b>. On this page, &#8220;the rail&#8221; always means the pair along the <b>bottom</b> edge, nearest row <code>a</code>, the same pair Band 3 uses, and the one your parts sit next to. Put every rail wire on that pair and it works; split them across both and nothing lights, with nothing visibly wrong.</div>
     <div class="ifnot" style="margin-bottom:.4rem"><b>Before you start</b>USB unplugged, and <strong>strip the board right back to bare</strong>. The four buttons, both lights, the buzzer and every single wire come off. When you have finished, <b>nothing at all is in Arduino pins 2 to 12</b>.<br><br>This is not tidiness. The keypad needs eight pins in a row, and Band 3's lock had its green light on pin 8, its red on pin 9 and its buzzer on pin 10, which is exactly where three of the keypad's eight wires are going. Leave them and you have two wires in one pin three times over, which the course forbids for good reason: the two fight each other and neither works. The table below rebuilds the lights and the buzzer in new holes on new pins.</div>
 
     <h3>The keypad</h3>
