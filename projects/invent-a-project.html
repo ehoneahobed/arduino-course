@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Invent a project · Invent · Arduino Ladder</title>
+  <meta name="description" content="Ten things that sense, nine that act, six rules. The method for making your own device out of the box you already have, and the four questions that kill a bad idea in five minutes.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+  <link rel="stylesheet" href="../assets/course.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the project</a>
+<div class="topbar">
+  <a class="home" href="../index.html">Arduino Ladder <span>· Bozoma Innovation Hub</span></a>
+  <nav class="bandlinks" aria-label="Bands"><a href="../bands/band-0.html">0</a><a href="../bands/band-1.html">1</a><a href="../bands/band-2.html">2</a><a href="../bands/band-3.html">3</a><a href="../bands/band-4.html">4</a><a href="../bands/band-5.html">5</a><a href="../bands/band-6.html">6</a><a href="../bands/band-7.html">7</a><a href="../bands/band-8.html">8</a></nav>
+</div>
+<div class="wrap" id="main">
+<header style="padding:2.6rem 0 1rem">
+  <p class="eyebrow">Before you start any band</p>
+  <h1 style="margin:.7rem 0 .5rem"><span class="ptype invent">Invent</span> &nbsp;Invent a project</h1>
+  <p class="col sub" style="font-size:1.06em">Ten things that sense, nine that act, six rules. The method for making your own device out of the box you already have, and the four questions that kill a bad idea in five minutes.</p>
+  <dl class="projmeta">
+    <div><dt>Time</dt><dd>115 min</dd></div>
+    <div><dt>You need</dt><dd>Paper and a pen. Then whatever your own idea turns out to need.</dd></div>
+    <div><dt>At once</dt><dd>Everybody at once</dd></div>
+    <div><dt>Before this</dt><dd>Best after Band 4, when you have met sensors and thresholds. Essential before Band 8, which asks for exactly the planning sheet at the end of this page.</dd></div>
+  </dl>
+</header>
+
+<section class="sketchbox">
+  <h2>Sketches for this project</h2>
+  <ul></ul>
+  <p>Every file opens with a plain-English header saying what it does and how to wire it, hole by hole.</p>
+</section>
+<section class="part">
+  <div class="parthead"><span class="tag">Why</span><h2>Nobody can write you a page for every idea</h2></div>
+  <div class="col stack">
+    <p>This course has about twenty-five pages of things to build. You could do all of them and still be somebody who follows instructions.</p>
+    <p>The step after that is inventing your own, and it is not a talent. It is a method, and it fits on this page.</p>
+
+    <div class="callout">
+      <h5>What your box can actually make</h5>
+      <p>Count what you have. Roughly <strong>ten things that sense</strong>, <strong>ten things that act</strong>, and <strong>six rules</strong> this course has taught you for deciding between them.</p>
+      <p style="font-family:'IBM Plex Mono',monospace; font-size:1.1em; text-align:center; margin:.6rem 0">10 &#215; 10 &#215; 6 = <b>600</b></p>
+      <p>Six hundred devices, from the box already in front of you. Most are nonsense, some are useful, and <strong>telling those apart is the skill this page is about</strong>. Not the counting.</p>
+    </div>
+
+    <div class="ifnot"><b>Read this before you get excited about the number</b>A table of combinations is not where ideas come from. Start from the table and you get solutions hunting for a problem, which is how most student projects end up in a drawer.<br><br><strong>Ideas come from people.</strong> Band 8 teaches the whole loop for that: find somebody with a problem, get them to describe it in their words, and only then work out what to build. This page is for the step <em>after</em> that, when you have a real problem and need to know what shape of device you can afford to make. It is a menu, not a muse.</div>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Look closer</span><h2>Every device you have built is the same three things</h2><span class="mins">20 min</span></div>
+  <div class="col stack">
+    <p>Go back through the bands and you will find one shape underneath all of them. Something it notices. A rule it applies. Something it does about it.</p>
+
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Band</th><th>It notices</th><th>The rule</th><th>It does</th></tr></thead>
+        <tbody>
+          <tr><td class="n">1</td><td>nothing at all</td><td>a sequence in order</td><td>three lights</td></tr>
+          <tr><td class="n">2</td><td>a knob</td><td>map one range onto another</td><td>a colour</td></tr>
+          <tr><td class="n">3</td><td>four buttons</td><td>count and remember</td><td>two lights and a buzzer</td></tr>
+          <tr><td class="n">4</td><td>how dark it is</td><td>one threshold, and then finding out what is wrong with that</td><td>a lamp</td></tr>
+          <tr><td class="n">5</td><td>four buttons</td><td>a sequence in order, timed with <code>millis</code></td><td>four lights and notes</td></tr>
+          <tr><td class="n">6</td><td>a knob</td><td>a deadband, so a wobble is not an instruction</td><td>a servo arm</td></tr>
+          <tr><td class="n">7</td><td>distance</td><td>four ranges, each with its own words and its own beep rate</td><td>a screen and a buzzer</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Band 1 is the interesting row: it notices nothing, so it can only ever do the same thing forever. <strong>The moment a device notices something it becomes a different kind of object</strong>, and that is what Band 3 onward is really about.</p>
+
+    <h3 style="margin-top:.9rem">Pick one from each column</h3>
+
+    <div class="matrix3">
+      <div class="mcol">
+        <span class="lbl">It notices</span>
+        <ul>
+          <li>a button</li>
+          <li>a keypad</li>
+          <li>a knob</li>
+          <li>light</li>
+          <li>distance</li>
+          <li>water on a plate</li>
+          <li>temperature and damp</li>
+          <li>a sound</li>
+          <li>an RFID card</li>
+          <li>a remote control</li>
+        </ul>
+      </div>
+      <div class="mcol">
+        <span class="lbl">The rule</span>
+        <ul>
+          <li>above a threshold</li>
+          <li>two thresholds, so it cannot flap</li>
+          <li>a sequence in order</li>
+          <li>count and remember</li>
+          <li>time it</li>
+          <li>map one range onto another</li>
+        </ul>
+      </div>
+      <div class="mcol">
+        <span class="lbl">It does</span>
+        <ul>
+          <li>one light</li>
+          <li>three lights</li>
+          <li>a colour</li>
+          <li>a buzzer</li>
+          <li>a servo arm</li>
+          <li>a stepper dial</li>
+          <li>a motor</li>
+          <li>four digits</li>
+          <li>a screen with words</li>
+          <li>a relay, low voltage only</li>
+        </ul>
+      </div>
+    </div>
+    <p class="note"><strong>Six of those you have used in a band.</strong> The RFID card, the sound sensor, the remote control and the relay are in the drawer and have no lesson written for them yet, so if you build on one, budget an evening to work the part out first. That is not a warning, it is a fair estimate.</p>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Look closer</span><h2>The budget nobody tells you about</h2><span class="mins">25 min</span></div>
+  <div class="col stack">
+    <p>Here is where most invented projects die, and it is always the same death. <strong>You run out of pins.</strong></p>
+    <p>An UNO has 14 digital pins and 6 analog ones. Pins 0 and 1 are the ones the USB cable talks through, so using them breaks uploading and the serial monitor. That leaves <strong>18 pins for everything you will ever plug in</strong>, and some parts are extremely expensive.</p>
+    <div class="callout danger">
+      <h5>Those eighteen are not interchangeable, and this is where paper budgets go wrong</h5>
+      <p><strong>Twelve of them are digital: pins 2 to 13.</strong> The other six are <code>A0</code> to <code>A5</code>.</p>
+      <p>The analog six can do digital work as well. Write <code>A0</code> anywhere you would write <code>7</code> and it behaves like an ordinary pin. But <strong>every one you spend that way is one you can no longer read a sensor with</strong>, and there are only six.</p>
+      <p>So the real question is never &#8220;does it come to eighteen?&#8221; It is <strong>&#8220;how many digital, and how many analog?&#8221;</strong> Past twelve digital parts you are borrowing from your analog six, and Band 5 wants <code>A0</code> left completely alone for <code>randomSeed</code>.</p>
+    </div>
+
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Part</th><th>Pins</th><th>Which</th><th>Watch out for</th></tr></thead>
+        <tbody>
+          <tr><td>LED, button, buzzer, IR receiver, DHT11</td><td class="n">1</td><td>any digital</td><td>A buzzer using <code>tone</code> stops <code>analogWrite</code> working on pins 3 and 11 &#8212; and so does an IR receiver, because its library takes the same timer</td></tr>
+          <tr><td>Relay <b>module</b></td><td class="n">1</td><td>any digital</td><td>The little board has a transistor on it doing the work. <b>A bare relay coil wants four or five times what a pin can give</b> and will damage it. Low voltage only: never a mains bulb, socket, plug or cable, in this course or after it</td></tr>
+          <tr><td>Knob, light sensor, rain plate, sound sensor</td><td class="n">1</td><td>an analog pin</td><td>Only 6 of those exist, and Band 5 needs one left empty for <code>randomSeed</code></td></tr>
+          <tr><td>Servo</td><td class="n">1</td><td>any digital</td><td><code>Servo.h</code> stops <code>analogWrite</code> working on pins 9 and 10</td></tr>
+          <tr><td>Motor on a transistor</td><td class="n">1</td><td>a <code>~</code> pin</td><td>Needs the diode. The fan-on-a-transistor page explains why it is not optional</td></tr>
+          <tr><td>Distance sensor, TM1637 display</td><td class="n">2</td><td>any digital</td><td>The TM1637 is four digits. It cannot show letters</td></tr>
+          <tr><td>Screen with a board on its back (I&#178;C)</td><td class="n">2</td><td><code>A4</code> and <code>A5</code></td><td><b>Check your own screen first.</b> If nothing is soldered to the back it is the bare kind and costs six, not two. And A4 and A5 are two of your analog six, not spare digital ones</td></tr>
+          <tr><td>Joystick</td><td class="n">3</td><td>2 analog, 1 digital</td><td>That is a third of your analog pins for one part</td></tr>
+          <tr><td>RGB LED</td><td class="n">3</td><td>three <code>~</code> pins</td><td>Only six <code>~</code> pins exist</td></tr>
+          <tr><td>74HC595 shift register</td><td class="n">3</td><td>any digital</td><td><b>Gives you 8 outputs back.</b> The best trade in the box</td></tr>
+          <tr><td>Stepper on a ULN2003</td><td class="n">4</td><td>any digital</td><td></td></tr>
+          <tr><td>RFID reader</td><td class="n">5</td><td>10, 11, 12, 13 and a reset pin of your choosing</td><td>It is a <b>3.3 volt</b> part. Its power goes to the 3.3V pin, never 5V. If it reads a card sometimes and not others, that is usually the 3.3V pin running out of push rather than your code</td></tr>
+          <tr><td>Bare LCD screen</td><td class="n">6</td><td>digital, or analog pins used as digital</td><td>Plus a knob for contrast, and twelve wires. <b>This is the kind the hub has</b></td></tr>
+          <tr><td>7-segment digit</td><td class="n">7</td><td>digital, or analog used as digital</td><td>Seven pins to show one number. This is the problem the 595 solves</td></tr>
+          <tr><td>4&#215;4 keypad</td><td class="n">8</td><td>digital, or analog used as digital</td><td>Eight of your twelve digital pins for one input</td></tr>
+          <tr><td>Bare 8&#215;8 matrix</td><td class="n">16</td><td>needs four analog pins doing digital work</td><td>There are only twelve digital pins, so this part cannot be done on digital alone. Plus eight resistors, and only one row is ever lit at a time: <b>one pin cannot feed eight LEDs at once</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout">
+      <h5>Two parts that break the rule, and it is worth knowing why</h5>
+      <p><strong>An I&#178;C screen and a clock module cost two pins between them, not two each.</strong> They both use A4 and A5, and they take turns. It is called a bus: several devices sharing one pair of wires, each with its own address, like houses on a street.</p>
+      <p class="note"><b>Check your own screen before you budget two.</b> Only a screen with a small board soldered to its back is the I&#178;C kind. If the back is bare it costs <b>six</b>, and that is the kind this hub has. Remember too that A4 and A5 are two of your six analog pins, so a bus is cheap in pins and not free.</p>
+      <p>The same is true of the RFID reader's pins 11, 12 and 13, which are a different bus. Add a second device on that bus and it costs you one more pin, not five.</p>
+      <p class="note">This is the single most useful fact on this page for anybody trying to fit a lot into one board. <strong>When you run out of pins, look for a part that shares.</strong></p>
+    </div>
+
+    <div class="ifnot"><b>Do the budget on paper before you touch a wire</b>Write your parts down the left and the pin count down the right, add it up, and compare with 18. Five minutes on paper saves an evening of discovering at the end that the screen and the keypad cannot both be there. This is the step that separates an idea from a plan.</div>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Change it</span><h2>Four questions that kill a bad idea in five minutes</h2><span class="mins">20 min</span></div>
+  <div class="col stack">
+    <p>Most of those five hundred and forty combinations are not worth building. Run every idea through these four before you open the box.</p>
+
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Ask</th><th>Fails when</th><th>Usually fixable by</th></tr></thead>
+        <tbody>
+          <tr><td><b>1. Who is it for, and would they use it?</b></td><td>The honest answer is &#8220;nobody, but it would look good&#8221;</td><td>Going and finding a person with the problem. Band 8's whole first half is this</td></tr>
+          <tr><td><b>2. Is there really a rule in it?</b></td><td>The input goes straight to the output with no decision. You have built a switch, and a switch already exists</td><td>Adding a threshold, a memory, or a timer. That is where the interesting part lives</td></tr>
+          <tr><td><b>3. Can you tell whether it worked?</b></td><td>You cannot describe the test. &#8220;It monitors the room&#8221; is not testable</td><td>Writing down, before you build, the exact thing you will do to it and the exact thing it should then do</td></tr>
+          <tr><td><b>4. Does it fit in 18 pins and your actual box?</b></td><td>The budget comes to 21, or it needs a part you do not own</td><td>A part that shares a bus, a 595, or a smaller display</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout">
+      <h5>Question 2 is the one that does the work</h5>
+      <p>A light that comes on when you press a button is a torch. A light that comes on when it is dark <em>and</em> stays on for twenty minutes <em>and</em> will not flicker at dusk is a device, and the difference is entirely in the rule.</p>
+      <p>If you cannot say your rule out loud in one sentence with the words <em>when</em>, <em>until</em> or <em>unless</em> in it, there probably is not one yet.</p>
+    </div>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Build</span><h2>Six worked examples, including one that fails</h2><span class="mins">30 min</span></div>
+  <div class="col stack">
+    <p>Watch the method run. Each of these is one cell of the table turned into something you could start building this afternoon.</p>
+
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Notices</th><th>Rule</th><th>Does</th><th>What that actually is</th><th>Pins</th></tr></thead>
+        <tbody>
+          <tr><td>water on a plate</td><td>two thresholds</td><td>a buzzer</td><td><b>The rain alarm.</b> You may well have built it, and if you did the night guard instead it is the same shape with a different sensor. Either way it fell straight out of the table, which is the point of showing it first</td><td class="n">2, or 4 with the green and red lights on it</td></tr>
+          <tr><td>distance</td><td>one threshold</td><td>a servo arm</td><td><b>A bin whose lid opens when your hand is near.</b> The rule needs a delay before it shuts, or it closes on your hand</td><td class="n">3</td></tr>
+          <tr><td>a keypad</td><td>count and remember</td><td>a screen</td><td><b>A guessing game</b> that narrows the range with every guess. Real algorithm work in a box you already own</td><td class="n">10 on a TM1637. <b>14 on the hub's bare screen</b>, and two of those have to be analog pins doing digital work</td></tr>
+          <tr><td>a sound</td><td>time it</td><td>a relay</td><td><b>A clap-operated light that stays on five minutes.</b> Low-voltage lamp only. Mains is not part of this course and never will be</td><td class="n">2</td></tr>
+          <tr><td>light</td><td>map a range</td><td>a stepper dial</td><td><b>A pointer that shows how bright the room is</b>, on a card dial you marked with your own measured numbers</td><td class="n">5</td></tr>
+          <tr><td>an RFID card</td><td>a sequence in order</td><td>four digits</td><td><b>A sign-in board</b> for the hub: tap in, tap out, and it shows how many people are in the room</td><td class="n">7</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout danger">
+      <h5>And one that fails, which is more useful than the six that work</h5>
+      <p><strong>The idea:</strong> temperature and damp, shown as a scrolling message on the 8&#215;8 matrix.</p>
+      <p><strong>Question 4 kills it.</strong> The bare matrix is 16 pins and the DHT11 is 1. That is 17 of your 18, so there is no room for a button, a buzzer, or anything else, and no room to grow. It would work exactly once and never be extendable.</p>
+      <p><strong>Question 2 nearly kills it too.</strong> Read a sensor, print the number. There is no decision anywhere in it. It is a display, not a device.</p>
+      <p><strong>Both are fixable, and the fixes are different.</strong></p>
+      <p><b>For the pins,</b> two 74HC595s would drive the matrix on 3 instead of 16. That is the right answer and it is a plan rather than a build: the hub has one of those chips and no lesson for it yet, and even with two you would still need the resistors and something to carry the current for a whole row. The cheap answer today is the <b>TM1637 for 2 pins</b> &#8212; but notice what that costs you. It is four digits and <b>it cannot show letters</b>, so the scrolling message is gone and you are showing two numbers instead. <strong>That is a different device, and saying so out loud is part of the method</strong> rather than a defeat.</p>
+      <p><b>For the missing rule,</b> give it something to decide: <em>show the temperature normally, but flash a warning when the room has been above your threshold for ten minutes.</em> Now there is a threshold, a timer and a memory in it, and it is worth an afternoon.</p>
+    </div>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Make</span><h2>Twenty starters, if you want somewhere to begin</h2></div>
+  <div class="col stack">
+    <p>All of these come out of the table, all fit the pin budget, and all use only what is in the box. <strong>None of them is as good as a problem you found yourself</strong>, and every one of them gets better the moment you find a person who has that problem and ask them about it.</p>
+
+    <div class="scroll">
+      <table>
+        <thead><tr><th>&nbsp;</th><th>The device</th><th>The rule in one sentence</th></tr></thead>
+        <tbody>
+          <tr><td class="n">1</td><td>Roof gutter blockage warning <span class="mono">(the tank version is Band 8's worked example &#8212; read it, do not hand it in)</span></td><td>Warn when the water in the gutter has been high for more than a minute, so a splash does not set it off</td></tr>
+          <tr><td class="n">2</td><td>Washing-line rain alarm</td><td>Sound when the plate is wet, stay quiet until it is properly dry again</td></tr>
+          <tr><td class="n">3</td><td>Brooder temperature alarm <span class="mono">(also a Band 8 brief)</span></td><td>Warn when the chicks' house drops below your measured night threshold</td></tr>
+          <tr><td class="n">4</td><td>Door-open reminder</td><td>Beep if the distance sensor has seen the door open for more than a minute</td></tr>
+          <tr><td class="n">5</td><td>Exam-hall timer</td><td>Three lights: green, then yellow at five minutes left, then red</td></tr>
+          <tr><td class="n">6</td><td>Reading-light minder</td><td>Lamp on when dark, off after twenty minutes unless a button is pressed</td></tr>
+          <tr><td class="n">7</td><td>Queue counter for a kiosk <span class="mono">(also a Band 8 brief)</span></td><td>Count people past the sensor, show the number, reset with a long press</td></tr>
+          <tr><td class="n">8</td><td>Sign-in board</td><td>Tap a card in, tap out, show how many are in the room</td></tr>
+          <tr><td class="n">9</td><td>Clap-operated lamp</td><td>Two claps within a second turn it on; it goes off by itself after five minutes</td></tr>
+          <tr><td class="n">10</td><td>Study-session timer</td><td>Twenty-five minutes work, five minutes rest, a different tone for each</td></tr>
+          <tr><td class="n">11</td><td>Reaction-time board</td><td>Random wait, light, time the press, keep the best of the day</td></tr>
+          <tr><td class="n">12</td><td>Parking guard for a narrow gate</td><td>Beep rate rises with closeness, solid tone under 10 cm</td></tr>
+          <tr><td class="n">13</td><td>Room-too-humid warning</td><td>Warn above your measured threshold, clear only well below it</td></tr>
+          <tr><td class="n">14</td><td>Combination lock with a keypad</td><td>Four digits, three wrong tries, then a lockout that gets longer each time</td></tr>
+          <tr><td class="n">15</td><td>Light-level dial</td><td>A stepper pointer on a card dial marked with numbers you measured</td></tr>
+          <tr><td class="n">16</td><td>Fan that answers the room</td><td>Speed rises with temperature, with a dead zone so it does not hunt. Needs the diode; with no diode in the box, run the motor from the ULN2003 board instead</td></tr>
+          <tr><td class="n">17</td><td>Remote-controlled lamp</td><td>Colour and brightness from the IR remote, with an off button that means off. Keep the three colour legs off pins 3 and 11: the IR library has taken that timer</td></tr>
+          <tr><td class="n">18</td><td>Morse practice box</td><td>Button in, dots and dashes out, and it prints what you tapped</td></tr>
+          <tr><td class="n">19</td><td>Dice for a game nobody has to trust</td><td>Hold to roll, release to stop, on a digit everyone can see</td></tr>
+          <tr><td class="n">20</td><td>Quiet-room monitor</td><td>Green light normally, red when the noise stays high for ten seconds</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="ifnot"><b>Anything on this list that switches a lamp</b>Uses a <b>relay module</b> and a low-voltage bulb on a battery pack. <strong>Never a mains bulb, a socket, a plug or a cable that goes into a wall</strong>, not in this course and not after it. If a brief seems to need mains, the brief is not finished: go back and ask what the person would actually see, hear or feel if the thing were working, and sense that instead.</div>
+
+    <div class="ifnot"><b>The best twenty-first is not on this list</b>Walk round the hub, the compound or the market for an hour and ask three people what goes wrong in their day that nobody has fixed. Two of the three will say something you could build. <strong>That project will be better than every one of the twenty above</strong>, because somebody is waiting for it.</div>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Done</span><h2>Turn an idea into a plan, on one sheet of paper</h2></div>
+  <div class="col stack">
+    <p>Before any wiring. Every time. This is the whole deliverable of inventing something, and it takes half an hour.</p>
+    <ol class="num">
+      <li><strong>The person and the problem</strong>, in their words, not yours. One paragraph.</li>
+      <li><strong>The three columns:</strong> what it notices, the rule, what it does.</li>
+      <li><strong>The rule written out as one sentence</strong> containing <em>when</em>, <em>until</em> or <em>unless</em>.</li>
+      <li><strong>The pin budget</strong>, added up, against 18.</li>
+      <li><strong>The test:</strong> the exact thing you will do to it, and the exact thing it should then do.</li>
+      <li><strong>The numbers you will have to go and measure</strong>, and where you will measure them. There are almost always some, and guessing them is the commonest way a good idea produces a useless device.</li>
+    </ol>
+
+    <div class="callout">
+      <h5>This is Band 8, arriving early</h5>
+      <p>Band 8 asks for everything on this sheet and three things more: five criteria written and dated <em>before</em> you build, an honest evaluation against them afterwards, and a ninety-second voice note explaining your own code. If you can fill this sheet in now, the capstone is going to be much easier, and if you cannot, you have found out cheaply which part you do not yet understand.</p>
+      <p><strong>An invented project is also the best thing you will ever post.</strong> Nobody else in the world has your video, because nobody else built your device for your person. A copied build shows you can follow instructions. This one shows you can see a problem and close it.</p>
+    </div>
+  </div>
+</section>
+
+<nav class="pager" aria-label="Back">
+  <a href="../index.html">Back to the course home</a>
+</nav>
+
+<footer>
+  <p>Bozoma Innovation Hub &nbsp;·&nbsp; Aiyinasi, Ellembelle District. Invent project. Every sketch used here was compiled and tested before it reached you.</p>
+</footer>
+
+</div>
+</body>
+</html>
