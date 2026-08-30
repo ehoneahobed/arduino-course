@@ -428,8 +428,8 @@
 <rect x="222" y="131" width="68" height="22" rx="3" fill="currentColor" opacity=".13" stroke="currentColor" stroke-width="1.1"/>
 <circle cx="256" cy="142" r="8" fill="none" stroke="currentColor" stroke-width="1.3"/>
 <line x1="256" y1="142" x2="261" y2="136" stroke="currentColor" stroke-width="1.5"/>
-<text x="296" y="146" font-size="9" text-anchor="start" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">knob</text>
-<text x="296" y="146" font-size="9" text-anchor="start" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".85">knob</text>
+<text x="297" y="146" font-size="9" text-anchor="start" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">knob</text>
+<text x="297" y="146" font-size="9" text-anchor="start" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".8">knob</text>
 <line x1="230" y1="96" x2="230" y2="34" stroke="#C8452F" stroke-width="1.9" opacity=".9"/>
 <circle cx="230" cy="34" r="2.6" fill="#C8452F"/>
 <circle cx="230" cy="96" r="2.6" fill="#C8452F"/>

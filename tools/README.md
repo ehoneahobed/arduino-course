@@ -90,7 +90,10 @@ collision or an unfed rail is an error rather than a picture. Then every hole in
 every picture is checked against the `<code>` holes on its own page: a diagram
 cannot show a hole the page never names. Three pages failed that on the first run
 and all three were the page's fault, not the diagram's, saying "b20, b21 and so
-on" where a beginner has to count.
+on" where a beginner has to count. The second run found two more of the same
+shape, plus a real wiring defect: Band 6 Part 5 asked for the servo's red wire
+and the + rail feed both to sit in the single 5V socket, which the course's own
+"one Arduino pin takes one wire" rule forbids.
 
 `inject_wiring.py` places each diagram on its page. An anchor must appear exactly
 once or it refuses to run, because a picture beside the wrong build is worse than
@@ -98,3 +101,11 @@ no picture. Re-running replaces rather than duplicates.
 
 The build scripts substitute `<!--SVG:wire_NAME-->` from `wiring/`, so the order
 is: `diagrams.py` then `inject_wiring.py` then the build.
+
+### Part types
+
+`led`, `res`, `wire`, `power`, `link`, `btn`, `pot`, `buz`, `npn`, `blk` (a module
+that sits IN the board), `battery` (a pack feeding the rails instead of the
+Arduino), and `mod` (a module with no breadboard presence at all: a servo, a
+driver board, an I2C screen). `blk` takes `rails=` for a module that also reaches
+a rail directly.

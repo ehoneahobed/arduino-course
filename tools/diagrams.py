@@ -270,6 +270,7 @@ def b6p5():
     b.wire("j7", "+top")
     b.power("5V", "+top")
     b.power("GND", "-top")
+    b.mod("servo", [("orange", "9"), ("red", "+top"), ("brown", "-top")])
     return "b6p5", b, "pack4/band6.body.html"
 
 
@@ -291,6 +292,7 @@ def b6p8():
     b.wire("a4", "-top")
     b.battery("+top", "-top")
     b.power("GND", "-top")
+    b.mod("servo", [("orange", "9"), ("red", "+top"), ("brown", "-top")])
     return "b6p8", b, "pack4/band6.body.html"
 
 
@@ -535,7 +537,8 @@ def b6fan():
     b.res("a13", "a11", "220")
     b.wire("b11", "5")
     b.wire("a12", "-top")
-    b.blk("motor, and the diode across it", "a14", "b14", rails=("+top",))
+    b.blk("motor, and the diode across it: striped end in the + rail",
+          "a14", "b14", rails=("+top",))
     b.pot("f5", "f6", "f7")
     b.wire("j5", "-top")
     b.wire("j6", "A0")
@@ -554,7 +557,12 @@ def b6fan():
 
 @build
 def b6step():
+    """The driver board's IN pins are crossed on purpose: 8, 10, 9, 11. Wire
+    them in the obvious order and the motor buzzes and goes nowhere. That is
+    the build's most common failure, so the picture has to show it."""
     b = B.Board(1, 24, title="Stepper dial")
+    b.mod("ULN2003 driver board", [("IN1", "8"), ("IN2", "10"), ("IN3", "9"),
+                                   ("IN4", "11"), ("-", "-top"), ("+", "+top")])
     b.pot("f5", "f6", "f7")
     b.wire("j5", "-top")
     b.wire("j6", "A0")
@@ -582,6 +590,135 @@ def tm1637():
     b.power("GND", "-top")
     return ("tm1637", b, "projects/b7-guard-tm1637.body.html",
             ["pack4/band7.body.html"])
+
+
+@build
+def b1p5var():
+    """Band 1 Part 7's experiment: the same light with the resistor moved to the
+    far side of the LED. Nothing changes, which is the point."""
+    b = B.Board(1, 14, title="Band 1 Part 7: the resistor on the other side")
+    b.led("f5", "f6", "red")
+    b.wire("h5", "8")
+    b.res("j6", "j8", "220")
+    b.wire("h8", "-top")
+    b.power("GND", "-top")
+    return "b1p5var", b, "pack2/band1.body.html"
+
+
+@build
+def b1traffic():
+    """The traffic light module. The page names no holes, on purpose: it only
+    requires four DIFFERENT columns, one pin per column."""
+    b = B.Board(1, 14, title="Traffic light module")
+    b.mod("traffic light module", [("R", "9"), ("Y", "8"), ("G", "7"), ("GND", "-top")])
+    b.power("GND", "-top")
+    return "b1traffic", b, "projects/b1-traffic-module.body.html"
+
+
+@build
+def b2rgbmod():
+    """The RGB module. Nothing of it goes in the breadboard at all."""
+    b = B.Board(1, 14, title="RGB module")
+    b.mod("RGB module", [("R", "9"), ("G", "10"), ("B", "11"), ("GND", "-top")])
+    b.power("GND", "-top")
+    return "b2rgbmod", b, "projects/b2-rgb-module.body.html"
+
+
+@build
+def b4roomb():
+    """The bare four-pin DHT11. Pin 3 really does go nowhere, and the 10k sits
+    in row c because row b already holds a wire."""
+    b = B.Board(1, 36, title="Room monitor, bare four-pin sensor")
+    b.blk("DHT11, bare: + / data / nothing / -", "a30", "a31", "a32", "a33")
+    b.wire("b30", "+bot")
+    b.wire("b31", "4")
+    b.wire("b33", "-bot")
+    b.res("c30", "c31", "10k")
+    b.led("b3", "b4", "green")
+    b.res("a3", "a1", "220")
+    b.wire("b1", "7")
+    b.wire("a4", "-bot")
+    b.led("b7", "b8", "red")
+    b.res("a7", "a5", "220")
+    b.wire("b5", "8")
+    b.wire("a8", "-bot")
+    b.power("5V", "+bot")
+    b.power("GND", "-bot")
+    return "b4roomb", b, "projects/b4-room-monitor.body.html"
+
+
+@build
+def b6p7():
+    """Band 6 Part 7: the servo on its own battery. Two wires leave the Arduino
+    and neither is 5V. The ground link is what makes the signal mean anything."""
+    b = B.Board(1, 14, title="Band 6 Part 7: the servo on a battery")
+    b.mod("servo", [("orange", "9"), ("red", "+top"), ("brown", "-top")])
+    b.battery("+top", "-top")
+    b.power("GND", "-top")
+    return "b6p7", b, "pack4/band6.body.html"
+
+
+@build
+def b7p6a():
+    """Band 7 Part 6a: the sensor's two power wires move off the Arduino and
+    onto the rails, so the screen can share the one 5V pin."""
+    b = B.Board(16, 32, title="Band 7 Part 6a: sensor and I2C screen")
+    b.blk("HC-SR04  VCC / Trig / Echo / GND", "f20", "f21", "f22", "f23")
+    b.wire("j20", "+top")
+    b.wire("j21", "10")
+    b.wire("j22", "11")
+    b.wire("j23", "-top")
+    b.mod("LCD1602, I2C", [("GND", "-top"), ("VCC", "+top"), ("SDA", "A4"), ("SCL", "A5")])
+    b.power("5V", "+top")
+    b.power("GND", "-top")
+    return "b7p6a", b, "pack4/band7.body.html"
+
+
+@build
+def b7p6b():
+    """Band 7 Part 6b: the bare sixteen-pin screen. Screen pins 7 to 10 stay
+    empty and that is correct. Echo has moved to pin 9 to make room."""
+    b = B.Board(1, 35, title="Band 7 Part 6b: the bare 16-pin screen")
+    b.blk("LCD1602, bare 16-pin header in row j",
+          *["j%d" % c for c in range(1, 17)])
+    b.wire("f1", "-top")
+    b.wire("f2", "+top")
+    b.wire("f3", "j31")
+    b.wire("f4", "12")
+    b.wire("f5", "-top")
+    b.wire("f6", "11")
+    b.wire("f11", "5")
+    b.wire("f12", "4")
+    b.wire("f13", "3")
+    b.wire("f14", "2")
+    b.wire("f15", "+top")
+    b.wire("f16", "-top")
+    b.pot("f30", "f31", "f32", label="contrast")
+    b.wire("j30", "-top")
+    b.wire("j32", "+top")
+    b.blk("HC-SR04", "f20", "f21", "f22", "f23")
+    b.wire("j20", "+top")
+    b.wire("j21", "10")
+    b.wire("j22", "9")
+    b.wire("j23", "-top")
+    b.power("5V", "+top")
+    b.power("GND", "-top")
+    return "b7p6b", b, "pack4/band7.body.html"
+
+
+@build
+def b8p10():
+    """Band 8 Part 10's own example of a wiring drawing. The + rail here is the
+    battery, so nothing from the Arduino may touch it, and the - rail needs two
+    separate wires: the battery's black one and the ground link."""
+    b = B.Board(36, 48, title="Band 8 Part 10: the documented example")
+    b.buz("b40", "b42")
+    b.wire("a40", "6")
+    b.wire("a42", "-top")
+    b.mod("servo", [("orange", "9"), ("red", "+top"), ("brown", "-top")])
+    b.battery("+top", "-top")
+    b.power("GND", "-top")
+    return "b8p10", b, "pack4/band8.body.html"
 
 
 # =========================================================================

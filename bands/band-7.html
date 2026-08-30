@@ -837,6 +837,450 @@ digitalWrite(trigPin, LOW);</code></pre>
     <p>Do <strong>one</strong> of the two builds below, whichever matches the back of your screen. Then rejoin at Part 7.</p>
 
     <h3 style="margin-top:.4rem">6a. The I&#178;C kind, four wires</h3>
+    <figure class="wiring">
+      <svg viewBox="0 -150 644 920" role="img" aria-label="Band 7 Part 6a: sensor and I2C screen" style="width:644px; max-width:100%; min-width:560px">
+<defs><circle id="bh" r="3.6" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/><rect id="sk" x="-6.5" y="-6.5" width="13" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1" opacity=".5"/></defs>
+<rect x="100" y="18" width="468" height="376" rx="7" fill="none" stroke="currentColor" stroke-width="1.3" opacity=".55"/>
+<rect x="100" y="200" width="468" height="26" fill="currentColor" opacity=".07"/>
+<line x1="108" y1="34" x2="560" y2="34" stroke="#C8452F" stroke-width="1.2" opacity=".45"/>
+<text x="87" y="38" font-size="12" fill="#C8452F" text-anchor="middle" font-family="Archivo,Arial,sans-serif">+</text>
+<use href="#bh" x="126" y="34"/>
+<use href="#bh" x="152" y="34"/>
+<use href="#bh" x="178" y="34"/>
+<use href="#bh" x="204" y="34"/>
+<use href="#bh" x="230" y="34"/>
+<use href="#bh" x="256" y="34"/>
+<use href="#bh" x="282" y="34"/>
+<use href="#bh" x="308" y="34"/>
+<use href="#bh" x="334" y="34"/>
+<use href="#bh" x="360" y="34"/>
+<use href="#bh" x="386" y="34"/>
+<use href="#bh" x="412" y="34"/>
+<use href="#bh" x="438" y="34"/>
+<use href="#bh" x="464" y="34"/>
+<use href="#bh" x="490" y="34"/>
+<use href="#bh" x="516" y="34"/>
+<use href="#bh" x="542" y="34"/>
+<line x1="108" y1="54" x2="560" y2="54" stroke="#3D6FA8" stroke-width="1.2" opacity=".45"/>
+<text x="87" y="58" font-size="12" fill="#3D6FA8" text-anchor="middle" font-family="Archivo,Arial,sans-serif">−</text>
+<use href="#bh" x="126" y="54"/>
+<use href="#bh" x="152" y="54"/>
+<use href="#bh" x="178" y="54"/>
+<use href="#bh" x="204" y="54"/>
+<use href="#bh" x="230" y="54"/>
+<use href="#bh" x="256" y="54"/>
+<use href="#bh" x="282" y="54"/>
+<use href="#bh" x="308" y="54"/>
+<use href="#bh" x="334" y="54"/>
+<use href="#bh" x="360" y="54"/>
+<use href="#bh" x="386" y="54"/>
+<use href="#bh" x="412" y="54"/>
+<use href="#bh" x="438" y="54"/>
+<use href="#bh" x="464" y="54"/>
+<use href="#bh" x="490" y="54"/>
+<use href="#bh" x="516" y="54"/>
+<use href="#bh" x="542" y="54"/>
+<line x1="108" y1="354" x2="560" y2="354" stroke="#3D6FA8" stroke-width="1.2" opacity=".45"/>
+<text x="87" y="358" font-size="12" fill="#3D6FA8" text-anchor="middle" font-family="Archivo,Arial,sans-serif">−</text>
+<use href="#bh" x="126" y="354"/>
+<use href="#bh" x="152" y="354"/>
+<use href="#bh" x="178" y="354"/>
+<use href="#bh" x="204" y="354"/>
+<use href="#bh" x="230" y="354"/>
+<use href="#bh" x="256" y="354"/>
+<use href="#bh" x="282" y="354"/>
+<use href="#bh" x="308" y="354"/>
+<use href="#bh" x="334" y="354"/>
+<use href="#bh" x="360" y="354"/>
+<use href="#bh" x="386" y="354"/>
+<use href="#bh" x="412" y="354"/>
+<use href="#bh" x="438" y="354"/>
+<use href="#bh" x="464" y="354"/>
+<use href="#bh" x="490" y="354"/>
+<use href="#bh" x="516" y="354"/>
+<use href="#bh" x="542" y="354"/>
+<line x1="108" y1="374" x2="560" y2="374" stroke="#C8452F" stroke-width="1.2" opacity=".45"/>
+<text x="87" y="378" font-size="12" fill="#C8452F" text-anchor="middle" font-family="Archivo,Arial,sans-serif">+</text>
+<use href="#bh" x="126" y="374"/>
+<use href="#bh" x="152" y="374"/>
+<use href="#bh" x="178" y="374"/>
+<use href="#bh" x="204" y="374"/>
+<use href="#bh" x="230" y="374"/>
+<use href="#bh" x="256" y="374"/>
+<use href="#bh" x="282" y="374"/>
+<use href="#bh" x="308" y="374"/>
+<use href="#bh" x="334" y="374"/>
+<use href="#bh" x="360" y="374"/>
+<use href="#bh" x="386" y="374"/>
+<use href="#bh" x="412" y="374"/>
+<use href="#bh" x="438" y="374"/>
+<use href="#bh" x="464" y="374"/>
+<use href="#bh" x="490" y="374"/>
+<use href="#bh" x="516" y="374"/>
+<use href="#bh" x="542" y="374"/>
+<text x="87" y="100" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">j</text>
+<use href="#bh" x="126" y="96"/>
+<use href="#bh" x="152" y="96"/>
+<use href="#bh" x="178" y="96"/>
+<use href="#bh" x="204" y="96"/>
+<use href="#bh" x="230" y="96"/>
+<use href="#bh" x="256" y="96"/>
+<use href="#bh" x="282" y="96"/>
+<use href="#bh" x="308" y="96"/>
+<use href="#bh" x="334" y="96"/>
+<use href="#bh" x="360" y="96"/>
+<use href="#bh" x="386" y="96"/>
+<use href="#bh" x="412" y="96"/>
+<use href="#bh" x="438" y="96"/>
+<use href="#bh" x="464" y="96"/>
+<use href="#bh" x="490" y="96"/>
+<use href="#bh" x="516" y="96"/>
+<use href="#bh" x="542" y="96"/>
+<text x="87" y="122" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">i</text>
+<use href="#bh" x="126" y="118"/>
+<use href="#bh" x="152" y="118"/>
+<use href="#bh" x="178" y="118"/>
+<use href="#bh" x="204" y="118"/>
+<use href="#bh" x="230" y="118"/>
+<use href="#bh" x="256" y="118"/>
+<use href="#bh" x="282" y="118"/>
+<use href="#bh" x="308" y="118"/>
+<use href="#bh" x="334" y="118"/>
+<use href="#bh" x="360" y="118"/>
+<use href="#bh" x="386" y="118"/>
+<use href="#bh" x="412" y="118"/>
+<use href="#bh" x="438" y="118"/>
+<use href="#bh" x="464" y="118"/>
+<use href="#bh" x="490" y="118"/>
+<use href="#bh" x="516" y="118"/>
+<use href="#bh" x="542" y="118"/>
+<text x="87" y="144" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">h</text>
+<use href="#bh" x="126" y="140"/>
+<use href="#bh" x="152" y="140"/>
+<use href="#bh" x="178" y="140"/>
+<use href="#bh" x="204" y="140"/>
+<use href="#bh" x="230" y="140"/>
+<use href="#bh" x="256" y="140"/>
+<use href="#bh" x="282" y="140"/>
+<use href="#bh" x="308" y="140"/>
+<use href="#bh" x="334" y="140"/>
+<use href="#bh" x="360" y="140"/>
+<use href="#bh" x="386" y="140"/>
+<use href="#bh" x="412" y="140"/>
+<use href="#bh" x="438" y="140"/>
+<use href="#bh" x="464" y="140"/>
+<use href="#bh" x="490" y="140"/>
+<use href="#bh" x="516" y="140"/>
+<use href="#bh" x="542" y="140"/>
+<text x="87" y="166" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">g</text>
+<use href="#bh" x="126" y="162"/>
+<use href="#bh" x="152" y="162"/>
+<use href="#bh" x="178" y="162"/>
+<use href="#bh" x="204" y="162"/>
+<use href="#bh" x="230" y="162"/>
+<use href="#bh" x="256" y="162"/>
+<use href="#bh" x="282" y="162"/>
+<use href="#bh" x="308" y="162"/>
+<use href="#bh" x="334" y="162"/>
+<use href="#bh" x="360" y="162"/>
+<use href="#bh" x="386" y="162"/>
+<use href="#bh" x="412" y="162"/>
+<use href="#bh" x="438" y="162"/>
+<use href="#bh" x="464" y="162"/>
+<use href="#bh" x="490" y="162"/>
+<use href="#bh" x="516" y="162"/>
+<use href="#bh" x="542" y="162"/>
+<text x="87" y="188" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">f</text>
+<use href="#bh" x="126" y="184"/>
+<use href="#bh" x="152" y="184"/>
+<use href="#bh" x="178" y="184"/>
+<use href="#bh" x="204" y="184"/>
+<use href="#bh" x="230" y="184"/>
+<use href="#bh" x="256" y="184"/>
+<use href="#bh" x="282" y="184"/>
+<use href="#bh" x="308" y="184"/>
+<use href="#bh" x="334" y="184"/>
+<use href="#bh" x="360" y="184"/>
+<use href="#bh" x="386" y="184"/>
+<use href="#bh" x="412" y="184"/>
+<use href="#bh" x="438" y="184"/>
+<use href="#bh" x="464" y="184"/>
+<use href="#bh" x="490" y="184"/>
+<use href="#bh" x="516" y="184"/>
+<use href="#bh" x="542" y="184"/>
+<text x="87" y="238" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">e</text>
+<use href="#bh" x="126" y="234"/>
+<use href="#bh" x="152" y="234"/>
+<use href="#bh" x="178" y="234"/>
+<use href="#bh" x="204" y="234"/>
+<use href="#bh" x="230" y="234"/>
+<use href="#bh" x="256" y="234"/>
+<use href="#bh" x="282" y="234"/>
+<use href="#bh" x="308" y="234"/>
+<use href="#bh" x="334" y="234"/>
+<use href="#bh" x="360" y="234"/>
+<use href="#bh" x="386" y="234"/>
+<use href="#bh" x="412" y="234"/>
+<use href="#bh" x="438" y="234"/>
+<use href="#bh" x="464" y="234"/>
+<use href="#bh" x="490" y="234"/>
+<use href="#bh" x="516" y="234"/>
+<use href="#bh" x="542" y="234"/>
+<text x="87" y="260" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">d</text>
+<use href="#bh" x="126" y="256"/>
+<use href="#bh" x="152" y="256"/>
+<use href="#bh" x="178" y="256"/>
+<use href="#bh" x="204" y="256"/>
+<use href="#bh" x="230" y="256"/>
+<use href="#bh" x="256" y="256"/>
+<use href="#bh" x="282" y="256"/>
+<use href="#bh" x="308" y="256"/>
+<use href="#bh" x="334" y="256"/>
+<use href="#bh" x="360" y="256"/>
+<use href="#bh" x="386" y="256"/>
+<use href="#bh" x="412" y="256"/>
+<use href="#bh" x="438" y="256"/>
+<use href="#bh" x="464" y="256"/>
+<use href="#bh" x="490" y="256"/>
+<use href="#bh" x="516" y="256"/>
+<use href="#bh" x="542" y="256"/>
+<text x="87" y="282" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">c</text>
+<use href="#bh" x="126" y="278"/>
+<use href="#bh" x="152" y="278"/>
+<use href="#bh" x="178" y="278"/>
+<use href="#bh" x="204" y="278"/>
+<use href="#bh" x="230" y="278"/>
+<use href="#bh" x="256" y="278"/>
+<use href="#bh" x="282" y="278"/>
+<use href="#bh" x="308" y="278"/>
+<use href="#bh" x="334" y="278"/>
+<use href="#bh" x="360" y="278"/>
+<use href="#bh" x="386" y="278"/>
+<use href="#bh" x="412" y="278"/>
+<use href="#bh" x="438" y="278"/>
+<use href="#bh" x="464" y="278"/>
+<use href="#bh" x="490" y="278"/>
+<use href="#bh" x="516" y="278"/>
+<use href="#bh" x="542" y="278"/>
+<text x="87" y="304" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">b</text>
+<use href="#bh" x="126" y="300"/>
+<use href="#bh" x="152" y="300"/>
+<use href="#bh" x="178" y="300"/>
+<use href="#bh" x="204" y="300"/>
+<use href="#bh" x="230" y="300"/>
+<use href="#bh" x="256" y="300"/>
+<use href="#bh" x="282" y="300"/>
+<use href="#bh" x="308" y="300"/>
+<use href="#bh" x="334" y="300"/>
+<use href="#bh" x="360" y="300"/>
+<use href="#bh" x="386" y="300"/>
+<use href="#bh" x="412" y="300"/>
+<use href="#bh" x="438" y="300"/>
+<use href="#bh" x="464" y="300"/>
+<use href="#bh" x="490" y="300"/>
+<use href="#bh" x="516" y="300"/>
+<use href="#bh" x="542" y="300"/>
+<text x="87" y="326" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">a</text>
+<use href="#bh" x="126" y="322"/>
+<use href="#bh" x="152" y="322"/>
+<use href="#bh" x="178" y="322"/>
+<use href="#bh" x="204" y="322"/>
+<use href="#bh" x="230" y="322"/>
+<use href="#bh" x="256" y="322"/>
+<use href="#bh" x="282" y="322"/>
+<use href="#bh" x="308" y="322"/>
+<use href="#bh" x="334" y="322"/>
+<use href="#bh" x="360" y="322"/>
+<use href="#bh" x="386" y="322"/>
+<use href="#bh" x="412" y="322"/>
+<use href="#bh" x="438" y="322"/>
+<use href="#bh" x="464" y="322"/>
+<use href="#bh" x="490" y="322"/>
+<use href="#bh" x="516" y="322"/>
+<use href="#bh" x="542" y="322"/>
+<text x="126" y="12" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">16</text>
+<text x="230" y="12" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">20</text>
+<text x="360" y="12" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">25</text>
+<text x="490" y="12" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">30</text>
+<rect x="100" y="606" width="463.2" height="118" rx="8" fill="currentColor" opacity=".05"/>
+<rect x="100" y="606" width="463.2" height="118" rx="8" fill="none" stroke="currentColor" stroke-width="1.3" opacity=".6"/>
+<rect x="88" y="622" width="34" height="22" rx="3" fill="none" stroke="currentColor" stroke-width="1" opacity=".5"/>
+<text x="105" y="636" font-size="8.5" fill="currentColor" opacity=".55" text-anchor="middle" font-family="IBM Plex Mono,monospace">USB</text>
+<text x="331.6" y="669" font-size="11" fill="currentColor" opacity=".55" text-anchor="middle" letter-spacing="1.6" font-family="Archivo,Arial,sans-serif">ARDUINO UNO</text>
+<use href="#sk" x="136" y="621"/>
+<use href="#sk" x="158" y="621"/>
+<use href="#sk" x="180" y="621"/>
+<use href="#sk" x="202" y="621"/>
+<use href="#sk" x="224" y="621"/>
+<use href="#sk" x="246" y="621"/>
+<use href="#sk" x="268" y="621"/>
+<rect x="261.5" y="614.5" width="13" height="13" rx="2" fill="#2E7D46" opacity=".18"/>
+<rect x="261.5" y="614.5" width="13" height="13" rx="2" fill="none" stroke="#2E7D46" stroke-width="1.6"/>
+<use href="#sk" x="290" y="621"/>
+<rect x="283.5" y="614.5" width="13" height="13" rx="2" fill="#2E7D46" opacity=".18"/>
+<rect x="283.5" y="614.5" width="13" height="13" rx="2" fill="none" stroke="#2E7D46" stroke-width="1.6"/>
+<use href="#sk" x="312" y="621"/>
+<use href="#sk" x="334" y="621"/>
+<use href="#sk" x="378" y="621"/>
+<use href="#sk" x="400" y="621"/>
+<use href="#sk" x="422" y="621"/>
+<use href="#sk" x="444" y="621"/>
+<use href="#sk" x="466" y="621"/>
+<use href="#sk" x="488" y="621"/>
+<use href="#sk" x="510" y="621"/>
+<use href="#sk" x="532" y="621"/>
+<use href="#sk" x="136" y="709"/>
+<use href="#sk" x="158" y="709"/>
+<use href="#sk" x="180" y="709"/>
+<use href="#sk" x="202" y="709"/>
+<rect x="195.5" y="702.5" width="13" height="13" rx="2" fill="#2E7D46" opacity=".18"/>
+<rect x="195.5" y="702.5" width="13" height="13" rx="2" fill="none" stroke="#2E7D46" stroke-width="1.6"/>
+<use href="#sk" x="224" y="709"/>
+<rect x="217.5" y="702.5" width="13" height="13" rx="2" fill="#2E7D46" opacity=".18"/>
+<rect x="217.5" y="702.5" width="13" height="13" rx="2" fill="none" stroke="#2E7D46" stroke-width="1.6"/>
+<use href="#sk" x="246" y="709"/>
+<use href="#sk" x="268" y="709"/>
+<use href="#sk" x="312" y="709"/>
+<use href="#sk" x="334" y="709"/>
+<use href="#sk" x="356" y="709"/>
+<use href="#sk" x="378" y="709"/>
+<use href="#sk" x="400" y="709"/>
+<rect x="393.5" y="702.5" width="13" height="13" rx="2" fill="#2E7D46" opacity=".18"/>
+<rect x="393.5" y="702.5" width="13" height="13" rx="2" fill="none" stroke="#2E7D46" stroke-width="1.6"/>
+<use href="#sk" x="422" y="709"/>
+<rect x="415.5" y="702.5" width="13" height="13" rx="2" fill="#2E7D46" opacity=".18"/>
+<rect x="415.5" y="702.5" width="13" height="13" rx="2" fill="none" stroke="#2E7D46" stroke-width="1.6"/>
+<line x1="230" y1="184" x2="230" y2="-104" stroke="currentColor" stroke-width="1.5" opacity=".85"/>
+<line x1="256" y1="184" x2="256" y2="-104" stroke="currentColor" stroke-width="1.5" opacity=".85"/>
+<line x1="282" y1="184" x2="282" y2="-104" stroke="currentColor" stroke-width="1.5" opacity=".85"/>
+<line x1="308" y1="184" x2="308" y2="-104" stroke="currentColor" stroke-width="1.5" opacity=".85"/>
+<rect x="220" y="-136" width="98" height="32" rx="4" fill="currentColor" opacity=".13" stroke="currentColor" stroke-width="1.2"/>
+<text x="269" y="-116" font-size="10" text-anchor="middle" font-weight="400" font-family="Archivo,Arial,sans-serif" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">HC-SR04  VCC / Trig / Echo / GND</text>
+<text x="269" y="-116" font-size="10" text-anchor="middle" font-weight="400" font-family="Archivo,Arial,sans-serif" fill="currentColor" opacity=".92">HC-SR04  VCC / Trig / Echo / GND</text>
+<line x1="230" y1="96" x2="230" y2="34" stroke="#C8452F" stroke-width="1.9" opacity=".9"/>
+<circle cx="230" cy="34" r="2.6" fill="#C8452F"/>
+<circle cx="230" cy="96" r="2.6" fill="#C8452F"/>
+<path d="M 256 96 L 256 -19 Q 256 -28 247 -28 L 55 -28 Q 46 -28 46 -19 L 46 563 Q 46 572 55 572 L 281 572 Q 290 572 290 581 L 290 621" fill="none" stroke="#2E7D46" stroke-width="1.9" opacity=".9"/>
+<circle cx="290" cy="621" r="2.6" fill="#2E7D46"/>
+<circle cx="256" cy="96" r="2.6" fill="#2E7D46"/>
+<path d="M 282 96 L 282 -27 Q 282 -36 273 -36 L 47 -36 Q 38 -36 38 -27 L 38 555 Q 38 564 47 564 L 259 564 Q 268 564 268 573 L 268 621" fill="none" stroke="#2E7D46" stroke-width="1.9" opacity=".9"/>
+<circle cx="268" cy="621" r="2.6" fill="#2E7D46"/>
+<circle cx="282" cy="96" r="2.6" fill="#2E7D46"/>
+<line x1="308" y1="96" x2="308" y2="54" stroke="#3D6FA8" stroke-width="1.9" opacity=".9"/>
+<circle cx="308" cy="54" r="2.6" fill="#3D6FA8"/>
+<circle cx="308" cy="96" r="2.6" fill="#3D6FA8"/>
+<rect x="106" y="443" width="214" height="34" rx="5" fill="currentColor" opacity=".12" stroke="currentColor" stroke-width="1.2"/>
+<text x="213" y="438" font-size="10" text-anchor="middle" font-weight="400" font-family="Archivo,Arial,sans-serif" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">LCD1602, I2C</text>
+<text x="213" y="438" font-size="10" text-anchor="middle" font-weight="400" font-family="Archivo,Arial,sans-serif" fill="currentColor" opacity=".92">LCD1602, I2C</text>
+<path d="M 130 443 L 130 433 Q 130 426 123 426 L 35 426 Q 28 426 28 419 L 28 61 Q 28 54 35 54 L 178 54" fill="none" stroke="#3D6FA8" stroke-width="1.9" opacity=".92"/>
+<text x="130" y="465" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">GND</text>
+<text x="130" y="465" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="#3D6FA8" opacity=".95">GND</text>
+<path d="M 190 443 L 190 433 Q 190 426 183 426 L 59 426 Q 52 426 52 419 L 52 41 Q 52 34 59 34 L 178 34" fill="none" stroke="#C8452F" stroke-width="1.9" opacity=".92"/>
+<text x="190" y="465" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">VCC</text>
+<text x="190" y="465" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="#C8452F" opacity=".95">VCC</text>
+<circle cx="400" cy="709" r="2.6" fill="#2E7D46"/>
+<path d="M 250 477 L 250 565 Q 250 572 257 572 L 393 572 Q 400 572 400 579 L 400 709" fill="none" stroke="#2E7D46" stroke-width="1.9" opacity=".92"/>
+<text x="250" y="465" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">SDA</text>
+<text x="250" y="465" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="#2E7D46" opacity=".95">SDA</text>
+<circle cx="422" cy="709" r="2.6" fill="#2E7D46"/>
+<path d="M 310 477 L 310 557 Q 310 564 317 564 L 415 564 Q 422 564 422 571 L 422 709" fill="none" stroke="#2E7D46" stroke-width="1.9" opacity=".92"/>
+<text x="310" y="465" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">SCL</text>
+<text x="310" y="465" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="#2E7D46" opacity=".95">SCL</text>
+<path d="M 202 709 L 202 763 Q 202 772 193 772 L 9 772 Q 0 772 0 763 L 0 43 Q 0 34 9 34 L 126 34" fill="none" stroke="#C8452F" stroke-width="2.1" opacity=".95"/>
+<circle cx="202" cy="709" r="2.8" fill="#C8452F"/>
+<circle cx="126" cy="34" r="2.8" fill="#C8452F"/>
+<path d="M 224 709 L 224 739 Q 224 748 215 748 L 33 748 Q 24 748 24 739 L 24 63 Q 24 54 33 54 L 152 54" fill="none" stroke="#3D6FA8" stroke-width="2.1" opacity=".95"/>
+<circle cx="224" cy="709" r="2.8" fill="#3D6FA8"/>
+<circle cx="152" cy="54" r="2.8" fill="#3D6FA8"/>
+<circle cx="230" cy="184" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="230" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">f20</text>
+<text x="230" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">f20</text>
+<circle cx="256" cy="184" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="256" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">f21</text>
+<text x="256" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">f21</text>
+<circle cx="282" cy="184" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="282" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">f22</text>
+<text x="282" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">f22</text>
+<circle cx="308" cy="184" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="308" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">f23</text>
+<text x="308" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">f23</text>
+<circle cx="230" cy="96" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="230" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">j20</text>
+<text x="230" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">j20</text>
+<circle cx="256" cy="96" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="256" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">j21</text>
+<text x="256" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">j21</text>
+<circle cx="282" cy="96" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="282" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">j22</text>
+<text x="282" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">j22</text>
+<circle cx="308" cy="96" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="308" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">j23</text>
+<text x="308" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">j23</text>
+<text x="136" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">SCL</text>
+<text x="136" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">SCL</text>
+<text x="158" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">SDA</text>
+<text x="158" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">SDA</text>
+<text x="180" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">AREF</text>
+<text x="180" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">AREF</text>
+<text x="202" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">GND</text>
+<text x="202" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">GND</text>
+<text x="224" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">13</text>
+<text x="224" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">13</text>
+<text x="246" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">12</text>
+<text x="246" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">12</text>
+<text x="268" y="637" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">11</text>
+<text x="268" y="637" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="#2E7D46" opacity=".95">11</text>
+<text x="290" y="637" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">10</text>
+<text x="290" y="637" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="#2E7D46" opacity=".95">10</text>
+<text x="312" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">9</text>
+<text x="312" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">9</text>
+<text x="334" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">8</text>
+<text x="334" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">8</text>
+<text x="378" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">7</text>
+<text x="378" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">7</text>
+<text x="400" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">6</text>
+<text x="400" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">6</text>
+<text x="422" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">5</text>
+<text x="422" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">5</text>
+<text x="444" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">4</text>
+<text x="444" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">4</text>
+<text x="466" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">3</text>
+<text x="466" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">3</text>
+<text x="488" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">2</text>
+<text x="488" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">2</text>
+<text x="510" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">1</text>
+<text x="510" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">1</text>
+<text x="532" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">0</text>
+<text x="532" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">0</text>
+<text x="136" y="697" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">IOR</text>
+<text x="136" y="697" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">IOR</text>
+<text x="158" y="697" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">RST</text>
+<text x="158" y="697" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">RST</text>
+<text x="180" y="697" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">3V3</text>
+<text x="180" y="697" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">3V3</text>
+<text x="202" y="697" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">5V</text>
+<text x="202" y="697" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="#2E7D46" opacity=".95">5V</text>
+<text x="224" y="697" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">GND</text>
+<text x="224" y="697" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="#2E7D46" opacity=".95">GND</text>
+<text x="246" y="697" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">GND</text>
+<text x="246" y="697" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">GND</text>
+<text x="268" y="697" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">VIN</text>
+<text x="268" y="697" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">VIN</text>
+<text x="312" y="697" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">A0</text>
+<text x="312" y="697" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">A0</text>
+<text x="334" y="697" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">A1</text>
+<text x="334" y="697" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">A1</text>
+<text x="356" y="697" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">A2</text>
+<text x="356" y="697" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">A2</text>
+<text x="378" y="697" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">A3</text>
+<text x="378" y="697" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">A3</text>
+<text x="400" y="697" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">A4</text>
+<text x="400" y="697" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="#2E7D46" opacity=".95">A4</text>
+<text x="422" y="697" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">A5</text>
+<text x="422" y="697" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="#2E7D46" opacity=".95">A5</text>
+</svg>
+      <figcaption>The sensor's two power wires move off the Arduino and onto the rails, so the screen can share the one 5V pin. Trig and Echo do not move.</figcaption>
+    </figure>
     <div class="callout">
       <h5>First, install the library</h5>
       <p>This one does not come with the Arduino software, so you have to fetch it once.</p>
@@ -872,6 +1316,868 @@ digitalWrite(trigPin, LOW);</code></pre>
     </div>
 
     <h3 style="margin-top:.9rem">6b. The bare kind, twelve wires and a knob</h3>
+    <figure class="wiring">
+      <svg viewBox="0 -150 1112 816" role="img" aria-label="Band 7 Part 6b: the bare 16-pin screen" style="width:1112px; max-width:100%; min-width:560px">
+<defs><circle id="bh" r="3.6" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/><rect id="sk" x="-6.5" y="-6.5" width="13" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1" opacity=".5"/></defs>
+<rect x="100" y="18" width="936" height="376" rx="7" fill="none" stroke="currentColor" stroke-width="1.3" opacity=".55"/>
+<rect x="100" y="200" width="936" height="26" fill="currentColor" opacity=".07"/>
+<line x1="108" y1="34" x2="1028" y2="34" stroke="#C8452F" stroke-width="1.2" opacity=".45"/>
+<text x="87" y="38" font-size="12" fill="#C8452F" text-anchor="middle" font-family="Archivo,Arial,sans-serif">+</text>
+<use href="#bh" x="126" y="34"/>
+<use href="#bh" x="152" y="34"/>
+<use href="#bh" x="178" y="34"/>
+<use href="#bh" x="204" y="34"/>
+<use href="#bh" x="230" y="34"/>
+<use href="#bh" x="256" y="34"/>
+<use href="#bh" x="282" y="34"/>
+<use href="#bh" x="308" y="34"/>
+<use href="#bh" x="334" y="34"/>
+<use href="#bh" x="360" y="34"/>
+<use href="#bh" x="386" y="34"/>
+<use href="#bh" x="412" y="34"/>
+<use href="#bh" x="438" y="34"/>
+<use href="#bh" x="464" y="34"/>
+<use href="#bh" x="490" y="34"/>
+<use href="#bh" x="516" y="34"/>
+<use href="#bh" x="542" y="34"/>
+<use href="#bh" x="568" y="34"/>
+<use href="#bh" x="594" y="34"/>
+<use href="#bh" x="620" y="34"/>
+<use href="#bh" x="646" y="34"/>
+<use href="#bh" x="672" y="34"/>
+<use href="#bh" x="698" y="34"/>
+<use href="#bh" x="724" y="34"/>
+<use href="#bh" x="750" y="34"/>
+<use href="#bh" x="776" y="34"/>
+<use href="#bh" x="802" y="34"/>
+<use href="#bh" x="828" y="34"/>
+<use href="#bh" x="854" y="34"/>
+<use href="#bh" x="880" y="34"/>
+<use href="#bh" x="906" y="34"/>
+<use href="#bh" x="932" y="34"/>
+<use href="#bh" x="958" y="34"/>
+<use href="#bh" x="984" y="34"/>
+<use href="#bh" x="1010" y="34"/>
+<line x1="108" y1="54" x2="1028" y2="54" stroke="#3D6FA8" stroke-width="1.2" opacity=".45"/>
+<text x="87" y="58" font-size="12" fill="#3D6FA8" text-anchor="middle" font-family="Archivo,Arial,sans-serif">−</text>
+<use href="#bh" x="126" y="54"/>
+<use href="#bh" x="152" y="54"/>
+<use href="#bh" x="178" y="54"/>
+<use href="#bh" x="204" y="54"/>
+<use href="#bh" x="230" y="54"/>
+<use href="#bh" x="256" y="54"/>
+<use href="#bh" x="282" y="54"/>
+<use href="#bh" x="308" y="54"/>
+<use href="#bh" x="334" y="54"/>
+<use href="#bh" x="360" y="54"/>
+<use href="#bh" x="386" y="54"/>
+<use href="#bh" x="412" y="54"/>
+<use href="#bh" x="438" y="54"/>
+<use href="#bh" x="464" y="54"/>
+<use href="#bh" x="490" y="54"/>
+<use href="#bh" x="516" y="54"/>
+<use href="#bh" x="542" y="54"/>
+<use href="#bh" x="568" y="54"/>
+<use href="#bh" x="594" y="54"/>
+<use href="#bh" x="620" y="54"/>
+<use href="#bh" x="646" y="54"/>
+<use href="#bh" x="672" y="54"/>
+<use href="#bh" x="698" y="54"/>
+<use href="#bh" x="724" y="54"/>
+<use href="#bh" x="750" y="54"/>
+<use href="#bh" x="776" y="54"/>
+<use href="#bh" x="802" y="54"/>
+<use href="#bh" x="828" y="54"/>
+<use href="#bh" x="854" y="54"/>
+<use href="#bh" x="880" y="54"/>
+<use href="#bh" x="906" y="54"/>
+<use href="#bh" x="932" y="54"/>
+<use href="#bh" x="958" y="54"/>
+<use href="#bh" x="984" y="54"/>
+<use href="#bh" x="1010" y="54"/>
+<line x1="108" y1="354" x2="1028" y2="354" stroke="#3D6FA8" stroke-width="1.2" opacity=".45"/>
+<text x="87" y="358" font-size="12" fill="#3D6FA8" text-anchor="middle" font-family="Archivo,Arial,sans-serif">−</text>
+<use href="#bh" x="126" y="354"/>
+<use href="#bh" x="152" y="354"/>
+<use href="#bh" x="178" y="354"/>
+<use href="#bh" x="204" y="354"/>
+<use href="#bh" x="230" y="354"/>
+<use href="#bh" x="256" y="354"/>
+<use href="#bh" x="282" y="354"/>
+<use href="#bh" x="308" y="354"/>
+<use href="#bh" x="334" y="354"/>
+<use href="#bh" x="360" y="354"/>
+<use href="#bh" x="386" y="354"/>
+<use href="#bh" x="412" y="354"/>
+<use href="#bh" x="438" y="354"/>
+<use href="#bh" x="464" y="354"/>
+<use href="#bh" x="490" y="354"/>
+<use href="#bh" x="516" y="354"/>
+<use href="#bh" x="542" y="354"/>
+<use href="#bh" x="568" y="354"/>
+<use href="#bh" x="594" y="354"/>
+<use href="#bh" x="620" y="354"/>
+<use href="#bh" x="646" y="354"/>
+<use href="#bh" x="672" y="354"/>
+<use href="#bh" x="698" y="354"/>
+<use href="#bh" x="724" y="354"/>
+<use href="#bh" x="750" y="354"/>
+<use href="#bh" x="776" y="354"/>
+<use href="#bh" x="802" y="354"/>
+<use href="#bh" x="828" y="354"/>
+<use href="#bh" x="854" y="354"/>
+<use href="#bh" x="880" y="354"/>
+<use href="#bh" x="906" y="354"/>
+<use href="#bh" x="932" y="354"/>
+<use href="#bh" x="958" y="354"/>
+<use href="#bh" x="984" y="354"/>
+<use href="#bh" x="1010" y="354"/>
+<line x1="108" y1="374" x2="1028" y2="374" stroke="#C8452F" stroke-width="1.2" opacity=".45"/>
+<text x="87" y="378" font-size="12" fill="#C8452F" text-anchor="middle" font-family="Archivo,Arial,sans-serif">+</text>
+<use href="#bh" x="126" y="374"/>
+<use href="#bh" x="152" y="374"/>
+<use href="#bh" x="178" y="374"/>
+<use href="#bh" x="204" y="374"/>
+<use href="#bh" x="230" y="374"/>
+<use href="#bh" x="256" y="374"/>
+<use href="#bh" x="282" y="374"/>
+<use href="#bh" x="308" y="374"/>
+<use href="#bh" x="334" y="374"/>
+<use href="#bh" x="360" y="374"/>
+<use href="#bh" x="386" y="374"/>
+<use href="#bh" x="412" y="374"/>
+<use href="#bh" x="438" y="374"/>
+<use href="#bh" x="464" y="374"/>
+<use href="#bh" x="490" y="374"/>
+<use href="#bh" x="516" y="374"/>
+<use href="#bh" x="542" y="374"/>
+<use href="#bh" x="568" y="374"/>
+<use href="#bh" x="594" y="374"/>
+<use href="#bh" x="620" y="374"/>
+<use href="#bh" x="646" y="374"/>
+<use href="#bh" x="672" y="374"/>
+<use href="#bh" x="698" y="374"/>
+<use href="#bh" x="724" y="374"/>
+<use href="#bh" x="750" y="374"/>
+<use href="#bh" x="776" y="374"/>
+<use href="#bh" x="802" y="374"/>
+<use href="#bh" x="828" y="374"/>
+<use href="#bh" x="854" y="374"/>
+<use href="#bh" x="880" y="374"/>
+<use href="#bh" x="906" y="374"/>
+<use href="#bh" x="932" y="374"/>
+<use href="#bh" x="958" y="374"/>
+<use href="#bh" x="984" y="374"/>
+<use href="#bh" x="1010" y="374"/>
+<text x="87" y="100" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">j</text>
+<use href="#bh" x="126" y="96"/>
+<use href="#bh" x="152" y="96"/>
+<use href="#bh" x="178" y="96"/>
+<use href="#bh" x="204" y="96"/>
+<use href="#bh" x="230" y="96"/>
+<use href="#bh" x="256" y="96"/>
+<use href="#bh" x="282" y="96"/>
+<use href="#bh" x="308" y="96"/>
+<use href="#bh" x="334" y="96"/>
+<use href="#bh" x="360" y="96"/>
+<use href="#bh" x="386" y="96"/>
+<use href="#bh" x="412" y="96"/>
+<use href="#bh" x="438" y="96"/>
+<use href="#bh" x="464" y="96"/>
+<use href="#bh" x="490" y="96"/>
+<use href="#bh" x="516" y="96"/>
+<use href="#bh" x="542" y="96"/>
+<use href="#bh" x="568" y="96"/>
+<use href="#bh" x="594" y="96"/>
+<use href="#bh" x="620" y="96"/>
+<use href="#bh" x="646" y="96"/>
+<use href="#bh" x="672" y="96"/>
+<use href="#bh" x="698" y="96"/>
+<use href="#bh" x="724" y="96"/>
+<use href="#bh" x="750" y="96"/>
+<use href="#bh" x="776" y="96"/>
+<use href="#bh" x="802" y="96"/>
+<use href="#bh" x="828" y="96"/>
+<use href="#bh" x="854" y="96"/>
+<use href="#bh" x="880" y="96"/>
+<use href="#bh" x="906" y="96"/>
+<use href="#bh" x="932" y="96"/>
+<use href="#bh" x="958" y="96"/>
+<use href="#bh" x="984" y="96"/>
+<use href="#bh" x="1010" y="96"/>
+<text x="87" y="122" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">i</text>
+<use href="#bh" x="126" y="118"/>
+<use href="#bh" x="152" y="118"/>
+<use href="#bh" x="178" y="118"/>
+<use href="#bh" x="204" y="118"/>
+<use href="#bh" x="230" y="118"/>
+<use href="#bh" x="256" y="118"/>
+<use href="#bh" x="282" y="118"/>
+<use href="#bh" x="308" y="118"/>
+<use href="#bh" x="334" y="118"/>
+<use href="#bh" x="360" y="118"/>
+<use href="#bh" x="386" y="118"/>
+<use href="#bh" x="412" y="118"/>
+<use href="#bh" x="438" y="118"/>
+<use href="#bh" x="464" y="118"/>
+<use href="#bh" x="490" y="118"/>
+<use href="#bh" x="516" y="118"/>
+<use href="#bh" x="542" y="118"/>
+<use href="#bh" x="568" y="118"/>
+<use href="#bh" x="594" y="118"/>
+<use href="#bh" x="620" y="118"/>
+<use href="#bh" x="646" y="118"/>
+<use href="#bh" x="672" y="118"/>
+<use href="#bh" x="698" y="118"/>
+<use href="#bh" x="724" y="118"/>
+<use href="#bh" x="750" y="118"/>
+<use href="#bh" x="776" y="118"/>
+<use href="#bh" x="802" y="118"/>
+<use href="#bh" x="828" y="118"/>
+<use href="#bh" x="854" y="118"/>
+<use href="#bh" x="880" y="118"/>
+<use href="#bh" x="906" y="118"/>
+<use href="#bh" x="932" y="118"/>
+<use href="#bh" x="958" y="118"/>
+<use href="#bh" x="984" y="118"/>
+<use href="#bh" x="1010" y="118"/>
+<text x="87" y="144" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">h</text>
+<use href="#bh" x="126" y="140"/>
+<use href="#bh" x="152" y="140"/>
+<use href="#bh" x="178" y="140"/>
+<use href="#bh" x="204" y="140"/>
+<use href="#bh" x="230" y="140"/>
+<use href="#bh" x="256" y="140"/>
+<use href="#bh" x="282" y="140"/>
+<use href="#bh" x="308" y="140"/>
+<use href="#bh" x="334" y="140"/>
+<use href="#bh" x="360" y="140"/>
+<use href="#bh" x="386" y="140"/>
+<use href="#bh" x="412" y="140"/>
+<use href="#bh" x="438" y="140"/>
+<use href="#bh" x="464" y="140"/>
+<use href="#bh" x="490" y="140"/>
+<use href="#bh" x="516" y="140"/>
+<use href="#bh" x="542" y="140"/>
+<use href="#bh" x="568" y="140"/>
+<use href="#bh" x="594" y="140"/>
+<use href="#bh" x="620" y="140"/>
+<use href="#bh" x="646" y="140"/>
+<use href="#bh" x="672" y="140"/>
+<use href="#bh" x="698" y="140"/>
+<use href="#bh" x="724" y="140"/>
+<use href="#bh" x="750" y="140"/>
+<use href="#bh" x="776" y="140"/>
+<use href="#bh" x="802" y="140"/>
+<use href="#bh" x="828" y="140"/>
+<use href="#bh" x="854" y="140"/>
+<use href="#bh" x="880" y="140"/>
+<use href="#bh" x="906" y="140"/>
+<use href="#bh" x="932" y="140"/>
+<use href="#bh" x="958" y="140"/>
+<use href="#bh" x="984" y="140"/>
+<use href="#bh" x="1010" y="140"/>
+<text x="87" y="166" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">g</text>
+<use href="#bh" x="126" y="162"/>
+<use href="#bh" x="152" y="162"/>
+<use href="#bh" x="178" y="162"/>
+<use href="#bh" x="204" y="162"/>
+<use href="#bh" x="230" y="162"/>
+<use href="#bh" x="256" y="162"/>
+<use href="#bh" x="282" y="162"/>
+<use href="#bh" x="308" y="162"/>
+<use href="#bh" x="334" y="162"/>
+<use href="#bh" x="360" y="162"/>
+<use href="#bh" x="386" y="162"/>
+<use href="#bh" x="412" y="162"/>
+<use href="#bh" x="438" y="162"/>
+<use href="#bh" x="464" y="162"/>
+<use href="#bh" x="490" y="162"/>
+<use href="#bh" x="516" y="162"/>
+<use href="#bh" x="542" y="162"/>
+<use href="#bh" x="568" y="162"/>
+<use href="#bh" x="594" y="162"/>
+<use href="#bh" x="620" y="162"/>
+<use href="#bh" x="646" y="162"/>
+<use href="#bh" x="672" y="162"/>
+<use href="#bh" x="698" y="162"/>
+<use href="#bh" x="724" y="162"/>
+<use href="#bh" x="750" y="162"/>
+<use href="#bh" x="776" y="162"/>
+<use href="#bh" x="802" y="162"/>
+<use href="#bh" x="828" y="162"/>
+<use href="#bh" x="854" y="162"/>
+<use href="#bh" x="880" y="162"/>
+<use href="#bh" x="906" y="162"/>
+<use href="#bh" x="932" y="162"/>
+<use href="#bh" x="958" y="162"/>
+<use href="#bh" x="984" y="162"/>
+<use href="#bh" x="1010" y="162"/>
+<text x="87" y="188" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">f</text>
+<use href="#bh" x="126" y="184"/>
+<use href="#bh" x="152" y="184"/>
+<use href="#bh" x="178" y="184"/>
+<use href="#bh" x="204" y="184"/>
+<use href="#bh" x="230" y="184"/>
+<use href="#bh" x="256" y="184"/>
+<use href="#bh" x="282" y="184"/>
+<use href="#bh" x="308" y="184"/>
+<use href="#bh" x="334" y="184"/>
+<use href="#bh" x="360" y="184"/>
+<use href="#bh" x="386" y="184"/>
+<use href="#bh" x="412" y="184"/>
+<use href="#bh" x="438" y="184"/>
+<use href="#bh" x="464" y="184"/>
+<use href="#bh" x="490" y="184"/>
+<use href="#bh" x="516" y="184"/>
+<use href="#bh" x="542" y="184"/>
+<use href="#bh" x="568" y="184"/>
+<use href="#bh" x="594" y="184"/>
+<use href="#bh" x="620" y="184"/>
+<use href="#bh" x="646" y="184"/>
+<use href="#bh" x="672" y="184"/>
+<use href="#bh" x="698" y="184"/>
+<use href="#bh" x="724" y="184"/>
+<use href="#bh" x="750" y="184"/>
+<use href="#bh" x="776" y="184"/>
+<use href="#bh" x="802" y="184"/>
+<use href="#bh" x="828" y="184"/>
+<use href="#bh" x="854" y="184"/>
+<use href="#bh" x="880" y="184"/>
+<use href="#bh" x="906" y="184"/>
+<use href="#bh" x="932" y="184"/>
+<use href="#bh" x="958" y="184"/>
+<use href="#bh" x="984" y="184"/>
+<use href="#bh" x="1010" y="184"/>
+<text x="87" y="238" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">e</text>
+<use href="#bh" x="126" y="234"/>
+<use href="#bh" x="152" y="234"/>
+<use href="#bh" x="178" y="234"/>
+<use href="#bh" x="204" y="234"/>
+<use href="#bh" x="230" y="234"/>
+<use href="#bh" x="256" y="234"/>
+<use href="#bh" x="282" y="234"/>
+<use href="#bh" x="308" y="234"/>
+<use href="#bh" x="334" y="234"/>
+<use href="#bh" x="360" y="234"/>
+<use href="#bh" x="386" y="234"/>
+<use href="#bh" x="412" y="234"/>
+<use href="#bh" x="438" y="234"/>
+<use href="#bh" x="464" y="234"/>
+<use href="#bh" x="490" y="234"/>
+<use href="#bh" x="516" y="234"/>
+<use href="#bh" x="542" y="234"/>
+<use href="#bh" x="568" y="234"/>
+<use href="#bh" x="594" y="234"/>
+<use href="#bh" x="620" y="234"/>
+<use href="#bh" x="646" y="234"/>
+<use href="#bh" x="672" y="234"/>
+<use href="#bh" x="698" y="234"/>
+<use href="#bh" x="724" y="234"/>
+<use href="#bh" x="750" y="234"/>
+<use href="#bh" x="776" y="234"/>
+<use href="#bh" x="802" y="234"/>
+<use href="#bh" x="828" y="234"/>
+<use href="#bh" x="854" y="234"/>
+<use href="#bh" x="880" y="234"/>
+<use href="#bh" x="906" y="234"/>
+<use href="#bh" x="932" y="234"/>
+<use href="#bh" x="958" y="234"/>
+<use href="#bh" x="984" y="234"/>
+<use href="#bh" x="1010" y="234"/>
+<text x="87" y="260" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">d</text>
+<use href="#bh" x="126" y="256"/>
+<use href="#bh" x="152" y="256"/>
+<use href="#bh" x="178" y="256"/>
+<use href="#bh" x="204" y="256"/>
+<use href="#bh" x="230" y="256"/>
+<use href="#bh" x="256" y="256"/>
+<use href="#bh" x="282" y="256"/>
+<use href="#bh" x="308" y="256"/>
+<use href="#bh" x="334" y="256"/>
+<use href="#bh" x="360" y="256"/>
+<use href="#bh" x="386" y="256"/>
+<use href="#bh" x="412" y="256"/>
+<use href="#bh" x="438" y="256"/>
+<use href="#bh" x="464" y="256"/>
+<use href="#bh" x="490" y="256"/>
+<use href="#bh" x="516" y="256"/>
+<use href="#bh" x="542" y="256"/>
+<use href="#bh" x="568" y="256"/>
+<use href="#bh" x="594" y="256"/>
+<use href="#bh" x="620" y="256"/>
+<use href="#bh" x="646" y="256"/>
+<use href="#bh" x="672" y="256"/>
+<use href="#bh" x="698" y="256"/>
+<use href="#bh" x="724" y="256"/>
+<use href="#bh" x="750" y="256"/>
+<use href="#bh" x="776" y="256"/>
+<use href="#bh" x="802" y="256"/>
+<use href="#bh" x="828" y="256"/>
+<use href="#bh" x="854" y="256"/>
+<use href="#bh" x="880" y="256"/>
+<use href="#bh" x="906" y="256"/>
+<use href="#bh" x="932" y="256"/>
+<use href="#bh" x="958" y="256"/>
+<use href="#bh" x="984" y="256"/>
+<use href="#bh" x="1010" y="256"/>
+<text x="87" y="282" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">c</text>
+<use href="#bh" x="126" y="278"/>
+<use href="#bh" x="152" y="278"/>
+<use href="#bh" x="178" y="278"/>
+<use href="#bh" x="204" y="278"/>
+<use href="#bh" x="230" y="278"/>
+<use href="#bh" x="256" y="278"/>
+<use href="#bh" x="282" y="278"/>
+<use href="#bh" x="308" y="278"/>
+<use href="#bh" x="334" y="278"/>
+<use href="#bh" x="360" y="278"/>
+<use href="#bh" x="386" y="278"/>
+<use href="#bh" x="412" y="278"/>
+<use href="#bh" x="438" y="278"/>
+<use href="#bh" x="464" y="278"/>
+<use href="#bh" x="490" y="278"/>
+<use href="#bh" x="516" y="278"/>
+<use href="#bh" x="542" y="278"/>
+<use href="#bh" x="568" y="278"/>
+<use href="#bh" x="594" y="278"/>
+<use href="#bh" x="620" y="278"/>
+<use href="#bh" x="646" y="278"/>
+<use href="#bh" x="672" y="278"/>
+<use href="#bh" x="698" y="278"/>
+<use href="#bh" x="724" y="278"/>
+<use href="#bh" x="750" y="278"/>
+<use href="#bh" x="776" y="278"/>
+<use href="#bh" x="802" y="278"/>
+<use href="#bh" x="828" y="278"/>
+<use href="#bh" x="854" y="278"/>
+<use href="#bh" x="880" y="278"/>
+<use href="#bh" x="906" y="278"/>
+<use href="#bh" x="932" y="278"/>
+<use href="#bh" x="958" y="278"/>
+<use href="#bh" x="984" y="278"/>
+<use href="#bh" x="1010" y="278"/>
+<text x="87" y="304" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">b</text>
+<use href="#bh" x="126" y="300"/>
+<use href="#bh" x="152" y="300"/>
+<use href="#bh" x="178" y="300"/>
+<use href="#bh" x="204" y="300"/>
+<use href="#bh" x="230" y="300"/>
+<use href="#bh" x="256" y="300"/>
+<use href="#bh" x="282" y="300"/>
+<use href="#bh" x="308" y="300"/>
+<use href="#bh" x="334" y="300"/>
+<use href="#bh" x="360" y="300"/>
+<use href="#bh" x="386" y="300"/>
+<use href="#bh" x="412" y="300"/>
+<use href="#bh" x="438" y="300"/>
+<use href="#bh" x="464" y="300"/>
+<use href="#bh" x="490" y="300"/>
+<use href="#bh" x="516" y="300"/>
+<use href="#bh" x="542" y="300"/>
+<use href="#bh" x="568" y="300"/>
+<use href="#bh" x="594" y="300"/>
+<use href="#bh" x="620" y="300"/>
+<use href="#bh" x="646" y="300"/>
+<use href="#bh" x="672" y="300"/>
+<use href="#bh" x="698" y="300"/>
+<use href="#bh" x="724" y="300"/>
+<use href="#bh" x="750" y="300"/>
+<use href="#bh" x="776" y="300"/>
+<use href="#bh" x="802" y="300"/>
+<use href="#bh" x="828" y="300"/>
+<use href="#bh" x="854" y="300"/>
+<use href="#bh" x="880" y="300"/>
+<use href="#bh" x="906" y="300"/>
+<use href="#bh" x="932" y="300"/>
+<use href="#bh" x="958" y="300"/>
+<use href="#bh" x="984" y="300"/>
+<use href="#bh" x="1010" y="300"/>
+<text x="87" y="326" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">a</text>
+<use href="#bh" x="126" y="322"/>
+<use href="#bh" x="152" y="322"/>
+<use href="#bh" x="178" y="322"/>
+<use href="#bh" x="204" y="322"/>
+<use href="#bh" x="230" y="322"/>
+<use href="#bh" x="256" y="322"/>
+<use href="#bh" x="282" y="322"/>
+<use href="#bh" x="308" y="322"/>
+<use href="#bh" x="334" y="322"/>
+<use href="#bh" x="360" y="322"/>
+<use href="#bh" x="386" y="322"/>
+<use href="#bh" x="412" y="322"/>
+<use href="#bh" x="438" y="322"/>
+<use href="#bh" x="464" y="322"/>
+<use href="#bh" x="490" y="322"/>
+<use href="#bh" x="516" y="322"/>
+<use href="#bh" x="542" y="322"/>
+<use href="#bh" x="568" y="322"/>
+<use href="#bh" x="594" y="322"/>
+<use href="#bh" x="620" y="322"/>
+<use href="#bh" x="646" y="322"/>
+<use href="#bh" x="672" y="322"/>
+<use href="#bh" x="698" y="322"/>
+<use href="#bh" x="724" y="322"/>
+<use href="#bh" x="750" y="322"/>
+<use href="#bh" x="776" y="322"/>
+<use href="#bh" x="802" y="322"/>
+<use href="#bh" x="828" y="322"/>
+<use href="#bh" x="854" y="322"/>
+<use href="#bh" x="880" y="322"/>
+<use href="#bh" x="906" y="322"/>
+<use href="#bh" x="932" y="322"/>
+<use href="#bh" x="958" y="322"/>
+<use href="#bh" x="984" y="322"/>
+<use href="#bh" x="1010" y="322"/>
+<text x="126" y="12" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">1</text>
+<text x="230" y="12" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">5</text>
+<text x="360" y="12" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">10</text>
+<text x="490" y="12" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">15</text>
+<text x="620" y="12" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">20</text>
+<text x="750" y="12" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">25</text>
+<text x="880" y="12" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">30</text>
+<text x="1010" y="12" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">35</text>
+<rect x="100" y="502" width="463.2" height="118" rx="8" fill="currentColor" opacity=".05"/>
+<rect x="100" y="502" width="463.2" height="118" rx="8" fill="none" stroke="currentColor" stroke-width="1.3" opacity=".6"/>
+<rect x="88" y="518" width="34" height="22" rx="3" fill="none" stroke="currentColor" stroke-width="1" opacity=".5"/>
+<text x="105" y="532" font-size="8.5" fill="currentColor" opacity=".55" text-anchor="middle" font-family="IBM Plex Mono,monospace">USB</text>
+<text x="331.6" y="565" font-size="11" fill="currentColor" opacity=".55" text-anchor="middle" letter-spacing="1.6" font-family="Archivo,Arial,sans-serif">ARDUINO UNO</text>
+<use href="#sk" x="136" y="517"/>
+<use href="#sk" x="158" y="517"/>
+<use href="#sk" x="180" y="517"/>
+<use href="#sk" x="202" y="517"/>
+<use href="#sk" x="224" y="517"/>
+<use href="#sk" x="246" y="517"/>
+<rect x="239.5" y="510.5" width="13" height="13" rx="2" fill="#2E7D46" opacity=".18"/>
+<rect x="239.5" y="510.5" width="13" height="13" rx="2" fill="none" stroke="#2E7D46" stroke-width="1.6"/>
+<use href="#sk" x="268" y="517"/>
+<rect x="261.5" y="510.5" width="13" height="13" rx="2" fill="#2E7D46" opacity=".18"/>
+<rect x="261.5" y="510.5" width="13" height="13" rx="2" fill="none" stroke="#2E7D46" stroke-width="1.6"/>
+<use href="#sk" x="290" y="517"/>
+<rect x="283.5" y="510.5" width="13" height="13" rx="2" fill="#2E7D46" opacity=".18"/>
+<rect x="283.5" y="510.5" width="13" height="13" rx="2" fill="none" stroke="#2E7D46" stroke-width="1.6"/>
+<use href="#sk" x="312" y="517"/>
+<rect x="305.5" y="510.5" width="13" height="13" rx="2" fill="#2E7D46" opacity=".18"/>
+<rect x="305.5" y="510.5" width="13" height="13" rx="2" fill="none" stroke="#2E7D46" stroke-width="1.6"/>
+<use href="#sk" x="334" y="517"/>
+<use href="#sk" x="378" y="517"/>
+<use href="#sk" x="400" y="517"/>
+<use href="#sk" x="422" y="517"/>
+<rect x="415.5" y="510.5" width="13" height="13" rx="2" fill="#2E7D46" opacity=".18"/>
+<rect x="415.5" y="510.5" width="13" height="13" rx="2" fill="none" stroke="#2E7D46" stroke-width="1.6"/>
+<use href="#sk" x="444" y="517"/>
+<rect x="437.5" y="510.5" width="13" height="13" rx="2" fill="#2E7D46" opacity=".18"/>
+<rect x="437.5" y="510.5" width="13" height="13" rx="2" fill="none" stroke="#2E7D46" stroke-width="1.6"/>
+<use href="#sk" x="466" y="517"/>
+<rect x="459.5" y="510.5" width="13" height="13" rx="2" fill="#2E7D46" opacity=".18"/>
+<rect x="459.5" y="510.5" width="13" height="13" rx="2" fill="none" stroke="#2E7D46" stroke-width="1.6"/>
+<use href="#sk" x="488" y="517"/>
+<rect x="481.5" y="510.5" width="13" height="13" rx="2" fill="#2E7D46" opacity=".18"/>
+<rect x="481.5" y="510.5" width="13" height="13" rx="2" fill="none" stroke="#2E7D46" stroke-width="1.6"/>
+<use href="#sk" x="510" y="517"/>
+<use href="#sk" x="532" y="517"/>
+<use href="#sk" x="136" y="605"/>
+<use href="#sk" x="158" y="605"/>
+<use href="#sk" x="180" y="605"/>
+<use href="#sk" x="202" y="605"/>
+<rect x="195.5" y="598.5" width="13" height="13" rx="2" fill="#2E7D46" opacity=".18"/>
+<rect x="195.5" y="598.5" width="13" height="13" rx="2" fill="none" stroke="#2E7D46" stroke-width="1.6"/>
+<use href="#sk" x="224" y="605"/>
+<rect x="217.5" y="598.5" width="13" height="13" rx="2" fill="#2E7D46" opacity=".18"/>
+<rect x="217.5" y="598.5" width="13" height="13" rx="2" fill="none" stroke="#2E7D46" stroke-width="1.6"/>
+<use href="#sk" x="246" y="605"/>
+<use href="#sk" x="268" y="605"/>
+<use href="#sk" x="312" y="605"/>
+<use href="#sk" x="334" y="605"/>
+<use href="#sk" x="356" y="605"/>
+<use href="#sk" x="378" y="605"/>
+<use href="#sk" x="400" y="605"/>
+<use href="#sk" x="422" y="605"/>
+<line x1="126" y1="96" x2="126" y2="-104" stroke="currentColor" stroke-width="1.5" opacity=".85"/>
+<line x1="152" y1="96" x2="152" y2="-104" stroke="currentColor" stroke-width="1.5" opacity=".85"/>
+<line x1="178" y1="96" x2="178" y2="-104" stroke="currentColor" stroke-width="1.5" opacity=".85"/>
+<line x1="204" y1="96" x2="204" y2="-104" stroke="currentColor" stroke-width="1.5" opacity=".85"/>
+<line x1="230" y1="96" x2="230" y2="-104" stroke="currentColor" stroke-width="1.5" opacity=".85"/>
+<line x1="256" y1="96" x2="256" y2="-104" stroke="currentColor" stroke-width="1.5" opacity=".85"/>
+<line x1="282" y1="96" x2="282" y2="-104" stroke="currentColor" stroke-width="1.5" opacity=".85"/>
+<line x1="308" y1="96" x2="308" y2="-104" stroke="currentColor" stroke-width="1.5" opacity=".85"/>
+<line x1="334" y1="96" x2="334" y2="-104" stroke="currentColor" stroke-width="1.5" opacity=".85"/>
+<line x1="360" y1="96" x2="360" y2="-104" stroke="currentColor" stroke-width="1.5" opacity=".85"/>
+<line x1="386" y1="96" x2="386" y2="-104" stroke="currentColor" stroke-width="1.5" opacity=".85"/>
+<line x1="412" y1="96" x2="412" y2="-104" stroke="currentColor" stroke-width="1.5" opacity=".85"/>
+<line x1="438" y1="96" x2="438" y2="-104" stroke="currentColor" stroke-width="1.5" opacity=".85"/>
+<line x1="464" y1="96" x2="464" y2="-104" stroke="currentColor" stroke-width="1.5" opacity=".85"/>
+<line x1="490" y1="96" x2="490" y2="-104" stroke="currentColor" stroke-width="1.5" opacity=".85"/>
+<line x1="516" y1="96" x2="516" y2="-104" stroke="currentColor" stroke-width="1.5" opacity=".85"/>
+<rect x="116" y="-136" width="410" height="32" rx="4" fill="currentColor" opacity=".13" stroke="currentColor" stroke-width="1.2"/>
+<text x="321" y="-116" font-size="10" text-anchor="middle" font-weight="400" font-family="Archivo,Arial,sans-serif" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">LCD1602, bare 16-pin header in row j</text>
+<text x="321" y="-116" font-size="10" text-anchor="middle" font-weight="400" font-family="Archivo,Arial,sans-serif" fill="currentColor" opacity=".92">LCD1602, bare 16-pin header in row j</text>
+<line x1="126" y1="184" x2="126" y2="54" stroke="#3D6FA8" stroke-width="1.9" opacity=".9"/>
+<circle cx="126" cy="54" r="2.6" fill="#3D6FA8"/>
+<circle cx="126" cy="184" r="2.6" fill="#3D6FA8"/>
+<line x1="152" y1="184" x2="152" y2="34" stroke="#C8452F" stroke-width="1.9" opacity=".9"/>
+<circle cx="152" cy="34" r="2.6" fill="#C8452F"/>
+<circle cx="152" cy="184" r="2.6" fill="#C8452F"/>
+<path d="M 178 184 L 178 -19 Q 178 -28 187 -28 L 897 -28 Q 906 -28 906 -19 L 906 96" fill="none" stroke="currentColor" stroke-width="1.9" opacity=".9"/>
+<circle cx="906" cy="96" r="2.6" fill="currentColor"/>
+<circle cx="178" cy="184" r="2.6" fill="#2E7D46"/>
+<path d="M 204 184 L 204 -27 Q 204 -36 195 -36 L 47 -36 Q 38 -36 38 -27 L 38 451 Q 38 460 47 460 L 237 460 Q 246 460 246 469 L 246 517" fill="none" stroke="#2E7D46" stroke-width="1.9" opacity=".9"/>
+<circle cx="246" cy="517" r="2.6" fill="#2E7D46"/>
+<circle cx="204" cy="184" r="2.6" fill="#2E7D46"/>
+<line x1="230" y1="184" x2="230" y2="54" stroke="#3D6FA8" stroke-width="1.9" opacity=".9"/>
+<circle cx="230" cy="54" r="2.6" fill="#3D6FA8"/>
+<circle cx="230" cy="184" r="2.6" fill="#3D6FA8"/>
+<path d="M 256 184 L 256 -35 Q 256 -44 247 -44 L 39 -44 Q 30 -44 30 -35 L 30 443 Q 30 452 39 452 L 259 452 Q 268 452 268 461 L 268 517" fill="none" stroke="#2E7D46" stroke-width="1.9" opacity=".9"/>
+<circle cx="268" cy="517" r="2.6" fill="#2E7D46"/>
+<circle cx="256" cy="184" r="2.6" fill="#2E7D46"/>
+<path d="M 386 184 L 386 -11 Q 386 -20 377 -20 L 63 -20 Q 54 -20 54 -11 L 54 467 Q 54 476 63 476 L 413 476 Q 422 476 422 485 L 422 517" fill="none" stroke="#2E7D46" stroke-width="1.9" opacity=".9"/>
+<circle cx="422" cy="517" r="2.6" fill="#2E7D46"/>
+<circle cx="386" cy="184" r="2.6" fill="#2E7D46"/>
+<path d="M 412 184 L 412 -19 Q 412 -28 403 -28 L 55 -28 Q 46 -28 46 -19 L 46 459 Q 46 468 55 468 L 435 468 Q 444 468 444 477 L 444 517" fill="none" stroke="#2E7D46" stroke-width="1.9" opacity=".9"/>
+<circle cx="444" cy="517" r="2.6" fill="#2E7D46"/>
+<circle cx="412" cy="184" r="2.6" fill="#2E7D46"/>
+<path d="M 438 184 L 438 -27 Q 438 -36 429 -36 L 47 -36 Q 38 -36 38 -27 L 38 451 Q 38 460 47 460 L 457 460 Q 466 460 466 469 L 466 517" fill="none" stroke="#2E7D46" stroke-width="1.9" opacity=".9"/>
+<circle cx="466" cy="517" r="2.6" fill="#2E7D46"/>
+<circle cx="438" cy="184" r="2.6" fill="#2E7D46"/>
+<path d="M 464 184 L 464 -35 Q 464 -44 455 -44 L 39 -44 Q 30 -44 30 -35 L 30 443 Q 30 452 39 452 L 479 452 Q 488 452 488 461 L 488 517" fill="none" stroke="#2E7D46" stroke-width="1.9" opacity=".9"/>
+<circle cx="488" cy="517" r="2.6" fill="#2E7D46"/>
+<circle cx="464" cy="184" r="2.6" fill="#2E7D46"/>
+<line x1="490" y1="184" x2="490" y2="34" stroke="#C8452F" stroke-width="1.9" opacity=".9"/>
+<circle cx="490" cy="34" r="2.6" fill="#C8452F"/>
+<circle cx="490" cy="184" r="2.6" fill="#C8452F"/>
+<line x1="516" y1="184" x2="516" y2="54" stroke="#3D6FA8" stroke-width="1.9" opacity=".9"/>
+<circle cx="516" cy="54" r="2.6" fill="#3D6FA8"/>
+<circle cx="516" cy="184" r="2.6" fill="#3D6FA8"/>
+<line x1="880" y1="184" x2="880" y2="153" stroke="currentColor" stroke-width="1.6"/>
+<line x1="906" y1="184" x2="906" y2="153" stroke="currentColor" stroke-width="1.6"/>
+<line x1="932" y1="184" x2="932" y2="153" stroke="currentColor" stroke-width="1.6"/>
+<rect x="872" y="131" width="68" height="22" rx="3" fill="currentColor" opacity=".13" stroke="currentColor" stroke-width="1.1"/>
+<circle cx="906" cy="142" r="8" fill="none" stroke="currentColor" stroke-width="1.3"/>
+<line x1="906" y1="142" x2="911" y2="136" stroke="currentColor" stroke-width="1.5"/>
+<text x="947" y="146" font-size="9" text-anchor="start" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">contrast</text>
+<text x="947" y="146" font-size="9" text-anchor="start" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".8">contrast</text>
+<line x1="880" y1="96" x2="880" y2="54" stroke="#3D6FA8" stroke-width="1.9" opacity=".9"/>
+<circle cx="880" cy="54" r="2.6" fill="#3D6FA8"/>
+<circle cx="880" cy="96" r="2.6" fill="#3D6FA8"/>
+<line x1="932" y1="96" x2="932" y2="34" stroke="#C8452F" stroke-width="1.9" opacity=".9"/>
+<circle cx="932" cy="34" r="2.6" fill="#C8452F"/>
+<circle cx="932" cy="96" r="2.6" fill="#C8452F"/>
+<line x1="620" y1="184" x2="620" y2="-104" stroke="currentColor" stroke-width="1.5" opacity=".85"/>
+<line x1="646" y1="184" x2="646" y2="-104" stroke="currentColor" stroke-width="1.5" opacity=".85"/>
+<line x1="672" y1="184" x2="672" y2="-104" stroke="currentColor" stroke-width="1.5" opacity=".85"/>
+<line x1="698" y1="184" x2="698" y2="-104" stroke="currentColor" stroke-width="1.5" opacity=".85"/>
+<rect x="610" y="-136" width="98" height="32" rx="4" fill="currentColor" opacity=".13" stroke="currentColor" stroke-width="1.2"/>
+<text x="659" y="-116" font-size="10" text-anchor="middle" font-weight="400" font-family="Archivo,Arial,sans-serif" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">HC-SR04</text>
+<text x="659" y="-116" font-size="10" text-anchor="middle" font-weight="400" font-family="Archivo,Arial,sans-serif" fill="currentColor" opacity=".92">HC-SR04</text>
+<line x1="620" y1="96" x2="620" y2="34" stroke="#C8452F" stroke-width="1.9" opacity=".9"/>
+<circle cx="620" cy="34" r="2.6" fill="#C8452F"/>
+<circle cx="620" cy="96" r="2.6" fill="#C8452F"/>
+<path d="M 646 96 L 646 -11 Q 646 -20 655 -20 L 1073 -20 Q 1082 -20 1082 -11 L 1082 467 Q 1082 476 1073 476 L 299 476 Q 290 476 290 485 L 290 517" fill="none" stroke="#2E7D46" stroke-width="1.9" opacity=".9"/>
+<circle cx="290" cy="517" r="2.6" fill="#2E7D46"/>
+<circle cx="646" cy="96" r="2.6" fill="#2E7D46"/>
+<path d="M 672 96 L 672 -19 Q 672 -28 681 -28 L 1081 -28 Q 1090 -28 1090 -19 L 1090 459 Q 1090 468 1081 468 L 321 468 Q 312 468 312 477 L 312 517" fill="none" stroke="#2E7D46" stroke-width="1.9" opacity=".9"/>
+<circle cx="312" cy="517" r="2.6" fill="#2E7D46"/>
+<circle cx="672" cy="96" r="2.6" fill="#2E7D46"/>
+<line x1="698" y1="96" x2="698" y2="54" stroke="#3D6FA8" stroke-width="1.9" opacity=".9"/>
+<circle cx="698" cy="54" r="2.6" fill="#3D6FA8"/>
+<circle cx="698" cy="96" r="2.6" fill="#3D6FA8"/>
+<path d="M 202 605 L 202 651 Q 202 660 193 660 L 17 660 Q 8 660 8 651 L 8 43 Q 8 34 17 34 L 126 34" fill="none" stroke="#C8452F" stroke-width="2.1" opacity=".95"/>
+<circle cx="202" cy="605" r="2.8" fill="#C8452F"/>
+<circle cx="126" cy="34" r="2.8" fill="#C8452F"/>
+<path d="M 224 605 L 224 659 Q 224 668 215 668 L 9 668 Q 0 668 0 659 L 0 63 Q 0 54 9 54 L 152 54" fill="none" stroke="#3D6FA8" stroke-width="2.1" opacity=".95"/>
+<circle cx="224" cy="605" r="2.8" fill="#3D6FA8"/>
+<circle cx="152" cy="54" r="2.8" fill="#3D6FA8"/>
+<circle cx="126" cy="184" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="126" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">f1</text>
+<text x="126" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">f1</text>
+<circle cx="386" cy="184" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="386" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">f11</text>
+<text x="386" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">f11</text>
+<circle cx="412" cy="184" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="412" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">f12</text>
+<text x="412" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">f12</text>
+<circle cx="438" cy="184" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="438" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">f13</text>
+<text x="438" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">f13</text>
+<circle cx="464" cy="184" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="464" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">f14</text>
+<text x="464" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">f14</text>
+<circle cx="490" cy="184" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="490" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">f15</text>
+<text x="490" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">f15</text>
+<circle cx="516" cy="184" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="516" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">f16</text>
+<text x="516" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">f16</text>
+<circle cx="152" cy="184" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="152" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">f2</text>
+<text x="152" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">f2</text>
+<circle cx="620" cy="184" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="620" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">f20</text>
+<text x="620" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">f20</text>
+<circle cx="646" cy="184" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="646" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">f21</text>
+<text x="646" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">f21</text>
+<circle cx="672" cy="184" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="672" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">f22</text>
+<text x="672" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">f22</text>
+<circle cx="698" cy="184" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="698" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">f23</text>
+<text x="698" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">f23</text>
+<circle cx="178" cy="184" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="178" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">f3</text>
+<text x="178" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">f3</text>
+<circle cx="880" cy="184" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="880" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">f30</text>
+<text x="880" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">f30</text>
+<circle cx="906" cy="184" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="906" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">f31</text>
+<text x="906" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">f31</text>
+<circle cx="932" cy="184" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="932" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">f32</text>
+<text x="932" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">f32</text>
+<circle cx="204" cy="184" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="204" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">f4</text>
+<text x="204" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">f4</text>
+<circle cx="230" cy="184" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="230" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">f5</text>
+<text x="230" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">f5</text>
+<circle cx="256" cy="184" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="256" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">f6</text>
+<text x="256" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">f6</text>
+<circle cx="126" cy="96" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="126" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">j1</text>
+<text x="126" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">j1</text>
+<circle cx="360" cy="96" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="360" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">j10</text>
+<text x="360" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">j10</text>
+<circle cx="386" cy="96" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="386" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">j11</text>
+<text x="386" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">j11</text>
+<circle cx="412" cy="96" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="412" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">j12</text>
+<text x="412" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">j12</text>
+<circle cx="438" cy="96" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="438" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">j13</text>
+<text x="438" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">j13</text>
+<circle cx="464" cy="96" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="464" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">j14</text>
+<text x="464" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">j14</text>
+<circle cx="490" cy="96" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="490" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">j15</text>
+<text x="490" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">j15</text>
+<circle cx="516" cy="96" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="516" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">j16</text>
+<text x="516" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">j16</text>
+<circle cx="152" cy="96" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="152" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">j2</text>
+<text x="152" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">j2</text>
+<circle cx="620" cy="96" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="620" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">j20</text>
+<text x="620" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">j20</text>
+<circle cx="646" cy="96" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="646" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">j21</text>
+<text x="646" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">j21</text>
+<circle cx="672" cy="96" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="672" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">j22</text>
+<text x="672" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">j22</text>
+<circle cx="698" cy="96" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="698" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">j23</text>
+<text x="698" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">j23</text>
+<circle cx="178" cy="96" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="178" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">j3</text>
+<text x="178" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">j3</text>
+<circle cx="880" cy="96" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="880" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">j30</text>
+<text x="880" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">j30</text>
+<circle cx="906" cy="96" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="906" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">j31</text>
+<text x="906" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">j31</text>
+<circle cx="932" cy="96" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="932" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">j32</text>
+<text x="932" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">j32</text>
+<circle cx="204" cy="96" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="204" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">j4</text>
+<text x="204" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">j4</text>
+<circle cx="230" cy="96" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="230" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">j5</text>
+<text x="230" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">j5</text>
+<circle cx="256" cy="96" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="256" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">j6</text>
+<text x="256" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">j6</text>
+<circle cx="282" cy="96" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="282" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">j7</text>
+<text x="282" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">j7</text>
+<circle cx="308" cy="96" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="308" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">j8</text>
+<text x="308" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">j8</text>
+<circle cx="334" cy="96" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="334" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">j9</text>
+<text x="334" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">j9</text>
+<text x="136" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">SCL</text>
+<text x="136" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">SCL</text>
+<text x="158" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">SDA</text>
+<text x="158" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">SDA</text>
+<text x="180" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">AREF</text>
+<text x="180" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">AREF</text>
+<text x="202" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">GND</text>
+<text x="202" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">GND</text>
+<text x="224" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">13</text>
+<text x="224" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">13</text>
+<text x="246" y="533" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">12</text>
+<text x="246" y="533" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="#2E7D46" opacity=".95">12</text>
+<text x="268" y="533" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">11</text>
+<text x="268" y="533" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="#2E7D46" opacity=".95">11</text>
+<text x="290" y="533" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">10</text>
+<text x="290" y="533" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="#2E7D46" opacity=".95">10</text>
+<text x="312" y="533" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">9</text>
+<text x="312" y="533" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="#2E7D46" opacity=".95">9</text>
+<text x="334" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">8</text>
+<text x="334" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">8</text>
+<text x="378" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">7</text>
+<text x="378" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">7</text>
+<text x="400" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">6</text>
+<text x="400" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">6</text>
+<text x="422" y="533" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">5</text>
+<text x="422" y="533" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="#2E7D46" opacity=".95">5</text>
+<text x="444" y="533" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">4</text>
+<text x="444" y="533" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="#2E7D46" opacity=".95">4</text>
+<text x="466" y="533" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">3</text>
+<text x="466" y="533" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="#2E7D46" opacity=".95">3</text>
+<text x="488" y="533" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">2</text>
+<text x="488" y="533" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="#2E7D46" opacity=".95">2</text>
+<text x="510" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">1</text>
+<text x="510" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">1</text>
+<text x="532" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">0</text>
+<text x="532" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">0</text>
+<text x="136" y="593" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">IOR</text>
+<text x="136" y="593" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">IOR</text>
+<text x="158" y="593" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">RST</text>
+<text x="158" y="593" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">RST</text>
+<text x="180" y="593" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">3V3</text>
+<text x="180" y="593" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">3V3</text>
+<text x="202" y="593" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">5V</text>
+<text x="202" y="593" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="#2E7D46" opacity=".95">5V</text>
+<text x="224" y="593" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">GND</text>
+<text x="224" y="593" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="#2E7D46" opacity=".95">GND</text>
+<text x="246" y="593" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">GND</text>
+<text x="246" y="593" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">GND</text>
+<text x="268" y="593" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">VIN</text>
+<text x="268" y="593" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">VIN</text>
+<text x="312" y="593" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">A0</text>
+<text x="312" y="593" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">A0</text>
+<text x="334" y="593" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">A1</text>
+<text x="334" y="593" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">A1</text>
+<text x="356" y="593" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">A2</text>
+<text x="356" y="593" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">A2</text>
+<text x="378" y="593" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">A3</text>
+<text x="378" y="593" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">A3</text>
+<text x="400" y="593" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">A4</text>
+<text x="400" y="593" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">A4</text>
+<text x="422" y="593" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">A5</text>
+<text x="422" y="593" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">A5</text>
+</svg>
+      <figcaption>Twenty wires. Screen pins 7, 8, 9 and 10 are deliberately empty, and Echo has moved to pin 9 because the screen has taken pin 11.</figcaption>
+    </figure>
     <p>This is the longest single build in the course. Do it in one sitting, slowly, and test in the middle rather than at the end.</p>
     <div class="ifnot" style="margin-bottom:.4rem"><b>Read this before your first wire</b>The screen's pins are numbered 1 to 16 <strong>from the left as you look at the front</strong>, and the numbers are usually printed on the board. Find pin 1 and pin 16 on your own screen and mark which end is which with a scrap of tape. Getting this backwards means twelve wires in the wrong place.</div>
 
@@ -883,7 +2189,7 @@ digitalWrite(trigPin, LOW);</code></pre>
         <div class="see"><b>You should see</b>Arduino pins 11, 12, 5, 4, 3 and 2 all completely empty, ready for the screen. Only pins 9 and 10 have sensor wires in them.</div>
       </div></div>
       <div class="step"><div class="body">
-        <p><strong>Push the screen's pin strip into row <code>j</code></strong>, with its sixteen pins in columns 1 to 16. So screen pin 1 sits in <code>j1</code>, screen pin 2 in <code>j2</code>, and so on to <code>j16</code>. The numbers match, which makes everything after this easier.</p>
+        <p><strong>Push the screen's pin strip into row <code>j</code></strong>, with its sixteen pins in columns 1 to 16. So screen pin 1 sits in <code>j1</code>, screen pin 2 in <code>j2</code>, and so on all the way along: <code>j1</code> <code>j2</code> <code>j3</code> <code>j4</code> <code>j5</code> <code>j6</code> <code>j7</code> <code>j8</code> <code>j9</code> <code>j10</code> <code>j11</code> <code>j12</code> <code>j13</code> <code>j14</code> <code>j15</code> <code>j16</code>. Sixteen pins, sixteen columns, none skipped. The numbers match, which makes everything after this easier.</p>
         <p class="note">Row <code>j</code> on purpose. The screen's body will lie over the rows behind it, and every wire you are about to place goes into row <code>f</code> of the same column, which stays clear.</p>
         <div class="see"><b>You should see</b>All sixteen pins in row j, the screen sitting level, and nothing bent underneath.</div>
       </div></div>
@@ -1023,6 +2329,642 @@ lastShown = cm;</code></pre>
 
 <section class="part" id="guard">
   <div class="parthead"><span class="tag">Part 8</span><h2>Build the parking guard</h2><span class="mins">60 min</span></div>
+    <figure class="wiring">
+      <svg viewBox="0 -150 982 816" role="img" aria-label="Band 7 Part 8: parking guard, I2C screen" style="width:982px; max-width:100%; min-width:560px">
+<defs><circle id="bh" r="3.6" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/><rect id="sk" x="-6.5" y="-6.5" width="13" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1" opacity=".5"/></defs>
+<rect x="100" y="18" width="806" height="376" rx="7" fill="none" stroke="currentColor" stroke-width="1.3" opacity=".55"/>
+<rect x="100" y="200" width="806" height="26" fill="currentColor" opacity=".07"/>
+<line x1="108" y1="34" x2="898" y2="34" stroke="#C8452F" stroke-width="1.2" opacity=".45"/>
+<text x="87" y="38" font-size="12" fill="#C8452F" text-anchor="middle" font-family="Archivo,Arial,sans-serif">+</text>
+<use href="#bh" x="126" y="34"/>
+<use href="#bh" x="152" y="34"/>
+<use href="#bh" x="178" y="34"/>
+<use href="#bh" x="204" y="34"/>
+<use href="#bh" x="230" y="34"/>
+<use href="#bh" x="256" y="34"/>
+<use href="#bh" x="282" y="34"/>
+<use href="#bh" x="308" y="34"/>
+<use href="#bh" x="334" y="34"/>
+<use href="#bh" x="360" y="34"/>
+<use href="#bh" x="386" y="34"/>
+<use href="#bh" x="412" y="34"/>
+<use href="#bh" x="438" y="34"/>
+<use href="#bh" x="464" y="34"/>
+<use href="#bh" x="490" y="34"/>
+<use href="#bh" x="516" y="34"/>
+<use href="#bh" x="542" y="34"/>
+<use href="#bh" x="568" y="34"/>
+<use href="#bh" x="594" y="34"/>
+<use href="#bh" x="620" y="34"/>
+<use href="#bh" x="646" y="34"/>
+<use href="#bh" x="672" y="34"/>
+<use href="#bh" x="698" y="34"/>
+<use href="#bh" x="724" y="34"/>
+<use href="#bh" x="750" y="34"/>
+<use href="#bh" x="776" y="34"/>
+<use href="#bh" x="802" y="34"/>
+<use href="#bh" x="828" y="34"/>
+<use href="#bh" x="854" y="34"/>
+<use href="#bh" x="880" y="34"/>
+<line x1="108" y1="54" x2="898" y2="54" stroke="#3D6FA8" stroke-width="1.2" opacity=".45"/>
+<text x="87" y="58" font-size="12" fill="#3D6FA8" text-anchor="middle" font-family="Archivo,Arial,sans-serif">−</text>
+<use href="#bh" x="126" y="54"/>
+<use href="#bh" x="152" y="54"/>
+<use href="#bh" x="178" y="54"/>
+<use href="#bh" x="204" y="54"/>
+<use href="#bh" x="230" y="54"/>
+<use href="#bh" x="256" y="54"/>
+<use href="#bh" x="282" y="54"/>
+<use href="#bh" x="308" y="54"/>
+<use href="#bh" x="334" y="54"/>
+<use href="#bh" x="360" y="54"/>
+<use href="#bh" x="386" y="54"/>
+<use href="#bh" x="412" y="54"/>
+<use href="#bh" x="438" y="54"/>
+<use href="#bh" x="464" y="54"/>
+<use href="#bh" x="490" y="54"/>
+<use href="#bh" x="516" y="54"/>
+<use href="#bh" x="542" y="54"/>
+<use href="#bh" x="568" y="54"/>
+<use href="#bh" x="594" y="54"/>
+<use href="#bh" x="620" y="54"/>
+<use href="#bh" x="646" y="54"/>
+<use href="#bh" x="672" y="54"/>
+<use href="#bh" x="698" y="54"/>
+<use href="#bh" x="724" y="54"/>
+<use href="#bh" x="750" y="54"/>
+<use href="#bh" x="776" y="54"/>
+<use href="#bh" x="802" y="54"/>
+<use href="#bh" x="828" y="54"/>
+<use href="#bh" x="854" y="54"/>
+<use href="#bh" x="880" y="54"/>
+<line x1="108" y1="354" x2="898" y2="354" stroke="#3D6FA8" stroke-width="1.2" opacity=".45"/>
+<text x="87" y="358" font-size="12" fill="#3D6FA8" text-anchor="middle" font-family="Archivo,Arial,sans-serif">−</text>
+<use href="#bh" x="126" y="354"/>
+<use href="#bh" x="152" y="354"/>
+<use href="#bh" x="178" y="354"/>
+<use href="#bh" x="204" y="354"/>
+<use href="#bh" x="230" y="354"/>
+<use href="#bh" x="256" y="354"/>
+<use href="#bh" x="282" y="354"/>
+<use href="#bh" x="308" y="354"/>
+<use href="#bh" x="334" y="354"/>
+<use href="#bh" x="360" y="354"/>
+<use href="#bh" x="386" y="354"/>
+<use href="#bh" x="412" y="354"/>
+<use href="#bh" x="438" y="354"/>
+<use href="#bh" x="464" y="354"/>
+<use href="#bh" x="490" y="354"/>
+<use href="#bh" x="516" y="354"/>
+<use href="#bh" x="542" y="354"/>
+<use href="#bh" x="568" y="354"/>
+<use href="#bh" x="594" y="354"/>
+<use href="#bh" x="620" y="354"/>
+<use href="#bh" x="646" y="354"/>
+<use href="#bh" x="672" y="354"/>
+<use href="#bh" x="698" y="354"/>
+<use href="#bh" x="724" y="354"/>
+<use href="#bh" x="750" y="354"/>
+<use href="#bh" x="776" y="354"/>
+<use href="#bh" x="802" y="354"/>
+<use href="#bh" x="828" y="354"/>
+<use href="#bh" x="854" y="354"/>
+<use href="#bh" x="880" y="354"/>
+<line x1="108" y1="374" x2="898" y2="374" stroke="#C8452F" stroke-width="1.2" opacity=".45"/>
+<text x="87" y="378" font-size="12" fill="#C8452F" text-anchor="middle" font-family="Archivo,Arial,sans-serif">+</text>
+<use href="#bh" x="126" y="374"/>
+<use href="#bh" x="152" y="374"/>
+<use href="#bh" x="178" y="374"/>
+<use href="#bh" x="204" y="374"/>
+<use href="#bh" x="230" y="374"/>
+<use href="#bh" x="256" y="374"/>
+<use href="#bh" x="282" y="374"/>
+<use href="#bh" x="308" y="374"/>
+<use href="#bh" x="334" y="374"/>
+<use href="#bh" x="360" y="374"/>
+<use href="#bh" x="386" y="374"/>
+<use href="#bh" x="412" y="374"/>
+<use href="#bh" x="438" y="374"/>
+<use href="#bh" x="464" y="374"/>
+<use href="#bh" x="490" y="374"/>
+<use href="#bh" x="516" y="374"/>
+<use href="#bh" x="542" y="374"/>
+<use href="#bh" x="568" y="374"/>
+<use href="#bh" x="594" y="374"/>
+<use href="#bh" x="620" y="374"/>
+<use href="#bh" x="646" y="374"/>
+<use href="#bh" x="672" y="374"/>
+<use href="#bh" x="698" y="374"/>
+<use href="#bh" x="724" y="374"/>
+<use href="#bh" x="750" y="374"/>
+<use href="#bh" x="776" y="374"/>
+<use href="#bh" x="802" y="374"/>
+<use href="#bh" x="828" y="374"/>
+<use href="#bh" x="854" y="374"/>
+<use href="#bh" x="880" y="374"/>
+<text x="87" y="100" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">j</text>
+<use href="#bh" x="126" y="96"/>
+<use href="#bh" x="152" y="96"/>
+<use href="#bh" x="178" y="96"/>
+<use href="#bh" x="204" y="96"/>
+<use href="#bh" x="230" y="96"/>
+<use href="#bh" x="256" y="96"/>
+<use href="#bh" x="282" y="96"/>
+<use href="#bh" x="308" y="96"/>
+<use href="#bh" x="334" y="96"/>
+<use href="#bh" x="360" y="96"/>
+<use href="#bh" x="386" y="96"/>
+<use href="#bh" x="412" y="96"/>
+<use href="#bh" x="438" y="96"/>
+<use href="#bh" x="464" y="96"/>
+<use href="#bh" x="490" y="96"/>
+<use href="#bh" x="516" y="96"/>
+<use href="#bh" x="542" y="96"/>
+<use href="#bh" x="568" y="96"/>
+<use href="#bh" x="594" y="96"/>
+<use href="#bh" x="620" y="96"/>
+<use href="#bh" x="646" y="96"/>
+<use href="#bh" x="672" y="96"/>
+<use href="#bh" x="698" y="96"/>
+<use href="#bh" x="724" y="96"/>
+<use href="#bh" x="750" y="96"/>
+<use href="#bh" x="776" y="96"/>
+<use href="#bh" x="802" y="96"/>
+<use href="#bh" x="828" y="96"/>
+<use href="#bh" x="854" y="96"/>
+<use href="#bh" x="880" y="96"/>
+<text x="87" y="122" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">i</text>
+<use href="#bh" x="126" y="118"/>
+<use href="#bh" x="152" y="118"/>
+<use href="#bh" x="178" y="118"/>
+<use href="#bh" x="204" y="118"/>
+<use href="#bh" x="230" y="118"/>
+<use href="#bh" x="256" y="118"/>
+<use href="#bh" x="282" y="118"/>
+<use href="#bh" x="308" y="118"/>
+<use href="#bh" x="334" y="118"/>
+<use href="#bh" x="360" y="118"/>
+<use href="#bh" x="386" y="118"/>
+<use href="#bh" x="412" y="118"/>
+<use href="#bh" x="438" y="118"/>
+<use href="#bh" x="464" y="118"/>
+<use href="#bh" x="490" y="118"/>
+<use href="#bh" x="516" y="118"/>
+<use href="#bh" x="542" y="118"/>
+<use href="#bh" x="568" y="118"/>
+<use href="#bh" x="594" y="118"/>
+<use href="#bh" x="620" y="118"/>
+<use href="#bh" x="646" y="118"/>
+<use href="#bh" x="672" y="118"/>
+<use href="#bh" x="698" y="118"/>
+<use href="#bh" x="724" y="118"/>
+<use href="#bh" x="750" y="118"/>
+<use href="#bh" x="776" y="118"/>
+<use href="#bh" x="802" y="118"/>
+<use href="#bh" x="828" y="118"/>
+<use href="#bh" x="854" y="118"/>
+<use href="#bh" x="880" y="118"/>
+<text x="87" y="144" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">h</text>
+<use href="#bh" x="126" y="140"/>
+<use href="#bh" x="152" y="140"/>
+<use href="#bh" x="178" y="140"/>
+<use href="#bh" x="204" y="140"/>
+<use href="#bh" x="230" y="140"/>
+<use href="#bh" x="256" y="140"/>
+<use href="#bh" x="282" y="140"/>
+<use href="#bh" x="308" y="140"/>
+<use href="#bh" x="334" y="140"/>
+<use href="#bh" x="360" y="140"/>
+<use href="#bh" x="386" y="140"/>
+<use href="#bh" x="412" y="140"/>
+<use href="#bh" x="438" y="140"/>
+<use href="#bh" x="464" y="140"/>
+<use href="#bh" x="490" y="140"/>
+<use href="#bh" x="516" y="140"/>
+<use href="#bh" x="542" y="140"/>
+<use href="#bh" x="568" y="140"/>
+<use href="#bh" x="594" y="140"/>
+<use href="#bh" x="620" y="140"/>
+<use href="#bh" x="646" y="140"/>
+<use href="#bh" x="672" y="140"/>
+<use href="#bh" x="698" y="140"/>
+<use href="#bh" x="724" y="140"/>
+<use href="#bh" x="750" y="140"/>
+<use href="#bh" x="776" y="140"/>
+<use href="#bh" x="802" y="140"/>
+<use href="#bh" x="828" y="140"/>
+<use href="#bh" x="854" y="140"/>
+<use href="#bh" x="880" y="140"/>
+<text x="87" y="166" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">g</text>
+<use href="#bh" x="126" y="162"/>
+<use href="#bh" x="152" y="162"/>
+<use href="#bh" x="178" y="162"/>
+<use href="#bh" x="204" y="162"/>
+<use href="#bh" x="230" y="162"/>
+<use href="#bh" x="256" y="162"/>
+<use href="#bh" x="282" y="162"/>
+<use href="#bh" x="308" y="162"/>
+<use href="#bh" x="334" y="162"/>
+<use href="#bh" x="360" y="162"/>
+<use href="#bh" x="386" y="162"/>
+<use href="#bh" x="412" y="162"/>
+<use href="#bh" x="438" y="162"/>
+<use href="#bh" x="464" y="162"/>
+<use href="#bh" x="490" y="162"/>
+<use href="#bh" x="516" y="162"/>
+<use href="#bh" x="542" y="162"/>
+<use href="#bh" x="568" y="162"/>
+<use href="#bh" x="594" y="162"/>
+<use href="#bh" x="620" y="162"/>
+<use href="#bh" x="646" y="162"/>
+<use href="#bh" x="672" y="162"/>
+<use href="#bh" x="698" y="162"/>
+<use href="#bh" x="724" y="162"/>
+<use href="#bh" x="750" y="162"/>
+<use href="#bh" x="776" y="162"/>
+<use href="#bh" x="802" y="162"/>
+<use href="#bh" x="828" y="162"/>
+<use href="#bh" x="854" y="162"/>
+<use href="#bh" x="880" y="162"/>
+<text x="87" y="188" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">f</text>
+<use href="#bh" x="126" y="184"/>
+<use href="#bh" x="152" y="184"/>
+<use href="#bh" x="178" y="184"/>
+<use href="#bh" x="204" y="184"/>
+<use href="#bh" x="230" y="184"/>
+<use href="#bh" x="256" y="184"/>
+<use href="#bh" x="282" y="184"/>
+<use href="#bh" x="308" y="184"/>
+<use href="#bh" x="334" y="184"/>
+<use href="#bh" x="360" y="184"/>
+<use href="#bh" x="386" y="184"/>
+<use href="#bh" x="412" y="184"/>
+<use href="#bh" x="438" y="184"/>
+<use href="#bh" x="464" y="184"/>
+<use href="#bh" x="490" y="184"/>
+<use href="#bh" x="516" y="184"/>
+<use href="#bh" x="542" y="184"/>
+<use href="#bh" x="568" y="184"/>
+<use href="#bh" x="594" y="184"/>
+<use href="#bh" x="620" y="184"/>
+<use href="#bh" x="646" y="184"/>
+<use href="#bh" x="672" y="184"/>
+<use href="#bh" x="698" y="184"/>
+<use href="#bh" x="724" y="184"/>
+<use href="#bh" x="750" y="184"/>
+<use href="#bh" x="776" y="184"/>
+<use href="#bh" x="802" y="184"/>
+<use href="#bh" x="828" y="184"/>
+<use href="#bh" x="854" y="184"/>
+<use href="#bh" x="880" y="184"/>
+<text x="87" y="238" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">e</text>
+<use href="#bh" x="126" y="234"/>
+<use href="#bh" x="152" y="234"/>
+<use href="#bh" x="178" y="234"/>
+<use href="#bh" x="204" y="234"/>
+<use href="#bh" x="230" y="234"/>
+<use href="#bh" x="256" y="234"/>
+<use href="#bh" x="282" y="234"/>
+<use href="#bh" x="308" y="234"/>
+<use href="#bh" x="334" y="234"/>
+<use href="#bh" x="360" y="234"/>
+<use href="#bh" x="386" y="234"/>
+<use href="#bh" x="412" y="234"/>
+<use href="#bh" x="438" y="234"/>
+<use href="#bh" x="464" y="234"/>
+<use href="#bh" x="490" y="234"/>
+<use href="#bh" x="516" y="234"/>
+<use href="#bh" x="542" y="234"/>
+<use href="#bh" x="568" y="234"/>
+<use href="#bh" x="594" y="234"/>
+<use href="#bh" x="620" y="234"/>
+<use href="#bh" x="646" y="234"/>
+<use href="#bh" x="672" y="234"/>
+<use href="#bh" x="698" y="234"/>
+<use href="#bh" x="724" y="234"/>
+<use href="#bh" x="750" y="234"/>
+<use href="#bh" x="776" y="234"/>
+<use href="#bh" x="802" y="234"/>
+<use href="#bh" x="828" y="234"/>
+<use href="#bh" x="854" y="234"/>
+<use href="#bh" x="880" y="234"/>
+<text x="87" y="260" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">d</text>
+<use href="#bh" x="126" y="256"/>
+<use href="#bh" x="152" y="256"/>
+<use href="#bh" x="178" y="256"/>
+<use href="#bh" x="204" y="256"/>
+<use href="#bh" x="230" y="256"/>
+<use href="#bh" x="256" y="256"/>
+<use href="#bh" x="282" y="256"/>
+<use href="#bh" x="308" y="256"/>
+<use href="#bh" x="334" y="256"/>
+<use href="#bh" x="360" y="256"/>
+<use href="#bh" x="386" y="256"/>
+<use href="#bh" x="412" y="256"/>
+<use href="#bh" x="438" y="256"/>
+<use href="#bh" x="464" y="256"/>
+<use href="#bh" x="490" y="256"/>
+<use href="#bh" x="516" y="256"/>
+<use href="#bh" x="542" y="256"/>
+<use href="#bh" x="568" y="256"/>
+<use href="#bh" x="594" y="256"/>
+<use href="#bh" x="620" y="256"/>
+<use href="#bh" x="646" y="256"/>
+<use href="#bh" x="672" y="256"/>
+<use href="#bh" x="698" y="256"/>
+<use href="#bh" x="724" y="256"/>
+<use href="#bh" x="750" y="256"/>
+<use href="#bh" x="776" y="256"/>
+<use href="#bh" x="802" y="256"/>
+<use href="#bh" x="828" y="256"/>
+<use href="#bh" x="854" y="256"/>
+<use href="#bh" x="880" y="256"/>
+<text x="87" y="282" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">c</text>
+<use href="#bh" x="126" y="278"/>
+<use href="#bh" x="152" y="278"/>
+<use href="#bh" x="178" y="278"/>
+<use href="#bh" x="204" y="278"/>
+<use href="#bh" x="230" y="278"/>
+<use href="#bh" x="256" y="278"/>
+<use href="#bh" x="282" y="278"/>
+<use href="#bh" x="308" y="278"/>
+<use href="#bh" x="334" y="278"/>
+<use href="#bh" x="360" y="278"/>
+<use href="#bh" x="386" y="278"/>
+<use href="#bh" x="412" y="278"/>
+<use href="#bh" x="438" y="278"/>
+<use href="#bh" x="464" y="278"/>
+<use href="#bh" x="490" y="278"/>
+<use href="#bh" x="516" y="278"/>
+<use href="#bh" x="542" y="278"/>
+<use href="#bh" x="568" y="278"/>
+<use href="#bh" x="594" y="278"/>
+<use href="#bh" x="620" y="278"/>
+<use href="#bh" x="646" y="278"/>
+<use href="#bh" x="672" y="278"/>
+<use href="#bh" x="698" y="278"/>
+<use href="#bh" x="724" y="278"/>
+<use href="#bh" x="750" y="278"/>
+<use href="#bh" x="776" y="278"/>
+<use href="#bh" x="802" y="278"/>
+<use href="#bh" x="828" y="278"/>
+<use href="#bh" x="854" y="278"/>
+<use href="#bh" x="880" y="278"/>
+<text x="87" y="304" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">b</text>
+<use href="#bh" x="126" y="300"/>
+<use href="#bh" x="152" y="300"/>
+<use href="#bh" x="178" y="300"/>
+<use href="#bh" x="204" y="300"/>
+<use href="#bh" x="230" y="300"/>
+<use href="#bh" x="256" y="300"/>
+<use href="#bh" x="282" y="300"/>
+<use href="#bh" x="308" y="300"/>
+<use href="#bh" x="334" y="300"/>
+<use href="#bh" x="360" y="300"/>
+<use href="#bh" x="386" y="300"/>
+<use href="#bh" x="412" y="300"/>
+<use href="#bh" x="438" y="300"/>
+<use href="#bh" x="464" y="300"/>
+<use href="#bh" x="490" y="300"/>
+<use href="#bh" x="516" y="300"/>
+<use href="#bh" x="542" y="300"/>
+<use href="#bh" x="568" y="300"/>
+<use href="#bh" x="594" y="300"/>
+<use href="#bh" x="620" y="300"/>
+<use href="#bh" x="646" y="300"/>
+<use href="#bh" x="672" y="300"/>
+<use href="#bh" x="698" y="300"/>
+<use href="#bh" x="724" y="300"/>
+<use href="#bh" x="750" y="300"/>
+<use href="#bh" x="776" y="300"/>
+<use href="#bh" x="802" y="300"/>
+<use href="#bh" x="828" y="300"/>
+<use href="#bh" x="854" y="300"/>
+<use href="#bh" x="880" y="300"/>
+<text x="87" y="326" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">a</text>
+<use href="#bh" x="126" y="322"/>
+<use href="#bh" x="152" y="322"/>
+<use href="#bh" x="178" y="322"/>
+<use href="#bh" x="204" y="322"/>
+<use href="#bh" x="230" y="322"/>
+<use href="#bh" x="256" y="322"/>
+<use href="#bh" x="282" y="322"/>
+<use href="#bh" x="308" y="322"/>
+<use href="#bh" x="334" y="322"/>
+<use href="#bh" x="360" y="322"/>
+<use href="#bh" x="386" y="322"/>
+<use href="#bh" x="412" y="322"/>
+<use href="#bh" x="438" y="322"/>
+<use href="#bh" x="464" y="322"/>
+<use href="#bh" x="490" y="322"/>
+<use href="#bh" x="516" y="322"/>
+<use href="#bh" x="542" y="322"/>
+<use href="#bh" x="568" y="322"/>
+<use href="#bh" x="594" y="322"/>
+<use href="#bh" x="620" y="322"/>
+<use href="#bh" x="646" y="322"/>
+<use href="#bh" x="672" y="322"/>
+<use href="#bh" x="698" y="322"/>
+<use href="#bh" x="724" y="322"/>
+<use href="#bh" x="750" y="322"/>
+<use href="#bh" x="776" y="322"/>
+<use href="#bh" x="802" y="322"/>
+<use href="#bh" x="828" y="322"/>
+<use href="#bh" x="854" y="322"/>
+<use href="#bh" x="880" y="322"/>
+<text x="126" y="12" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">16</text>
+<text x="230" y="12" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">20</text>
+<text x="360" y="12" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">25</text>
+<text x="490" y="12" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">30</text>
+<text x="620" y="12" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">35</text>
+<text x="750" y="12" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">40</text>
+<text x="880" y="12" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">45</text>
+<rect x="100" y="502" width="463.2" height="118" rx="8" fill="currentColor" opacity=".05"/>
+<rect x="100" y="502" width="463.2" height="118" rx="8" fill="none" stroke="currentColor" stroke-width="1.3" opacity=".6"/>
+<rect x="88" y="518" width="34" height="22" rx="3" fill="none" stroke="currentColor" stroke-width="1" opacity=".5"/>
+<text x="105" y="532" font-size="8.5" fill="currentColor" opacity=".55" text-anchor="middle" font-family="IBM Plex Mono,monospace">USB</text>
+<text x="331.6" y="565" font-size="11" fill="currentColor" opacity=".55" text-anchor="middle" letter-spacing="1.6" font-family="Archivo,Arial,sans-serif">ARDUINO UNO</text>
+<use href="#sk" x="136" y="517"/>
+<use href="#sk" x="158" y="517"/>
+<use href="#sk" x="180" y="517"/>
+<use href="#sk" x="202" y="517"/>
+<use href="#sk" x="224" y="517"/>
+<use href="#sk" x="246" y="517"/>
+<use href="#sk" x="268" y="517"/>
+<rect x="261.5" y="510.5" width="13" height="13" rx="2" fill="#2E7D46" opacity=".18"/>
+<rect x="261.5" y="510.5" width="13" height="13" rx="2" fill="none" stroke="#2E7D46" stroke-width="1.6"/>
+<use href="#sk" x="290" y="517"/>
+<rect x="283.5" y="510.5" width="13" height="13" rx="2" fill="#2E7D46" opacity=".18"/>
+<rect x="283.5" y="510.5" width="13" height="13" rx="2" fill="none" stroke="#2E7D46" stroke-width="1.6"/>
+<use href="#sk" x="312" y="517"/>
+<use href="#sk" x="334" y="517"/>
+<use href="#sk" x="378" y="517"/>
+<use href="#sk" x="400" y="517"/>
+<rect x="393.5" y="510.5" width="13" height="13" rx="2" fill="#2E7D46" opacity=".18"/>
+<rect x="393.5" y="510.5" width="13" height="13" rx="2" fill="none" stroke="#2E7D46" stroke-width="1.6"/>
+<use href="#sk" x="422" y="517"/>
+<use href="#sk" x="444" y="517"/>
+<use href="#sk" x="466" y="517"/>
+<use href="#sk" x="488" y="517"/>
+<use href="#sk" x="510" y="517"/>
+<use href="#sk" x="532" y="517"/>
+<use href="#sk" x="136" y="605"/>
+<use href="#sk" x="158" y="605"/>
+<use href="#sk" x="180" y="605"/>
+<use href="#sk" x="202" y="605"/>
+<rect x="195.5" y="598.5" width="13" height="13" rx="2" fill="#2E7D46" opacity=".18"/>
+<rect x="195.5" y="598.5" width="13" height="13" rx="2" fill="none" stroke="#2E7D46" stroke-width="1.6"/>
+<use href="#sk" x="224" y="605"/>
+<rect x="217.5" y="598.5" width="13" height="13" rx="2" fill="#2E7D46" opacity=".18"/>
+<rect x="217.5" y="598.5" width="13" height="13" rx="2" fill="none" stroke="#2E7D46" stroke-width="1.6"/>
+<use href="#sk" x="246" y="605"/>
+<use href="#sk" x="268" y="605"/>
+<use href="#sk" x="312" y="605"/>
+<use href="#sk" x="334" y="605"/>
+<use href="#sk" x="356" y="605"/>
+<use href="#sk" x="378" y="605"/>
+<use href="#sk" x="400" y="605"/>
+<use href="#sk" x="422" y="605"/>
+<line x1="230" y1="184" x2="230" y2="-104" stroke="currentColor" stroke-width="1.5" opacity=".85"/>
+<line x1="256" y1="184" x2="256" y2="-104" stroke="currentColor" stroke-width="1.5" opacity=".85"/>
+<line x1="282" y1="184" x2="282" y2="-104" stroke="currentColor" stroke-width="1.5" opacity=".85"/>
+<line x1="308" y1="184" x2="308" y2="-104" stroke="currentColor" stroke-width="1.5" opacity=".85"/>
+<rect x="220" y="-136" width="98" height="32" rx="4" fill="currentColor" opacity=".13" stroke="currentColor" stroke-width="1.2"/>
+<text x="269" y="-116" font-size="10" text-anchor="middle" font-weight="400" font-family="Archivo,Arial,sans-serif" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">HC-SR04  VCC / Trig / Echo / GND</text>
+<text x="269" y="-116" font-size="10" text-anchor="middle" font-weight="400" font-family="Archivo,Arial,sans-serif" fill="currentColor" opacity=".92">HC-SR04  VCC / Trig / Echo / GND</text>
+<line x1="230" y1="96" x2="230" y2="34" stroke="#C8452F" stroke-width="1.9" opacity=".9"/>
+<circle cx="230" cy="34" r="2.6" fill="#C8452F"/>
+<circle cx="230" cy="96" r="2.6" fill="#C8452F"/>
+<path d="M 256 96 L 256 -19 Q 256 -28 247 -28 L 55 -28 Q 46 -28 46 -19 L 46 459 Q 46 468 55 468 L 281 468 Q 290 468 290 477 L 290 517" fill="none" stroke="#2E7D46" stroke-width="1.9" opacity=".9"/>
+<circle cx="290" cy="517" r="2.6" fill="#2E7D46"/>
+<circle cx="256" cy="96" r="2.6" fill="#2E7D46"/>
+<path d="M 282 96 L 282 -27 Q 282 -36 273 -36 L 47 -36 Q 38 -36 38 -27 L 38 451 Q 38 460 47 460 L 259 460 Q 268 460 268 469 L 268 517" fill="none" stroke="#2E7D46" stroke-width="1.9" opacity=".9"/>
+<circle cx="268" cy="517" r="2.6" fill="#2E7D46"/>
+<circle cx="282" cy="96" r="2.6" fill="#2E7D46"/>
+<line x1="308" y1="96" x2="308" y2="54" stroke="#3D6FA8" stroke-width="1.9" opacity=".9"/>
+<circle cx="308" cy="54" r="2.6" fill="#3D6FA8"/>
+<circle cx="308" cy="96" r="2.6" fill="#3D6FA8"/>
+<line x1="750" y1="300" x2="768" y2="334" stroke="currentColor" stroke-width="2.1"/>
+<line x1="802" y1="300" x2="784" y2="334" stroke="currentColor" stroke-width="1.3"/>
+<circle cx="776" cy="334" r="15" fill="currentColor" opacity=".14" stroke="currentColor" stroke-width="1.2"/>
+<circle cx="776" cy="334" r="3" fill="none" stroke="currentColor" stroke-width="1"/>
+<text x="763" y="326" font-size="11" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">+</text>
+<text x="763" y="326" font-size="11" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".9">+</text>
+<text x="776" y="362" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">buzzer</text>
+<text x="776" y="362" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".8">buzzer</text>
+<path d="M 750 322 L 750 425 Q 750 434 759 434 L 967 434 Q 976 434 976 443 L 976 443 Q 976 452 967 452 L 409 452 Q 400 452 400 461 L 400 517" fill="none" stroke="#2E7D46" stroke-width="1.9" opacity=".9"/>
+<circle cx="400" cy="517" r="2.6" fill="#2E7D46"/>
+<circle cx="750" cy="322" r="2.6" fill="#2E7D46"/>
+<line x1="802" y1="322" x2="802" y2="54" stroke="#3D6FA8" stroke-width="1.9" opacity=".9"/>
+<circle cx="802" cy="54" r="2.6" fill="#3D6FA8"/>
+<circle cx="802" cy="322" r="2.6" fill="#3D6FA8"/>
+<path d="M 202 605 L 202 635 Q 202 644 193 644 L 33 644 Q 24 644 24 635 L 24 43 Q 24 34 33 34 L 126 34" fill="none" stroke="#C8452F" stroke-width="2.1" opacity=".95"/>
+<circle cx="202" cy="605" r="2.8" fill="#C8452F"/>
+<circle cx="126" cy="34" r="2.8" fill="#C8452F"/>
+<path d="M 224 605 L 224 643 Q 224 652 215 652 L 25 652 Q 16 652 16 643 L 16 63 Q 16 54 25 54 L 152 54" fill="none" stroke="#3D6FA8" stroke-width="2.1" opacity=".95"/>
+<circle cx="224" cy="605" r="2.8" fill="#3D6FA8"/>
+<circle cx="152" cy="54" r="2.8" fill="#3D6FA8"/>
+<circle cx="750" cy="322" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="750" y="337" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">a40</text>
+<text x="750" y="337" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">a40</text>
+<circle cx="802" cy="322" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="802" y="337" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">a42</text>
+<text x="802" y="337" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">a42</text>
+<circle cx="750" cy="300" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="750" y="315" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">b40</text>
+<text x="750" y="315" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">b40</text>
+<circle cx="802" cy="300" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="802" y="315" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">b42</text>
+<text x="802" y="315" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">b42</text>
+<circle cx="230" cy="184" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="230" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">f20</text>
+<text x="230" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">f20</text>
+<circle cx="256" cy="184" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="256" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">f21</text>
+<text x="256" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">f21</text>
+<circle cx="282" cy="184" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="282" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">f22</text>
+<text x="282" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">f22</text>
+<circle cx="308" cy="184" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="308" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">f23</text>
+<text x="308" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">f23</text>
+<circle cx="230" cy="96" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="230" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">j20</text>
+<text x="230" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">j20</text>
+<circle cx="256" cy="96" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="256" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">j21</text>
+<text x="256" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">j21</text>
+<circle cx="282" cy="96" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="282" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">j22</text>
+<text x="282" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">j22</text>
+<circle cx="308" cy="96" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="308" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">j23</text>
+<text x="308" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">j23</text>
+<text x="136" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">SCL</text>
+<text x="136" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">SCL</text>
+<text x="158" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">SDA</text>
+<text x="158" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">SDA</text>
+<text x="180" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">AREF</text>
+<text x="180" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">AREF</text>
+<text x="202" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">GND</text>
+<text x="202" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">GND</text>
+<text x="224" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">13</text>
+<text x="224" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">13</text>
+<text x="246" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">12</text>
+<text x="246" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">12</text>
+<text x="268" y="533" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">11</text>
+<text x="268" y="533" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="#2E7D46" opacity=".95">11</text>
+<text x="290" y="533" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">10</text>
+<text x="290" y="533" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="#2E7D46" opacity=".95">10</text>
+<text x="312" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">9</text>
+<text x="312" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">9</text>
+<text x="334" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">8</text>
+<text x="334" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">8</text>
+<text x="378" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">7</text>
+<text x="378" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">7</text>
+<text x="400" y="533" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">6</text>
+<text x="400" y="533" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="#2E7D46" opacity=".95">6</text>
+<text x="422" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">5</text>
+<text x="422" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">5</text>
+<text x="444" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">4</text>
+<text x="444" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">4</text>
+<text x="466" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">3</text>
+<text x="466" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">3</text>
+<text x="488" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">2</text>
+<text x="488" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">2</text>
+<text x="510" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">1</text>
+<text x="510" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">1</text>
+<text x="532" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">0</text>
+<text x="532" y="533" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">0</text>
+<text x="136" y="593" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">IOR</text>
+<text x="136" y="593" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">IOR</text>
+<text x="158" y="593" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">RST</text>
+<text x="158" y="593" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">RST</text>
+<text x="180" y="593" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">3V3</text>
+<text x="180" y="593" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">3V3</text>
+<text x="202" y="593" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">5V</text>
+<text x="202" y="593" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="#2E7D46" opacity=".95">5V</text>
+<text x="224" y="593" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">GND</text>
+<text x="224" y="593" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="#2E7D46" opacity=".95">GND</text>
+<text x="246" y="593" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">GND</text>
+<text x="246" y="593" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">GND</text>
+<text x="268" y="593" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">VIN</text>
+<text x="268" y="593" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">VIN</text>
+<text x="312" y="593" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">A0</text>
+<text x="312" y="593" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">A0</text>
+<text x="334" y="593" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">A1</text>
+<text x="334" y="593" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">A1</text>
+<text x="356" y="593" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">A2</text>
+<text x="356" y="593" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">A2</text>
+<text x="378" y="593" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">A3</text>
+<text x="378" y="593" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">A3</text>
+<text x="400" y="593" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">A4</text>
+<text x="400" y="593" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">A4</text>
+<text x="422" y="593" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">A5</text>
+<text x="422" y="593" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">A5</text>
+</svg>
+      <figcaption>The finished guard, on the I&#178;C route. The buzzer sits down in rows <code>a</code> and <code>b</code>, so its rail wire runs the long way round to the top pair.</figcaption>
+    </figure>
   <div class="col stack">
     <p>Now a whole device. It measures how far away you are and tells you three ways at once.</p>
     <ul class="plain">

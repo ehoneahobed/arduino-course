@@ -389,7 +389,7 @@
 <path d="M 506 264 a 10 10 0 0 1 20 0 v 8 h -20 z" fill="#2E7D46" opacity=".85" stroke="currentColor" stroke-width="1"/>
 <text x="479" y="303.5" font-size="11" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">+</text>
 <text x="479" y="303.5" font-size="11" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".9">+</text>
-<path d="M 282 322 C 282 300 542 300 542 322" fill="none" stroke="currentColor" stroke-width="1.9" opacity=".9"/>
+<path d="M 282 322 L 282 409 Q 282 418 291 418 L 533 418 Q 542 418 542 409 L 542 322" fill="none" stroke="currentColor" stroke-width="1.9" opacity=".9"/>
 <circle cx="542" cy="322" r="2.6" fill="currentColor"/>
 <circle cx="282" cy="322" r="2.6" fill="#2E7D46"/>
 <polyline points="542,278 542,246 594,246 594,278" fill="none" stroke="currentColor" stroke-width="1.5"/>
@@ -402,10 +402,10 @@
 <line x1="594" y1="322" x2="594" y2="354" stroke="#3D6FA8" stroke-width="1.9" opacity=".9"/>
 <circle cx="594" cy="354" r="2.6" fill="#3D6FA8"/>
 <circle cx="594" cy="322" r="2.6" fill="#3D6FA8"/>
-<path d="M 202 605 L 202 643 Q 202 652 193 652 L 25 652 Q 16 652 16 643 L 16 383 Q 16 374 25 374 L 126 374" fill="none" stroke="#C8452F" stroke-width="2.1" opacity=".95"/>
+<path d="M 202 605 L 202 651 Q 202 660 193 660 L 17 660 Q 8 660 8 651 L 8 383 Q 8 374 17 374 L 126 374" fill="none" stroke="#C8452F" stroke-width="2.1" opacity=".95"/>
 <circle cx="202" cy="605" r="2.8" fill="#C8452F"/>
 <circle cx="126" cy="374" r="2.8" fill="#C8452F"/>
-<path d="M 224 605 L 224 651 Q 224 660 215 660 L 17 660 Q 8 660 8 651 L 8 363 Q 8 354 17 354 L 152 354" fill="none" stroke="#3D6FA8" stroke-width="2.1" opacity=".95"/>
+<path d="M 224 605 L 224 659 Q 224 668 215 668 L 9 668 Q 0 668 0 659 L 0 363 Q 0 354 9 354 L 152 354" fill="none" stroke="#3D6FA8" stroke-width="2.1" opacity=".95"/>
 <circle cx="224" cy="605" r="2.8" fill="#3D6FA8"/>
 <circle cx="152" cy="354" r="2.8" fill="#3D6FA8"/>
 <circle cx="490" cy="322" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
