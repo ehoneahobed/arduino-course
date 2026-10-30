@@ -691,3 +691,28 @@ h1{font-size:clamp(1.85rem,1.45rem + 1.7vw,2.6rem)}
 h2{font-size:clamp(1.3rem,1.15rem + .5vw,1.55rem)}
 h3{font-size:1.1rem}
 p + p{margin-top:.15em}
+
+/* Hide / keep open the section sidebar on wide screens (pager.js) */
+.side-pin{display:none; font:500 .74rem/1 "Outfit","Rubik",Arial,sans-serif; color:var(--muted); background:none;
+  border:1px solid var(--line); border-radius:99px; padding:.35rem .7rem; cursor:pointer}
+.side-pin:hover,.side-pin:focus-visible{color:var(--ink); border-color:var(--accent)}
+.side-head{grid-template-columns:1fr auto auto}
+@media (min-width:1180px){
+  html.has-side .side-pin{display:inline-block}
+  /* hidden: the lesson takes the full width and the "Sections" bar opens the list as a drawer */
+  html.side-collapsed.has-side{--side-w:0px}
+  html.side-collapsed.has-side body{padding-left:1.25rem}
+  html.side-collapsed.has-side nav[aria-label="Sections"]{width:330px; transform:translateX(-105%); transition:transform .25s ease; box-shadow:0 0 40px rgba(0,0,0,.25)}
+  html.side-collapsed.side-is-open nav[aria-label="Sections"]{transform:none}
+  html.side-collapsed.side-is-open .side-shade{display:block; position:fixed; inset:0; z-index:39; background:rgba(15,10,20,.35)}
+  html.side-collapsed.has-side .side-close{display:grid; place-items:center}
+  html.side-collapsed.has-side .side-open{
+    display:flex; align-items:center; gap:.7rem; position:sticky; top:0; z-index:30; width:calc(100% + 2.5rem); margin:0 -1.25rem;
+    padding:.55rem 1.25rem; border:0; border-bottom:1px solid var(--line-soft); background:color-mix(in srgb, var(--ground) 94%, transparent);
+    -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px); color:var(--ink); font:inherit; text-align:left; cursor:pointer}
+  html.side-collapsed .so-ico{display:grid; place-items:center; width:2.1rem; height:2.1rem; border-radius:10px; background:var(--plum,#24182E); color:#fff; font-size:1rem; flex:none}
+  html.side-collapsed .so-txt{display:flex; flex-direction:column; min-width:0; flex:1; font-family:"Outfit","Rubik",Arial,sans-serif}
+  html.side-collapsed .so-txt small{font-size:.72rem; color:var(--muted); letter-spacing:.04em; text-transform:uppercase}
+  html.side-collapsed .so-txt b{font-size:.95rem; font-weight:600}
+  html.side-collapsed .so-n{font-size:.75rem; color:var(--good); font-weight:600; flex:none}
+}

@@ -182,7 +182,9 @@
   // ---- The section bar becomes a sidebar (wide screens) or a drawer (phones and tablets) ----
   var sideHead = document.createElement('div');
   sideHead.className = 'side-head';
-  sideHead.innerHTML = '<a class="side-band" href="#' + sections[0].id + '"></a><button type="button" class="side-close" aria-label="Close the section list">×</button>';
+  sideHead.innerHTML = '<a class="side-band" href="#' + sections[0].id + '"></a>' +
+    '<button type="button" class="side-pin"></button>' +
+    '<button type="button" class="side-close" aria-label="Close the section list">×</button>';
   sideHead.querySelector('.side-band').textContent = bandName;
   bar.insertBefore(sideHead, bar.firstChild);
   sideHead.appendChild(strip);              // progress and "whole band" live at the top of the sidebar
@@ -202,6 +204,24 @@
     opener.setAttribute('aria-expanded', on ? 'true' : 'false');
     if (on) { var c = bar.querySelector('a[aria-current="step"]') || bar.querySelector('a[href]'); if (c) c.focus(); }
   }
+  // On wide screens the sidebar can be hidden (and brought back); the choice is remembered.
+  var COLLAPSE = 'ladder-side-hidden';
+  var pin = sideHead.querySelector('.side-pin');
+  function collapsed(on, keep) {
+    document.documentElement.classList.toggle('side-collapsed', on);
+    pin.textContent = on ? 'Keep open' : 'Hide';
+    pin.setAttribute('aria-label', on ? 'Keep the section list open beside the lesson' : 'Hide the section list');
+    pin.title = pin.getAttribute('aria-label');
+    if (keep) save(COLLAPSE, on);
+    try { window.dispatchEvent(new Event('resize')); } catch (e) {}
+  }
+  collapsed(load(COLLAPSE, false) === true, false);
+  pin.addEventListener('click', function () {
+    var on = !document.documentElement.classList.contains('side-collapsed');
+    drawer(false);
+    collapsed(on, true);
+    (on ? opener : bar.querySelector(':scope > a[aria-current="step"]') || opener).focus();
+  });
   opener.addEventListener('click', function () { drawer(true); });
   sideHead.querySelector('.side-close').addEventListener('click', function () { drawer(false); opener.focus(); });
   shade.addEventListener('click', function () { drawer(false); });
