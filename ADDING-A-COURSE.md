@@ -11,6 +11,7 @@ assets/             shared by every course
   hub.css             the site home only
   theme.js            the light / dark switch
   pager.js            one section at a time, the section sidebar and drawer, progress ticks
+  app.js              the offline app (registers sw.js), "Save the whole course", install hint
   labs/               the 3D engine (three.js runtime, parts, the 3D Workshop thumbnails)
   brand/ fonts/ vendor/
 arduino/            the Arduino Ladder (index, guide, labs.html, bands/, projects/, sketches/, downloads/)
@@ -38,8 +39,14 @@ tools/              the Arduino Ladder's build and checking scripts
    `node tools/build_labs.mjs`. The Workshop page and its tools are currently Arduino-only
    (`arduino/labs.html`, `tools/labs_page.py`); a second course with labs should get its own
    `labs.html` in its folder.
-6. **Offline.** Use relative links only (except in `404.html`), so the whole site still opens from a
-   USB stick by double-clicking `index.html`.
+6. **Offline.** Use relative links only (except in `404.html` and `offline.html`), so the whole site
+   still opens from a USB stick by double-clicking `index.html`. Give every page a
+   `<link rel="canonical">`, a `<title>` and a `<meta name="description">`, then run
+   `node tools/og.mjs && python3 tools/inject_head.py && node tools/build_sw.mjs`: that makes the
+   link-preview cards, adds the app and preview tags to the new pages, and puts them in the offline
+   app. To have the new course's lesson pages saved on the first visit, add them to `CORE_RE` in
+   `tools/build_sw.mjs`, and give its home and progress pages a "Save the whole course" panel
+   (copy the `<div data-offline>` block from `arduino/home.html`).
 7. **Old links.** If you ever move pages, add a permanent redirect in `vercel.json`, as was done when the
    Arduino Ladder moved from the site root into `arduino/`.
 

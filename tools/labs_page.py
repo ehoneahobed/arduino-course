@@ -413,7 +413,9 @@ TEMPLATE = r"""<!doctype html>
 
 
 def main():
-    out = render(catalog())
+    sys.path.insert(0, HERE)
+    import inject_head  # the app and link-preview tags every page carries
+    out = inject_head.apply(render(catalog()), "arduino/labs.html")
     if "--check" in sys.argv:
         cur = io.open(OUT, encoding="utf-8").read() if os.path.exists(OUT) else ""
         print("labs.html is up to date" if cur == out else "labs.html is out of date: run python3 tools/labs_page.py")

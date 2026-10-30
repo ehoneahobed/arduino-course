@@ -333,10 +333,67 @@ page. A link to `#try-3d`, or to `#3d-b1p5` for a build, opens that view.
 `labs.html` is the 3D Workshop: every concept lab and build, by band, each
 opening full size at `labs.html?open=<id>`. It is generated:
 
-    python3 tools/labs_page.py              write labs.html (after adding a build, a figure or a lab)
+    python3 tools/labs_page.py              write labs.html (after adding a build, a figure or a lab;
+                                            it also adds the page's app and link-preview tags, see below)
     node tools/lab_thumbs.mjs               the thumbnails, assets/labs/thumbs/<id>.webp
     node tools/lab_thumbs.mjs b1p5 --soft   one of them, on software WebGL
 
 `lab_thumbs.mjs` needs Google Chrome and playwright-core (found here, in
 `$PLAYWRIGHT`, or in the BIH Tech Club repo next to this one). Rerun it
 whenever the models change; a missing thumbnail shows a drawn cube instead.
+
+## Offline app and link previews: `build_sw.mjs`, `inject_head.py`, `og.mjs`
+
+The website installs as an app ("IoT at BIH") and keeps working with no internet. The parts:
+
+- `manifest.webmanifest` (root): the app's name, plum theme and icons (`assets/brand/icon-*.png`).
+- `sw.js` (root): the service worker. Its header explains what is saved when.
+- `assets/app.js`: registers `sw.js` (only over http/https, never from `file://`), runs the
+  "Save the whole course on this device" panel (`<div data-offline>` on `arduino/home.html` and
+  `arduino/profile.html`), shows "Updated — reload for the latest version" when a new version
+  takes over, and the install hint (`beforeinstallprompt`; an iPhone/iPad note in the panel).
+- `offline.html` (root): shown for a page that is not saved yet when there is no internet.
+
+**Run after changing any file of the site** (a page, a script, a sketch, a thumbnail, anything):
+
+    node tools/build_sw.mjs            write the file list, content hashes and version into sw.js
+    node tools/build_sw.mjs --check    exit 1 if sw.js is out of date
+
+The version is a hash of every file's content, so browsers pick up a new version only when
+something changed, and then download again only the files whose hash changed. Old saved copies
+are kept until fresh ones arrive, so a phone that is offline when the update lands loses nothing.
+A device that pressed "Save the whole course" saves the new version by itself. Run it last, after
+the other tools below, because they change pages. If you forget it, the site still works, but
+devices keep the old copies of cache-first files (fonts, pictures, compiled sketches, downloads)
+and only see new pages when they are online.
+
+What goes in: every file of the site except `tools/`, `assets/og/`, `assets/vendor/` and
+`assets/labs/src/` (already inside `labs.bundle.js`), Markdown, licences, `vercel.json`,
+`robots.txt`, `sitemap.xml` and `404.html`. Saved on the first visit (`CORE` in `build_sw.mjs`):
+the site home, the course home, My progress, every band page, the shared CSS and JS, fonts, the
+logo and `offline.html`, about 2 MB before compression. Everything else (about 7 MB in all) is
+saved when first opened, or all at once by the button. A new course's pages are picked up
+automatically; add them to `CORE_RE` if they should be saved on the first visit. Pages are saved
+under their clean address (`arduino/bands/band-3`) and found by either form; the redirects in
+`vercel.json` are copied into `sw.js` so old addresses work offline too. YouTube is never cached.
+
+**Link previews** (WhatsApp, Facebook, X). Every page with a `<link rel="canonical">` carries
+`og:*` and `twitter:card` tags, and the manifest link and `app.js` tag:
+
+    node tools/og.mjs                  the preview cards, assets/og/<page path with / as ->.jpg,
+                                       and the app icons icon-512, icon-maskable-192/512
+    node tools/og.mjs band-3           only the cards whose name contains "band-3"
+    python3 tools/inject_head.py       add or refresh the tags in every page's <head>
+    python3 tools/inject_head.py --check
+
+`inject_head.py` is safe to run again: it replaces only its own block (between the
+`app + link previews` comments) and takes the title, description and address from the page.
+`labs_page.py` calls it, so the generated 3D Workshop keeps its tags. `og.mjs` needs Chrome and
+playwright-core, found like `lab_thumbs.mjs`. Rerun it after adding a page or changing a page's
+title or description. Cards are 1200 x 630 JPEGs of about 40 to 80 KB: plum, the white logo mark,
+a gold kicker, the title in Outfit, the band's resistor colour, and the page's 3D build if it has
+one. Facebook and WhatsApp keep a preview for a while; Facebook's Sharing Debugger refreshes it.
+
+After adding or changing pages, the order is:
+
+    node tools/og.mjs && python3 tools/inject_head.py && python3 tools/labs_page.py && node tools/build_sw.mjs

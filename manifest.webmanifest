@@ -1,0 +1,25 @@
+{
+  "name": "IoT at BIH",
+  "short_name": "IoT at BIH",
+  "description": "Free, self-paced courses in electronics, the Internet of Things and coding from Bozoma Innovation Hub. Works with no internet.",
+  "id": "/",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "lang": "en-GB",
+  "dir": "ltr",
+  "categories": ["education"],
+  "background_color": "#24182E",
+  "theme_color": "#24182E",
+  "icons": [
+    { "src": "/assets/brand/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/assets/brand/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/assets/brand/icon-maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "/assets/brand/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "The Arduino Ladder", "url": "/arduino/home", "icons": [{ "src": "/assets/brand/icon-192.png", "sizes": "192x192" }] },
+    { "name": "My progress", "short_name": "Progress", "url": "/arduino/profile", "icons": [{ "src": "/assets/brand/icon-192.png", "sizes": "192x192" }] }
+  ]
+}

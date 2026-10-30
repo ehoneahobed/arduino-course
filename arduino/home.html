@@ -10,6 +10,21 @@
   <meta name="theme-color" content="#24182E">
   <link rel="icon" type="image/png" sizes="192x192" href="../assets/brand/icon-192.png">
   <link rel="apple-touch-icon" href="../assets/brand/icon-180.png">
+  <!-- app + link previews (tools/inject_head.py) -->
+  <link rel="manifest" href="../manifest.webmanifest">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="IoT at Bozoma Innovation Hub">
+  <meta property="og:title" content="The Arduino Ladder · Bozoma Innovation Hub">
+  <meta property="og:description" content="A free, project-based Arduino course for complete beginners. Nine bands, nine things you build, at your own speed.">
+  <meta property="og:url" content="https://iot.bozomainnovationhub.com/arduino/home">
+  <meta property="og:image" content="https://iot.bozomainnovationhub.com/assets/og/arduino-home.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="The Arduino Ladder · Bozoma Innovation Hub">
+  <meta property="og:locale" content="en_GB">
+  <meta name="twitter:card" content="summary_large_image">
+  <script defer src="../assets/app.js"></script>
+  <!-- /app + link previews -->
   <link rel="stylesheet" href="../assets/course.css">
   <link rel="stylesheet" href="../assets/progress.css">
   <script defer src="../assets/progress.js"></script>
@@ -173,6 +188,17 @@
         <li><a href="sketches/README.txt">Read the sketch guide</a></li>
       </ul>
       <p>Each band page also links the sketches it needs. Every file opens with a plain-English header saying what it does and how to wire it, hole by hole.</p>
+    </div>
+
+    <div class="card stack-sm" data-offline hidden>
+      <h4>Use it with no internet</h4>
+      <p data-offline-web hidden>Every page you open is kept on this device, so it opens again with no internet. To keep <strong>the whole course</strong>, every band, every 3D build and all the sketches<span data-offline-size></span>, press this once while you have a good connection.</p>
+      <p data-offline-file hidden>You opened the course from files on this computer, so it already works with no internet.</p>
+      <p class="pf-acts" data-offline-web hidden><button type="button" class="pf-btn main" data-save-all>Save the whole course on this device</button></p>
+      <div class="offline-bar" data-save-bar hidden><span></span></div>
+      <p class="offline-status" data-save-status role="status" aria-live="polite"></p>
+      <p class="pf-acts" data-install hidden><button type="button" class="pf-btn" data-install-btn>Install this course</button><span class="note">It opens in its own window, like an app.</span></p>
+      <p class="note" data-ios hidden>On an iPhone or iPad: tap <strong>Share</strong>, then <strong>Add to Home Screen</strong>. The course then opens from your home screen like an app.</p>
     </div>
 
     <div class="callout" style="--bc:var(--copper); margin-top:.4rem">

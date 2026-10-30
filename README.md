@@ -54,7 +54,9 @@ arduino/bands/              the nine lesson pages
 arduino/projects/           swaps, bench pages, practice, ideas
 arduino/sketches/           all 41 Arduino sketches, plus a README
 arduino/downloads/          a zip of every sketch
-assets/                     shared by every course: course.css, theme.js, pager.js, labs/, brand/, fonts/
+assets/                     shared by every course: course.css, theme.js, pager.js, app.js, labs/, brand/, fonts/, og/
+sw.js, manifest.webmanifest the offline app (sw.js's file list is written by tools/build_sw.mjs)
+offline.html                shown for a page not saved yet, with no internet
 ```
 
 ## How it is built
@@ -64,8 +66,34 @@ open `index.html` in a browser by double-clicking it and the whole course works,
 with no internet connection at all. That matters: it means the course runs from
 a USB stick in a room with no network.
 
-The only external request is to Google Fonts. If that fails, the pages fall back
-to system fonts and everything still works.
+The fonts are in `assets/fonts/`, so nothing needs the internet except the optional YouTube videos.
+
+## Offline, install, and link previews
+
+**Offline on the website.** The first visit saves the site home, the course home, My progress,
+every band page and the shared styles, scripts and fonts (a service worker, `sw.js`). Every other
+page, the 3D bundle, compiled sketches and thumbnails are saved the first time they are opened.
+On the course home and My progress, **Save the whole course on this device** saves everything at
+once (about 7 MB), with a progress bar; a device that did that saves each new version by itself.
+When a new version takes over an open page, a quiet note says "Updated — reload for the latest
+version". Pages work at both `/arduino/bands/band-3` and `band-3.html`, and the old addresses
+redirect, with no internet. YouTube videos are never saved: they still need the internet, and
+their boxes say so. From a USB stick (`file://`) none of this runs, because nothing is needed.
+
+**Install.** The site is an installable app called "IoT at BIH" (`manifest.webmanifest`, plum,
+BIH icons). Where the browser offers it, the site home shows a small dismissible "Install" note
+and the course home and My progress show an **Install this course** button; on an iPhone or iPad
+those pages say "tap Share, then Add to Home Screen". The app opens at the site home. It assumes
+the site is at the root of its domain (as on Vercel); in a GitHub Pages project folder the pages
+and offline saving still work, but the installed app would start at the wrong address.
+
+**Link previews.** Every page carries Open Graph and Twitter tags, so a link shared on WhatsApp,
+Facebook or X shows a card (`assets/og/`): the page's title, the band's resistor colour and its 3D
+build, in BIH plum and gold.
+
+**After changing any file, run `node tools/build_sw.mjs`** so devices pick up the change. After
+adding a page or changing a title or description, also make its card and tags first. The details
+and the order are in `tools/README.md` ("Offline app and link previews").
 
 Every diagram is hand-drawn inline SVG that follows the reader's light or dark
 theme. Nothing is a bitmap, so nothing goes blurry.
