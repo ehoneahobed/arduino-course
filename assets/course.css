@@ -683,3 +683,11 @@ html.has-side nav[aria-label="Sections"] > a.nav-3d .n3{background:none; color:v
 .pg-foot .pg-next{background:var(--surface); color:var(--ink); border-color:var(--line)}
 .pg-foot .pg-next small{color:var(--muted)}
 .pg-foot .pg-next b{color:var(--accent-ink)}
+
+/* Comfortable reading size (Nov 2026): lesson text at about 17–18px with roomy lines.
+   Menus, labels and buttons keep their own (rem) sizes, so only the reading text grows. */
+body{font-size:clamp(1.06rem,1rem + .28vw,1.15rem); line-height:1.75}
+h1{font-size:clamp(1.85rem,1.45rem + 1.7vw,2.6rem)}
+h2{font-size:clamp(1.3rem,1.15rem + .5vw,1.55rem)}
+h3{font-size:1.1rem}
+p + p{margin-top:.15em}
