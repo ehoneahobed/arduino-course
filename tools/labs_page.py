@@ -289,9 +289,9 @@ TEMPLATE = r"""<!doctype html>
 </head>
 <body class="ws">
 <header class="ws-top">
-  <a class="ws-brand" href="index.html"><img src="../assets/brand/logo-mark-white.png" alt="Arduino Ladder home"><span><b>3D Workshop</b><small>The Arduino Ladder · Bozoma Innovation Hub</small></span></a>
+  <a class="ws-brand" href="home.html"><img src="../assets/brand/logo-mark-white.png" alt="Arduino Ladder home"><span><b>3D Workshop</b><small>The Arduino Ladder · Bozoma Innovation Hub</small></span></a>
   <label class="ws-search">@@SEARCH@@<input type="search" id="ws-q" placeholder="Find a lab: button, servo, screen…" aria-label="Find a 3D lab" autocomplete="off"></label>
-  <nav class="ws-toplinks" aria-label="Course"><a href="index.html">Course home</a><a href="bands/band-0.html">Start with Band 0</a></nav>
+  <nav class="ws-toplinks" aria-label="Course"><a href="home.html">Course home</a><a href="bands/band-0.html">Start with Band 0</a></nav>
   <div class="ws-vbar">
     <a class="ws-back" href="labs.html" aria-label="All 3D labs">&larr; <span>All labs</span></a>
     <span class="ws-vtitle" id="ws-vtitle"></span>

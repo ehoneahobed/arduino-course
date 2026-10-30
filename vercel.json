@@ -3,13 +3,50 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "redirects": [
-    { "source": "/bands/:path*", "destination": "/arduino/bands/:path*", "permanent": true },
-    { "source": "/projects/:path*", "destination": "/arduino/projects/:path*", "permanent": true },
-    { "source": "/sketches/:path*", "destination": "/arduino/sketches/:path*", "permanent": true },
-    { "source": "/downloads/:path*", "destination": "/arduino/downloads/:path*", "permanent": true },
-    { "source": "/guide", "destination": "/arduino/guide", "permanent": true },
-    { "source": "/guide.html", "destination": "/arduino/guide", "permanent": true },
-    { "source": "/labs", "destination": "/arduino/labs", "permanent": true },
-    { "source": "/labs.html", "destination": "/arduino/labs", "permanent": true }
+    {
+      "source": "/arduino",
+      "destination": "/arduino/home",
+      "permanent": false
+    },
+    {
+      "source": "/bands/:path*",
+      "destination": "/arduino/bands/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/projects/:path*",
+      "destination": "/arduino/projects/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/sketches/:path*",
+      "destination": "/arduino/sketches/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/downloads/:path*",
+      "destination": "/arduino/downloads/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/guide",
+      "destination": "/arduino/guide",
+      "permanent": true
+    },
+    {
+      "source": "/guide.html",
+      "destination": "/arduino/guide",
+      "permanent": true
+    },
+    {
+      "source": "/labs",
+      "destination": "/arduino/labs",
+      "permanent": true
+    },
+    {
+      "source": "/labs.html",
+      "destination": "/arduino/labs",
+      "permanent": true
+    }
   ]
 }

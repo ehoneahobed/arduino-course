@@ -20,7 +20,7 @@ tools/              the Arduino Ladder's build and checking scripts
 ## Steps
 
 1. **Make the folder**, named for the board or topic in lower case: `esp32/`, `raspberry-pi/`, `code/`.
-   Copy `arduino/index.html` and one band page as a starting point. Pages one level down use
+   Copy `arduino/home.html` and one band page as a starting point. Pages one level down use
    `../assets/…`; pages two levels down use `../../assets/…`.
 2. **Keep the shared page parts.** In every page's `<head>`, straight after `<meta charset>`, load
    `assets/theme.js` (no `defer`, so there is no flash of the wrong theme), then `course.css`.
@@ -42,3 +42,7 @@ tools/              the Arduino Ladder's build and checking scripts
    USB stick by double-clicking `index.html`.
 7. **Old links.** If you ever move pages, add a permanent redirect in `vercel.json`, as was done when the
    Arduino Ladder moved from the site root into `arduino/`.
+
+**Name the course home `home.html`, not `index.html`.** The host serves folder pages without a trailing
+slash (`/arduino`), and relative links on such a page resolve from the site root. `/arduino/home` keeps
+them inside the folder; `vercel.json` sends `/arduino` to it. Do the same for each new course.

@@ -47,7 +47,7 @@ red is 2, and so on. Learners decode their own band name in Band 1.
 
 ```
 index.html                  the site home (IoT at BIH)
-arduino/index.html          the course home page
+arduino/home.html           the course home page
 arduino/guide.html          the facilitator guide
 arduino/labs.html           the 3D Workshop
 arduino/bands/              the nine lesson pages
