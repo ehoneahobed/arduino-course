@@ -529,3 +529,17 @@ nav[aria-label="Sections"] a[aria-current="step"]{color:#fff; background:var(--p
 .pg-foot .pg-next small{color:rgba(255,255,255,.8)}
 @media (max-width:560px){.pg-foot{grid-template-columns:1fr}.pg-foot .pg-next{grid-column:1; order:-1}}
 @media print{.pg-strip,.pg-foot{display:none !important}}
+.pg-head{display:flex; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap; padding:2rem 0 .5rem;
+  font-family:"Outfit","Rubik",Arial,sans-serif}
+.pg-band{font-size:.8rem; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); text-decoration:none; font-weight:600}
+.pg-band:hover{color:var(--accent)}
+.pg-step{display:inline-flex; align-items:center; gap:.5rem; font-size:.9rem; color:var(--ink-2)}
+.pg-arrow{display:inline-grid; place-items:center; width:2.2rem; height:2.2rem; border-radius:50%; border:1px solid var(--line);
+  background:var(--surface); color:var(--ink); text-decoration:none; font-size:1.3rem; line-height:1}
+a.pg-arrow:hover,a.pg-arrow:focus-visible{border-color:var(--accent); color:var(--accent)}
+.pg-arrow.pg-off{opacity:.35}
+.pg-head + section.part,.pg-head + .choose{margin-top:.5rem}
+.pg-enter{animation:pg-in .35s ease-out}
+@keyframes pg-in{from{opacity:0; transform:translateX(18px)} to{opacity:1; transform:none}}
+@media (prefers-reduced-motion:reduce){.pg-enter{animation:none}}
+@media print{.pg-head{display:none !important}}

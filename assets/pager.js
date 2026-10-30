@@ -42,6 +42,14 @@
     '<p class="pg-count" aria-live="polite"></p>' +
     '<button type="button" class="pg-mode"></button>';
   bar.insertAdjacentElement('afterend', strip);
+  // After the first page the long band introduction gives way to a short page heading,
+  // so every section starts at the top of the screen like a new page.
+  var header = wrap.querySelector(':scope > header');
+  var h1 = header && header.querySelector('h1');
+  var bandName = 'Band ' + (document.documentElement.getAttribute('data-band') || '') + (h1 ? ' · ' + h1.textContent.trim() : '');
+  var head = document.createElement('div');
+  head.className = 'pg-head';
+  wrap.insertBefore(head, intro[0] || sections[0]);
   var foot = document.createElement('nav');
   foot.className = 'pg-foot';
   foot.setAttribute('aria-label', 'Section pages');
@@ -69,6 +77,12 @@
     if (c && c.scrollIntoView && bar.scrollWidth > bar.clientWidth) c.scrollIntoView({ block: 'nearest', inline: 'center' });
   }
 
+  function arrow(i, dir) {
+    if (i < 0 || i >= sections.length) return '<span class="pg-arrow pg-off" aria-hidden="true">' + (dir === 'prev' ? '‹' : '›') + '</span>';
+    return '<a class="pg-arrow" href="#' + sections[i].id + '" aria-label="' + (dir === 'prev' ? 'Previous' : 'Next') + ': ' +
+      titles[i].replace(/"/g, '&quot;') + '">' + (dir === 'prev' ? '‹' : '›') + '</a>';
+  }
+
   function link(i, dir) {
     if (i < 0 || i >= sections.length) return '<span></span>';
     return '<a class="pg-' + dir + '" href="#' + sections[i].id + '"><small>' + (dir === 'prev' ? '← Previous' : 'Next →') +
@@ -82,18 +96,23 @@
     strip.querySelector('.pg-meter span').style.width = Math.round(100 * done / sections.length) + '%';
     if (!paged) {
       sections.concat(intro, outro).forEach(function (el) { el.hidden = false; });
+      if (header) header.hidden = false;
+      head.hidden = true;
       foot.hidden = true;
       strip.querySelector('.pg-count').textContent = done + ' of ' + sections.length + ' sections read';
       markBar();
       return;
     }
     sections.forEach(function (s, i) { s.hidden = i !== cur; });
+    if (header) header.hidden = cur !== 0;
+    head.hidden = cur === 0;
+    head.innerHTML = '<a class="pg-band" href="#' + sections[0].id + '">' + bandName.replace(/</g, '&lt;') + '</a>' +
+      '<span class="pg-step">' + arrow(cur - 1, 'prev') + '<b>Section ' + (cur + 1) + ' of ' + sections.length + '</b>' + arrow(cur + 1, 'next') + '</span>';
     intro.forEach(function (el) { el.hidden = cur !== 0; });
     outro.forEach(function (el) { el.hidden = cur !== sections.length - 1; });
     foot.hidden = false;
     foot.innerHTML = link(cur - 1, 'prev') + link(cur + 1, 'next');
-    strip.querySelector('.pg-count').textContent = 'Section ' + (cur + 1) + ' of ' + sections.length + ': ' + titles[cur] +
-      ' · ' + done + ' read';
+    strip.querySelector('.pg-count').textContent = done + ' of ' + sections.length + ' sections read';
     markBar();
     // A 3D lab that was laid out while hidden needs to measure itself again.
     try { window.dispatchEvent(new Event('resize')); } catch (e) {}
@@ -106,10 +125,14 @@
     state.last = id;
     save(KEY, state);
     render();
-    var target = targetId && targetId !== id ? document.getElementById(targetId) : null;
+    var m = /^3d-(.+)$/.exec(targetId || '');
+    var target = targetId && targetId !== id ? (m ? document.querySelector('[data-build="' + m[1] + '"]') : document.getElementById(targetId)) : null;
     if (paged) {
+      // A new page: start at the top, with a short fade so the change is visible.
+      sections[cur].classList.remove('pg-enter'); void sections[cur].offsetWidth; sections[cur].classList.add('pg-enter');
       if (target) target.scrollIntoView();
-      else (document.querySelector('header') || sections[cur]).scrollIntoView();
+      else window.scrollTo(0, 0);
+      openLab(sections[cur]);
       if (focus) {
         var h = sections[cur].querySelector('h2');
         if (h) { h.setAttribute('tabindex', '-1'); h.focus({ preventScroll: true }); }
@@ -117,6 +140,18 @@
     } else if (target || targetId) {
       (target || sections[cur]).scrollIntoView();
     }
+  }
+
+  // The band's concept lab opens by itself when its section comes up.
+  function openLab(sec) {
+    var btn = sec.querySelector('button[data-lab-open]');
+    if (!btn || btn.dataset.pgOpened) return;
+    var go = function () {
+      if (!window.ArduinoLabsLoader || sec.hidden) return;
+      btn.dataset.pgOpened = '1';
+      window.ArduinoLabsLoader.go(btn);
+    };
+    if (window.ArduinoLabsLoader) setTimeout(go, 0); else document.addEventListener('DOMContentLoaded', go);
   }
 
   function fromHash(focus) {
