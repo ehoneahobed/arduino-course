@@ -91,6 +91,14 @@ learner presses the button, and it works from a USB stick with no internet. Lab 
 rebuild the bundle with `node tools/build_labs.mjs` (see `tools/README.md`).
 Every lab opens **full screen** (the button, or the `F` key), and in a page it is as wide as the window.
 
+Every 3D build can also **run its sketch**. The course's real sketches are compiled for the Uno's chip
+(`node tools/compile_sketches.mjs`, output committed in `assets/labs/hex/`) and run in the browser on an
+emulated ATmega328P (avr8js, MIT, vendored in `assets/vendor/avr8js@0.21.1/`), at the chip's own speed. What
+the sketch does to its pins reaches the 3D parts through the build's own wiring: lights (with PWM brightness),
+the RGB light, buzzer, servo, the 16x2 screen and the serial monitor, with buttons, knobs and sensors to set in
+the panel. A sketch that does not compile shows the compiler's real error. Which sketches go with which build:
+`assets/labs/src/sketches.json`. Details in `tools/README.md`.
+
 Each band also has a **concept lab** ("Try it in 3D") placed where its big idea is taught: the Uno tour and
 upload journey (Band 0), current in a loop and resistor colours (1), PWM and colour mixing (2), floating pins
 and the lock's array (3), the light-sensor divider and calibration (4), functions and `millis` vs `delay` (5),

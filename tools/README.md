@@ -169,6 +169,59 @@ five, one per rail, nothing across the channel, top and bottom rails
 separate) and lights up each electrical connection in its own colour.
 "Show me around" visits every part in build order.
 
+## The virtual Arduino: `compile_sketches.mjs`
+
+Each 3D build has a **Run the sketch** section: the course's real sketches,
+compiled for the Uno's ATmega328P, run in the browser on an emulated chip
+(avr8js 0.21.1, MIT, vendored in `assets/vendor/avr8js@0.21.1/` and bundled
+into `labs.bundle.js`). Which sketches a build offers is in
+`assets/labs/src/sketches.json` (the first is the one the page builds it for;
+the others fit its wiring pin for pin). The code is `assets/labs/src/sim.js`
+(wiring to parts, inputs, the panel), `uno.js` (the chip and its pins) and
+`hd44780.js` (the 16x2 screen and its I2C backpack).
+
+The machine code is compiled once by a maintainer and committed, so nobody
+needs a compiler to use the site:
+
+    node tools/compile_sketches.mjs             compile every sketch in arduino/sketches/
+    node tools/compile_sketches.mjs b2_01 b7    only the sketches whose names start so
+    node tools/compile_sketches.mjs --install   first install the core and the libraries
+
+It writes one small script per sketch, `assets/labs/hex/<sketch>.js` (the
+program as base64 bytes from the Intel HEX, the source, and the program and
+memory sizes), which the lab fetches with a plain `<script>` when a build
+opens, so it works from file:// too. A sketch that does not compile keeps the
+compiler's own error text instead; the lab shows it and marks the line. Only
+`b0_03_buggy_semicolon` may fail: any other failure, or b0_03 compiling, makes
+the script exit with an error. Recompile after changing any sketch.
+
+It needs `arduino-cli` (`brew install arduino-cli`, the official download, or
+the copy inside Arduino IDE 2, which it finds by itself; or set
+`ARDUINO_CLI=/path/to/arduino-cli`), the `arduino:avr` core and the libraries
+the sketches include: Servo, LiquidCrystal, Stepper, "LiquidCrystal I2C" (Frank
+de Brabander), Keypad, SimpleDHT and TM1637. `--install` installs all of them.
+To keep them out of your own sketchbook, set `ARDUINO_DIRECTORIES_USER` to
+another folder first. Last compiled with arduino-cli 1.5.1 and arduino:avr
+1.8.8: 53 of 54 compile.
+
+What the emulated board is joined to, through the build's own wiring (wires,
+strips, rails and pressed buttons, as in X-ray): lights and the RGB light from
+each pin's share of time high (so `analogWrite` shows as brightness; a common
+anode RGB light is lit by a LOW pin, as the real one is), the board's L, TX,
+RX and ON lights, the buzzer's pitch from the pin's frequency (sound off until
+the learner turns it on), servo angle from pulse length, the stepper driver's
+four lights, the fan from the transistor's base, the 16x2 screen in 4-bit mode
+or over I2C (address 0x27), and the serial monitor (with a box to send text).
+Inputs in the panel: buttons (hold to press; `INPUT_PULLUP` or the build's own
+resistors decide what a pin reads, and a floating pin wanders), knobs, the
+light sensor, the rain sensor, distance for the HC-SR04, temperature and
+humidity for the DHT11, and the keypad. `analogRead` wobbles by a count or so,
+as a real one does (b6_03 needs that). The TM1637 display and the I2C screen
+in Band 7 Part 8 are not drawn in their builds, so what they show is printed
+in the panel. The chip runs at its real speed (16 million cycles a second) in
+frame-sized slices, and pauses when the lab is off screen or the tab is
+hidden; on a slow computer the panel says how much slower than real it is.
+
 ## Full screen, the "3D lab" pill and the 3D Workshop: `inject_nav3d.py`, `labs_page.py`, `lab_thumbs.mjs`
 
 Every lab and build viewer has a **Full screen** button (and the `F` key). It

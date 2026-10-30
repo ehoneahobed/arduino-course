@@ -12,6 +12,7 @@ import { THREE, mat, rbox, decal, label, lowPower } from './runtime.js';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 import * as P from './parts.js';
 import DATA from './builds.json';
+import { attachSim } from './sim.js';
 
 const { V } = P;
 const BT = 1.3; // board top
@@ -238,7 +239,7 @@ export function prepare(host) {
   });
 
   b.parts.forEach((p, i) => {
-    const part = { i, kind: p.type, data: p, group: new THREE.Group() };
+    const part = { i, kind: p.type, data: p, group: new THREE.Group(), model: modelOf[i] };
     const g = part.group;
     const legs = [];
     switch (p.type) {
@@ -1580,6 +1581,9 @@ export default function buildLab(stage, ui, host, W) {
   new MutationObserver(() => setTimeout(retint, 50)).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme', 'class'] });
 
   refresh();
+  // ---- the virtual Arduino: run this build's real sketch (sim.js) ----
+  W.sim = attachSim(stage, ui, host, W);
+  host.labSim = W.sim; // for the test bench
   host.dispatchEvent(new CustomEvent('lab-ready', { bubbles: true, detail: { lab: 'build', build: host.dataset.build } }));
 }
 

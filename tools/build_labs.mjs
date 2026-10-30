@@ -69,7 +69,7 @@ const res = await esbuild.build({
   outfile: OUT,
   plugins: [vendorThree],
   logLevel: 'warning',
-  banner: { js: '/* Arduino Ladder 3D labs. Built by tools/build_labs.mjs: do not edit, edit assets/labs/src/ and rebuild. three.js 0.180.0 (MIT, see assets/vendor/three@0.180.0/LICENSE). */' },
+  banner: { js: '/* Arduino Ladder 3D labs. Built by tools/build_labs.mjs: do not edit, edit assets/labs/src/ and rebuild. three.js 0.180.0 (MIT, see assets/vendor/three@0.180.0/LICENSE). avr8js 0.21.1 (MIT, see assets/vendor/avr8js@0.21.1/LICENSE). */' },
   metafile: true,
 });
 const kb = (statSync(OUT).size / 1024).toFixed(0);

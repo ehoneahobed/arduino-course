@@ -548,8 +548,10 @@ export function rgbLed(holes, top, long = 1) {
   inkThin(dome, 0.03, 50);
   body.add(can, dome);
   // three little dies inside: red, green, blue
+  const dies = [];
   [0xe23b2a, 0x2fae55, 0x3a7ee0].forEach((c, i) => {
     const d = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.22, 0.22), mat(c, { emissive: c, emissiveIntensity: 0.4 }));
+    dies.push(d.material);
     d.position.set((i - 1) * 0.4, 1.2, 0);
     d.userData.noInk = true;
     body.add(d);
@@ -574,6 +576,9 @@ export function rgbLed(holes, top, long = 1) {
   });
   g.add(legs(list));
   g.userData.top = V(mid.x, baseY + 2.6, mid.z);
+  // for the virtual Arduino (sim.js): the three dies, and the milky lens to tint
+  g.userData.dies = dies;
+  g.userData.lens = lens;
   return g;
 }
 
@@ -1172,7 +1177,7 @@ function servo(pins) {
   g.add(leadM);
   g.add(contactShadow(bw + 3, bd * 0.75, { blur: 0.8, opacity: 0.3 }));
   hookStudio(body);
-  return { group: shadowAll(g), tips, w: bw + 7, d: 11, plugTips: true, zOff: 3.5 };
+  return { group: shadowAll(g), tips, w: bw + 7, d: 11, plugTips: true, zOff: 3.5, horn };
 }
 
 function uln2003(pins) {
@@ -1195,13 +1200,15 @@ function uln2003(pins) {
   pl.add(rboxG(3.2, 1.2, 1.6, 0.08, 1), { p: [2.6, 1.2, 2.6], c: 0xf2f2f0, ink: 25 });
   for (let i = 0; i < 5; i++) pl.add(funnelGeo(0.22, 0.1, 0.25, 0.9), { p: [1.4 + i * 0.6, 1.805, 2.6], c: 0xdedad2, ink: false });
   g.add(pl.mesh(plasticMat(0xffffff, { rough: 0.45 })), mt.mesh(metalMat(TIN)));
+  const leds = [];
   for (let i = 0; i < 4; i++) {
     const l = new THREE.Mesh(box(0.5, 0.3, 0.4), plasticMat(0xe23b2a, { emissive: 0xe23b2a, emissiveIntensity: 0.25, rough: 0.3, gloss: 0.7 }));
     l.position.set(-3.8 + i * 0.8, 0.75, 2.6);
     g.add(l);
+    leds.push(l.material);
   }
   g.add(contactShadow(w, d, { blur: 0.6, opacity: 0.25 }));
-  return { group: shadowAll(g), tips: m.userData.tips, w, d };
+  return { group: shadowAll(g), tips: m.userData.tips, w, d, leds };
 }
 
 // A 5 mm LED head standing on a module board (no legs), for the modules.
@@ -1222,9 +1229,10 @@ function trafficModule(pins) {
     ['R', 'Y', 'G'].forEach((t, i) => silk(c, s, t, X(1.6), Z(-1.1 + i * 2.0), 0.42, { font: SANS }));
   } });
   g.add(m);
-  [0xe23b2a, 0xf4c21e, 0x2fae55].forEach((c, i) => g.add(moduleLed(c, 0, -1.1 + i * 2.0, 0.6, { scale: 0.85 })));
+  const lights = {};
+  [0xe23b2a, 0xf4c21e, 0x2fae55].forEach((c, i) => { const l = moduleLed(c, 0, -1.1 + i * 2.0, 0.6, { scale: 0.85 }); lights['RYG'[i]] = l.material; g.add(l); });
   g.add(contactShadow(w, d, { blur: 0.6, opacity: 0.25 }));
-  return { group: shadowAll(g), tips: m.userData.tips, w, d };
+  return { group: shadowAll(g), tips: m.userData.tips, w, d, lights };
 }
 
 function rgbModule(pins) {
@@ -1232,34 +1240,63 @@ function rgbModule(pins) {
   const w = Math.max(5, pins.length * 1.1 + 1), d = 5;
   const m = pcbModule({ w, d, color: 0x1e1f23, name: 'RGB', pins });
   g.add(m);
-  g.add(moduleLed(0xf3f0ea, 0, 0.4, 0.6, { opacity: 0.92, scale: 0.95 }));
+  const l = moduleLed(0xf3f0ea, 0, 0.4, 0.6, { opacity: 0.92, scale: 0.95 });
+  g.add(l);
   g.add(contactShadow(w, d, { blur: 0.6, opacity: 0.25 }));
-  return { group: shadowAll(g), tips: m.userData.tips, w, d };
+  return { group: shadowAll(g), tips: m.userData.tips, w, d, rgbLens: l.material };
 }
 
 // An LCD's glass: a green backlit panel with faint character cells.
+// screen.userData.show(rows, opts) repaints it: rows are two strings, or two
+// arrays of character codes (0-7 drawn from opts.glyphs, 5x8 bitmaps, as the
+// HD44780 does); opts.light false dims the backlight, opts.ink (0..1) is the
+// contrast. The virtual Arduino (sim.js) uses it to show what a sketch prints.
+function paintLcd(c, W, H, rows, { fs = 1, light = true, ink = 1, glyphs = null, cursor = -1 } = {}) {
+  const gr = c.createLinearGradient(0, 0, 0, H);
+  gr.addColorStop(0, light ? '#9fd35a' : '#5d6b49');
+  gr.addColorStop(1, light ? '#79b83a' : '#4c5a3a');
+  c.fillStyle = gr;
+  c.fillRect(0, 0, W, H);
+  const cw = W / 17.2, ch = H / 2.6;
+  const x0 = (W - cw * 16) / 2, y0 = (H - ch * 2) / 2;
+  c.fillStyle = `rgba(30,70,20,${0.06 + 0.3 * Math.max(0, ink - 0.85)})`;
+  for (let r = 0; r < 2; r++) for (let k = 0; k < 16; k++) c.fillRect(x0 + k * cw + cw * 0.06, y0 + r * ch + ch * 0.06, cw * 0.88, ch * 0.88);
+  c.globalAlpha = Math.max(0, Math.min(1, ink));
+  c.fillStyle = '#1f3a12';
+  c.font = `700 ${ch * 0.78 * fs}px ${MONO}`;
+  c.textBaseline = 'middle';
+  c.textAlign = 'center';
+  rows.forEach((t, r) => {
+    for (let k = 0; k < Math.min(16, t.length); k++) {
+      const code = typeof t === 'string' ? t.charCodeAt(k) : t[k];
+      const cx = x0 + (k + 0.5) * cw, cy = y0 + (r + 0.52) * ch;
+      if (code < 8 && glyphs) {
+        // a custom character: its 5x8 dots
+        const px = (cw * 0.84) / 5, py = (ch * 0.84) / 8;
+        for (let yy = 0; yy < 8; yy++) for (let xx = 0; xx < 5; xx++) if (glyphs[(code & 7) * 8 + yy] & (16 >> xx)) c.fillRect(cx - cw * 0.42 + xx * px, cy - ch * 0.44 + yy * py, px * 0.9, py * 0.9);
+      } else if (code !== 32) c.fillText(LCD_CHARS[code] ?? String.fromCharCode(code), cx, cy);
+      if (r * 16 + k === cursor) c.fillRect(cx - cw * 0.4, cy + ch * 0.34, cw * 0.8, ch * 0.08);
+    }
+  });
+  c.globalAlpha = 1;
+  const sh = c.createLinearGradient(0, 0, W, H);
+  sh.addColorStop(0, 'rgba(255,255,255,0.18)');
+  sh.addColorStop(0.4, 'rgba(255,255,255,0)');
+  c.fillStyle = sh;
+  c.fillRect(0, 0, W, H);
+}
+// The HD44780's own characters where they differ from ASCII (ROM A00).
+const LCD_CHARS = { 0x5c: '¥', 0x7e: '→', 0x7f: '←', 0xdf: '°', 0xe4: 'µ', 0xf4: 'Ω', 0xff: '█', 0xa5: '·' };
 function lcdScreen(w, h, lines, fs) {
-  return decal(w, h, (c, W, H) => {
-    const gr = c.createLinearGradient(0, 0, 0, H);
-    gr.addColorStop(0, '#9fd35a');
-    gr.addColorStop(1, '#79b83a');
-    c.fillStyle = gr;
-    c.fillRect(0, 0, W, H);
-    const cw = W / 17.2, ch = H / 2.6;
-    const x0 = (W - cw * 16) / 2, y0 = (H - ch * 2) / 2;
-    c.fillStyle = 'rgba(30,70,20,0.10)';
-    for (let r = 0; r < 2; r++) for (let k = 0; k < 16; k++) c.fillRect(x0 + k * cw + cw * 0.06, y0 + r * ch + ch * 0.06, cw * 0.88, ch * 0.88);
-    c.fillStyle = '#1f3a12';
-    c.font = `700 ${ch * 0.78 * fs}px ${MONO}`;
-    c.textBaseline = 'middle';
-    c.textAlign = 'center';
-    lines.forEach((t, r) => { for (let k = 0; k < Math.min(16, t.length); k++) c.fillText(t[k], x0 + (k + 0.5) * cw, y0 + (r + 0.52) * ch); });
-    const sh = c.createLinearGradient(0, 0, W, H);
-    sh.addColorStop(0, 'rgba(255,255,255,0.18)');
-    sh.addColorStop(0.4, 'rgba(255,255,255,0)');
-    c.fillStyle = sh;
-    c.fillRect(0, 0, W, H);
-  }, { px: 160, transparent: false });
+  const m = decal(w, h, (c, W, H) => paintLcd(c, W, H, lines, { fs }), { px: 160, transparent: false });
+  m.userData.show = (rows, opts = {}) => {
+    const map = m.material.map;
+    const cv = map.image;
+    paintLcd(cv.getContext('2d'), cv.width, cv.height, rows, { fs, ...opts });
+    map.needsUpdate = true;
+  };
+  m.userData.idle = lines;
+  return m;
 }
 
 function lcd(pins, i2c) {
@@ -1293,7 +1330,7 @@ function lcd(pins, i2c) {
       return V(-w / 2 + 0.6, 1.2, z);
     });
     g.add(contactShadow(w, d, { blur: 0.7, opacity: 0.28 }));
-    return { group: shadowAll(g), tips, w, d };
+    return { group: shadowAll(g), tips, w, d, screen };
   }
   // the bare kind, standing up behind the board, 16 pins along its lower edge
   const w = 24, h = 10.2;
@@ -1332,7 +1369,7 @@ function lcd(pins, i2c) {
   const tips = [];
   for (let i = 0; i < n; i++) tips.push(V(-w / 2 + 1.5 + i, 0.9, 0.8));
   g.add(contactShadow(w, 1.6, { blur: 0.6, opacity: 0.25 }));
-  return { group: shadowAll(g), tips, w, d: 1.2, standing: true, h };
+  return { group: shadowAll(g), tips, w, d: 1.2, standing: true, h, screen };
 }
 
 function sonar(pins) {
@@ -1561,18 +1598,21 @@ function motor() {
   const pl = new Merge();
   pl.add(cyl(2.0, 2.0, 0.6, low ? 16 : 28), { p: [-3.3, 2.25, 0], r: [0, 0, Math.PI / 2], c: 0xe8e1cf, ink: 50, hull: true });
   pl.add(cyl(0.7, 0.7, 0.3, 16), { p: [3.05, 2.25, 0], r: [0, 0, Math.PI / 2], c: 0xc9ccd1, ink: 50 });
-  // the fan: hub and two twisted blades
-  pl.add(cyl(0.55, 0.55, 0.6, 16), { p: [4.3, 2.25, 0], r: [0, 0, Math.PI / 2], c: 0xca1f3f, ink: 50, hull: true });
-  for (const sgn of [-1, 1]) pl.add(rboxG(0.22, 2.0, 1.0, 0.1, 1), { p: [4.3, 2.25 + sgn * 1.2, 0], r: [sgn * 0.5, 0, 0], c: 0xca1f3f, ink: 50, hull: true });
+  // the fan: hub and two twisted blades, on their own so they can spin (about x)
+  const fp = new Merge();
+  fp.add(cyl(0.55, 0.55, 0.6, 16), { p: [0, 0, 0], r: [0, 0, Math.PI / 2], c: 0xca1f3f, ink: 50, hull: true });
+  for (const sgn of [-1, 1]) fp.add(rboxG(0.22, 2.0, 1.0, 0.1, 1), { p: [0, sgn * 1.2, 0], r: [sgn * 0.5, 0, 0], c: 0xca1f3f, ink: 50, hull: true });
+  const fan = fp.mesh(plasticMat(0xffffff, { rough: 0.45, gloss: 0.4 }), { hull: 0.03 });
+  fan.position.set(4.3, 2.25, 0);
   const plM = pl.mesh(plasticMat(0xffffff, { rough: 0.45, gloss: 0.4 }), { hull: 0.03 });
   const mt = new Merge();
   mt.add(cyl(0.22, 0.22, 1.6, 10), { p: [3.7, 2.25, 0], r: [0, 0, Math.PI / 2], ink: false });
   for (const z of [-0.8, 0.8]) mt.add(box(0.12, 1.0, 0.45), { p: [-3.7, 3.0, z], c: 0xd8b65a, ink: 25 });
-  g.add(canM, plM, mt.mesh(metalMat(0xdfe2e6)));
+  g.add(canM, plM, fan, mt.mesh(metalMat(0xdfe2e6)));
   // two terminals on the back cap
   const tips = [V(-3.8, 3.2, -0.8), V(-3.8, 3.2, 0.8)];
   g.add(contactShadow(8, 4, { blur: 0.8, opacity: 0.28 }));
-  return { group: shadowAll(g), tips, w: 9, d: 5 };
+  return { group: shadowAll(g), tips, w: 9, d: 5, fan };
 }
 
 let CELLTEX;

@@ -77,6 +77,7 @@ export const ICONS = {
   zoomOut: '<circle cx="11" cy="11" r="7"/>' + P_('M20 20l-4-4M8 11h6'),
   tag: P_('M3 12V4h8l10 10-8 8z') + '<circle cx="7.5" cy="8.5" r="1.4"/>',
   play: P_('M7 4.5v15l12-7.5z'),
+  pause: '<rect x="6.5" y="5" width="3.6" height="14" rx="1"/><rect x="13.9" y="5" width="3.6" height="14" rx="1"/>',
   stop: '<rect x="6" y="6" width="12" height="12" rx="2"/>',
   home: P_('M3 11l9-7 9 7') + P_('M5 10v10h14V10') + P_('M10 20v-6h4v6'),
   expand: P_('M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5'),
@@ -485,8 +486,9 @@ export function createStage(host, opts = {}) {
 
   // Pause drawing when the lab is scrolled off-screen or hidden.
   let visible = true;
-  const io = new IntersectionObserver(([e]) => {
-    visible = e.isIntersecting;
+  // (one callback can carry several entries, oldest first: the last one is now)
+  const io = new IntersectionObserver((es) => {
+    visible = es[es.length - 1].isIntersecting;
     if (visible) invalidate();
   });
   io.observe(wrap);
