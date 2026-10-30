@@ -14,3 +14,13 @@ figure.video figcaption span{display:block; font-size:.78rem; color:var(--muted)
 figure.video.v-offline .v-link img{visibility:hidden}
 figure.video.v-offline .v-link::before{content:"This video needs the internet"; position:absolute; left:0; right:0; bottom:.6rem; text-align:center; font-size:.8rem; color:var(--muted)}
 @media print{.videos{display:none}}
+
+/* Bigger videos: one video fills the reading column; several sit two to a row and
+   whichever is playing takes the full width. */
+.videos{grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr)); max-width:min(820px,100%); gap:1.4rem}
+figure.video.v-playing{grid-column:1 / -1}
+.v-play{width:4.2rem; height:4.2rem}
+.v-play::after{border-width:.7rem 0 .7rem 1.15rem}
+figure.video figcaption{font-size:.95rem}
+/* one video per row, each the full width of the reading column */
+.videos{grid-template-columns:1fr}
