@@ -726,7 +726,7 @@ function buildBoard(b, L) {
 }
 
 // ---------- Arduino Uno ----------
-function buildUno(b, ux0, uz0) {
+export function buildUno(b, ux0, uz0) {
   const g = new THREE.Group();
   const DIG = DATA.pins.dig;
   const PWR = DATA.pins.pwr;

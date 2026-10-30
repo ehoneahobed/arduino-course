@@ -1758,6 +1758,15 @@ void loop() {
       <p><strong>The rule: <code>delay</code> is a problem only when something else needs to happen during it.</strong> Ask that question and the answer is usually obvious.</p>
     </div>
 
+    <div class="concept stack" id="lab-millis">
+      <h3 style="margin-top:.5rem">Try it in 3D: a call, a note, and a board that is busy</h3>
+      <p>The lab has two of this band's boards. The first is your Part 4 build running <code>b5_02_functions_worked.ino</code>: step through it one line at a time and watch <code>loop</code> jump into <code>playStep</code>, fill in <code>which</code>, play the note, and come back to the line after the call. The second is the same board with Part 6's four wires moved, running <code>b5_03</code> or <code>b5_04</code>, with a timeline that shows both sketches against the same presses of your button.</p>
+      <p class="view3d" hidden><button type="button" class="view3d-btn" data-lab-open="concept-b5" aria-expanded="false" aria-controls="lab-b5" hidden>Open the 3D lab</button></p>
+      <div class="lab" id="lab-b5" data-lab="concept-b5" data-lazy hidden aria-label="3D lab: your own function, tone, and millis against delay"></div>
+      <div class="see"><b>What you should see</b>In <code>b5_02</code>, each call lights one light with its own note: 262, 330, 392 and 523. On the timeline, <code>b5_03</code> spends two and a half seconds inside <code>delay(20)</code> and looks at the button once, so an ordinary press is usually missed. <code>b5_04</code> looks thousands of times a second and sees every press.</div>
+      <p class="note">The sound comes from your computer, not a buzzer, and the board in the lab is a model. The two real sketches on your real board are the test that counts.</p>
+    </div>
+
     <div class="words">
       <h5>Words to know</h5>
       <dl>

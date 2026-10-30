@@ -271,6 +271,15 @@ void loop() {
     <p><strong>What is the largest number <code>level</code> ever holds?</strong> It is <strong>256</strong>, and that surprises most people. On the last round that actually runs, <code>level</code> holds 252. Then the step adds 4, making it 256, and only <em>then</em> does the test fail. So the biggest number it ever holds is one that never reaches the pin. The same thing happens in the second loop coming down, where it ends up holding &minus;1.</p>
     <p><strong>Why <code>&lt;=</code> and not <code>&lt;</code>?</strong> <code>&lt;=</code> means "less than or equal to". With <code>&lt;</code> the loop would stop before ever reaching the top value. Using <code>&lt;=</code> means 255 itself is allowed. This one character makes a real difference and there is a question about it at the end.</p>
 
+    <div class="concept" id="lab-pwm">
+      <h3 style="margin-top:1rem">Try it in 3D: the fake dimming, the for loop, and colour</h3>
+      <p>The lab has Band 2&rsquo;s own circuits: the LED on pin 9 from Part 5, and the RGB LED on pins 9, 10 and 11 from Part 7. Slide <code>analogWrite</code> from 0 to 255 and watch a picture of what the pin is really doing, then slow it right down. Step through the first <code>for</code> loop of <code>b2_01_fade_given.ino</code> one stage at a time and watch <code>level</code> count. Its colour missions go with Parts 6 and 7, so come back to them then.</p>
+      <p class="view3d" hidden><button type="button" class="view3d-btn" data-lab-open="concept-b2" aria-expanded="false" aria-controls="lab-b2" hidden>Open the 3D lab</button></p>
+      <div class="lab" id="lab-b2" data-lab="concept-b2" data-lazy hidden aria-label="3D lab: analogWrite as fast switching, the for loop counting, and mixing red, green and blue light"></div>
+      <div class="see"><b>What you should see</b>The line of the pin never sits at a middle height: it is always at 5 volts or 0 volts, and the number decides how much of each slice it spends at the top. In slow motion the LED is plainly blinking, fully on and fully off. Move the wire to pin 7 and the light snaps on at 128. In the <code>for</code> loop, <code>level</code> goes 0, 4, 8 and so on to 252, then becomes 256 and the test says no. Red and green light at 255 each make yellow.</div>
+      <p class="note">The lab is a model, not your board. Real PWM is far too fast to see, which is the whole point; your hand-wave in Part 5 is the proof on your real board.</p>
+    </div>
+
     <div class="words">
       <h5>Words to know</h5>
       <dl>

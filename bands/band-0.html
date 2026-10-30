@@ -9,6 +9,8 @@
   <link rel="icon" type="image/png" sizes="192x192" href="../assets/brand/icon-192.png">
   <link rel="apple-touch-icon" href="../assets/brand/icon-180.png">
   <link rel="stylesheet" href="../assets/course.css">
+  <link rel="stylesheet" href="../assets/labs/labs.css">
+  <script defer src="../assets/labs/labs.js"></script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to the lesson</a>
@@ -157,6 +159,15 @@
           <tr><td>The main chip</td><td>The black rectangle in the middle. This is where your program is stored and where it runs.</td></tr>
         </tbody>
       </table>
+    </div>
+
+    <div class="concept" id="lab-uno">
+      <h3 style="margin-top:.7rem">Try it in 3D: the board, a sketch, and an error</h3>
+      <p>If you want to look at the board from every side, or you are reading this away from your kit, open the lab. It is the same Uno, with a laptop and a phone charger beside it. Click any part to see what it does, or press &#9654; under the model for a tour. Its other two missions are Part 6 and Part 7 in miniature: send <code>b0_01_blink_given.ino</code> down the cable, then break <code>b0_03_buggy_semicolon.ino</code> on purpose and read the message.</p>
+      <p class="view3d" hidden><button type="button" class="view3d-btn" data-lab-open="concept-b0" aria-expanded="false" aria-controls="lab-b0" hidden>Open the 3D lab</button></p>
+      <div class="lab" id="lab-b0" data-lab="concept-b0" data-lazy hidden aria-label="3D lab: the Arduino Uno, uploading a sketch, and reading an error"></div>
+      <div class="see"><b>What you should see</b>Every part from the table above, each with its job in the words the table uses. When you press Upload, the TX and RX lights flicker while the program crosses the cable, then the L light comes on for one second and goes off for one second, and carries on doing that when the cable is moved to the phone charger. Verify on <code>b0_03</code> gives the red message about line 24, and the mistake is on line 23.</div>
+      <p class="note">The lab is a model, not your board. Your board may look slightly different if it is a copy, and on a real board the lights are much smaller. Find each part on the board in your hand too.</p>
     </div>
 
     <div class="words">

@@ -61,6 +61,12 @@ flat picture (`python3 tools/diagrams.py --json`), so the two cannot disagree. P
 learner presses the button, and it works from a USB stick with no internet. Lab source is in `assets/labs/src/`;
 rebuild the bundle with `node tools/build_labs.mjs` (see `tools/README.md`).
 
+Each band also has a **concept lab** ("Try it in 3D") placed where its big idea is taught: the Uno tour and
+upload journey (Band 0), current in a loop and resistor colours (1), PWM and colour mixing (2), floating pins
+and the lock's array (3), the light-sensor divider and calibration (4), functions and `millis` vs `delay` (5),
+servo pulses, deadband and shared ground (6), ultrasonic echo and flicker-free LCD output (7), and state
+machines with power-cut behaviour (8). Their source is `assets/labs/src/concept-bN.js`.
+
 ## Publishing it
 
 ### GitHub Pages

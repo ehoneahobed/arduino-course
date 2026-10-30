@@ -767,6 +767,15 @@
 
     <div class="ifnot"><b>Why not just use a resistor of your own?</b>You can, and many older tutorials do. It works the same way and takes an extra resistor and two extra wires per button. Using the one inside the chip is fewer parts, fewer wires, and fewer things to get wrong. With four buttons that saves you four resistors and eight wires.</div>
 
+    <div class="concept stack" id="lab-floating">
+      <h3 style="margin-top:.5rem">Try it in 3D: the floating pin, the spring and the lock</h3>
+      <p>If you want to see all of this again, or you are reading away from your board, open the lab. It is your Part 3 button on pin 2, with <code>b3_02_serial_watch.ino</code> running and its serial monitor beside it. Change <code>INPUT_PULLUP</code> to <code>INPUT</code> and watch what a floating pin prints. Then load the lock from Part 11 and watch its array fill up, press by press.</p>
+      <p class="view3d" hidden><button type="button" class="view3d-btn" data-lab-open="concept-b3" aria-expanded="false" aria-controls="lab-b3" hidden>Open the 3D lab</button></p>
+      <div class="lab" id="lab-b3" data-lab="concept-b3" data-lazy hidden aria-label="3D lab: the floating pin, INPUT_PULLUP and the combination lock"></div>
+      <div class="see"><b>What you should see</b>With <code>INPUT_PULLUP</code>, a column of 1s, five a second, that turns to 0 only while you hold button 1. With <code>INPUT</code>, 0s and 1s jumping about with nobody pressing anything. In the lock, each press fills the next box of <code>entered</code>, counted from 0, and after the fourth press each box is checked against <code>secret</code>.</div>
+      <p class="note">The lab is a model, not your board. Your real board may float more or less than this one, and a short wire sometimes settles on one value. Your own serial monitor is the one to believe.</p>
+    </div>
+
     <div class="words">
       <h5>Words to know</h5>
       <dl>

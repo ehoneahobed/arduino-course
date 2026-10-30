@@ -4,8 +4,27 @@
 // from file:// (a USB stick) as well as from the web.
 import { createStage, createUI, webglAvailable, ensureShell } from './runtime.js';
 import * as build from './build.js';
+import * as conceptB0 from './concept-b0.js';
+import * as conceptB1 from './concept-b1.js';
+import * as conceptB2 from './concept-b2.js';
+import * as conceptB3 from './concept-b3.js';
+import * as conceptB4 from './concept-b4.js';
+import * as conceptB5 from './concept-b5.js';
+import * as conceptB6 from './concept-b6.js';
+import * as conceptB7 from './concept-b7.js';
+import * as conceptB8 from './concept-b8.js';
 
 const LABS = { build };
+// Concept labs: one line each, so labs added side by side never collide.
+LABS['concept-b0'] = conceptB0;
+LABS['concept-b1'] = conceptB1;
+LABS['concept-b2'] = conceptB2;
+LABS['concept-b3'] = conceptB3;
+LABS['concept-b4'] = conceptB4;
+LABS['concept-b5'] = conceptB5;
+LABS['concept-b6'] = conceptB6;
+LABS['concept-b7'] = conceptB7;
+LABS['concept-b8'] = conceptB8;
 
 export function mount(host) {
   if (host.dataset.mounted) return;
@@ -18,7 +37,7 @@ export function mount(host) {
     return;
   }
   if (!webglAvailable()) {
-    status.textContent = 'This computer cannot show 3D graphics (WebGL is turned off or not supported). The flat picture shows the same build.';
+    status.textContent = 'This computer cannot show 3D graphics (WebGL is turned off or not supported). ' + (host.dataset.lab === 'build' ? 'The flat picture shows the same build.' : 'The page around it teaches the same ideas in words.');
     host.classList.add('lab-failed');
     return;
   }
@@ -79,7 +98,8 @@ function init() {
     btn.dataset.wired = '1';
     btn.addEventListener('click', () => toggle(btn));
   }
-  const labs = [...document.querySelectorAll('.lab[data-lab]')];
+  // A lab marked data-lazy waits for its "Open the 3D lab" button (labs.js).
+  const labs = [...document.querySelectorAll('.lab[data-lab]:not([data-lazy])')];
   if (labs.length) whenFonts().then(() => labs.forEach(mount));
 }
 

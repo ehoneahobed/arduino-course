@@ -1308,6 +1308,13 @@ if (abs(wanted - lastAngle) &gt;= deadband) {
     </div>
 
     <div class="ifnot"><b>One more instruction worth knowing</b><code>gate.detach()</code> stops the signal going out, and the servo goes limp and stops holding. It also stops drawing much current. If your build only needs to move now and then, <code>attach</code>, move, wait for it to arrive, then <code>detach</code>, and your batteries will last many times longer. It also stops the buzzing entirely while it is detached.</div>
+
+    <h3 style="margin-top:.8rem">Try it in 3D: the signal, the shiver and the ground</h3>
+    <p>Parts 4, 6 and 7 all happen inside wires you cannot see into. This lab lets you look. The screen behind the Arduino shows what pin 9 really sends: one short pulse every 20 thousandths of a second. <strong>The width of that pulse is the angle.</strong> You do not write the pulse yourself. <code>gate.write</code> asks the Servo library to make it.</p>
+    <p>You can pick an angle, run the sweep from b6_01, turn the knob with and without a deadband, and move the servo onto the battery pack. The wires are drawn straight to the rails to keep the picture clear; for the real holes, follow Part 7. If no button appears below, your computer cannot show 3D. Nothing in this band needs it.</p>
+    <p class="view3d" hidden><button type="button" class="view3d-btn" data-lab-open="concept-b6" aria-expanded="false" hidden>Open the 3D lab</button></p>
+    <div class="lab" data-lab="concept-b6" data-lazy hidden style="width:min(1000px, calc(100vw - 2.5rem))" aria-label="3D lab: a servo, the signal on pin 9, and the shared ground"></div>
+    <div class="see"><b>What you should see</b><code>gate.write(0)</code> makes a narrow pulse, 544 microseconds, and <code>gate.write(180)</code> one about four times wider, 2400 microseconds. Those are the Servo library's own numbers. On the knob with no deadband, the serial lines flip between two angles and the arm shivers with nobody touching it. A deadband of 3 makes it go still. On the battery with the ground link out, the arm twitches and the signal screen shows only noise. Put the one wire back and it sweeps.</div>
   </div>
 </section>
 

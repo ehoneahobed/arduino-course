@@ -634,6 +634,15 @@
     <p>A rough answer is enough for now. The board supplies 5 volts. An LED is comfortable with about 15 thousandths of an <strong>amp</strong>, which is the unit we measure current in. Working out what resistance gives roughly that lands you somewhere between 200 and 330 ohms, and 220 is a common value in that range.</p>
     <p>You do not have to do that arithmetic to finish this course. For now, anything from 200 to about 470 ohms works fine and the light is just a little dimmer at the top end. If you ever want to work it out yourself, the sum is Ohm&#8217;s law, and it is worth looking up once you are comfortable with everything in Band 4.</p>
 
+    <div class="concept" id="lab-loop">
+      <h3 style="margin-top:1rem">Try it in 3D: the loop, the LED and the stripes</h3>
+      <p>Before you build, you can try the whole of Part 5 in a lab, including the things you must never do on your real board. It is the one light circuit: pin 8, the 220 ohm resistor, the LED, the &minus; rail and GND. Gold dots show the current going round, like the rope in Part 1, with a red one for the marker. Break the loop, turn the LED round, squeeze the current with a 470 ohm resistor, and read the stripes on a mystery resistor.</p>
+      <p class="view3d" hidden><button type="button" class="view3d-btn" data-lab-open="concept-b1" aria-expanded="false" aria-controls="lab-b1" hidden>Open the 3D lab</button></p>
+      <div class="lab" id="lab-b1" data-lab="concept-b1" data-lazy hidden aria-label="3D lab: current going round the one light circuit, a backwards LED, and reading resistor stripes"></div>
+      <div class="see"><b>What you should see</b>The dots all move at the same speed, all the way round, and the marker comes back to where it started. Take out the GND wire and every dot stops at the same moment, wherever it is. Turn the LED round and it stays dark, with nothing moving; turn it back and it lights again. With 470 ohms everything slows down together and the light is a little dimmer. With a plain wire instead of a resistor the LED flashes and burns out.</div>
+      <p class="note">The lab is a model, not your board. Real current is far too fast and too small to see, and the dots are slowed right down so you can follow them. Nobody ever needs to burn an LED to believe this part.</p>
+    </div>
+
     <h3 style="margin-top:1rem">The three skills</h3>
 
     <h4>Skill one: bending the legs</h4>

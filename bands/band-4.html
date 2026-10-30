@@ -2052,6 +2052,15 @@ void loop() {
       <p><strong>The time of day matters enormously.</strong> This is why the Make task in this band puts the switching point on a knob instead of writing it into the code. A number written into the code is a decision made once, by you, in one room, on one day. A knob lets the person using it decide, in their room, whenever they like.</p>
       <p>That is a design idea, not an electronics one, and it is worth more than either.</p>
     </div>
+
+    <div class="concept stack" id="lab-calibrate">
+      <h3 style="margin-top:.5rem">Try it in 3D: from light to a decision</h3>
+      <p>The lab is your Part 7 build: the knob on A0, the light sensor and its 10 000 ohm resistor with their middle point on A1, and the lamp on pin 9, running <code>b4_05_night_guard_worked.ino</code>. Take it to the five places of your brightness walk, at three times of day, and follow each step: the light, the sensor's resistance, the volts at A1, the number, and the decision. Then fill in a calibration table and set the knob from it. When you reach Part 9, load <code>b4_04</code> in the lab and spring the division trap.</p>
+      <p class="view3d" hidden><button type="button" class="view3d-btn" data-lab-open="concept-b4" aria-expanded="false" aria-controls="lab-b4" hidden>Open the 3D lab</button></p>
+      <div class="lab" id="lab-b4" data-lab="concept-b4" data-lazy hidden aria-label="3D lab: the light sensor, calibration and the division trap"></div>
+      <div class="see"><b>What you should see</b>Cup your hand over the sensor and every number in the chain falls: more resistance, fewer volts at A1, a smaller reading. Shine the torch and they all climb. The middle of the room reads about 520 at six in the evening and about 310 after dark, so a threshold of 400 sits between them. With <code>b4_04</code>, the volts stay at 0.00 whatever the knob says, until you add a decimal point.</div>
+      <p class="note">The lab's numbers come from a model of one sensor. Yours will be different, so your own table, measured in your own places, is the one to use.</p>
+    </div>
   </div>
 </section>
 

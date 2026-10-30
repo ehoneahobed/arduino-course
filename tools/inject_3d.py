@@ -85,7 +85,8 @@ def process(path, rel, by, undo):
         pos = m.end()
     out.append(s[pos:])
     s = "".join(out)
-    if names:
+    # a page with a concept lab (<div class="lab" data-lab=...>) needs the tags too
+    if names or 'data-lab="' in s:
         if "</head>" not in s:
             raise SystemExit("NO HEAD    %s" % rel)
         s = s.replace("</head>", HEAD.format(up=up) + "</head>", 1)
