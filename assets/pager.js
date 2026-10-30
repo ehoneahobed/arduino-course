@@ -124,12 +124,22 @@
     try { window.dispatchEvent(new Event('resize')); } catch (e) {}
   }
 
-  function show(i, targetId, focus) {
-    cur = Math.max(0, Math.min(sections.length - 1, i));
-    var id = sections[cur].id;
+  // Remember what has been read, and where the learner is, and tell other scripts
+  // (the Check yourself and the badges, assets/check.js) that it changed.
+  function markRead(i) {
+    var id = sections[i].id;
     if (state.read.indexOf(id) < 0) state.read.push(id);
     state.last = id;
     save(KEY, state);
+    save(course + '-where', { band: document.documentElement.getAttribute('data-band') || '', id: id, title: titles[i],
+      page: location.pathname.split('/').pop(), at: Date.now() });
+    try { document.dispatchEvent(new CustomEvent('pager:read', { detail: { key: KEY, read: state.read.slice(), last: id } })); } catch (e) {}
+  }
+
+  function show(i, targetId, focus) {
+    cur = Math.max(0, Math.min(sections.length - 1, i));
+    var id = sections[cur].id;
+    markRead(cur);
     render();
     var m = /^3d-(.+)$/.exec(targetId || '');
     var target = targetId && targetId !== id ? (m ? document.querySelector('[data-build="' + m[1] + '"]') : document.getElementById(targetId)) : null;
@@ -175,6 +185,26 @@
     sections[cur].scrollIntoView();
   });
   window.addEventListener('hashchange', function () { fromHash(true); });
+
+  // On the long page, a section counts as read once it has filled the top half of the
+  // screen for a few seconds (in one-at-a-time mode, opening it is enough).
+  if (window.IntersectionObserver) {
+    var timers = {};
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        var i = sections.indexOf(e.target);
+        clearTimeout(timers[i]);
+        if (!e.isIntersecting || paged || state.read.indexOf(e.target.id) >= 0) return;
+        timers[i] = setTimeout(function () {
+          if (paged || state.read.indexOf(e.target.id) >= 0) return;
+          cur = i;
+          markRead(i);
+          render();
+        }, 2500);
+      });
+    }, { rootMargin: '0px 0px -50% 0px' });
+    sections.forEach(function (s) { io.observe(s); });
+  }
   // Printing always shows everything.
   window.addEventListener('beforeprint', function () { sections.concat(intro, outro).forEach(function (el) { el.hidden = false; }); });
   window.addEventListener('afterprint', render);

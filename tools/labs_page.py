@@ -186,6 +186,7 @@ TEMPLATE = r"""<!doctype html>
   <link rel="stylesheet" href="../assets/course.css">
   <link rel="stylesheet" href="../assets/labs/labs.css">
   <script defer src="../assets/labs/labs.js"></script>
+  <script defer src="../assets/progress.js"></script>
   <!-- Made by tools/labs_page.py: edit that, not this file. -->
   <style>
     body.ws { padding: 0; display: block; min-height: 100vh; }

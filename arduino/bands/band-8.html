@@ -12,6 +12,9 @@
   <link rel="apple-touch-icon" href="../../assets/brand/icon-180.png">
   <link rel="stylesheet" href="../../assets/course.css">
   <script defer src="../../assets/pager.js"></script>
+  <link rel="stylesheet" href="../../assets/progress.css">
+  <script defer src="../../assets/progress.js"></script>
+  <script defer src="../../assets/check.js" data-profile="../profile.html"></script>
   <link rel="stylesheet" href="../../assets/labs/labs.css">
   <script defer src="../../assets/labs/labs.js"></script>
   <link rel="stylesheet" href="../../assets/video.css">
@@ -2730,13 +2733,13 @@ void loop() {
   if (state == OPEN &amp;&amp; reading &lt; 600) enterState(SHUT);
   if (state == SHUT &amp;&amp; millis() - stateSince &gt; 2000) enterState(IDLE);
 }</code></pre>
-    <ol class="num">
-      <li>Three states are named. How many of them does <code>enterState</code> set the outputs for?</li>
-      <li>The device goes IDLE, then OPEN, then SHUT. Describe exactly what the lamp and the buzzer are doing once it reaches SHUT, and say why.</li>
-      <li>There is no <code>enterState</code> call in <code>setup</code>. Name one thing that is different because of that, in the first moment after the power comes on.</li>
-      <li>The sensor is sitting right on the boundary and its reading wobbles between 599 and 601. Follow what happens, round by round, and say what a person watching would see and hear.</li>
-      <li>Fix question 4 without adding a new state and without changing <code>loop</code>. Say which two numbers you would use and why they must be different.</li>
-      <li>Somebody says &#8220;this is fine, it only has three states, so nothing can go wrong&#8221;. Using questions 2 and 4, say in two sentences why having states is not by itself enough.</li>
+    <ol class="num" data-check>
+      <li data-kind="number" data-see="read" data-correct="2|two" data-hint="Look inside `enterState` for a line about each state." data-why-3="Look again: is there a line for `SHUT`?">Three states are named. How many of them does <code>enterState</code> set the outputs for?</li>
+      <li data-kind="open" data-see="read">The device goes IDLE, then OPEN, then SHUT. Describe exactly what the lamp and the buzzer are doing once it reaches SHUT, and say why.</li>
+      <li data-kind="open" data-see="build1">There is no <code>enterState</code> call in <code>setup</code>. Name one thing that is different because of that, in the first moment after the power comes on.</li>
+      <li data-kind="open" data-see="worked">The sensor is sitting right on the boundary and its reading wobbles between 599 and 601. Follow what happens, round by round, and say what a person watching would see and hear.</li>
+      <li data-kind="open" data-see="worked">Fix question 4 without adding a new state and without changing <code>loop</code>. Say which two numbers you would use and why they must be different.</li>
+      <li data-kind="open" data-see="states">Somebody says &#8220;this is fine, it only has three states, so nothing can go wrong&#8221;. Using questions 2 and 4, say in two sentences why having states is not by itself enough.</li>
     </ol>
     <details><summary>Answers</summary><div class="inner">
       <p><strong>1.</strong> Two. <code>SHUT</code> has no line at all in <code>enterState</code>.</p>

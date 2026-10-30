@@ -1,0 +1,201 @@
+/* Check yourself (assets/check.js), badges and progress (assets/progress.js),
+   and the learner's profile (assets/profile.js). Uses the tokens in course.css and
+   follows its calm style: hairlines, no shadows, colour only where it means something. */
+:root{--lp-body:#E8DCC2}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--lp-body:#4B4237}}
+:root[data-theme="dark"]{--lp-body:#4B4237}
+
+.lp-badge{display:block; flex:none; color:var(--muted); overflow:visible}
+.sr{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap}
+
+/* ---------- Check yourself ---------- */
+.ck-hide{display:none !important}
+.ck{display:flex; flex-direction:column; gap:0; max-width:var(--measure)}
+.ck-sum{font:500 .78rem/1.4 var(--display); letter-spacing:.04em; color:var(--muted); margin:0 0 .4rem}
+.ck-q{border-top:1px solid var(--line-soft); padding:1.1rem 0}
+.ck-q:last-of-type{border-bottom:1px solid var(--line-soft)}
+.ck-head{display:grid; grid-template-columns:1.6rem minmax(0,1fr) auto; gap:.7rem; align-items:baseline}
+.ck-n{font:600 .95rem/1 var(--display); color:var(--bc); text-align:right}
+.ck-qt{color:var(--ink)}
+.ck-st{font:600 .78rem/1 var(--display); color:var(--good); white-space:nowrap}
+.ck-q[data-state="not"] .ck-st{color:var(--copper)}
+.ck-body{margin:.75rem 0 0 2.3rem; display:flex; flex-direction:column; align-items:flex-start; gap:.65rem}
+@media (max-width:560px){.ck-body{margin-left:0}}
+
+.ck-opts{display:flex; flex-direction:column; gap:.4rem; align-self:stretch}
+.ck-opt{display:block; width:100%; text-align:left; font:inherit; font-size:.95em; line-height:1.45; color:var(--ink);
+  background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:.6rem .9rem; min-height:44px; cursor:pointer}
+.ck-opt:hover:not(:disabled),.ck-opt:focus-visible{border-color:var(--bc)}
+.ck-opt.is-right{border-color:var(--good); background:var(--good-soft)}
+.ck-opt.is-right::after{content:" ✓"; color:var(--good); font-weight:700}
+.ck-opt.is-wrong{color:var(--muted); border-style:dashed}
+.ck-opt.is-wrong::after{content:" · not this one"; font-size:.85em}
+.ck-opt:disabled{opacity:.5; cursor:default}
+
+.ck-form{display:flex; flex-direction:column; gap:.3rem; align-self:stretch}
+.ck-lab{font:500 .75rem/1.3 var(--display); letter-spacing:.06em; text-transform:uppercase; color:var(--muted)}
+.ck-row{display:flex; align-items:center; gap:.5rem; flex-wrap:wrap}
+.ck-in,.ck-text{font:inherit; font-size:1rem; color:var(--ink); background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:.5rem .7rem}
+.ck-in{width:8.5rem; min-height:44px}
+.ck-in.wide{width:min(100%,18rem)}
+.ck-in.is-right{border-color:var(--good); background:var(--good-soft)}
+.ck-text{width:100%; resize:vertical; min-height:5.2rem; line-height:1.5}
+.ck-in:focus,.ck-text:focus{outline:2px solid color-mix(in srgb, var(--bc) 55%, transparent); outline-offset:1px; border-color:var(--bc)}
+.ck-unit{font-size:.9rem; color:var(--muted)}
+.ck-btn{font:500 .86rem/1.2 var(--display); color:var(--ink); background:var(--surface); border:1px solid var(--line); border-radius:99px;
+  padding:.55rem 1.05rem; min-height:44px; cursor:pointer}
+.ck-btn:hover,.ck-btn:focus-visible{border-color:var(--accent)}
+.ck-acts{display:flex; gap:.5rem; flex-wrap:wrap}
+.ck-mark{display:flex; align-items:center; gap:.5rem; flex-wrap:wrap}
+.ck-mark > span{font-size:.9rem; color:var(--ink-2); margin-right:.2rem}
+.ck-got[aria-pressed="true"]{background:var(--good-soft); border-color:var(--good); color:var(--good)}
+.ck-not[aria-pressed="true"]{background:var(--copper-soft); border-color:var(--copper); color:var(--copper)}
+.ck-show,.ck-again{font:500 .82rem/1.3 var(--display); color:var(--accent-ink); background:none; border:0; padding:.2rem 0; cursor:pointer;
+  text-decoration:underline; text-underline-offset:3px; text-decoration-color:color-mix(in srgb, currentColor 40%, transparent)}
+.ck-again{color:var(--muted); margin-top:.3rem}
+.ck-show:hover,.ck-again:hover{color:var(--accent)}
+.ck-fb:empty{display:none}
+.ck-fb{display:flex; flex-direction:column; align-items:flex-start}
+.ck-say{font-size:.94em; line-height:1.6; color:var(--ink-2); border-left:2px solid var(--copper); padding:.1rem 0 .1rem .85rem}
+.ck-say.ok{border-left-color:var(--good)}
+.ck-say b{color:var(--ink)}
+.ck-say.ok b{color:var(--good)}
+.ck-pop{animation:ck-pop .35s ease-out}
+@keyframes ck-pop{from{opacity:0; transform:translateY(3px)} to{opacity:1; transform:none}}
+.ck-ans{align-self:stretch; border-left:2px solid var(--line); padding:.15rem 0 .15rem .9rem; font-size:.95em; color:var(--ink-2); display:flex; flex-direction:column; gap:.55rem}
+.ck-ans:focus{outline:none}
+.ck-ans-k{font:600 .7rem/1.2 var(--display); letter-spacing:.12em; text-transform:uppercase; color:var(--muted)}
+.ck-note{font-size:.8rem; color:var(--muted); margin-top:.8rem}
+.ck-note a{color:inherit}
+
+/* the band's badge: what is left, or the quiet moment it is earned */
+.ck-done{max-width:var(--measure); margin-top:1.6rem}
+.ck-done-in{display:flex; gap:1.1rem; align-items:flex-start; padding:1rem 1.15rem; border:1px solid var(--line-soft); border-radius:12px; background:var(--surface)}
+.ck-done-in > svg{margin-top:.25rem}
+.ck-done-in.done{border-color:color-mix(in srgb, var(--bc) 45%, var(--line-soft))}
+.ck-done-k{font:600 .95rem/1.3 var(--display); color:var(--ink); margin-bottom:.25rem}
+.ck-done-in p{font-size:.93em; color:var(--ink-2)}
+.ck-list{list-style:none; margin:.2rem 0 0; padding:0; display:flex; flex-direction:column; gap:.3rem; font-size:.9em; color:var(--ink-2)}
+.ck-list li{position:relative; padding-left:1.4rem}
+.ck-list li::before{content:"○"; position:absolute; left:0; color:var(--muted)}
+.ck-list li.ok::before{content:"✓"; color:var(--good); font-weight:700}
+.ck-list li span{color:var(--muted)}
+.ck-list li.bonus{color:var(--muted)}
+.ck-list small{display:block; font-size:.92em; color:var(--muted); line-height:1.5}
+.ck-list a{color:var(--accent-ink)}
+.ck-done-acts{display:flex; gap:1rem; flex-wrap:wrap; align-items:center; margin-top:.6rem}
+.ck-done-acts a{font:500 .86rem/1.3 var(--display); color:var(--muted)}
+.ck-done-acts a.ck-next{color:var(--accent-ink); font-weight:600; text-decoration:none}
+.ck-new .ck-done-in{animation:ck-earn .7s ease-out}
+.ck-new .ck-done-in > svg rect[fill]:not([fill="none"]){animation:ck-stripe .9s ease-out both}
+@keyframes ck-earn{from{opacity:0; transform:translateY(6px)} to{opacity:1; transform:none}}
+@keyframes ck-stripe{from{opacity:0} to{opacity:1}}
+@media (max-width:480px){.ck-done-in{flex-direction:column; gap:.6rem}}
+@media (prefers-reduced-motion:reduce){.ck-pop,.ck-new .ck-done-in,.ck-new .ck-done-in > svg rect{animation:none}}
+@media print{
+  .ck-hide{display:revert !important}
+  details.ck-hide{display:block !important}
+  .ck,.ck-done,.side-prof{display:none !important}
+}
+
+/* "My progress", at the top of the section sidebar */
+html.has-side nav[aria-label="Sections"] .side-head a.side-prof,.side-prof{justify-self:start; padding:0; border:0; background:none; border-radius:0;
+  font:500 .76rem/1.3 var(--display); letter-spacing:0; color:var(--muted); text-decoration:underline; text-underline-offset:3px;
+  text-decoration-color:color-mix(in srgb, currentColor 35%, transparent)}
+html.has-side nav[aria-label="Sections"] .side-head a.side-prof:hover{color:var(--accent); background:none}
+
+/* ---------- the course home dashboard ---------- */
+.lp-dash{display:grid; grid-template-columns:minmax(0,1fr) auto; gap:1rem 2rem; align-items:start;
+  padding:1.1rem 1.25rem; margin:0 0 1.4rem; border:1px solid var(--line-soft); border-radius:12px; background:var(--surface)}
+.lp-dash[hidden]{display:none}
+.lp-k{font:600 .7rem/1.2 var(--display); letter-spacing:.12em; text-transform:uppercase; color:var(--muted)}
+.lp-cont{display:flex; align-items:center; gap:.8rem; text-decoration:none; color:var(--ink); padding:.7rem .95rem; margin:.55rem 0 .9rem;
+  border:1px solid var(--line); border-radius:10px; background:var(--ground)}
+.lp-cont:hover,.lp-cont:focus-visible{border-color:var(--accent)}
+.lp-cont b{display:block; font:600 1rem/1.3 var(--display)}
+.lp-cont small{display:block; font-size:.86rem; color:var(--muted); line-height:1.4}
+.lp-dot{width:.75rem; height:.75rem; border-radius:50%; flex:none}
+.lp-arr{margin-left:auto; color:var(--accent-ink); font-size:1.1rem}
+.lp-meter{height:6px; border-radius:99px; background:var(--surface-2); overflow:hidden; border:1px solid var(--line-soft)}
+.lp-meter span{display:block; height:100%; background:linear-gradient(90deg,var(--accent),#FFBE00)}
+.lp-line{font-size:.86rem; color:var(--muted); margin-top:.5rem; line-height:1.5}
+.lp-acts{margin-top:.6rem}
+.lp-go{font:600 .92rem/1.3 var(--display); color:var(--accent-ink); text-decoration:none}
+.lp-dash-side{display:flex; flex-direction:column; gap:.7rem; align-items:flex-end}
+.lp-badges{display:grid; grid-template-columns:repeat(5,auto); gap:.45rem .5rem; justify-content:end}
+.lp-small{font:500 .84rem/1.3 var(--display); color:var(--accent-ink)}
+@media (max-width:700px){
+  .lp-dash{grid-template-columns:1fr}
+  .lp-dash-side{align-items:flex-start}
+  .lp-badges{grid-template-columns:repeat(9,auto); justify-content:start; gap:.3rem}
+  .lp-badges .lp-badge{width:30px; height:12px}
+}
+.lp-card{display:flex; gap:.45rem; align-items:center; flex-wrap:wrap; font:500 .78rem/1.4 var(--display); color:var(--muted); margin-top:.6rem}
+.bandcard .lp-card + .go{margin-top:.35rem}
+
+/* the site home's course card */
+.lp-hub{display:flex; flex-direction:column; gap:.35rem; font-size:.8rem; line-height:1.4; color:var(--muted); padding-top:.4rem; border-top:1px solid var(--line-soft)}
+.lp-hub-b{display:flex; gap:.2rem; flex-wrap:wrap}
+.course .c-go{overflow-wrap:anywhere}
+
+/* ---------- the profile page ---------- */
+.pf-head{padding:2.6rem 0 1rem}
+.pf-head h1{margin:.6rem 0 .6rem}
+.pf-local{display:flex; gap:.7rem; align-items:flex-start; max-width:var(--measure); font-size:.92em; color:var(--ink-2);
+  border-left:2px solid var(--copper); padding:.2rem 0 .2rem .9rem; margin-top:.9rem}
+.pf-name{display:flex; flex-direction:column; gap:.3rem; max-width:24rem}
+.pf-name input{font:inherit; font-size:1.05rem; color:var(--ink); background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:.55rem .75rem; min-height:44px}
+.pf-name input:focus{outline:2px solid color-mix(in srgb, var(--accent) 50%, transparent); outline-offset:1px}
+.pf-saved{font-size:.8rem; color:var(--good); min-height:1.2em}
+.pf-badges{display:grid; grid-template-columns:repeat(auto-fill,minmax(min(100%,190px),1fr)); gap:.7rem}
+.pf-b{display:flex; gap:.75rem; align-items:center; padding:.75rem .9rem; border:1px solid var(--line-soft); border-radius:10px; background:var(--surface); text-decoration:none; color:var(--ink)}
+.pf-b:hover{border-color:var(--line)}
+.pf-b b{display:block; font:600 .9rem/1.3 var(--display)}
+.pf-b small{display:block; font-size:.78rem; color:var(--muted); line-height:1.4}
+.pf-b.off b{color:var(--ink-2)}
+.pf-table td,.pf-table th{white-space:nowrap}
+.pf-table td:first-child{white-space:normal}
+.pf-table .dim{color:var(--muted)}
+.pf-runs{display:flex; flex-direction:column; gap:.3rem; font-size:.95em}
+.pf-runs li span{color:var(--muted); font-size:.9em}
+.pf-acts{display:flex; gap:.6rem; flex-wrap:wrap; align-items:center}
+.pf-btn{font:500 .9rem/1.2 var(--display); color:var(--ink); background:var(--surface); border:1px solid var(--line); border-radius:99px; padding:.6rem 1.1rem; min-height:44px; cursor:pointer; text-decoration:none; display:inline-flex; align-items:center}
+.pf-btn:hover,.pf-btn:focus-visible{border-color:var(--accent)}
+.pf-btn.main{background:var(--cta); border-color:var(--cta); color:#fff}
+.pf-btn.main:hover,.pf-btn.main:focus-visible{background:var(--cta-hover)}
+.pf-btn.danger{color:var(--danger); border-color:color-mix(in srgb, var(--danger) 45%, var(--line))}
+.pf-confirm{border-left:2px solid var(--danger); padding:.3rem 0 .3rem .9rem; display:flex; flex-direction:column; gap:.6rem; align-items:flex-start; max-width:var(--measure)}
+.pf-confirm[hidden],.pf-msg:empty{display:none}
+.pf-msg{font-size:.92em; color:var(--ink-2); border-left:2px solid var(--good); padding:.1rem 0 .1rem .85rem}
+.pf-msg.bad{border-left-color:var(--danger)}
+
+/* the certificate: shown on screen as a preview, and the only thing that prints */
+.pf-cert{border:1px solid var(--line); border-radius:12px; background:var(--surface); padding:1.6rem 1.6rem 1.4rem; max-width:760px; position:relative}
+.pf-cert::before{content:""; position:absolute; left:0; right:0; top:0; height:4px; border-radius:12px 12px 0 0;
+  background:linear-gradient(90deg,var(--b0),var(--b1),var(--b2),var(--b3),var(--b4),var(--b5),var(--b6),var(--b7),var(--b8))}
+.pf-cert-top{display:flex; align-items:center; gap:.8rem}
+.pf-cert-top img{width:44px; height:44px}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .pf-cert-top img{content:url(brand/logo-mark-white.png)}}
+:root[data-theme="dark"] .pf-cert-top img{content:url(brand/logo-mark-white.png)}
+.pf-cert-top b{display:block; font:700 1.05rem/1.2 var(--display); color:var(--ink)}
+.pf-cert-top small{display:block; color:var(--muted); font-size:.8rem}
+.pf-cert h2{font-size:1.5rem; margin:1.2rem 0 .3rem}
+.pf-cert .who{font:600 1.7rem/1.25 var(--display); color:var(--ink); margin:.2rem 0 .6rem; border-bottom:1px solid var(--line); padding-bottom:.4rem}
+.pf-cert .who.empty{color:var(--muted); font-weight:400; font-size:1.1rem}
+.pf-cert-b{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:.55rem 1rem; margin:1rem 0}
+.pf-cert-b div{display:flex; gap:.55rem; align-items:center; font-size:.85rem; color:var(--ink-2); line-height:1.3}
+.pf-cert-b small{display:block; color:var(--muted); font-size:.76rem}
+.pf-cert .fine{font-size:.8rem; color:var(--muted); line-height:1.5; margin-top:.8rem}
+.pf-sign{display:grid; grid-template-columns:1fr 1fr; gap:2rem; margin-top:1.6rem; font-size:.8rem; color:var(--muted)}
+.pf-sign span{border-top:1px solid var(--line); padding-top:.3rem}
+@media (max-width:560px){.pf-cert-b{grid-template-columns:repeat(2,minmax(0,1fr))} .pf-cert{padding:1.2rem 1rem}}
+@media print{
+  body.pf-page > *:not(.wrap){display:none !important}
+  body.pf-page .wrap > *:not(#certificate){display:none !important}
+  body.pf-page #certificate{padding:0; border:0}
+  body.pf-page #certificate > :not(.pf-cert){display:none !important}
+  .pf-cert{border:1.5px solid #CFC6D6; max-width:none; break-inside:avoid; padding:12mm 12mm 10mm}
+  .pf-cert::before{-webkit-print-color-adjust:exact; print-color-adjust:exact}
+  .pf-cert .lp-badge rect,.pf-cert .lp-badge{-webkit-print-color-adjust:exact; print-color-adjust:exact}
+  .pf-cert-top img{content:url(brand/logo-mark.png)}
+}

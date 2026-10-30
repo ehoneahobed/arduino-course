@@ -12,6 +12,9 @@
   <link rel="apple-touch-icon" href="../../assets/brand/icon-180.png">
   <link rel="stylesheet" href="../../assets/course.css">
   <script defer src="../../assets/pager.js"></script>
+  <link rel="stylesheet" href="../../assets/progress.css">
+  <script defer src="../../assets/progress.js"></script>
+  <script defer src="../../assets/check.js" data-profile="../profile.html"></script>
   <link rel="stylesheet" href="../../assets/labs/labs.css">
   <script defer src="../../assets/labs/labs.js"></script>
   <link rel="stylesheet" href="../../assets/video.css">
@@ -782,13 +785,13 @@ void loop() {
   delay(2000);
   digitalWrite(12, LOW);
 }</code></pre>
-    <ol class="num">
-      <li>What does the light do during the first two seconds?</li>
-      <li>What does it do after that?</li>
-      <li>How many times does <code>digitalWrite(12, HIGH)</code> happen in the first minute?</li>
-      <li>Someone says: "the light stopped changing, so <code>loop</code> must have stopped running." Are they right? Explain.</li>
-      <li>Add one line to make the light blink instead. Where does it go, and what is it?</li>
-      <li>Which single line would you delete to make the light never come on at all?</li>
+    <ol class="num" data-check>
+      <li data-kind="choice" data-see="means" data-choices="It is on, and stays on|It is off|It blinks on and off|It comes on only after two seconds" data-correct="1" data-hint="Read setup: what has already happened before loop starts waiting?">What does the light do during the first two seconds?</li>
+      <li data-kind="choice" data-see="means" data-choices="It goes off at two seconds and stays off forever|It goes off, then on again, every two seconds|It stays on|It blinks too fast to see" data-correct="1" data-why-2="Look for a line inside `loop` that switches it back on." data-why-3="Find the line in `loop` that switches it off.">What does it do after that?</li>
+      <li data-kind="number" data-see="means" data-correct="1|one|once" data-unit="times" data-hint="Which part of a sketch runs one time only?" data-why-30="That would be true if it were inside `loop`. Where is it?">How many times does <code>digitalWrite(12, HIGH)</code> happen in the first minute?</li>
+      <li data-kind="open" data-see="means">Someone says: "the light stopped changing, so <code>loop</code> must have stopped running." Are they right? Explain.</li>
+      <li data-kind="open" data-see="change">Add one line to make the light blink instead. Where does it go, and what is it?</li>
+      <li data-kind="choice" data-see="means" data-choices="`pinMode(12, OUTPUT);`|`digitalWrite(12, HIGH);`|`delay(2000);`|`digitalWrite(12, LOW);`" data-correct="2" data-why-1="A common answer, and worth understanding: without `pinMode` the pin is still an input, and switching it on lets through only a tiny trickle, so some lights glow faintly. Which line actually switches the light on?" data-why-3="Without the wait the light goes off almost at once, but it still comes on first." data-why-4="Without it the light stays on for ever.">Which single line would you delete to make the light never come on at all?</li>
     </ol>
     <details><summary>Answers</summary><div class="inner">
       <p><strong>1.</strong> It is on, and stays on. <code>setup</code> switched it on and nothing turns it off for two seconds.</p>

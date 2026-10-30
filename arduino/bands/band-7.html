@@ -12,6 +12,9 @@
   <link rel="apple-touch-icon" href="../../assets/brand/icon-180.png">
   <link rel="stylesheet" href="../../assets/course.css">
   <script defer src="../../assets/pager.js"></script>
+  <link rel="stylesheet" href="../../assets/progress.css">
+  <script defer src="../../assets/progress.js"></script>
+  <script defer src="../../assets/check.js" data-profile="../profile.html"></script>
   <link rel="stylesheet" href="../../assets/labs/labs.css">
   <script defer src="../../assets/labs/labs.js"></script>
   <link rel="stylesheet" href="../../assets/video.css">
@@ -3286,13 +3289,13 @@ void loop() {
 
   delay(100);
 }</code></pre>
-    <ol class="num">
-      <li>The sensor is pointed at a wall 100 cm away, then slowly at one 99 cm away. What does the top row of the screen say?</li>
-      <li>The sensor is now pointed out of a window at open sky, so no echo ever comes back. What does the device do? Answer carefully: this is not a question about the screen.</li>
-      <li>Compare the <code>pulseIn</code> line with the one in <code>b7_01_ping_given.ino</code>. One value is missing here. Which, and what does leaving it out change?</li>
-      <li>The wall is 60 cm away and nothing is moving. Roughly how many times a second is the screen written to?</li>
-      <li><code>int cm</code> and <code>unsigned long us</code>. The wall is 3 metres away. Is <code>int</code> big enough to hold the answer? Show the arithmetic.</li>
-      <li>Somebody wants this to also sound a buzzer that beeps faster as things get nearer, and adds a <code>tone</code> and a <code>delay</code> inside the <code>if</code>. Name two separate things that will go wrong.</li>
+    <ol class="num" data-check>
+      <li data-kind="choice" data-see="flicker" data-choices="`99 cm`|`99 cmm` or similar: a leftover character|`100 cm`|Nothing changes on the screen" data-correct="2" data-why-1="Count the characters in `100 cm` and in `99 cm`. What writes over the last one?" data-why-3="`cm` is not the same as `lastCm`, so the screen is written to.">The sensor is pointed at a wall 100 cm away, then slowly at one 99 cm away. What does the top row of the screen say?</li>
+      <li data-kind="choice" data-see="build1" data-choices="It shows 0 cm|It stops dead for a whole second, over and over, while the screen keeps the last number|The screen goes blank|It shows a very large number" data-correct="2" data-hint="Answer carefully: this is not a question about the screen." data-why-1="That is what happens with a timeout. Is there one in this `pulseIn`?">The sensor is now pointed out of a window at open sky, so no echo ever comes back. What does the device do? Answer carefully: this is not a question about the screen.</li>
+      <li data-kind="open" data-see="build1">Compare the <code>pulseIn</code> line with the one in <code>b7_01_ping_given.ino</code>. One value is missing here. Which, and what does leaving it out change?</li>
+      <li data-kind="choice" data-see="flicker" data-choices="About ten times (every 100 thousandths of a second)|Almost never|Thousands of times|Exactly once a second" data-correct="2" data-why-1="Look at the `if`. Is it true when the reading does not change?">The wall is 60 cm away and nothing is moving. Roughly how many times a second is the screen written to?</li>
+      <li data-kind="open" data-see="read"><code>int cm</code> and <code>unsigned long us</code>. The wall is 3 metres away. Is <code>int</code> big enough to hold the answer? Show the arithmetic.</li>
+      <li data-kind="open" data-see="closer">Somebody wants this to also sound a buzzer that beeps faster as things get nearer, and adds a <code>tone</code> and a <code>delay</code> inside the <code>if</code>. Name two separate things that will go wrong.</li>
     </ol>
     <details><summary>Answers</summary><div class="inner">
       <p><strong>1.</strong> <code>99 cm</code> followed by a leftover, so it reads <code>99 cmm</code> or similar. <code>"100 cm"</code> is six characters and <code>"99 cm"</code> is five, so the sixth character from before is never written over. There is no padding here, and this is the fault Part 7 was about.</p>

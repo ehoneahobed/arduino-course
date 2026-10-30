@@ -12,6 +12,9 @@
   <link rel="apple-touch-icon" href="../../assets/brand/icon-180.png">
   <link rel="stylesheet" href="../../assets/course.css">
   <script defer src="../../assets/pager.js"></script>
+  <link rel="stylesheet" href="../../assets/progress.css">
+  <script defer src="../../assets/progress.js"></script>
+  <script defer src="../../assets/check.js" data-profile="../profile.html"></script>
   <link rel="stylesheet" href="../../assets/labs/labs.css">
   <script defer src="../../assets/labs/labs.js"></script>
   <link rel="stylesheet" href="../../assets/video.css">
@@ -2126,13 +2129,13 @@ void loop() {
     delay(250);
   }
 }</code></pre>
-    <ol class="num">
-      <li>List every value that <code>v</code> takes.</li>
-      <li>How long does one full pass through <code>loop</code> take?</li>
-      <li>Does the LED ever reach full brightness? Explain.</li>
-      <li>What does a person watching see at the moment <code>loop</code> starts again?</li>
-      <li>Change two numbers so the fade looks smooth instead of stepped, while one full pass still takes about the same time.</li>
-      <li>Would this sketch behave the same way on pin 7? Say exactly what would happen.</li>
+    <ol class="num" data-check>
+      <li data-kind="list" data-see="forloop" data-correct="0,40,80,120,160" data-hint="Start at the first value and keep adding 40 while the test is still true." data-why-200="Look again at the test in the `for` line: is it `&lt;` or `&lt;=`?">List every value that <code>v</code> takes.</li>
+      <li data-kind="number" data-see="forloop" data-correct="1250|1.25" data-unit="milliseconds" data-hint="Count how many values `v` takes, then multiply by the wait each time." data-why-1000="Check how many values `v` takes: count them again from question 1.">How long does one full pass through <code>loop</code> take?</li>
+      <li data-kind="open" data-see="pwm">Does the LED ever reach full brightness? Explain.</li>
+      <li data-kind="choice" data-see="forloop" data-choices="A sudden jump from its brightest straight back to off|A smooth fade back down to off|It stays at full brightness|It goes dark for a whole second" data-correct="1" data-why-2="Is there any line that counts down?" data-why-3="What is the last value `v` takes before `loop` starts again?">What does a person watching see at the moment <code>loop</code> starts again?</li>
+      <li data-kind="open" data-see="forloop">Change two numbers so the fade looks smooth instead of stepped, while one full pass still takes about the same time.</li>
+      <li data-kind="open" data-see="pwm">Would this sketch behave the same way on pin 7? Say exactly what would happen.</li>
     </ol>
     <details><summary>Answers</summary><div class="inner">
       <p><strong>1.</strong> 0, 40, 80, 120, 160. Five values. If you said 200 as well, look again: the test is <code>&lt;</code>, not <code>&lt;=</code>, so 200 is not allowed. That one character is the difference.</p>

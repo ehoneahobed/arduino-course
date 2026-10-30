@@ -12,6 +12,9 @@
   <link rel="apple-touch-icon" href="../../assets/brand/icon-180.png">
   <link rel="stylesheet" href="../../assets/course.css">
   <script defer src="../../assets/pager.js"></script>
+  <link rel="stylesheet" href="../../assets/progress.css">
+  <script defer src="../../assets/progress.js"></script>
+  <script defer src="../../assets/check.js" data-profile="../profile.html"></script>
   <link rel="stylesheet" href="../../assets/labs/labs.css">
   <script defer src="../../assets/labs/labs.js"></script>
   <link rel="stylesheet" href="../../assets/video.css">
@@ -2270,13 +2273,13 @@ void loop() {
 
   delay(20);
 }</code></pre>
-    <ol class="num">
-      <li>The knob is turned slowly all the way from one end to the other. Does the arm follow it the whole way?</li>
-      <li>Now the knob is turned slowly back again, from 180 towards 0. What does the arm do? Explain your answer using the line with <code>deadband</code> in it.</li>
-      <li><code>lastAngle</code> starts at 0 here rather than at &#8722;100. Give one situation where that makes a difference you could see.</li>
-      <li>The board is switched on with the knob already at the far end. The arm is physically sitting at 40 degrees. What happens in the first second?</li>
-      <li>Somebody removes the <code>delay(20)</code> to make it more responsive. What actually happens to the arm, and why?</li>
-      <li>The servo is powered from the Arduino&#8217;s 5V pin and has a long, heavy arm on it. The sketch is exactly as above. Name two different things you might see, and say which line of code is responsible for each.</li>
+    <ol class="num" data-check>
+      <li data-kind="choice" data-see="jitter" data-choices="Yes, roughly: it steps forward every four degrees|No, it does not move at all|Yes, smoothly, one degree at a time|It jumps straight to the end" data-correct="1" data-why-2="Going up, is `wanted - lastAngle` ever 4 or more?" data-why-3="The deadband stops it moving until the knob is four degrees further on.">The knob is turned slowly all the way from one end to the other. Does the arm follow it the whole way?</li>
+      <li data-kind="open" data-see="jitter">Now the knob is turned slowly back again, from 180 towards 0. What does the arm do? Explain your answer using the line with <code>deadband</code> in it.</li>
+      <li data-kind="open" data-see="jitter"><code>lastAngle</code> starts at 0 here rather than at &#8722;100. Give one situation where that makes a difference you could see.</li>
+      <li data-kind="choice" data-see="servo" data-choices="It snaps from 40 to 180 in one movement, as fast as it can|It stays at 40 until the knob is turned|It creeps up to 180, four degrees at a time|It goes to 0 first, then to 180" data-correct="1" data-why-2="On the very first round, compare `wanted` (about 180) with `lastAngle` (0)." data-why-3="A servo is not told the steps in between: it goes where it is told, as fast as it can.">The board is switched on with the knob already at the far end. The arm is physically sitting at 40 degrees. What happens in the first second?</li>
+      <li data-kind="open" data-see="jitter">Somebody removes the <code>delay(20)</code> to make it more responsive. What actually happens to the arm, and why?</li>
+      <li data-kind="open" data-see="power">The servo is powered from the Arduino&#8217;s 5V pin and has a long, heavy arm on it. The sketch is exactly as above. Name two different things you might see, and say which line of code is responsible for each.</li>
     </ol>
     <details><summary>Answers</summary><div class="inner">
       <p><strong>1.</strong> Yes, roughly. Going up, <code>wanted</code> keeps getting bigger than <code>lastAngle</code>, so every four degrees the test is true and the arm steps forward.</p>

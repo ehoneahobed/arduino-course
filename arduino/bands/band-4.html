@@ -12,6 +12,9 @@
   <link rel="apple-touch-icon" href="../../assets/brand/icon-180.png">
   <link rel="stylesheet" href="../../assets/course.css">
   <script defer src="../../assets/pager.js"></script>
+  <link rel="stylesheet" href="../../assets/progress.css">
+  <script defer src="../../assets/progress.js"></script>
+  <script defer src="../../assets/check.js" data-profile="../profile.html"></script>
   <link rel="stylesheet" href="../../assets/labs/labs.css">
   <script defer src="../../assets/labs/labs.js"></script>
   <link rel="stylesheet" href="../../assets/video.css">
@@ -2388,13 +2391,13 @@ void loop() {
   Serial.println(share);
   delay(100);
 }</code></pre>
-    <ol class="num">
-      <li>What range of numbers can <code>reading</code> be in?</li>
-      <li>What range can <code>level</code> be in?</li>
-      <li>The lamp never gets close to full brightness. Why not?</li>
-      <li>What will <code>share</code> print, for every reading except the very highest? Explain.</li>
-      <li>Fix line by line: what is the smallest change that makes <code>share</code> work properly?</li>
-      <li>The sketch has no wire connected to pin A2 at all. What will the serial monitor show, and what is that called?</li>
+    <ol class="num" data-check>
+      <li data-kind="choice" data-see="numbers" data-choices="0 to 100|0 to 255|0 to 1023|0 to 5" data-correct="3" data-why-2="That is the range for `analogWrite`, not `analogRead`." data-why-4="5 is the voltage. What number does the board turn it into?">What range of numbers can <code>reading</code> be in?</li>
+      <li data-kind="choice" data-see="map" data-choices="0 to 100|0 to 255|0 to 1023|0 to 180" data-correct="1" data-why-3="That is `reading`. Look at the last two numbers in the `map` line.">What range can <code>level</code> be in?</li>
+      <li data-kind="choice" data-see="map" data-choices="`analogWrite` wants 0 to 255, and `level` never goes above 100|The light sensor cannot give a high enough reading|Pin 6 cannot dim a light, only switch it on and off|The `delay(100)` keeps it dim" data-correct="1" data-why-3="Pin 6 is one of the pins with a ~ next to it." data-why-2="`reading` can reach 1023. Follow what happens to it next.">The lamp never gets close to full brightness. Why not?</li>
+      <li data-kind="open" data-see="division">What will <code>share</code> print, for every reading except the very highest? Explain.</li>
+      <li data-kind="open" data-see="division">Fix line by line: what is the smallest change that makes <code>share</code> work properly?</li>
+      <li data-kind="open" data-see="band-3.html#pullup" data-see-label="Band 3, Part 4: Why pressed means 0">The sketch has no wire connected to pin A2 at all. What will the serial monitor show, and what is that called?</li>
     </ol>
     <details><summary>Answers</summary><div class="inner">
       <p><strong>1.</strong> 0 to 1023.</p>

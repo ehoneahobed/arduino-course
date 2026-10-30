@@ -82,6 +82,26 @@ On wide screens the section list is a sidebar with the band's progress at the to
 "Sections" bar at the top opens it as a drawer. Every page has a light / dark switch in the top bar
 (`assets/theme.js`, saved in the browser; with no choice saved the page follows the device setting).
 
+## Check yourself, badges and My progress
+
+Each band's **Check yourself** is interactive (`assets/check.js`, styles in `assets/progress.css`). Questions with
+one right answer get choice buttons or a box to type a number; a wrong answer gets a hint and a link back to
+the section that teaches it, and the answer shows after a try or on request. Open questions ("explain",
+"describe") get a box to write in, then the model answer, then an honest **Got it / Not yet**. It reads data
+attributes on each `<li>` of `<ol class="num" data-check>` (`data-kind="choice|number|list|open"`,
+`data-choices`, `data-correct`, `data-see`, `data-hint`, `data-why-N`; the header of `check.js` lists them).
+The model answers still come from the `<details>`, so without JavaScript, and in print, the page is as before.
+**If you change a question or its answer, check its data attributes still agree.**
+
+A band's **badge** (its resistor colour) is earned when every section has been read and every Check yourself
+question is done (checkable ones right, open ones self-marked). Concept-lab missions are a bonus, never
+required. `assets/progress.js` works this out and draws the course home dashboard ("Continue where you left
+off", badges, a quiet line on each band card) and the line on the site home's course card.
+`arduino/profile.html` (`assets/profile.js`) shows badges, dates, scores, missions and 3D builds run, prints a
+record for a facilitator, and can export, import and clear progress. Everything is kept in the browser only
+(localStorage keys `ladder-read-N`, `ladder-check-N`, `ladder-badge-N`, `ladder-meta-N`, `ladder-where`,
+`ladder-name`, `ladder-3d-runs`, plus the labs' `ard-lab-*` and `ard-sketch-edit:*`).
+
 ## Videos
 
 Band pages carry optional videos from Science Buddies' free "How to Use an Arduino" series

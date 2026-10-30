@@ -12,6 +12,9 @@
   <link rel="apple-touch-icon" href="../../assets/brand/icon-180.png">
   <link rel="stylesheet" href="../../assets/course.css">
   <script defer src="../../assets/pager.js"></script>
+  <link rel="stylesheet" href="../../assets/progress.css">
+  <script defer src="../../assets/progress.js"></script>
+  <script defer src="../../assets/check.js" data-profile="../profile.html"></script>
   <link rel="stylesheet" href="../../assets/labs/labs.css">
   <script defer src="../../assets/labs/labs.js"></script>
   <link rel="stylesheet" href="../../assets/video.css">
@@ -2103,13 +2106,13 @@ void loop() {
     Serial.println("pressed");
   }
 }</code></pre>
-    <ol class="num">
-      <li>How many values does <code>blinkOnce</code> need when you call it, and what are they for?</li>
-      <li>Why does <code>blinkOnce</code> start with <code>void</code> rather than <code>int</code>?</li>
-      <li>How often does the lamp blink?</li>
-      <li>Out of every 500 thousandths of a second, roughly how much of it is the board unable to see the button? Explain how you worked it out.</li>
-      <li>What will the serial monitor show if you hold the button down for two seconds?</li>
-      <li><code>gap</code> is an <code>int</code> but <code>lastBlink</code> is an <code>unsigned long</code>. Is that a problem here? What would happen if <code>lastBlink</code> were an <code>int</code> too?</li>
+    <ol class="num" data-check>
+      <li data-kind="open" data-see="functions">How many values does <code>blinkOnce</code> need when you call it, and what are they for?</li>
+      <li data-kind="choice" data-see="functions" data-choices="It does not hand anything back: it just does something|Because it uses `delay` inside|Because its two values are whole numbers|Because it is called from inside `loop`" data-correct="1" data-hint="The word in front of a function&#x27;s name says what it gives back.">Why does <code>blinkOnce</code> start with <code>void</code> rather than <code>int</code>?</li>
+      <li data-kind="choice" data-see="millis" data-choices="Once a second|Twice a second (every 500 thousandths of a second)|About three times a second (every 300)|Once every 800 thousandths of a second" data-correct="2" data-why-3="300 is how long the lamp stays on, not how often it blinks." data-why-4="Look at where `lastBlink = now;` is: before the blink starts, not after.">How often does the lamp blink?</li>
+      <li data-kind="open" data-see="problem">Out of every 500 thousandths of a second, roughly how much of it is the board unable to see the button? Explain how you worked it out.</li>
+      <li data-kind="choice" data-see="band-3.html#bounce" data-see-label="Band 3, Part 9: Why one press counts as thousands" data-choices="`pressed`, printed once|`pressed`, printed thousands of times, with the count still appearing twice a second|Nothing, because the board is busy blinking|`pressed`, twice a second" data-correct="2" data-why-1="There is no edge detection here. How many rounds of `loop` see the button down?" data-why-4="The button is read on every round of `loop`, not only when the lamp blinks.">What will the serial monitor show if you hold the button down for two seconds?</li>
+      <li data-kind="open" data-see="millis"><code>gap</code> is an <code>int</code> but <code>lastBlink</code> is an <code>unsigned long</code>. Is that a problem here? What would happen if <code>lastBlink</code> were an <code>int</code> too?</li>
     </ol>
     <details><summary>Answers</summary><div class="inner">
       <p><strong>1.</strong> Two: which pin to blink, and how long to keep it on.</p>

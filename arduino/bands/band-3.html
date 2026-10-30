@@ -12,6 +12,9 @@
   <link rel="apple-touch-icon" href="../../assets/brand/icon-180.png">
   <link rel="stylesheet" href="../../assets/course.css">
   <script defer src="../../assets/pager.js"></script>
+  <link rel="stylesheet" href="../../assets/progress.css">
+  <script defer src="../../assets/progress.js"></script>
+  <script defer src="../../assets/check.js" data-profile="../profile.html"></script>
   <link rel="stylesheet" href="../../assets/labs/labs.css">
   <script defer src="../../assets/labs/labs.js"></script>
   <link rel="stylesheet" href="../../assets/video.css">
@@ -2838,13 +2841,13 @@ void loop() {
     digitalWrite(ledPin, HIGH);
   }
 }</code></pre>
-    <ol class="num">
-      <li>What does this do, in one sentence?</li>
-      <li>The button is wired with <code>INPUT_PULLUP</code>. What does <code>digitalRead</code> give when nobody is touching it?</li>
-      <li>Once the light comes on, can anything ever turn it off? Explain.</li>
-      <li>There is no <code>delay</code> for debouncing. What will you actually see in the serial monitor when you press once?</li>
-      <li>Somebody deletes the line <code>lastReading = reading;</code>. Describe exactly what happens then.</li>
-      <li>Somebody changes <code>if (reading == LOW ...)</code> to <code>if (reading = LOW ...)</code>, with one equals sign. It still compiles. What will the program do?</li>
+    <ol class="num" data-check>
+      <li data-kind="open" data-see="remember">What does this do, in one sentence?</li>
+      <li data-kind="choice" data-see="pullup" data-choices="HIGH (1)|LOW (0)|It changes at random" data-correct="1" data-why-2="Pressed means 0 with `INPUT_PULLUP`. What does the resistor inside the chip do when nobody is pressing?" data-why-3="That is a floating pin, and `INPUT_PULLUP` is what stops it.">The button is wired with <code>INPUT_PULLUP</code>. What does <code>digitalRead</code> give when nobody is touching it?</li>
+      <li data-kind="open" data-see="remember">Once the light comes on, can anything ever turn it off? Explain.</li>
+      <li data-kind="choice" data-see="bounce" data-choices="Exactly one number: 1|Usually more than one number: the count jumps by two or three|Hundreds of numbers racing upward|Nothing at all" data-correct="2" data-why-1="Edge detection counts every change from up to down. How many does one press of a real button make?" data-why-3="That is what happens without edge detection, which is question 5. This sketch does have it.">There is no <code>delay</code> for debouncing. What will you actually see in the serial monitor when you press once?</li>
+      <li data-kind="open" data-see="bounce">Somebody deletes the line <code>lastReading = reading;</code>. Describe exactly what happens then.</li>
+      <li data-kind="choice" data-see="ifelse" data-choices="It counts presses as before|It counts far too fast|It never counts: nothing is printed and the light never comes on|The light comes on straight away" data-correct="3" data-why-1="One equals sign does not ask a question. What does it do to `reading`?" data-why-2="What value ends up in `reading`, and does that count as yes or no?">Somebody changes <code>if (reading == LOW ...)</code> to <code>if (reading = LOW ...)</code>, with one equals sign. It still compiles. What will the program do?</li>
     </ol>
     <details><summary>Answers</summary><div class="inner">
       <p><strong>1.</strong> It counts button presses, prints the running total, and switches a light on permanently once the count reaches three.</p>

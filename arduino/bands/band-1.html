@@ -12,6 +12,9 @@
   <link rel="apple-touch-icon" href="../../assets/brand/icon-180.png">
   <link rel="stylesheet" href="../../assets/course.css">
   <script defer src="../../assets/pager.js"></script>
+  <link rel="stylesheet" href="../../assets/progress.css">
+  <script defer src="../../assets/progress.js"></script>
+  <script defer src="../../assets/check.js" data-profile="../profile.html"></script>
   <link rel="stylesheet" href="../../assets/labs/labs.css">
   <script defer src="../../assets/labs/labs.js"></script>
   <link rel="stylesheet" href="../../assets/video.css">
@@ -2541,13 +2544,13 @@ void loop() {
   digitalWrite(b, HIGH);
   delay(wait);
 }</code></pre>
-    <ol class="num">
-      <li>Two LEDs are wired to pins 10 and 11. Describe in one sentence what someone watching them would see.</li>
-      <li>Is there ever a moment when both are lit? How can you tell from the code alone?</li>
-      <li>Change one line so that LED <code>a</code> stays on twice as long as LED <code>b</code>. Which line, and what does it become?</li>
-      <li><code>wait</code> is used in two places. Name one good thing about that and one bad thing about it.</li>
-      <li>Somebody deletes the line <code>pinMode(b, OUTPUT);</code>. What are you likely to see, and why is this harder to work out than an error message?</li>
-      <li>Both LEDs have been put in with their long legs towards GND. What will you see, and why is this not a problem with the code?</li>
+    <ol class="num" data-check>
+      <li data-kind="open" data-see="read">Two LEDs are wired to pins 10 and 11. Describe in one sentence what someone watching them would see.</li>
+      <li data-kind="open" data-see="closer">Is there ever a moment when both are lit? How can you tell from the code alone?</li>
+      <li data-kind="open" data-see="change">Change one line so that LED <code>a</code> stays on twice as long as LED <code>b</code>. Which line, and what does it become?</li>
+      <li data-kind="open" data-see="change"><code>wait</code> is used in two places. Name one good thing about that and one bad thing about it.</li>
+      <li data-kind="open" data-see="build3">Somebody deletes the line <code>pinMode(b, OUTPUT);</code>. What are you likely to see, and why is this harder to work out than an error message?</li>
+      <li data-kind="open" data-see="parts">Both LEDs have been put in with their long legs towards GND. What will you see, and why is this not a problem with the code?</li>
     </ol>
     <details><summary>Answers</summary><div class="inner">
       <p><strong>1.</strong> The two lights take it in turns, changing about three times a second, and one of them is always on.</p>

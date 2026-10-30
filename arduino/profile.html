@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <script src="../assets/theme.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href="https://iot.bozomainnovationhub.com/arduino/profile">
+  <title>My progress · Arduino Ladder</title>
+  <meta name="description" content="Your badges, bands completed and Check yourself results in the Arduino Ladder, kept only in this browser. Print a record, or move your progress to another computer.">
+  <meta name="theme-color" content="#24182E">
+  <link rel="icon" type="image/png" sizes="192x192" href="../assets/brand/icon-192.png">
+  <link rel="apple-touch-icon" href="../assets/brand/icon-180.png">
+  <link rel="stylesheet" href="../assets/course.css">
+  <link rel="stylesheet" href="../assets/progress.css">
+  <script defer src="../assets/progress.js"></script>
+  <script defer src="../assets/profile.js"></script>
+</head>
+<body class="pf-page">
+<a class="skip" href="#main">Skip to your progress</a>
+<div class="topbar">
+  <a class="home" href="home.html"><img src="../assets/brand/logo-mark-white.png" alt="" width="36" height="36"><span class="lock"><b>Arduino Ladder</b><small>Bozoma Innovation Hub</small></span></a>
+  <a class="hub" href="../index.html" title="All courses: IoT at Bozoma Innovation Hub">&larr; IoT at BIH</a>
+  <nav class="bandlinks" aria-label="Bands"><a href="bands/band-0.html">0</a><a href="bands/band-1.html">1</a><a href="bands/band-2.html">2</a><a href="bands/band-3.html">3</a><a href="bands/band-4.html">4</a><a href="bands/band-5.html">5</a><a href="bands/band-6.html">6</a><a href="bands/band-7.html">7</a><a href="bands/band-8.html">8</a></nav>
+  <a class="bih" href="https://bozomainnovationhub.com"><span class="long">bozomainnovationhub.com</span><span class="short">BIH website</span></a>
+</div>
+<div class="wrap" id="main">
+
+<header class="pf-head">
+  <p class="eyebrow">Arduino Ladder &nbsp;&middot;&nbsp; <a href="home.html" style="color:inherit">Course home</a></p>
+  <h1>My progress</h1>
+  <p class="col sub" id="pf-summary">Your badges and results show here as you work through the bands.</p>
+  <p class="pf-local"><span><b>Kept only in this browser, on this computer.</b> Nothing is sent anywhere and there is no account. Another browser or computer will not see it, and clearing the browser's history can remove it. To move it, use <a href="#move">Export and Import</a>. On a shared computer, <a href="#move">clear it</a> when you finish.</span></p>
+  <noscript><p class="note" style="margin-top:1rem">This page needs JavaScript to read your progress.</p></noscript>
+</header>
+
+<section class="part">
+  <div class="parthead"><span class="tag">You</span><h2>Your name</h2></div>
+  <div class="col stack">
+    <label class="pf-name"><span class="note">For your printed record. Saved only on this computer.</span>
+      <input id="pf-name" type="text" autocomplete="name" maxlength="80" placeholder="Your name"></label>
+    <p class="pf-saved" id="pf-saved" aria-live="polite"></p>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Badges</span><h2>Nine bands, nine badges</h2></div>
+  <div class="col stack" style="margin-bottom:1rem">
+    <p>A band's badge is its resistor colour. You earn it when you have read every section of the band and finished its Check yourself. The 3D missions are a bonus: nice to do, never needed.</p>
+  </div>
+  <div class="pf-badges" id="pf-badges"></div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Results</span><h2>Band by band</h2></div>
+  <div class="scroll">
+    <table class="pf-table">
+      <thead><tr><th>Band</th><th>Sections read</th><th>Checked answers</th><th>Self-checks</th><th>3D missions</th><th>Completed</th></tr></thead>
+      <tbody id="pf-rows"></tbody>
+    </table>
+  </div>
+  <p class="note col" style="margin-top:.8rem"><b>Checked answers</b> are questions with one right answer: "first time" means right before you looked at the answer. <b>Self-checks</b> are the open questions, marked by you. "Not yet" is an honest mark and still counts: go back to the part it points to.</p>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">3D</span><h2>3D builds you have run</h2></div>
+  <div class="col stack">
+    <div id="pf-runs"></div>
+    <p class="note" id="pf-edits"></p>
+  </div>
+</section>
+
+<section class="part" id="certificate">
+  <div class="parthead"><span class="tag">Record</span><h2>Your record, to print or save</h2></div>
+  <div class="col stack" style="margin-bottom:1rem">
+    <p>Print this, or choose <b>Save as PDF</b> in the print window, and show it to a facilitator. Only the record below is printed.</p>
+    <p class="pf-acts"><button type="button" class="pf-btn main" id="pf-print">Print / save as PDF</button></p>
+  </div>
+  <div class="pf-cert">
+    <div class="pf-cert-top"><img src="../assets/brand/logo-mark.png" alt="" width="44" height="44"><span><b>The Arduino Ladder</b><small>Bozoma Innovation Hub, Aiyinasi, Ghana</small></span></div>
+    <h2>Record of progress</h2>
+    <p class="note">This is to record that</p>
+    <p class="who" id="pf-cert-name"></p>
+    <p id="pf-cert-line"></p>
+    <div class="pf-cert-b" id="pf-cert-b"></div>
+    <p id="pf-cert-score" style="font-size:.9rem"></p>
+    <p class="fine">Kept by the learner's own browser: it shows what was read and answered, not what was built. A facilitator should ask to see the builds and the evidence each band asks for. <span id="pf-cert-date"></span></p>
+    <div class="pf-sign"><span>Learner</span><span>Facilitator</span></div>
+  </div>
+</section>
+
+<section class="part" id="move">
+  <div class="parthead"><span class="tag">Your data</span><h2>Move or clear your progress</h2></div>
+  <div class="col stack">
+    <p><b>Export</b> saves your progress as a small file. <b>Import</b> loads that file on another computer (or after the browser was cleared). <b>Clear</b> removes your progress from this computer, which is the right thing to do on a shared computer. Your light or dark choice is kept.</p>
+    <p class="pf-acts">
+      <button type="button" class="pf-btn" id="pf-export">Export my progress</button>
+      <button type="button" class="pf-btn" id="pf-import">Import</button>
+      <input type="file" id="pf-file" accept=".json,application/json" hidden>
+      <button type="button" class="pf-btn danger" id="pf-clear">Clear my progress</button>
+    </p>
+    <div class="pf-confirm" id="pf-import-ask" hidden>
+      <p id="pf-import-what"></p>
+      <p class="pf-acts"><button type="button" class="pf-btn main" id="pf-import-yes">Yes, import it</button><button type="button" class="pf-btn" id="pf-import-no">Cancel</button></p>
+    </div>
+    <div class="pf-confirm" id="pf-clear-ask" hidden>
+      <p><b>Clear everything on this computer?</b> Your sections read, answers, badges, 3D missions, edited sketches and name will all be removed. This cannot be undone, unless you exported a file first.</p>
+      <p class="pf-acts"><button type="button" class="pf-btn danger" id="pf-clear-yes">Yes, clear it</button><button type="button" class="pf-btn" id="pf-clear-no">Keep it</button></p>
+    </div>
+    <p class="pf-msg" id="pf-msg" role="status"></p>
+  </div>
+</section>
+
+</div>
+<footer class="bihfoot">
+<div class="wrap">
+  <p class="pagenote">The Arduino Ladder &nbsp;&middot;&nbsp; Bozoma Innovation Hub, Aiyinasi, Ellembelle District, Western Region, Ghana. Your progress is kept in this browser only.</p>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a class="lockup" href="home.html"><img src="../assets/brand/logo-mark-white.png" alt="" width="42" height="42"><span>The Arduino Ladder<small>Bozoma Innovation Hub</small></span></a>
+      <p>A Bozoma Innovation Hub programme. Free to use, nothing to sign up for, at your own speed.</p>
+    </div>
+    <div><h4>The course</h4><ul>
+      <li><a href="home.html">Course home</a></li>
+      <li><a href="bands/band-0.html">Start with Band 0</a></li>
+      <li><a href="labs.html">The 3D Workshop</a></li>
+      <li><a href="guide.html">Facilitator guide</a></li>
+    </ul></div>
+    <div><h4>Bozoma Innovation Hub</h4><ul>
+      <li>Aiyinasi, Ellembelle District, Western Region, Ghana</li>
+      <li><a href="https://bozomainnovationhub.com">bozomainnovationhub.com</a></li>
+      <li><a href="mailto:info@bozomainnovationhub.com">info@bozomainnovationhub.com</a></li>
+    </ul></div>
+  </div>
+  <div class="foot-bottom"><span>&copy; Bozoma Innovation Hub, Aiyinasi, Ghana</span><span class="tagline">World-class begins at home.</span></div>
+</div>
+</footer>
+</body>
+</html>
