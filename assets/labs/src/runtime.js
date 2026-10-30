@@ -1134,6 +1134,9 @@ function createViewBar(host, wrap, { camera, controls, start, target0, ortho, tw
     const stops = callouts.items();
     if (!stops.length) return;
     touring = true;
+    // With labels hidden, the tour still shows each stop's card (one at a time).
+    const hadLabels = callouts.shown;
+    if (!hadLabels) callouts.show(true);
     tourBtn.classList.add('on');
     tourBtn.innerHTML = icon('stop');
     tourBtn.setAttribute('aria-label', 'Stop the tour');
@@ -1161,6 +1164,7 @@ function createViewBar(host, wrap, { camera, controls, start, target0, ortho, tw
     }
     touring = false;
     callouts.touring(false);
+    if (!hadLabels) callouts.show(false);
     tourBtn.classList.remove('on');
     tourBtn.innerHTML = icon('play');
     tourBtn.setAttribute('aria-label', 'Show me around');
@@ -1178,8 +1182,10 @@ function createViewBar(host, wrap, { camera, controls, start, target0, ortho, tw
     invalidate();
   };
   const lb = btn('tag', 'Show or hide labels', 'L', labels);
-  lb.classList.add('on');
-  lb.setAttribute('aria-pressed', 'true');
+  // Labels start hidden so the model is calm to look at: the tour shows each one in turn,
+  // clicking a part explains it, and L (or this button) shows them all.
+  lb.setAttribute('aria-pressed', 'false');
+  callouts.show(false);
   // X-ray: a lab with an "X-ray" button in its panel gets one here too.
   let xb = null;
   const xraySource = () => [...host.querySelectorAll('.lab-controls .lab-btn')].find((b) => /^x-?ray/i.test(b.textContent.trim()));

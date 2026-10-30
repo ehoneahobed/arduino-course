@@ -624,3 +624,62 @@ html.has-side nav[aria-label="Sections"] .side-head a.side-band::before,html.has
 .topbar .hub:hover,.topbar .hub:focus-visible{color:#fff; border-color:rgba(255,255,255,.5)}
 @media (max-width:640px){.topbar .hub{order:0}}
 @media print{.topbar .hub{display:none}}
+
+/* =====================================================================
+   Calm reading (Nov 2026). Less to look at, so the lesson stands out:
+   smaller type, no shadows or glows, fewer borders, colour only where it
+   means something. Later rules here override the ones above.
+   ===================================================================== */
+body{font-size:clamp(.98rem,.95rem + .12vw,1.03rem); line-height:1.66}
+h1{font-size:clamp(1.75rem,1.4rem + 1.6vw,2.5rem)}
+h2{font-size:clamp(1.22rem,1.1rem + .45vw,1.45rem)}
+h3{font-size:1.04rem}
+section.part{padding:2rem 0; border-top-color:var(--line-soft)}
+
+/* section labels ("Part 1", "Before you start") become quiet text, not pills */
+.tag{border:0; padding:0; border-radius:0; font-size:.68rem; letter-spacing:.12em; color:var(--muted)}
+.bandcard .tag{color:var(--bc)}
+.parthead{gap:.6rem; margin-bottom:.8rem}
+
+/* boxes: flat, hairline borders, no shadows */
+.card,.bandcard,.brief,.choose,.sketchbox,.course,.path li,.pg-foot a{box-shadow:none}
+.card,.course,.path li{border-color:var(--line-soft)}
+.bandcard{border:1px solid var(--line-soft); border-radius:12px; padding:1rem 1.2rem; position:relative}
+.bandcard::before{content:""; position:absolute; left:0; top:1.1rem; bottom:1.1rem; width:3px; border-radius:0 3px 3px 0; background:var(--bc)}
+.bandcard:hover,.bandcard:focus-visible{transform:none; border-color:var(--line); background:var(--surface-2)}
+.see{background:transparent; border-left-width:2px; padding:.35rem 0 .35rem .9rem; border-radius:0}
+.ifnot{background:transparent; border-radius:0}
+
+/* the hero: one calm band of colour, no glows or decorations */
+.hero::before,.hero::after{display:none}
+.hero h1{font-size:clamp(2rem,1.55rem + 2vw,2.9rem)}
+.hero .eyebrow{background:none; border:0; padding:0}
+.hero .startbtn{box-shadow:none}
+.hero .stripes,.hero .stripes-label{display:none}
+
+/* the site home */
+.course::before{height:3px}
+.c-board{background:transparent; color:var(--cc); border:1px solid currentColor}
+.course.planned{opacity:.7}
+.c-facts li{border-color:var(--line-soft)}
+
+/* the section sidebar: plain list, one quiet highlight */
+html.has-side nav[aria-label="Sections"]{background:var(--ground); border-right-color:var(--line-soft)}
+.side-head{background:var(--ground); border-bottom-color:var(--line-soft)}
+html.has-side nav[aria-label="Sections"] > a{padding:.42rem .7rem; font-size:.86rem; border-radius:8px; color:var(--ink-2)}
+html.has-side nav[aria-label="Sections"] > a:not(.nav-3d)::before{background:none; border:0; width:1.3rem; height:auto; font-size:.74rem; color:var(--muted)}
+html.has-side nav[aria-label="Sections"] > a.pg-done::before{background:none; color:var(--good)}
+html.has-side nav[aria-label="Sections"] > a[aria-current="step"],
+:root[data-theme="dark"].has-side nav[aria-label="Sections"] > a[aria-current="step"]{background:var(--surface-2); color:var(--ink); border-color:transparent; box-shadow:inset 3px 0 0 var(--accent)}
+html.has-side nav[aria-label="Sections"] > a[aria-current="step"]::before{background:none; color:var(--accent)}
+html.has-side nav[aria-label="Sections"] > a.nav-3d,
+:root[data-theme="dark"].has-side nav[aria-label="Sections"] > a.nav-3d{background:none; border:0; color:var(--muted); font-size:.8rem; margin-left:2.6rem}
+html.has-side nav[aria-label="Sections"] > a.nav-3d:hover{color:var(--accent)}
+html.has-side nav[aria-label="Sections"] > a.nav-3d .n3{background:none; color:var(--muted)}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]).has-side nav[aria-label="Sections"] > a[aria-current="step"]{background:var(--surface-2); color:var(--ink); border-color:transparent; box-shadow:inset 3px 0 0 var(--accent)}
+  :root:not([data-theme="light"]).has-side nav[aria-label="Sections"] > a.nav-3d{background:none; border:0; color:var(--muted)}
+}
+.pg-foot .pg-next{background:var(--surface); color:var(--ink); border-color:var(--line)}
+.pg-foot .pg-next small{color:var(--muted)}
+.pg-foot .pg-next b{color:var(--accent-ink)}
