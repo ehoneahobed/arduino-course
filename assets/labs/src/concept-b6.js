@@ -17,6 +17,7 @@
 import { THREE, mat, rbox, decal, label, setLabel } from './runtime.js';
 import * as P from './parts.js';
 import { buildUno } from './build.js';
+import { sketchPanel } from './sketchpanel.js';
 
 const { V } = P;
 const SANS = 'Rubik, "Segoe UI", Arial, sans-serif';
@@ -303,8 +304,10 @@ export default function lab(stage, ui, host) {
     } else { S.jerk = 1; S.brown = Math.max(0, S.brown - dt * 0.5); }
     uno.setOn(!sketchRunning() ? 0 : struggling ? (S.jerk < 0.5 ? 0.25 : 0.7) : 1.0);
 
-    // the sketch
-    if (sketchRunning()) {
+    // the sketch: the real one's pulses on pin 9 (sketchpanel.js), or the model's
+    if (sketchRunning() && sk?.powered) {
+      if (realUs > 400 && realUs < 2700) write(((realUs - 544) / (2400 - 544)) * 180);
+    } else if (sketchRunning()) {
       if (S.prog === 'write') write(S.pick);
       else if (S.prog === 'sweep') {
         if (S.sweepDelay > 0) {
@@ -608,8 +611,36 @@ export default function lab(stage, ui, host) {
     if (infoT > 0.2) { infoT = 0; showInfo(); drawScope(); }
   });
 
+  // ---------- the real sketch: b6_01 to b6_03 on an emulated chip ----------
+  // Pin 9's real pulses set the arm (through the same power and ground as the
+  // model above), and the knob reaches A0 with a real reading's wobble.
+  const SKETCH_PROG = { b6_01_servo_sweep_given: 'sweep', b6_02_servo_knob: 'knob', b6_03_buggy_jitter: 'knob' };
+  let realUs = 0;
+  let syncing = false;
+  const sk = sketchPanel(stage, ui, host, {
+    sketches: Object.keys(SKETCH_PROG),
+    explain: 'Pin 9’s real pulses move the arm, through the power and ground you choose below. The knob reaches A0. The model’s own buttons unplug it.',
+    inputs(u) { u.adc.channelValues[0] = (S.knob / 1023) * 5; u.adcNoise[0] = 0.005; },
+    serial: (() => { let line = ''; return (t) => { for (const ch of t) { if (ch === '\n') { S.serial.push(line); if (S.serial.length > 6) S.serial.shift(); line = ''; } else if (ch !== '\r') line += ch; } }; })(),
+    serialNote: (t) => { S.serial.push(`(${t})`); if (S.serial.length > 6) S.serial.shift(); },
+    paint(P) {
+      realUs = P ? P[9].pulseUs : 0;
+      return false; // the arm is drawn by the model's own clock
+    },
+    onState(st) {
+      if (st.why === 'choose' || st.why === 'upload') {
+        const p = SKETCH_PROG[st.open];
+        if (p && p !== S.prog) { syncing = true; setProg(p); syncing = false; }
+      }
+      if (st.powered && (st.why === 'run' || st.why === 'upload')) S.serial = [];
+    },
+  });
+  // The model's sketch buttons, its angle buttons and its deadband are the model's: they unplug the board.
+  for (const grp of [progGroup, sub]) grp.addEventListener('click', (e) => { if (!syncing && sk.powered && e.target.closest('button')) sk.unplug('lab'); }, true);
+
   setProg('write');
   setPower('usb');
   drawScope();
+  sk.choose('b6_01_servo_sweep_given');
   void low; void setLabel;
 }

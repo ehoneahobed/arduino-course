@@ -7,10 +7,15 @@
 //   1. analogWrite as fast switching: a waveform, the LED, and slow motion.
 //   2. b2_01's for loop, one step at a time, with level shown as it counts.
 //   3. Mixing light: three sliders, showColour(r, g, b).
+// The pictures above are models, slowed down or stepped by hand. "Run the
+// real sketch" runs the band's own sketches (b2_01, b2_04 on pin 7, b2_02,
+// b2_03) on an emulated chip, or your edited copy on the course's
+// interpreter (sketchpanel.js), and the light follows the real pins.
 import { THREE } from './runtime.js';
 import * as P from './parts.js';
 import DATA from './builds.json';
 import { esc, glow, ensureStyle, prepBuild, buildConfig, codeBox, clock } from './concept-b0.js';
+import { sketchPanel, OUT } from './sketchpanel.js';
 
 const { V } = P;
 const SLOW_PERIOD = 2; // seconds for one PWM slice in slow motion (about a thousand times slower)
@@ -218,7 +223,8 @@ export default function lab(stage, ui, host, W) {
     const btn = ui.button(nm, () => { stopStory(); setRGB({ r, g, b }, false); }, { group: chips });
     btn.setAttribute('aria-label', `${nm}: ${r}, ${g}, ${b}`);
   });
-  const storyBtn = ui.button('Run b2_02', () => (story ? stopStory() : runStory()), { group: gCol });
+  const storyBtn = ui.button('Run b2_02 for real', () => { sk.choose('b2_02_rgb_colours').then(() => sk.start('run')); }, { group: gCol });
+  storyBtn.setAttribute('aria-label', 'Run b2_02_rgb_colours.ino on the board (Run the real sketch, at the top)');
 
   // ---- brightness ----
   function setValue(v, fromLoop = false) {
@@ -363,7 +369,6 @@ export default function lab(stage, ui, host, W) {
   }
 
   // ---- colour ----
-  let story = null;
   function setRGB(c, bySlider) {
     Object.assign(S, c);
     sliders.forEach((s) => { s.inp.value = S[s.k]; s.out.textContent = S[s.k]; });
@@ -377,23 +382,7 @@ export default function lab(stage, ui, host, W) {
       ui.info('Red and green make yellow', '<p>Not a muddy brown: bright yellow. Paint takes colour away, so mixing paints heads towards dark. Light adds: every colour you add makes it brighter, so mixing light heads towards white. Screens and LEDs make light, so the adding rules apply.</p><p class="lab-tip">Your real LED may need different numbers. Its three tiny lights are not equally strong, which is why your white may look slightly pink or blue (Part 8d).</p>');
     }
   }
-  const STORY = [[255, 0, 0], [0, 255, 0], [0, 0, 255], [255, 120, 0], [255, 255, 255], [0, 0, 0]];
-  function runStory() {
-    let i = 0;
-    const go = () => { setRGB({ r: STORY[i][0], g: STORY[i][1], b: STORY[i][2] }, false); i = (i + 1) % STORY.length; };
-    go();
-    story = setInterval(go, 1000);
-    storyBtn.textContent = 'Stop b2_02';
-    storyBtn.setAttribute('aria-pressed', 'true');
-    ui.info('b2_02_rgb_colours.ino', '<p>Red for a second, then green, then blue, then orange, then white, then off, then it starts again. Each line in <code>loop</code> is one <code>showColour(...)</code> and one <code>delay(1000)</code>.</p>');
-  }
-  function stopStory() {
-    if (!story) return;
-    clearInterval(story);
-    story = null;
-    storyBtn.textContent = 'Run b2_02';
-    storyBtn.setAttribute('aria-pressed', 'false');
-  }
+  function stopStory() {}
 
   function setMode(m) {
     S.mode = m;
@@ -411,7 +400,7 @@ export default function lab(stage, ui, host, W) {
   // ---- every frame ----
   let scopeClock = 0;
   clock(stage, (dt) => {
-    if (S.mode !== 'fade') return;
+    if (S.mode !== 'fade' || sk.powered) return;
     const L9 = S.pin === 9 ? led9 : led7;
     if (L.playing) {
       // real speed: phases are instant, only delay takes time
@@ -443,8 +432,52 @@ export default function lab(stage, ui, host, W) {
     } else lightLed(L9, duty());
   });
 
+  // ---- the real sketch: the band's sketches on an emulated chip ----
+  const SKETCH_VIEW = { b2_01_fade_given: ['fade', 9], b2_04_buggy_nonpwm: ['fade', 7], b2_02_rgb_colours: ['colour'], b2_03_colour_story_worked: ['colour'] };
+  let syncing = false;
+  function lightRgbK(r, g, b) {
+    const max = Math.max(r, g, b);
+    rgbLens.emissive.setRGB(r, g, b);
+    rgbLens.emissiveIntensity = 1.1;
+    rgbLens.color.setRGB(0.95, 0.94, 0.92);
+    rgbGlow.material.color.setRGB(r, g, b);
+    rgbGlow.material.opacity = Math.min(1, max * 0.95);
+    [r, g, b].forEach((v, i) => { if (dies[i]) dies[i].material.emissiveIntensity = 0.2 + v * 2; });
+  }
+  const sk = sketchPanel(stage, ui, host, {
+    sketches: Object.keys(SKETCH_VIEW),
+    explain: 'The light below follows the real pins. The pictures in 1, 2 and 3 are slowed-down models: using them unplugs the board.',
+    paint(P) {
+      if (!P) { if (S.mode === 'fade') lightLed(S.pin === 9 ? led9 : led7, duty()); else lightRgb(); return true; }
+      const d = (p) => (OUT(P[p].mode) ? P[p].duty : 0);
+      if (S.mode === 'fade') lightLed(S.pin === 9 ? led9 : led7, d(S.pin));
+      else lightRgbK(d(9), d(10), d(11));
+      return true;
+    },
+    onState(st) {
+      if (st.why !== 'choose' && st.why !== 'upload') return;
+      const v = SKETCH_VIEW[st.open];
+      if (!v) return;
+      syncing = true;
+      if (S.mode !== v[0]) setMode(v[0]);
+      if (v[1] && S.pin !== v[1]) setPin(v[1]);
+      syncing = false;
+    },
+  });
+  // The models and the sketch cannot both drive the light: touching a model unplugs the board.
+  for (const grp of [gFade, gLoop, gCol]) {
+    const yieldBoard = (e) => {
+      if (syncing || !sk.powered || e.target === storyBtn) return;
+      if (e.target.closest('button, input')) { sk.unplug('lab'); sk.note('The board was unplugged so the model above could take over the light. Press <b>Run</b> to plug it in again.'); }
+    };
+    grp.addEventListener('click', yieldBoard, true);
+    grp.addEventListener('input', yieldBoard, true);
+  }
+  modeBtns.forEach((b) => b.addEventListener('click', () => { if (sk.powered && SKETCH_VIEW[sk.sketch]?.[0] !== b.dataset.m) sk.unplug('lab'); }, true));
+
   setMode('fade');
   setPin(9);
+  sk.choose('b2_01_fade_given');
   ui.info('How the board fakes dimming', '<p>The board cannot make a dim light. Its pins have only two settings: fully on at 5 volts, or fully off at 0 volts. What <code>analogWrite</code> changes is how much of each tiny slice of time the pin spends switched on.</p><p class="lab-tip">Move the slider and watch the picture of the pin. Then press <b>Slow motion</b>.</p>');
   ui.toggle(sizeBtns, sizeBtns[0]);
   setValue(128);

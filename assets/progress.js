@@ -127,6 +127,8 @@
   }
 
   // ---------- 3D builds run (any page with a 3D build) ----------
+  // (Builds wired right in a build's Build tab, "Build it yourself", are recorded by the 3D bundle itself
+  // in <course>-builds-wired = { <build id>: { title, n, first, last } }; profile.js shows them.)
   document.addEventListener('click', function (e) {
     var btn = e.target.closest && e.target.closest('.sim-run');
     if (!btn) return;

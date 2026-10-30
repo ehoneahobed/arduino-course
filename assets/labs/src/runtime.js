@@ -92,6 +92,8 @@ export const ICONS = {
   help: '<circle cx="12" cy="12" r="9"/>' + P_('M9.5 9.3a2.6 2.6 0 0 1 5 .9c0 1.8-2.5 2.2-2.5 3.8') + '<circle cx="12" cy="17.2" r=".6" fill="currentColor"/>',
   code: P_('M8 7l-5 5 5 5M16 7l5 5-5 5M13.5 4l-3 16'),
   compass: '<circle cx="12" cy="12" r="9"/>' + P_('M15.5 8.5l-2 5-5 2 2-5z'),
+  // a signpost: "Show me around" (the tour). Not a play arrow, which means Run.
+  signpost: P_('M12 21V3') + P_('M5 5.5h10.5l2.5 2.5-2.5 2.5H5z') + P_('M19 13H8.5L6 15.5 8.5 18H19z'),
   bench: P_('M3 10h18M5 10v9M19 10v9M7 10V6h10v4'),
   // parts, for callout cards
   chip: '<rect x="7" y="7" width="10" height="10" rx="1.5"/>' + P_('M9.5 3v4M14.5 3v4M9.5 17v4M14.5 17v4M3 9.5h4M3 14.5h4M17 9.5h4M17 14.5h4'),
@@ -107,6 +109,7 @@ export const ICONS = {
   battery: '<rect x="3" y="7" width="16" height="10" rx="2"/>' + P_('M21 10.5v3M7 12h4M9 10v4'),
   ground: P_('M12 3v9M5 12h14M7.5 15.5h9M10 19h4'),
   wire: P_('M3 18c4 0 4-12 9-12s5 12 9 12') + '<circle cx="3" cy="18" r="1.3"/><circle cx="21" cy="18" r="1.3"/>',
+  build: '<rect x="2.5" y="12" width="19" height="8" rx="1.5"/>' + P_('M7 12V8.5M17 12V8.5M7 8.5c0-3 10-3 10 0') + '<circle cx="7" cy="16" r=".6" fill="currentColor"/><circle cx="12" cy="16" r=".6" fill="currentColor"/><circle cx="17" cy="16" r=".6" fill="currentColor"/>',
   grid: '<rect x="3" y="4" width="18" height="16" rx="2"/>' + P_('M7 8h.01M11 8h.01M15 8h.01M7 12h.01M11 12h.01M15 12h.01M7 16h.01M11 16h.01M15 16h.01M19 8h.01M19 12h.01M19 16h.01'),
   board: '<rect x="2.5" y="5" width="19" height="14" rx="2"/><rect x="9" y="10" width="7" height="4" rx=".6"/>' + P_('M5 8h6M14 8h5M2.5 11h3'),
   laptop: '<rect x="5" y="5" width="14" height="10" rx="1.5"/>' + P_('M2.5 18.5h19l-1.5-3.5H4z'),
@@ -1168,13 +1171,13 @@ function createViewBar(host, wrap, { camera, controls, start, target0, ortho, tw
     callouts.touring(false);
     if (!hadLabels) callouts.show(false);
     tourBtn.classList.remove('on');
-    tourBtn.innerHTML = icon('play');
+    tourBtn.innerHTML = icon('signpost');
     tourBtn.setAttribute('aria-label', 'Show me around');
     tourBtn.dataset.tip = 'Show me around · T';
     onTour?.(null);
     reset();
   };
-  const tourBtn = btn('play', 'Show me around', 'T', tour, 'lab-tourbtn');
+  const tourBtn = btn('signpost', 'Show me around', 'T', tour, 'lab-tourbtn');
   // Dragging the model stops the tour.
   controls.addEventListener('start', stopTour);
   const labels = () => {
@@ -1465,6 +1468,7 @@ export function createUI(host) {
   let storeKey = null;
   let onFinish = () => {};
   let current = 'explore';
+  const extra = []; // [id, title, icon]: tabs a lab adds (the 3D builds' Build tab)
   const uid = (host.id || host.dataset.lab || 'lab') + '-' + Math.random().toString(36).slice(2, 7);
 
   // ---- tabs ----
@@ -1474,6 +1478,7 @@ export function createUI(host) {
     const count = missions.filter((m) => done.has(m.id)).length;
     return [
       ['explore', 'Explore', 'compass'],
+      ...extra,
       code ? ['code', codeName, codeName === 'Code' ? 'code' : 'bench'] : null,
       missions.length ? ['missions', `Missions <span class="lab-badge${count === missions.length ? ' done' : ''}">${count}/${missions.length}</span>`, 'target'] : null,
       ['help', 'Help', 'help'],
@@ -1492,8 +1497,10 @@ export function createUI(host) {
   }
   function tab(id) {
     if (!panes[id]) return;
+    const was = current;
     current = id;
     refreshTabs();
+    if (was !== id) host.dispatchEvent(new CustomEvent('lab-tab', { detail: { tab: id, was } }));
   }
   tabsEl?.addEventListener('click', (e) => {
     const b = e.target.closest('[data-tab]');
@@ -1652,6 +1659,21 @@ export function createUI(host) {
       panes.code.appendChild(group);
       refreshTabs();
     },
+    // A tab of the lab's own, after Explore: returns its pane.
+    pane(id, title, ic = 'grid') {
+      if (panes[id]) return panes[id];
+      const p = document.createElement('div');
+      p.className = 'lab-pane';
+      p.dataset.pane = id;
+      p.setAttribute('role', 'tabpanel');
+      p.hidden = true;
+      (panes.explore?.parentNode || host.querySelector('.lab-panes')).appendChild(p);
+      panes[id] = p;
+      extra.push([id, title, ic]);
+      refreshTabs();
+      return p;
+    },
+    get current() { return current; },
     tab,
     refreshTabs,
   };

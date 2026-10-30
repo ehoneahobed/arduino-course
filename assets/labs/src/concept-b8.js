@@ -11,6 +11,8 @@
 import { THREE, mat, rbox, cable, label } from './runtime.js';
 import * as P from './parts.js';
 import { esc } from './concept-b6.js';
+import { sketchPanel, OUT, PinState } from './sketchpanel.js';
+import { wireSonar } from './devices.js';
 
 const { V } = P;
 const MONO = 'ui-monospace, "IBM Plex Mono", Menlo, Consolas, monospace';
@@ -46,7 +48,7 @@ function branchFor(a, al, s) {
 const SHORT = ['NO BRANCH', 'light on', 'flashing', 'light off'];
 const BRANCH_TEXT = ['no branch: the light is frozen', 'branch 1: light on', 'branch 2: flashing', 'branch 3: light off'];
 
-export default function lab(stage, ui) {
+export default function lab(stage, ui, host) {
   const { scene } = stage;
   const world = new THREE.Group();
   scene.add(world);
@@ -339,7 +341,8 @@ export default function lab(stage, ui) {
   let pendingPress = false;
   function press() {
     if (S.off) return;
-    pendingPress = true;
+    if (sk?.powered) realPressUntil = performance.now() + 150; // the real sketch reads pin 2 itself
+    else pendingPress = true;
     btn.userData.cap.position.y -= 0.3;
     stage.wait(0.15).then(() => { btn.userData.cap.position.y += 0.3; stage.invalidate(); });
   }
@@ -421,6 +424,22 @@ export default function lab(stage, ui) {
 
   function cut() {
     if (S.off) return;
+    if (sk?.powered) {
+      // the real board: unplugged, every number gone; plugged back in, setup() runs again
+      if (S.mach === 'tank' && S.state === 2 && S.water <= 15) S.cutDuringSnoozeHigh = true;
+      sk.unplug('cut');
+      cutBtn.disabled = true;
+      token.visible = false;
+      log('(power cut)');
+      lastInfo = '';
+      setTimeout(() => {
+        cutBtn.disabled = false;
+        log('(power back)');
+        if (S.cutDuringSnoozeHigh) { S.cutDuringSnoozeHigh = false; S.cameBackFromSnoozeCut = true; }
+        sk.start('power');
+      }, 1400);
+      return;
+    }
     if (S.mach === 'tank' && S.state === 2 && S.water <= 15) S.cutDuringSnoozeHigh = true;
     S.off = true;
     S.offUntil = S.t + 1.4;
@@ -479,6 +498,9 @@ export default function lab(stage, ui) {
         setup();
         if (wasSnoozeCut) S.cameBackFromSnoozeCut = true;
       }
+    } else if (sk?.powered) {
+      // the real sketch runs the device; its serial output moves the token
+      if (S.mach === 'flags') { if (flagKey(S.f) === '011') { S.frozenFor += dt; if (S.frozenFor > 1) S.sawFrozen = true; } else S.frozenFor = 0; }
     } else {
       const pressed = pendingPress;
       pendingPress = false;
@@ -501,16 +523,82 @@ export default function lab(stage, ui) {
     for (let i = 0; i + 3 < P1.length; i++) {
       if (P1[i].to === 1 && P1[i + 1].to === 2 && P1[i + 2].to === 3 && P1[i + 3].to === 1 && P1[i + 3].why === 'time' && P1.slice(0, i + 1).some((x) => x.to === 0)) ui.complete('cycle');
     }
-    // outputs
-    if (S.mach === 'tank') { setLed(greenLed, S.green); setLed(redLed, S.red); }
-    else { setLed(greenLed, S.led); setLed(redLed, false); }
-    buz.position.y = S.buzzing ? 0.12 : 0;
+    // outputs (the real sketch draws its own: see paint below)
+    if (!sk?.powered) {
+      if (S.mach === 'tank') { setLed(greenLed, S.green); setLed(redLed, S.red); }
+      else { setLed(greenLed, S.led); setLed(redLed, false); }
+      buz.position.y = S.buzzing ? 0.12 : 0;
+    }
     tokM.color.setHex(S.mach === 'flags' && flagKey(S.f) === '011' ? 0xca1f3f : 0xffbe00);
     tokM.emissive.setHex(S.mach === 'flags' && flagKey(S.f) === '011' ? 0xca1f3f : 0xffbe00);
     infoT += dt;
     if (infoT > 0.2) { infoT = 0; showInfo(); }
   });
 
+  // ---------- the real sketch (sketchpanel.js) ----------
+  // The device's pins are real: the light on 7, the red light on 8, the buzzer
+  // on 6, the button on 2, and for the tank the sensor on 10 and 11 looking at
+  // the water. The token follows what the sketch prints ("now in state 2").
+  const SKETCH_MACH = { b8_01_states_given: 'one', b8_02_buggy_flags: 'flags', b8_03_tank_alarm_worked: 'tank' };
+  let realPressUntil = 0;
+  let syncing = false;
+  const sonar = { cm: S.water };
+  function heard(line) {
+    log(line);
+    lastInfo = '';
+    let m;
+    if (S.mach === 'one' && (m = /now in state (\d)/.exec(line))) {
+      const from = S.state, to = +m[1];
+      S.state = to;
+      S.stateSince = millis();
+      // only the clock leads from SNOOZED to ARMED
+      S.path.push({ from, to, why: from === 3 && to === 1 ? 'time' : token.visible ? 'press' : 'power' });
+      if (S.path.length > 12) S.path.shift();
+      S.visited1.add(to);
+      if (S.sawFrozen) S.presses1AfterFreeze++;
+      if (S.sawFrozen && S.presses1AfterFreeze >= 4 && S.visited1.size === 4) ui.complete('frozen');
+      moveToken();
+    } else if (S.mach === 'flags' && (m = /armed=(\d)\s+alarming=(\d)\s+snoozed=(\d)/.exec(line))) {
+      S.f = { armed: m[1] === '1', alarming: m[2] === '1', snoozed: m[3] === '1' };
+      moveToken();
+    } else if (S.mach === 'tank' && (m = /^state (\d)/.exec(line))) {
+      S.state = +m[1];
+      S.stateSince = millis();
+      moveToken();
+      if (S.state === 1 && S.cameBackFromSnoozeCut) { ui.complete('power'); S.cameBackFromSnoozeCut = false; }
+    }
+  }
+  const sk = sketchPanel(stage, ui, host, {
+    sketches: Object.keys(SKETCH_MACH),
+    explain: 'The device beside the rooms is its real pins; the gold token follows what it prints on the serial monitor. Unplug it and the model takes over again.',
+    wire(u) { wireSonar(u, sonar, 10, 11); },
+    inputs(u) {
+      sonar.cm = S.water;
+      const m = u.mode(2);
+      if (m === PinState.Input || m === PinState.InputPullUp) { const v = performance.now() < realPressUntil ? 0 : 1; if (u.readInput(2) !== v) u.setInput(2, v); }
+    },
+    serial: (() => { let line = ''; return (t) => { for (const ch of t) { if (ch === '\n') { heard(line); line = ''; } else if (ch !== '\r') line += ch; } }; })(),
+    serialNote: (t) => { log(`(${t})`); lastInfo = ''; },
+    paint(P) {
+      if (!P) { setLed(greenLed, false); setLed(redLed, false); buz.position.y = 0; return true; }
+      const d = (p) => (OUT(P[p].mode) ? P[p].duty : 0);
+      setLed(greenLed, d(7) > 0.3);
+      setLed(redLed, d(8) > 0.3);
+      buz.position.y = OUT(P[6].mode) && (P[6].hz > 20 || d(6) > 0.3) ? 0.12 : 0;
+      return true;
+    },
+    onState(st) {
+      if (st.why === 'choose' || st.why === 'upload') {
+        const m = SKETCH_MACH[st.open];
+        if (m && m !== S.mach) { syncing = true; setMach(m); syncing = false; }
+      }
+      if (st.powered && ['run', 'upload'].includes(st.why)) { S.serial = []; S.path = []; token.visible = false; lastInfo = ''; }
+      if (!st.powered && !['choose', 'reset', 'load', 'cut'].includes(st.why)) setup(); // the model takes over, from setup()
+    },
+  });
+  gM.addEventListener('click', (e) => { if (!syncing && sk.powered && e.target.closest('button')) sk.unplug('lab'); }, true);
+
   placeWater();
   setMach('one');
+  sk.choose('b8_01_states_given');
 }

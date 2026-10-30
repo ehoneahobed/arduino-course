@@ -13,6 +13,7 @@ import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.j
 import * as P from './parts.js';
 import DATA from './builds.json';
 import { attachSim } from './sim.js';
+import { attachBuildMode } from './buildmode.js';
 
 const { V } = P;
 const BT = 1.3; // board top
@@ -102,13 +103,16 @@ function layout(b) {
     return col;
   };
   L.railHole = (rail, col) => V(L.X(col), BT, RAILZ[rail]);
+  // a rail hole the build names itself (a learner's own wiring)
+  L.railAt = (rail, col) => { used[rail].add(col); return col; };
   return L;
 }
 
 // ---------- the world ----------
 export function prepare(host) {
   const name = host.dataset.build;
-  const b = DATA.builds[name];
+  // host.labBuild: a learner's own wiring ("Build it yourself", then "Run the sketch on your build")
+  const b = host.labBuild || DATA.builds[name];
   if (!b) throw new Error(`No build called "${name}".`);
   const L = layout(b);
   const ink = inkHex(host);
@@ -235,7 +239,7 @@ export function prepare(host) {
   // feeds and links fit round them (as the SVG's lanes do)
   const railCol = {};
   b.parts.forEach((p, i) => {
-    if (p.type === 'wire' && p.to === 'rail') railCol[i] = L.railFrom(p.b, parse(p.a).col, 1);
+    if (p.type === 'wire' && p.to === 'rail') railCol[i] = p.col != null ? L.railAt(p.b, p.col) : L.railFrom(p.b, parse(p.a).col, 1);
   });
 
   b.parts.forEach((p, i) => {
@@ -252,6 +256,7 @@ export function prepare(host) {
         part.where = `Long leg (+) in <code>${p.anode}</code>, short leg (−) in <code>${p.cathode}</code>.`;
         part.what = 'A light. Current goes through it one way only: in at the long leg, out at the short leg. Turn it round and it stays dark. The flat edge on the rim is on the short-leg side.';
         part.focus = m.userData.top;
+        part.ends = [p.anode, p.cathode];
         T(i, 'long leg (+)', holeNode(p.anode), p.anode);
         T(i, 'short leg (−)', holeNode(p.cathode), p.cathode);
         break;
@@ -269,6 +274,7 @@ export function prepare(host) {
           ? `Bands: ${words}, then gold. Here it works with its partner part as a pair, so the Arduino can read the middle point between them.`
           : `Bands: ${words}, then gold. It holds the current back so the light does not burn out.`;
         part.focus = m.userData.top;
+        part.ends = [p.a, p.b];
         T(i, 'one end', holeNode(p.a), p.a);
         T(i, 'other end', holeNode(p.b), p.b);
         break;
@@ -290,6 +296,7 @@ export function prepare(host) {
             ? `It joins column ${parse(p.a).col} to the + rail, so everything in that column of five gets the rail’s power.`
             : `It joins column ${parse(p.a).col} to the − rail. That is the way back to the Arduino’s GND, which every circuit needs.`;
           T(i, 'rail end', p.b, railName(p.b));
+          part.ends = [p.a, `r:${p.b}:${col}`];
           conductors.push({ part: i, a: holeNode(p.a), b: p.b });
         } else if (p.to === 'hole') {
           bEnd = holeTop(L.hole(p.b));
@@ -300,6 +307,7 @@ export function prepare(host) {
           part.where = `From <code>${p.a}</code> to <code>${p.b}</code>.`;
           part.what = `It joins column ${parse(p.a).col} to column ${parse(p.b).col}, so the two strips act as one.`;
           T(i, 'far end', holeNode(p.b), p.b);
+          part.ends = [p.a, p.b];
           conductors.push({ part: i, a: holeNode(p.a), b: holeNode(p.b) });
         } else {
           bEnd = up(sockAt(p.socket), HOUSE);
@@ -315,6 +323,7 @@ export function prepare(host) {
             : p.socket.name === 'GND' ? `It joins column ${parse(p.a).col} to the Arduino’s GND.`
             : `It carries pin ${p.socket.name}’s signal to column ${parse(p.a).col}. The sketch decides what that pin does.`;
           T(i, 'Arduino end', sockNode(p.socket), p.socket.name, { sock: p.socket });
+          part.ends = [p.a, `S:${p.socket.hdr}:${p.socket.i}`];
           conductors.push({ part: i, a: holeNode(p.a), b: sockNode(p.socket) });
         }
         if (colour === 'ink') part.inkWire = true;
@@ -327,7 +336,8 @@ export function prepare(host) {
       }
       case 'power': {
         const s = up(sockAt(p.socket), HOUSE);
-        const col = L.railFrom(p.rail, p.rail[0] === '+' ? b.c0 : b.c0 + 1, 1);
+        const col = p.col != null ? L.railAt(p.rail, p.col) : L.railFrom(p.rail, p.rail[0] === '+' ? b.c0 : b.c0 + 1, 1);
+        part.ends = [`S:${p.socket.hdr}:${p.socket.i}`, `r:${p.rail}:${col}`];
         const r = holeTop(L.railHole(p.rail, col));
         const gx = L.x0 - 1.8 - gutL++ * 0.8;
         const h1 = 4.2 + gutL * 0.3;
@@ -345,8 +355,9 @@ export function prepare(host) {
         break;
       }
       case 'link': {
-        const ca = L.railFrom(p.a, b.c1, -1);
-        const cb = L.railFrom(p.b, b.c1, -1);
+        const ca = p.colA != null ? L.railAt(p.a, p.colA) : L.railFrom(p.a, b.c1, -1);
+        const cb = p.colB != null ? L.railAt(p.b, p.colB) : L.railFrom(p.b, b.c1, -1);
+        part.ends = [`r:${p.a}:${ca}`, `r:${p.b}:${cb}`];
         const A = holeTop(L.railHole(p.a, ca));
         const B = holeTop(L.railHole(p.b, cb));
         const gx = L.x1 + 1.8 + gutR++ * 0.8;
@@ -372,6 +383,7 @@ export function prepare(host) {
         part.where = `Four legs: ${p.holes.map((h) => `<code>${h}</code>`).join(' ')}. Its body sits over the middle channel.`;
         part.what = 'Pressing it joins its two sides for as long as you hold it. Let go and the gap opens again. It sits across the channel so its legs land in four separate strips.';
         part.focus = m.userData.top;
+        part.ends = [...p.holes];
         p.holes.forEach((h) => T(i, 'leg', holeNode(h), h));
         break;
       }
@@ -384,6 +396,7 @@ export function prepare(host) {
         part.where = `Outer legs in <code>${p.holes[0]}</code> and <code>${p.holes[2]}</code>, middle leg in <code>${p.holes[1]}</code>.`;
         part.what = 'Turning it moves the middle leg’s voltage anywhere between the two outer legs. The outer legs go to + and −; the middle leg is the one that answers.';
         part.focus = m.userData.top;
+        part.ends = [...p.holes];
         T(i, 'outer leg', holeNode(p.holes[0]), p.holes[0]);
         T(i, 'middle leg', holeNode(p.holes[1]), p.holes[1]);
         T(i, 'outer leg', holeNode(p.holes[2]), p.holes[2]);
@@ -398,6 +411,7 @@ export function prepare(host) {
         part.where = `Long leg (+) in <code>${p.plus}</code>, short leg in <code>${p.minus}</code>.`;
         part.what = 'It makes a sound when its pin is switched on. Like an LED it has a + leg, marked on top.';
         part.focus = m.userData.top;
+        part.ends = [p.plus, p.minus];
         T(i, 'long leg (+)', holeNode(p.plus), p.plus);
         T(i, 'short leg (−)', holeNode(p.minus), p.minus);
         break;
@@ -410,6 +424,7 @@ export function prepare(host) {
         part.where = `Emitter <code>${p.e}</code>, base <code>${p.b}</code>, collector <code>${p.c}</code>. Flat face towards you.`;
         part.what = 'An electric switch. A small current into the base lets a big current flow from collector to emitter, so a pin can control a motor it could never power itself.';
         part.focus = m.userData.top;
+        part.ends = [p.e, p.b, p.c];
         T(i, 'emitter (E)', holeNode(p.e), p.e);
         T(i, 'base (B)', holeNode(p.b), p.b);
         T(i, 'collector (C)', holeNode(p.c), p.c);
@@ -417,6 +432,7 @@ export function prepare(host) {
       }
       case 'blk': {
         const holes = p.holes.map(L.hole);
+        part.ends = [...p.holes];
         if (/^RGB LED/.test(p.label)) {
           const m = P.rgbLed(holes, BT, 1);
           g.add(m);
@@ -446,7 +462,8 @@ export function prepare(host) {
           const hA = holeTop(L.hole(p.holes[0]));
           g.add(addJumper(arch(tip0, hA, BT + HOUSE + 2.2), 'ink', { ends: [false, true] }));
           const rr = p.rails[0];
-          const col = L.railFrom(rr.rail, parse(p.holes[0]).col, -1);
+          const col = rr.col != null ? L.railAt(rr.rail, rr.col) : L.railFrom(rr.rail, parse(p.holes[0]).col, -1);
+          part.ends.push(`r:${rr.rail}:${col}`);
           const rTop = holeTop(L.railHole(rr.rail, col));
           const gx = L.x0 - 1.8 - gutL++ * 0.8;
           g.add(addJumper(route([tip1, V(tip1.x, 4.6, tip1.z), V(gx, 4.6, tip1.z), V(gx, 4.0, rTop.z), V(rTop.x, 4.0, rTop.z), rTop], 1), rr.colour, { ends: [false, true] }));
@@ -476,7 +493,8 @@ export function prepare(host) {
           });
           (p.rails || []).forEach((rr, k) => {
             const tip = mm.tips[mm.tips.length - 1].clone().add(mm.group.position);
-            const col = L.railFrom(rr.rail, b.c0 + 1 + k, 1);
+            const col = rr.col != null ? L.railAt(rr.rail, rr.col) : L.railFrom(rr.rail, b.c0 + 1 + k, 1);
+            part.ends.push(`r:${rr.rail}:${col}`);
             const rTop = holeTop(L.railHole(rr.rail, col));
             g.add(addJumper(arch(tip, rTop, 5), rr.colour));
             T(i, 'rail lead', rr.rail, railName(rr.rail));
@@ -494,6 +512,7 @@ export function prepare(host) {
         const mm = modelOf[i];
         g.add(mm.group);
         mm.group.updateMatrixWorld(true);
+        part.ends = p.pins.map(() => null);
         p.pins.forEach((q, k) => {
           const tip = mm.tips[k].clone().add(mm.group.position);
           const node = `M:${i}:${k}:${shortLabel(p.label)} ${q.name}`;
@@ -503,10 +522,12 @@ export function prepare(host) {
             const dist = Math.hypot(s.x - tip.x, s.z - tip.z);
             g.add(addJumper(arch(tip, s, Math.max(tip.y, s.y) + 1.6 + Math.min(2.5, dist * 0.08) + (k % 3) * 0.3), q.colour, { ends: [!mm.plugTips, true] }));
             conductors.push({ part: i, a: node, b: sockNode(q.socket), lead: `${q.name} → ${pinName(q.socket.name)}` });
+            part.ends[k] = `S:${q.socket.hdr}:${q.socket.i}`;
           } else if (q.to === 'rail') {
             const left = mm.group.position.x < L.n / 2;
             const top = q.rail.endsWith('top');
-            const col = L.railFrom(q.rail, left ? b.c0 + 2 : b.c1 - 2, left ? 1 : -1);
+            const col = q.col != null ? L.railAt(q.rail, q.col) : L.railFrom(q.rail, left ? b.c0 + 2 : b.c1 - 2, left ? 1 : -1);
+            part.ends[k] = `r:${q.rail}:${col}`;
             const r = holeTop(L.railHole(q.rail, col));
             let path;
             if (top) {
@@ -531,9 +552,11 @@ export function prepare(host) {
         const mm = modelOf[i];
         g.add(mm.group);
         const rails = [p.plus, p.minus];
+        part.ends = [];
         rails.forEach((rail, k) => {
           const tip = mm.tips[k].clone().add(mm.group.position);
-          const col = L.railFrom(rail, k === 0 ? b.c1 : b.c1 - 1, -1);
+          const col = p.cols?.[k] != null ? L.railAt(rail, p.cols[k]) : L.railFrom(rail, k === 0 ? b.c1 : b.c1 - 1, -1);
+          part.ends.push(`r:${rail}:${col}`);
           const r = holeTop(L.railHole(rail, col));
           const gx = L.x1 + 1.8 + gutR++ * 0.8;
           const h1 = 3.6 + k * 0.4;
@@ -638,6 +661,9 @@ function buildBoard(b, L) {
     if (p.holes) p.holes.forEach((h) => used.add(h));
   }
   const ppu = Math.max(28, Math.min(low ? 40 : 64, Math.floor((low ? 2048 : 3072) / W)));
+  // makePrint(holes, parts): the printing with these holes ringed and named, and a "+" by these parts'
+  // long legs. "Build it yourself" asks for a clean one (no holes, no parts).
+  const makePrint = (used, plusParts) => {
   const print = decal(W, D, (c, CW, CH) => {
     const sx = CW / W;
     const sz = CH / D;
@@ -663,7 +689,7 @@ function buildBoard(b, L) {
     // "+" beside each long leg, outboard of it, as in the SVG
     c.font = `700 ${sz * 0.62}px Rubik, Arial, sans-serif`;
     c.fillStyle = '#24182E';
-    for (const p of b.parts) {
+    for (const p of plusParts) {
       const pl = p.type === 'led' ? [p.anode, p.cathode] : p.type === 'buz' ? [p.plus, p.minus] : null;
       if (!pl) continue;
       const a = L.hole(pl[0]), k = L.hole(pl[1]);
@@ -688,6 +714,9 @@ function buildBoard(b, L) {
   print.position.set(cx, BT + 0.012, cz);
   print.material.depthWrite = false;
   print.renderOrder = 2;
+  return print;
+  };
+  const print = makePrint(used, b.parts);
   g.add(print);
 
   // holes: one instanced funnel each, one draw call for the lot
@@ -752,7 +781,7 @@ function buildBoard(b, L) {
     strips.add(m);
   }
   g.add(strips);
-  return { group: g, body, bodyMat, print, groove, holes, holeIndex, railIndex, strips, colStrips, stripIndex, railStrips, base, silver, used };
+  return { group: g, body, bodyMat, print, makePrint, groove, holes, holeIndex, railIndex, strips, colStrips, stripIndex, railStrips, base, silver, used };
 }
 let holeGeo;
 const HOLE_GEO = () => (holeGeo ??= P.funnelGeo(0.3, 0.12, 0.2, 1));
@@ -1338,6 +1367,7 @@ export default function buildLab(stage, ui, host, W) {
       nets = [{ net: netOf(sel.node), colour: PAL[0] }];
     }
     lit = paint(nets);
+    W.afterPaint?.(); // a build mode's own hole colours go on top
     const colourOfPart = new Map();
     for (const p of parts) {
       const mine = sel?.kind === 'part' && sel.i === p.i;
@@ -1477,22 +1507,30 @@ export default function buildLab(stage, ui, host, W) {
     refresh();
   }
 
+  // W.pick (set by the Build tab while a build mode is on) sees every click first;
+  // when it returns true the click is its own.
   parts.forEach((p) => {
-    stage.clickable(p.group, () => select(sel?.kind === 'part' && sel.i === p.i ? null : { kind: 'part', i: p.i }));
+    stage.clickable(p.group, (o, e, hit) => {
+      if (W.pick?.('part', p, hit)) return;
+      select(sel?.kind === 'part' && sel.i === p.i ? null : { kind: 'part', i: p.i });
+    });
   });
   stage.clickable(holeMesh, (o, e, hit) => {
     const info = ids[hit.instanceId];
     if (!info) return;
+    if (W.pick?.('hole', info, hit)) return;
     const node = info.kind === 'hole' ? holeNode(info.name) : info.rail;
     select({ kind: 'hole', info, node });
   });
   if (uno) {
     stage.clickable(uno.sockMesh, (o, e, hit) => {
       const s = uno.socks[hit.instanceId];
+      if (s && W.pick?.('sock', s, hit)) return;
       if (s) select({ kind: 'sock', sock: s, node: sockNode(s) });
     });
     stage.clickable(uno.group, (o, e, hit) => {
       if (hit.object === uno.sockMesh) return;
+      if (W.pick?.('uno', null, hit)) return;
       select(null);
       ui.info('Arduino Uno', `<p>The small computer that runs your sketch. It talks to the circuit through the sockets along its two long edges.</p>
         <p>The sockets near the board are the <b>digital pins</b>, 0 to 13. The far side has the <b>power</b> sockets (5V, GND) and the <b>analog inputs</b> A0 to A5. The pins this build uses are printed in green.</p>
@@ -1500,7 +1538,8 @@ export default function buildLab(stage, ui, host, W) {
     });
   }
   board.body.userData.noGlow = true;
-  stage.clickable(board.body, () => {
+  stage.clickable(board.body, (o, e, hit) => {
+    if (W.pick?.('board', null, hit)) return;
     select(null);
     ui.info('Breadboard', `<p>Holes in a plastic block, with metal strips hidden inside. Each column of five holes is joined (f to j, and a to e). The long rails along the top and bottom edges are joined end to end. Nothing crosses the channel down the middle.</p>
       <p class="lab-tip">Click a hole, or turn on <b>X-ray</b>, to see which holes are joined.</p>`);
@@ -1560,6 +1599,7 @@ export default function buildLab(stage, ui, host, W) {
 
   // ---- keyboard ----
   W.onKey = (e) => {
+    if (W.modeKey?.(e)) return true;
     if (e.key === 'x' || e.key === 'X') { setX(!xray); return true; }
     if (e.key === 'Escape') { select(null); return true; }
     return false;
@@ -1567,6 +1607,7 @@ export default function buildLab(stage, ui, host, W) {
 
   // ---- the tour picks each part as it reaches it ----
   W.onTour = (c) => {
+    if (W.mode) return;
     if (!c) { select(null); return; }
     if (c.data) select({ kind: 'part', i: c.data.i });
   };
@@ -1584,6 +1625,12 @@ export default function buildLab(stage, ui, host, W) {
   // ---- the virtual Arduino: run this build's real sketch (sim.js) ----
   W.sim = attachSim(stage, ui, host, W);
   host.labSim = W.sim; // for the test bench
+  // the Build tab: a guided build, and "Build it yourself" (buildmode.js)
+  W.select = select;
+  W.paint = paint;
+  W.refresh = refresh;
+  W.isX = () => xray;
+  host.labBuildMode = attachBuildMode(stage, ui, host, W);
   host.dispatchEvent(new CustomEvent('lab-ready', { bubbles: true, detail: { lab: 'build', build: host.dataset.build } }));
 }
 

@@ -169,6 +169,29 @@ five, one per rail, nothing across the channel, top and bottom rails
 separate) and lights up each electrical connection in its own colour.
 "Show me around" visits every part in build order.
 
+### The Build tab: guided build and "Build it yourself"
+
+`assets/labs/src/buildmode.js` adds the **Build** tab to every build (`ui.pane()` in `runtime.js` makes a
+lab's own tab). `practice-rules.js` holds the rules and the electrical check, with no three.js, so it can be
+tested in node:
+
+    import * as R from './practice-rules.js';
+    const r = R.check(build, items, DATA.pins);   // { ok, runnable, matches, problems: [{ sev, text, ends }] }
+    R.check(build, R.itemsFromBuild(build), DATA.pins).ok   // true for every build in builds.json
+
+A learner's build is a list of items, one per part or wire, each end a hole (`f5`), a rail hole
+(`r:-top:7`) or an Arduino socket (`S:dig:9`, the header and place in `builds.json`'s `pins`).
+`R.buildFromItems()` turns it back into a build in the `builds.json` shape (with the rail columns the learner
+chose: `col`, `colA`/`colB`, `cols`, which `build.js` honours), and the lab is mounted again with that build in
+`host.labBuild` to run the sketch on it. The guards mirror `bbdraw.py`'s (HOLE COLLISION, SOCKET COLLISION,
+POLARITY, LINK POLARITY, the battery, DEAD RAIL with the wrong-half case). One difference: a rail counts as fed
+when it is electrically joined to GND, 5V, 3V3, VIN or a battery, so feeding it through a column counts too.
+The guided build's order comes from the page: `readChunks()` reads the paragraphs, list items, table rows and
+boxes between the wiring figure and the next one, and `R.orderFromChunks()` places each part at the first
+chunk that names all its holes (and, for a wire to a rail or socket, the rail or the pin). On the test bench,
+`host.labBuildMode` drives it (`guided()`, `next()`, `practice()`, `begin(trayId)`, `place(end)`, `typed('pin 8')`,
+`check()`, `lastCheck()`).
+
 ## The virtual Arduino: `compile_sketches.mjs`
 
 Each 3D build has a **Run the sketch** section: the course's real sketches,

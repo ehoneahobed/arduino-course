@@ -55,6 +55,13 @@
     $('#pf-runs').innerHTML = ids.length
       ? '<ul class="plain pf-runs">' + ids.map(function (id) { var r = runs[id]; return '<li>' + esc(r.title || id) + ' <span>(' + r.n + (r.n === 1 ? ' run' : ' runs') + ')</span></li>'; }).join('') + '</ul>'
       : '<p class="note">None yet. On a band page, press <b>View in 3D</b> beside a wiring picture, then <b>Run</b> in the panel.</p>';
+    // builds wired in "Build it yourself" (the Build tab of a 3D build) and checked right
+    var wired = P.load(P.key('builds-wired'), {}) || {};
+    var wids = Object.keys(wired).sort();
+    var wEl = $('#pf-wired');
+    if (wEl) wEl.innerHTML = wids.length
+      ? '<ul class="plain pf-runs">' + wids.map(function (id) { var r = wired[id]; return '<li>' + esc(r.title || id) + ' <span>(' + (r.last ? 'right on ' + esc(stamp(r.last)) : 'right') + ')</span></li>'; }).join('') + '</ul>'
+      : '<p class="note">None yet. In a 3D build, open the <b>Build</b> tab and choose <b>Build it yourself</b>: place the parts and wires on an empty board, then press <b>Check my wiring</b>.</p>';
     var edits = keys().filter(function (k) { return k.indexOf('ard-sketch-edit:') === 0; }).length;
     $('#pf-edits').textContent = edits ? 'You have changed ' + edits + (edits === 1 ? ' sketch' : ' sketches') + ' in the 3D code editor. Those are kept here too, and travel with Export.' : '';
 
@@ -73,7 +80,7 @@
     o.list.forEach(function (s) { tr += s.check.right; tc += s.check.checkable; tg += s.check.got; ts += s.check.self; });
     var m = 0; o.list.forEach(function (s) { m += s.missions; });
     $('#pf-cert-score').textContent = 'Check yourself: ' + tr + (tr === 1 ? ' answer' : ' answers') + ' checked right, ' + tg + (tg === 1 ? ' open answer' : ' open answers') + ' marked "got it". ' +
-      (m ? '3D missions done: ' + m + ' of 27. ' : '') + o.read + ' of ' + o.total + ' sections read.';
+      (m ? '3D missions done: ' + m + ' of 27. ' : '') + (wids.length ? 'Builds wired right in 3D: ' + wids.length + '. ' : '') + o.read + ' of ' + o.total + ' sections read.';
     $('#pf-cert-date').textContent = 'Printed ' + P.fmtDate(new Date().toISOString());
   }
 

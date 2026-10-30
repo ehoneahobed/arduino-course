@@ -9,6 +9,7 @@
 import { THREE } from './runtime.js';
 import { shell, box, sound, glow, pushCap, holdable, holdKey, tag, setLabel, prepareFrom, frame, partsWhere, clock, esc } from './concept-b3.js';
 import DATA from './builds.json';
+import { sketchPanel, OUT, PinState } from './sketchpanel.js';
 
 const V = (x, y, z) => new THREE.Vector3(x, y, z);
 
@@ -348,6 +349,7 @@ export default function lab(stage, ui, host, W) {
   function press(down) {
     if (mode !== 'timing' || held === down) return;
     held = down;
+    if (sk?.powered && sk.uno) realInputs(sk.uno);
     pushCap(btn6, down);
     right.querySelector('.cb-hold')?.classList.toggle('down', down);
     const t = ms();
@@ -394,7 +396,7 @@ export default function lab(stage, ui, host, W) {
         last = now;
         const level = onBoard === 'delay' ? levelDelay(t) : levelMillis(t);
         const ans = onBoard === 'delay' ? delayAnswer(t) : held;
-        if (level !== lastLamp || ans !== lastAnswer) {
+        if (!sk?.powered && (level !== lastLamp || ans !== lastAnswer)) {
           lastLamp = level;
           lastAnswer = ans;
           glow(lamp6, level / 255);
@@ -528,10 +530,11 @@ export default function lab(stage, ui, host, W) {
     }
   }
 
-  const g1 = ui.group('Which part of the band?');
+  const g1 = ui.group('The model: which part of the band?');
+  const toModel = () => { if (sk?.powered) sk.unplug('lab'); };
   const modeBtns = [
-    ui.button('b5_02: your own function (Part 5)', () => setMode('fn'), { group: g1, pressed: true }),
-    ui.button('b5_03 and b5_04: delay against millis (Parts 6 and 7)', () => setMode('timing'), { group: g1, pressed: false }),
+    ui.button('b5_02: your own function (Part 5)', () => { toModel(); setMode('fn'); }, { group: g1, pressed: true }),
+    ui.button('b5_03 and b5_04: delay against millis (Parts 6 and 7)', () => { toModel(); setMode('timing'); }, { group: g1, pressed: false }),
   ];
   modeBtns[0].dataset.m = 'fn';
   modeBtns[1].dataset.m = 'timing';
@@ -554,6 +557,57 @@ export default function lab(stage, ui, host, W) {
     stage.invalidate();
   }, 50)).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme', 'class'] });
 
+  // ---- the real sketch (sketchpanel.js): b5_02 on the Part 4 board, b5_03 and b5_04 on Part 6's ----
+  const SKETCH_MODE = { b5_02_functions_worked: ['fn'], b5_03_blocking_problem: ['timing', 'delay'], b5_04_millis_fixed: ['timing', 'millis'] };
+  function realInputs(uno) {
+    for (const p of [6, 8, 9, 10, 11]) {
+      const m = uno.mode(p);
+      if (m !== PinState.Input && m !== PinState.InputPullUp) continue;
+      const v = p === 6 && mode === 'timing' && held ? 0 : 1;
+      if (uno.readInput(p) !== v) uno.setInput(p, v);
+    }
+  }
+  let realHz = 0, realLamp = -1;
+  const sk = sketchPanel(stage, ui, host, {
+    sketches: Object.keys(SKETCH_MODE),
+    explain: 'The lights, the buzzer and the button below are its real pins. The step-by-step pictures under the model are slowed down: using them unplugs the board.',
+    inputs: realInputs,
+    paint(S) {
+      if (!S) { lightsOff(); glow(lamp6, 0); glow(answer6, 0); realHz = 0; realLamp = -1; lastLamp = -1; lastAnswer = null; return true; }
+      const d = (p) => (OUT(S[p].mode) ? S[p].duty : 0);
+      if (mode === 'fn') {
+        leds4.forEach((part, i) => glow(part, d(2 + i)));
+        const hz = OUT(S[12].mode) ? Math.round(S[12].hz) : 0;
+        if (Math.abs(hz - realHz) > 1) {
+          realHz = hz;
+          if (hz >= 20) { sound.start(hz); setLabel(buzTag, `♪ ${hz} Hz`); buzTag.visible = true; } else { sound.stop(); buzTag.visible = false; }
+        }
+        // the octave mission, on the real board: light 1 singing about 523 Hz
+        if (d(2) > 0.5 && hz >= 520 && hz <= 528) ui.complete('octave');
+      } else {
+        glow(lamp6, d(9));
+        glow(answer6, d(8));
+        const lv = Math.round(d(9) * 255);
+        if (Math.abs(lv - realLamp) > 3) { realLamp = lv; setLabel(lampTag, `pin 9: ${Math.round(d(9) * 100)}% on`); }
+      }
+      return true;
+    },
+    onState(st) {
+      if (st.why === 'choose' || st.why === 'upload') {
+        const v = SKETCH_MODE[st.open];
+        if (v) {
+          if (mode !== v[0]) setMode(v[0]);
+          if (v[1] && onBoard !== v[1]) { onBoard = v[1]; restartTiming(); }
+        }
+      }
+      if (st.powered && (st.why === 'run' || st.why === 'upload') && mode === 'fn') setRun('stop');
+    },
+  });
+  // the model's own run, step and number boxes take the lights back: they unplug the board
+  right.addEventListener('click', (e) => { if (sk.powered && e.target.closest('[data-r], [data-b]')) sk.unplug('lab'); }, true);
+  code.addEventListener('input', () => { if (sk.powered) sk.unplug('lab'); }, true);
+
   setMode('fn');
+  sk.choose('b5_02_functions_worked');
   host.labDebug = { setMode, setRun, press, presses, notes, get pc() { return pc; } };
 }

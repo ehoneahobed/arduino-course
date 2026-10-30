@@ -5,14 +5,18 @@
 //    button, TX and RX and the ON light.
 // 2. The upload journey: sketch, Verify, Upload, along the USB cable into the
 //    chip, then the L light runs it (and keeps running it from a phone charger).
+//    The sketches are the real ones: compiled for the Uno and run on an
+//    emulated chip, or edited in the Code tab and run by the course's
+//    interpreter (sketchpanel.js). Stop unplugs the cable; Run plugs it back.
 // 3. Reading an error: b0_03_buggy_semicolon.ino, the missing semicolon on
-//    line 23 that the computer notices on line 24.
+//    line 23 that the computer notices on line 24 (the real compiler's message).
 //
 // It also holds a few helpers the Band 1 and Band 2 labs share (glow, code
 // boxes, a little CSS, preparing a wiring build from builds.json).
 import { THREE, mat, rbox, cable, decal, codeView } from './runtime.js';
 import * as P from './parts.js';
 import { buildUno, config as buildConfig, prepare as buildPrepare } from './build.js';
+import { sketchPanel, OUT } from './sketchpanel.js';
 
 const { V } = P;
 const UY = 0.95; // Arduino board top (as build.js)
@@ -120,32 +124,13 @@ export function ensureStyle() {
 export function codeBox(group, file, lines, onLine, opts) {
   return codeView(group, file, lines, onLine, opts);
 }
-const numbered = (first, text) => text.split('\n').map((t, i) => ({ n: first + i, t }));
-
-// ---------- the sketches (real line numbers, header comments left out) ----------
+// ---------- the sketches (the real ones run: assets/labs/hex/, sketchpanel.js) ----------
 const SK = {
-  b0_01: {
-    file: 'b0_01_blink_given.ino', first: 17,
-    text: 'void setup() {\n  pinMode(13, OUTPUT);\n}\n\nvoid loop() {\n  digitalWrite(13, HIGH);\n  delay(1000);\n  digitalWrite(13, LOW);\n  delay(1000);\n}',
-    run: [[22, 1], [23, 1000], [24, 0], [25, 1000]],
-    what: 'on for one second, off for one second, forever',
-  },
-  b0_02: {
-    file: 'b0_02_signature_worked.ino', first: 19,
-    text: 'int ledPin = 13;\nint shortFlash = 150;\nint longFlash = 700;\nint gap = 200;\nint rest = 1200;\n\nvoid setup() {\n  pinMode(ledPin, OUTPUT);\n}\n\nvoid loop() {\n  digitalWrite(ledPin, HIGH);\n  delay(shortFlash);\n  digitalWrite(ledPin, LOW);\n  delay(gap);\n\n  digitalWrite(ledPin, HIGH);\n  delay(shortFlash);\n  digitalWrite(ledPin, LOW);\n  delay(gap);\n\n  digitalWrite(ledPin, HIGH);\n  delay(longFlash);\n  digitalWrite(ledPin, LOW);\n  delay(rest);\n}',
-    run: [[30, 1], [31, 150], [32, 0], [33, 200], [35, 1], [36, 150], [37, 0], [38, 200], [40, 1], [41, 700], [42, 0], [43, 1200]],
-    what: 'two short flashes, one long flash, then a rest',
-  },
-  b0_03: {
-    file: 'b0_03_buggy_semicolon.ino', first: 22,
-    text: 'void setup() {\n  pinMode(13, OUTPUT)\n}\n\nvoid loop() {\n  digitalWrite(13, HIGH);\n  delay(500);\n  digitalWrite(13, LOW);\n  delay(500);\n}',
-    fixed: 'void setup() {\n  pinMode(13, OUTPUT);\n}\n\nvoid loop() {\n  digitalWrite(13, HIGH);\n  delay(500);\n  digitalWrite(13, LOW);\n  delay(500);\n}',
-    run: [[27, 1], [28, 500], [29, 0], [30, 500]],
-    what: 'on for half a second, off for half a second',
-    error: "b0_03_buggy_semicolon.ino:24:1: error: expected ';' before '}' token",
-  },
+  b0_01: { name: 'b0_01_blink_given', what: 'on for one second, off for one second, forever' },
+  b0_02: { name: 'b0_02_signature_worked', what: 'two short flashes, one long flash, then a rest' },
+  b0_03: { name: 'b0_03_buggy_semicolon', what: 'on for half a second, off for half a second' },
 };
-const FACTORY = { file: 'the blink it arrived with', run: [[0, 1], [0, 1000], [0, 0], [0, 1000]], what: 'a blink it was given at the factory' };
+const keyOfName = (n) => Object.keys(SK).find((k) => SK[k].name === n);
 
 // ---------- the board's parts, in the words of Band 0 Part 1 ----------
 const PARTS = {
@@ -221,8 +206,8 @@ export function config(W) {
 
 export const missions = [
   { id: 'find', text: 'Find the L light, and the part where your program is kept.', hint: 'Click parts of the board, or use the buttons under "Parts of the board".' },
-  { id: 'upload', text: 'Upload a sketch, then move the cable to the phone charger. Does it keep blinking?', hint: 'Choose a sketch, press Upload, then choose "Phone charger" under Power.' },
-  { id: 'error', text: 'Verify b0_03, then click the line where the mistake really is.', hint: 'The message names a line. Look at the line above it.' },
+  { id: 'upload', text: 'Upload a sketch, then move the cable to the phone charger. Does it keep blinking?', hint: 'Open a sketch, press Upload and run in the Code tab, then choose "Phone charger" under 3 · Power.' },
+  { id: 'error', text: 'Verify b0_03, then click the line where the mistake really is.', hint: 'Open b0_03, press Verify in the Code tab, then click a line in the code. The message names a line. Look at the line above it.' },
 ];
 
 export const hint = 'Drag to turn · pinch or scroll to zoom · tap a part';
@@ -232,13 +217,6 @@ export default function lab(stage, ui, host, W) {
   const { scene } = stage;
   scene.add(W.world);
   const { uno } = W;
-  const ON = 1, OFF = 0;
-
-  // ---- the little lights: built into the shared Uno model (and printed on it) ----
-  const Lled = uno.leds.L;
-  const TX = uno.leds.TX;
-  const RX = uno.leds.RX;
-  const ONled = uno.leds.ON;
 
   // ---- pickable regions (invisible boxes over the parts) ----
   const zone = (id, w, h, d, x, y, z) => {
@@ -289,10 +267,12 @@ export default function lab(stage, ui, host, W) {
     for (const [k, c] of Object.entries(cards)) c.card.classList.toggle('sel', k === id);
     const p = PARTS[id];
     let extra = '';
-    if (id === 'L') extra = `<p class="lab-tip">${power ? (program ? `Right now it is running <b>${esc(program.file)}</b>: ${esc(program.what)}.` : '') : 'The board has no power, so it is dark.'}</p>`;
-    if (id === 'chip') extra = `<p class="lab-tip">Inside it now: <b>${esc(program.file)}</b>.</p>`;
-    if (id === 'on') extra = `<p class="lab-tip">${power ? 'It is on: the board has power.' : 'It is off: the board has no power.'}</p>`;
-    if (id === 'reset') { pressReset(); extra = '<p class="lab-tip">Pressed. Watch the L light start the pattern again from the top.</p>'; }
+    const on = sk.sketch ? `<code>${esc(sk.sketch)}.ino</code>${sk.mode === 'edited' ? ' (your edited version)' : ''}` : 'nothing yet';
+    const what = sk.mode === 'course' && keyOfName(sk.sketch) ? `: ${esc(SK[keyOfName(sk.sketch)].what)}` : '';
+    if (id === 'L') extra = `<p class="lab-tip">${sk.powered ? (sk.running ? `Right now it is running ${on}${what}.` : `The sketch is paused, so the L light stays as it was.`) : 'The board has no power, so it is dark.'}</p>`;
+    if (id === 'chip') extra = `<p class="lab-tip">Inside it now: ${on}.</p>`;
+    if (id === 'on') extra = `<p class="lab-tip">${sk.powered ? 'It is on: the board has power.' : 'It is off: the board has no power.'}</p>`;
+    if (id === 'reset') { extra = sk.powered ? '<p class="lab-tip">Pressed. Watch the L light start the pattern again from the top.</p>' : '<p class="lab-tip">Nothing happens: the board has no power. Plug it in first.</p>'; if (sk.powered) sk.reset(); }
     ui.info(p.title, `<p>${p.what}</p>${extra}`);
     clicked.add(id);
     if (clicked.has('L') && clicked.has('chip')) ui.complete('find');
@@ -305,8 +285,6 @@ export default function lab(stage, ui, host, W) {
   let cableMesh = null;
   const lapPort = V(2.2, 0.4, -11.5);
   const chgPort = V(-5.5, 1.6, 23.7);
-  let source = 'laptop';
-  const POWER_SOURCES = { laptop: 'the laptop', charger: 'a phone charger', none: 'nothing' };
   function drawCable() {
     if (cableMesh) { W.world.remove(cableMesh); cableMesh.geometry.dispose(); }
     const atBoard = source !== 'none';
@@ -322,12 +300,11 @@ export default function lab(stage, ui, host, W) {
     W.world.add(cableMesh);
     stage.invalidate();
   }
-  let lastSource = 'laptop';
 
-  // ---- the IDE on the laptop screen ----
+  // ---- the IDE on the laptop screen: it shows the sketch open in the Code tab ----
   const scr = W.screen.material.map.image;
   const sg = scr.getContext('2d');
-  let ide = { file: SK.b0_01.file, lines: SK.b0_01.text.split('\n'), first: 17, msg: '', bad: false, busy: 0, errLine: 0 };
+  const ide = { file: SK.b0_01.name + '.ino', text: '', msg: '', bad: false, busy: 0, errLine: 0 };
   function drawIDE() {
     const w = scr.width, h = scr.height;
     sg.fillStyle = '#e9eef0'; sg.fillRect(0, 0, w, h);
@@ -342,8 +319,13 @@ export default function lab(stage, ui, host, W) {
     sg.fillStyle = '#ffffff'; sg.fillRect(0, h * 0.13, w, h * 0.62);
     sg.font = `${h * 0.045}px ui-monospace, Menlo, monospace`;
     const lh = h * 0.058;
-    ide.lines.slice(0, 10).forEach((t, i) => {
-      const n = ide.first + i;
+    // skip the long header comment: show the code itself, with its real line numbers
+    const lines = ide.text.split('\n');
+    let first = lines.findIndex((t, i) => i > 0 && t.trim() && !/^\s*\/\//.test(t));
+    if (first < 0) first = 0;
+    if (ide.errLine && ide.errLine - 1 > first + 8) first = ide.errLine - 6;
+    lines.slice(first, first + 10).forEach((t, i) => {
+      const n = first + 1 + i;
       if (n === ide.errLine) { sg.fillStyle = 'rgba(202,31,63,.22)'; sg.fillRect(0, h * 0.15 + i * lh, w, lh); }
       sg.fillStyle = '#9aa3a8'; sg.textAlign = 'right'; sg.fillText(String(n), w * 0.08, h * 0.18 + i * lh);
       sg.fillStyle = '#24303a'; sg.textAlign = 'left'; sg.fillText(t, w * 0.11, h * 0.18 + i * lh);
@@ -362,95 +344,87 @@ export default function lab(stage, ui, host, W) {
     W.screen.material.map.needsUpdate = true;
     stage.invalidate();
   }
-
-  // ---- the program on the chip, run step by step ----
-  let program = FACTORY;
-  let power = true;
-  let pc = 0, left = 0, uploading = false;
-  let ledOn = false;
-  let runLine = 0;
-  let flashesOnCharger = 0;
-  let uploadedOnce = false;
-  let toldCharger = false;
-  function restart() { pc = -1; left = 0; ledOn = false; Lled.set(false); next(); }
-  function next() {
-    pc = (pc + 1) % program.run.length;
-    const [line, v] = program.run[pc];
-    runLine = line;
-    // even steps write the pin, odd steps wait
-    if (pc % 2 === 0) {
-      const was = ledOn;
-      ledOn = v === ON;
-      Lled.set(ledOn);
-      if (ledOn && !was && source === 'charger' && uploadedOnce && ++flashesOnCharger >= 2) {
-        ui.complete('upload');
-        if (!toldCharger) { toldCharger = true; ui.info('It keeps blinking', `<p>The laptop is not involved at all now. When you pressed Upload, <b>${esc(program.file)}</b> was copied into the main chip, and it stays there until you upload something different over it.</p>`); }
-      }
-      next();
-    } else left = v / 1000;
-    if (sketchShown === sketchOnBoard()) code.mark(runLine, 'run');
-  }
-  clock(stage, (dt) => {
-    if (!power || uploading) return;
-    left -= dt;
-    let guard = 0;
-    while (left <= 0 && guard++ < 20) { const over = -left; next(); left -= over; }
-  });
-  function pressReset() {
-    if (!power || uploading) return;
-    Lled.set(false);
-    ledOn = false;
-    pc = -1; left = 0.25; // a short pause while it restarts
-    program.run.length && (runLine = 0);
-    code.clear('run');
-    setTimeout(() => { if (power && !uploading) restart(); }, 250);
-  }
-  function setPower(src) {
-    if (uploading) return;
-    lastSource = source === 'none' ? lastSource : source;
-    source = src;
-    if (src !== 'none') lastSource = src;
-    drawCable();
-    const was = power;
-    power = src !== 'none';
-    ONled.set(power);
-    if (!power) { Lled.set(false); ledOn = false; code.clear('run'); }
-    else if (!was || src) restart();
-    flashesOnCharger = 0;
-    ui.toggle(powerBtns, powerBtns.find((b) => b.dataset.src === src));
-    if (src === 'none') ui.info('Unplugged', '<p>The board goes dark, because it has lost its electricity. The program is still inside the chip. Give it power again, from the laptop or from a phone charger, and watch.</p>');
-    else if (src === 'charger') ui.info('Running from a phone charger', `<p>Same cable, but the other end is in a phone charger now, so no program can arrive. Watch the L light: it is running <b>${esc(program.file)}</b>, ${esc(program.what)}.</p>${uploadedOnce ? '' : '<p class="lab-tip">For the mission, upload a sketch from the laptop first, then come back here.</p>'}`);
-    else ui.info('Plugged into the laptop', '<p>The cable carries power and, when you press Upload, your program. The small green ON light shows the board has power.</p>');
-  }
+  let ideT = 0;
+  const ideLater = () => { cancelAnimationFrame(ideT); ideT = requestAnimationFrame(() => { ide.text = sk.editor.value; ide.file = sk.open + '.ino'; drawIDE(); }); };
 
   // ---- side panel ----
-  ui.info('The Arduino Uno', '<p>This is the board from Band 0 Part 1. Click any part of it to see what it does, or press ▶ under the model for a tour.</p><p class="lab-tip">Then send it a program from the laptop, and break one on purpose.</p>');
+  ui.info('The Arduino Uno', '<p>This is the board from Band 0 Part 1. Click any part of it to see what it does, or press <b>Show me around</b> (the signpost under the model) for a tour.</p><p class="lab-tip">Then send it a real program from the laptop, change it, and break one on purpose.</p>');
   const gParts = ui.group('1 · Parts of the board');
   for (const id of ['usb', 'jack', 'digital', 'analog', 'power', 'L', 'chip', 'reset', 'txrx', 'on']) {
     const b = ui.button(PARTS[id].title, () => select(id), { group: gParts });
     b.classList.add('lab-part');
   }
   const gCode = ui.group('2 · Send it a program');
-  const tabs = ['b0_01', 'b0_02', 'b0_03'].map((k) => {
-    const b = ui.button(k, () => showSketch(k), { group: gCode });
+  const tabs = Object.keys(SK).map((k) => {
+    const b = ui.button(k, () => openSketch(k), { group: gCode });
     b.dataset.k = k;
-    b.setAttribute('aria-label', 'Open ' + SK[k].file);
+    b.setAttribute('aria-label', `Open ${SK[k].name}.ino in the Code tab`);
     return b;
   });
-  let sketchShown = 'b0_01';
-  let fixed = false;
+
+  // The sketches are real: the course's compiled ones run on an emulated chip,
+  // and an edited one runs on the course's interpreter (sketchpanel.js).
+  let source = 'laptop';
+  let lastSource = 'laptop';
+  let uploadedOnce = false;
+  let flashes = 0;
+  let lHigh = false;
+  let toldCharger = false;
   let errorShown = false;
-  const code = codeBox(gCode, SK.b0_01.file, numbered(17, SK.b0_01.text), (n) => clickLine(n), { tab: true });
-  const consoleEl = document.createElement('div');
-  consoleEl.className = 'cl-console';
-  consoleEl.setAttribute('aria-live', 'polite');
-  consoleEl.textContent = 'Choose a sketch, then press Verify or Upload.';
-  // Verify and Upload sit at the top of the code, as in the Arduino IDE.
-  const vBtn = code.action('✓ Verify', () => compile(false), { title: 'Check the code (it does not send it)' });
-  const uBtn = code.action('→ Upload', () => compile(true), { primary: true, title: 'Check the code and send it to the board' });
-  const fixBtn = ui.button('Add the semicolon', () => fix(), { group: gCode });
+  let found = false;
+  const sk = sketchPanel(stage, ui, host, {
+    sketches: Object.values(SK).map((s) => s.name),
+    group: gCode,
+    picker: false,
+    loadOnChoose: false,
+    leds: uno.leds,
+    canUpload: () => (source === 'laptop' ? null
+      : source === 'charger' ? 'No board on the Port. The board is on the phone charger, so the laptop cannot reach it. Choose <b>Laptop USB</b> under <b>3 · Power</b> first.'
+        : 'No board on the Port. The cable is unplugged. Choose <b>Laptop USB</b> under <b>3 · Power</b> first.'),
+    beforeUpload: () => journey(),
+    // the L light is pin 13 (the panel lights it); here: does it keep blinking on the charger?
+    paint(S) {
+      if (!S) { lHigh = false; return false; }
+      const on = OUT(S[13].mode) && S[13].duty > 0.5;
+      if (on && !lHigh && source === 'charger' && uploadedOnce && ++flashes >= 2) {
+        ui.complete('upload');
+        if (!toldCharger) { toldCharger = true; ui.info('It keeps blinking', `<p>The laptop is not involved at all now. When you pressed Upload, <code>${esc(sk.sketch)}.ino</code> was copied into the main chip, and it stays there until you upload something different over it. Moving the cable cut the power for a moment, so it started again from the top: <code>setup</code> once, then <code>loop</code>.</p>`); }
+      }
+      lHigh = on;
+      return false;
+    },
+    onCompile(c) {
+      ide.msg = c.ok ? (c.uploading ? 'Done uploading.' : 'Done compiling.') : c.errors[0].text.split('\n')[0];
+      ide.bad = !c.ok;
+      ide.errLine = c.ok ? 0 : c.errors[0].line || 0;
+      ideLater();
+      if (!c.ok && c.course && c.sketch === SK.b0_03.name) {
+        errorShown = true;
+        note('<b>Now click the line where the mistake really is</b>, in the code.');
+        ui.info('A red error', `<p>It failed, and that is what this sketch is for. This is the real compiler’s message. Read it piece by piece:</p><ul><li><code>b0_03_buggy_semicolon.ino</code> is the file.</li><li><code>24</code> is the line number it is complaining about.</li><li><code>expected ';'</code> means it wanted a semicolon.</li><li><code>before '}' token</code> means it noticed when it reached the curly bracket.</li></ul><p><b>Now click the line where the mistake really is.</b></p>`);
+        stage.reveal();
+      }
+    },
+    onState(st) {
+      // Stop unplugs the cable; Run plugs it back in where it was
+      if (st.why === 'stop' && source !== 'none') setSource('none');
+      if (st.why === 'run' && source === 'none') setSource(lastSource);
+      if (st.why === 'upload') {
+        uploadedOnce = true;
+        flashes = 0;
+        const k = keyOfName(st.sketch);
+        const what = st.mode === 'course' && k ? `Watch the L light: ${esc(SK[k].what)}.` : 'Watch the L light: it follows your sketch now.';
+        note(`${what} Then try the phone charger under <b>3 · Power</b>.`);
+        ui.info('Done uploading', `<p>The program crossed the cable and was copied into the main chip. The board started it straight away: <code>setup</code> once, then <code>loop</code> over and over. ${what}</p>${st.mode === 'edited' ? '<p class="lab-tip">The yellow line in the code is the one running now. Most of the time it is a <code>delay</code>: the board is sitting there doing nothing at all.</p>' : ''}<p class="lab-tip">Next: under <b>3 · Power</b>, move the cable to the phone charger.</p>`);
+      }
+      if (st.why === 'choose') ideLater();
+      ui.toggle(powerBtns, powerBtns.find((b) => b.dataset.src === source));
+    },
+  });
+  sk.editor.textarea.addEventListener('input', ideLater);
+  // (beside Verify and Upload, in the Code tab, where the mistake is being read)
+  const fixBtn = ui.button('Add the semicolon', () => fix(), { group: sk.codeGroup.querySelector('.sp-edbar') });
   fixBtn.hidden = true;
-  gCode.appendChild(consoleEl);
   const fb = document.createElement('div');
   fb.className = 'cl-read';
   fb.setAttribute('aria-live', 'polite');
@@ -464,80 +438,47 @@ export default function lab(stage, ui, host, W) {
   });
   ui.button('Press reset', () => select('reset'), { group: gPow });
 
-  const sketchOnBoard = () => Object.keys(SK).find((k) => SK[k] === program || (program.from === k)) ?? null;
-  function textOf(k) { return k === 'b0_03' && fixed ? SK.b0_03.fixed : SK[k].text; }
-  function showSketch(k) {
-    sketchShown = k;
+  // the cable only (the board's power follows it: sketchpanel.js)
+  function setSource(src) {
+    if (src !== 'none') lastSource = src;
+    else if (source !== 'none') lastSource = source;
+    source = src;
+    drawCable();
+    ui.toggle(powerBtns, powerBtns.find((b) => b.dataset.src === src));
+  }
+  function setPower(src) {
+    if (sk.busy) return;
+    const changed = src !== source;
+    setSource(src);
+    flashes = 0;
+    if (src === 'none') sk.unplug('cable');
+    else if (changed || !sk.powered) sk.powerCycle('cable');
+    if (src === 'none') ui.info('Unplugged', '<p>The board goes dark, because it has lost its electricity. The program is still inside the chip. Give it power again, from the laptop or from a phone charger, and watch. (<b>Stop</b> does the same: it unplugs the cable.)</p>');
+    else if (src === 'charger') ui.info('Running from a phone charger', `<p>Same cable, but the other end is in a phone charger now, so no program can arrive: Upload will say there is no board. The board starts again from the top with what is in its chip${sk.sketch ? `, <code>${esc(sk.sketch)}.ino</code>` : ''}. Watch the L light.</p>${uploadedOnce ? '' : '<p class="lab-tip">For the mission, upload a sketch from the laptop first, then come back here.</p>'}`);
+    else ui.info('Plugged into the laptop', '<p>The cable carries power and, when you press Upload, your program. The small green ON light shows the board has power.</p>');
+  }
+
+  function openSketch(k) {
     ui.toggle(tabs, tabs.find((b) => b.dataset.k === k));
-    code.set(numbered(SK[k].first, textOf(k)), SK[k].file + (k === 'b0_03' && fixed ? ' (fixed)' : ''));
     errorShown = false;
+    found = false;
     fixBtn.hidden = true;
-    note('');
-    ide = { ...ide, file: SK[k].file, lines: textOf(k).split('\n'), first: SK[k].first, msg: '', bad: false, errLine: 0 };
-    consoleEl.className = 'cl-console';
-    consoleEl.textContent = k === 'b0_03' && !fixed ? 'This one is broken on purpose. Press Verify and read the message.' : 'Press Verify to check it, or Upload to check it and send it.';
-    drawIDE();
-    if (sketchOnBoard() === k) code.mark(runLine, 'run');
+    note(k === 'b0_03' ? 'This one is broken on purpose. In the Code tab, press <b>Verify</b> and read the message.' : 'In the Code tab, press <b>Verify</b> to check it, or <b>Upload and run</b> to check it and send it. You can change the numbers first.');
+    ide.msg = '';
+    ide.bad = false;
+    ide.errLine = 0;
+    sk.choose(SK[k].name).then(ideLater);
+    ui.tab('code');
   }
-  function say(t, cls = '') {
-    consoleEl.className = 'cl-console' + (cls ? ' ' + cls : '');
-    consoleEl.textContent = t;
-    ide.msg = t;
-    ide.bad = cls === 'bad';
-    drawIDE();
-  }
-  async function compile(send) {
-    if (uploading) return;
-    const k = sketchShown;
-    const broken = k === 'b0_03' && !fixed;
-    uploading = !broken && send;
-    [vBtn, uBtn].forEach((b) => (b.disabled = true));
-    say('Compiling sketch…');
-    for (let i = 1; i <= 8; i++) { ide.busy = i / 8; drawIDE(); await stage.wait(0.1); }
-    ide.busy = 0;
-    if (broken) {
-      uploading = false;
-      errorShown = true;
-      ide.errLine = 24;
-      code.mark(24, 'err');
-      say(SK.b0_03.error, 'bad');
-      note('<b>Now click the line where the mistake really is.</b>');
-      ui.info('A red error', `<p>It failed, and that is what this sketch is for. Read the message piece by piece:</p><ul><li><code>b0_03_buggy_semicolon.ino</code> is the file.</li><li><code>24</code> is the line number it is complaining about.</li><li><code>expected ';'</code> means it wanted a semicolon.</li><li><code>before '}' token</code> means it noticed when it reached the curly bracket.</li></ul><p><b>Now click the line where the mistake really is.</b></p>`);
-      stage.reveal();
-      [vBtn, uBtn].forEach((b) => (b.disabled = false));
-      if (send) consoleEl.textContent += '\n\nUpload stopped: Upload checks your code first, and this did not pass.';
-      return;
-    }
-    if (!send) {
-      say(`Done compiling. No errors. Nothing happens on the board: Verify only checks the code.`, 'good');
-      [vBtn, uBtn].forEach((b) => (b.disabled = false));
-      return;
-    }
-    if (source !== 'laptop') {
-      uploading = false;
-      say(source === 'charger' ? 'No board on the Port. The board is on the phone charger, so the laptop cannot reach it. Choose "Laptop USB" first.' : 'No board on the Port. The cable is unplugged. Choose "Laptop USB" first.', 'bad');
-      [vBtn, uBtn].forEach((b) => (b.disabled = false));
-      return;
-    }
-    say('Uploading…');
-    Lled.set(false);
-    code.clear('run');
-    await journey();
-    program = { ...SK[k], file: SK[k].file, from: k };
-    uploadedOnce = true;
-    uploading = false;
-    flashesOnCharger = 0;
-    say('Done uploading.', 'good');
-    note(`Watch the L light: ${esc(SK[k].what)}. Then try the phone charger under <b>3 · Power</b>.`);
-    ui.info('Done uploading', `<p>The program crossed the cable and was copied into the main chip. The board started it straight away: <code>setup</code> once, then <code>loop</code> over and over. Watch the L light: ${esc(SK[k].what)}.</p><p class="lab-tip">The yellow line in the code is the one running now. Most of the time it is a <code>delay</code>: the board is sitting there doing nothing at all.</p><p class="lab-tip">Next: under <b>3 · Power</b>, move the cable to the phone charger.</p>`);
-    restart();
-    [vBtn, uBtn].forEach((b) => (b.disabled = false));
-  }
+
   // the program's journey: down the cable, across the board, into the chip
   const packetGeo = new THREE.BoxGeometry(0.7, 0.7, 0.7);
   const packetMat = new THREE.MeshBasicMaterial({ color: 0xffbe00, toneMapped: false });
   async function journey() {
     stage.reveal();
+    uno.leds.L.set(false);
+    ide.msg = 'Uploading…';
+    ide.bad = false;
     const c1 = cableMesh.userData.curve;
     const onBoard = new THREE.CatmullRomCurve3([V(-1.2, UY + 2.15, 6), V(3.5, UY + 0.4, 6.6), V(8, UY + 0.4, 9.5), V(11, UY + 1.0, 13.5), V(16, UY + 1.6, 14.6)]);
     const packets = [];
@@ -549,9 +490,8 @@ export default function lab(stage, ui, host, W) {
       packets.push(m);
     }
     const len = 2.2;
-    let t = 0;
     await stage.tween((k) => {
-      t = k * len;
+      const t = k * len;
       packets.forEach((m, i) => {
         const s = (t - i * 0.12) / 1.6; // 0..1 over the whole trip
         m.visible = s > 0 && s < 1;
@@ -562,25 +502,34 @@ export default function lab(stage, ui, host, W) {
         m.rotation.y += 0.2;
       });
       const flick = Math.floor(k * 40) % 2 === 0;
-      TX.set(flick && k < 0.9, 0.9);
-      RX.set(!flick && k < 0.9, 0.9);
+      uno.leds.TX.set(flick && k < 0.9, 0.9);
+      uno.leds.RX.set(!flick && k < 0.9, 0.9);
       ide.busy = k;
       if (Math.floor(k * 20) !== Math.floor((k - 0.02) * 20)) drawIDE();
     }, len, (k) => k);
-    TX.set(false); RX.set(false);
+    uno.leds.TX.set(false); uno.leds.RX.set(false);
     ide.busy = 0;
     packets.forEach((m) => W.world.remove(m));
     await stage.wait(0.3);
   }
-  function clickLine(n) {
-    if (sketchShown !== 'b0_03' || fixed) return;
-    if (!errorShown) { ui.info(`Line ${n}`, '<p>Press <b>✓ Verify</b> first, and read what the computer says.</p>'); return; }
+
+  // Reading the error: click (or move the caret to) the line where the mistake really is.
+  const ta = sk.editor.textarea;
+  const caretLine = () => ta.value.slice(0, ta.selectionStart).split('\n').length;
+  ta.addEventListener('click', () => clickLine(caretLine(), true));
+  ta.addEventListener('keyup', (e) => { if (/^(Arrow|Page|Home|End)/.test(e.key)) clickLine(caretLine(), false); });
+  function clickLine(n, loud) {
+    if (sk.open !== SK.b0_03.name || found || !sk.course || ta.value !== sk.course.source) return;
+    if (!errorShown) { if (loud) ui.info(`Line ${n}`, '<p>Press <b>Verify</b> first, and read what the computer says.</p>'); return; }
     if (n === 23) {
-      code.mark(23, 'ok');
+      found = true;
+      sk.editor.mark(23, 'err');
       note('<b>Found it.</b> Line 23 is missing its semicolon. The computer only noticed at the <code>}</code> on line 24. Always look at the line above the one it names.');
       ui.complete('error');
       fixBtn.hidden = false;
-      ui.info('Found it: line 23', `<p>The semicolon at the end of line 23 is missing. The message points at line 24 because the computer reads top to bottom. At the end of line 23 an instruction is allowed to carry on onto the next line, so it is still waiting for the semicolon. It reaches the curly bracket on line 24, and that is the first moment it can be sure something is wrong.</p><p><b>The error message tells you where the computer noticed, not where you made the mistake. Always look at the line above the one it names.</b></p><p class="lab-tip">Now press <b>Add the semicolon</b>, then Verify again.</p>`);
+      ui.info('Found it: line 23', `<p>The semicolon at the end of line 23 is missing. The message points at line 24 because the computer reads top to bottom. At the end of line 23 an instruction is allowed to carry on onto the next line, so it is still waiting for the semicolon. It reaches the curly bracket on line 24, and that is the first moment it can be sure something is wrong.</p><p><b>The error message tells you where the computer noticed, not where you made the mistake. Always look at the line above the one it names.</b></p><p class="lab-tip">Now type the <code>;</code> yourself, or press <b>Add the semicolon</b>, then Verify again.</p>`);
+    } else if (!loud) {
+      // moving the caret with the keyboard: only the right line answers
     } else if (n === 24) {
       note('Line 24 is where the computer <i>noticed</i>. Look at the line above.');
       ui.info('That is where it noticed', '<p>Line 24 is where the computer <i>noticed</i>. Nothing is wrong with a curly bracket. Look at the line above the one it names.</p>');
@@ -590,17 +539,22 @@ export default function lab(stage, ui, host, W) {
     }
   }
   function fix() {
-    fixed = true;
-    showSketch('b0_03');
-    say('Fixed. Press Verify to check it.');
-    ui.info('Semicolon added', '<p>Line 23 now ends with <code>;</code>. Press <b>✓ Verify</b>: it should pass. Then <b>→ Upload</b> it and watch the L light blink faster, half a second on and half a second off.</p>');
+    const lines = ta.value.split('\n');
+    if (lines[22] !== undefined && !/;\s*$/.test(lines[22])) lines[22] = lines[22].replace(/\s*$/, ';');
+    ta.value = lines.join('\n');
+    ta.dispatchEvent(new Event('input'));
+    fixBtn.hidden = true;
+    sk.editor.clear('err');
+    note('Fixed. Press <b>Verify</b> to check it.');
+    ui.info('Semicolon added', '<p>Line 23 now ends with <code>;</code>. Press <b>Verify</b>: it should pass. Then <b>Upload and run</b> it and watch the L light blink faster, half a second on and half a second off.</p><p class="lab-tip">Your fixed copy is run by the course’s own interpreter, because the real compiler cannot run in a web page. It reads the code the same way.</p>');
   }
 
-  showSketch('b0_01');
+  // start as the board arrives: plugged into the laptop, a blink in its chip
   ui.toggle(powerBtns, powerBtns[0]);
+  ui.toggle(tabs, tabs[0]);
   drawCable();
-  ONled.set(true);
-  restart();
+  note('The board has <code>b0_01_blink_given.ino</code> in its chip and is running it. Open a sketch, change it if you like, and press <b>Upload and run</b> in the Code tab.');
+  sk.choose(SK.b0_01.name, { load: true }).then(() => { if (source !== 'none') sk.start('power'); ideLater(); });
   stage.invalidate();
   host.dispatchEvent(new CustomEvent('lab-ready', { bubbles: true, detail: { lab: 'concept-b0' } }));
 }

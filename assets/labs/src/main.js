@@ -4,6 +4,7 @@
 // from file:// (a USB stick) as well as from the web.
 import { createStage, createUI, webglAvailable, ensureShell, icon } from './runtime.js';
 import * as build from './build.js';
+import { mirrorBar } from './sketchpanel.js';
 import * as conceptB0 from './concept-b0.js';
 import * as conceptB1 from './concept-b1.js';
 import * as conceptB2 from './concept-b2.js';
@@ -68,6 +69,8 @@ export function mount(host) {
       const ui = createUI(host);
       if (lab.missions) ui.missions(id, lab.missions, () => stage.confetti());
       lab.default(stage, ui, host, W);
+      // a build's Run / Stop / Reset, also on the 3D view and at the top of the Code tab
+      if (isBuild) mirrorBar(host);
       stage.relayout();
       stage.autoFit();
       status.remove();

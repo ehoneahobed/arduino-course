@@ -11,6 +11,7 @@ import { THREE, label, setLabel } from './runtime.js';
 import * as P from './parts.js';
 import { prepare as prepareBuild, config as buildConfig } from './build.js';
 import DATA from './builds.json';
+import { sketchPanel, OUT, PinState } from './sketchpanel.js';
 
 const V = (x, y, z) => new THREE.Vector3(x, y, z);
 export const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -412,7 +413,7 @@ void loop() {
   Serial.println(reading);
   delay(200);
 }`;
-      code.querySelector('.cb-pm').addEventListener('click', () => { pull = !pull; upload(); });
+      code.querySelector('.cb-pm').addEventListener('click', () => { if (sk?.powered) sk.unplug('lab'); pull = !pull; upload(); });
     } else {
       code.innerHTML = `int buttonPins[4] = {2, 3, 4, 5};
 int secret[4] = {1, 3, 3, 2};
@@ -495,7 +496,7 @@ int pressCount = 0;
   }
 
   function tickWatch() {
-    if (mode !== 'watch') return;
+    if (mode !== 'watch' || sk?.powered) return;
     const { v, floating } = readPin2();
     ser.println(String(v));
     setPinLook(v, floating);
@@ -567,13 +568,15 @@ int pressCount = 0;
 
   // ---- pressing ----
   function press(i, down) {
-    if (mode === 'watch' && i !== 0) return;
+    if (mode === 'watch' && i !== 0 && !sk?.powered) return;
     if (held[i] === down) return;
     held[i] = down;
     pushCap(buttons[i], down);
     keysBox.querySelectorAll(`.cb-key[data-k="${i}"]`).forEach((k) => k.classList.toggle('down', down));
     if (down) sound.ensure();
     stage.invalidate();
+    // the real sketch reads the real pins
+    if (sk?.powered) { if (sk.uno) realInputs(sk.uno); return; }
     if (mode === 'watch') {
       // the tag answers at once; the monitor prints at its own pace (every 200 ms)
       setPinLook(readPin2().v, !pull && !held[0]);
@@ -696,10 +699,11 @@ int pressCount = 0;
     }
   }
 
-  const g1 = ui.group('Which sketch is on the board?');
+  const g1 = ui.group('The model, slowed down: which sketch?');
+  const toModel = () => { if (sk?.powered) sk.unplug('lab'); };
   const modeBtns = [
-    ui.button('b3_02: one button (Parts 3 and 4)', () => { mode = 'watch'; upload(); }, { group: g1, pressed: true }),
-    ui.button('b3_05: the lock (Part 11)', () => { mode = 'lock'; upload(); }, { group: g1, pressed: false }),
+    ui.button('b3_02: one button (Parts 3 and 4)', () => { toModel(); mode = 'watch'; upload(); }, { group: g1, pressed: true }),
+    ui.button('b3_05: the lock (Part 11)', () => { toModel(); mode = 'lock'; upload(); }, { group: g1, pressed: false }),
   ];
   modeBtns[0].dataset.m = 'watch';
   modeBtns[1].dataset.m = 'lock';
@@ -729,6 +733,76 @@ int pressCount = 0;
   };
   new MutationObserver(() => setTimeout(retint, 50)).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme', 'class'] });
 
+  // ---- the real sketch: b3_02 and b3_05 on an emulated chip (sketchpanel.js) ----
+  // The buttons pull their pin to GND; the sketch's own pinMode decides whether
+  // a spring (INPUT_PULLUP) holds it up, or it floats (INPUT).
+  const floatLvl = [1, 1, 1, 1];
+  function realInputs(uno) {
+    pins.forEach((p, i) => {
+      let v;
+      if (held[i]) v = 0;
+      else if (uno.mode(p) === PinState.InputPullUp) v = 1;
+      else if (uno.mode(p) === PinState.Input) {
+        if (touching ? Math.random() < 0.5 : Math.random() < 0.03) floatLvl[i] = 1 - floatLvl[i];
+        v = floatLvl[i];
+      } else return;
+      if (uno.readInput(p) !== v) uno.setInput(p, v);
+    });
+  }
+  const SKETCH_MODE = { b3_02_serial_watch: 'watch', b3_05_lock_worked: 'lock' };
+  let realBuzz = false, realPin = '';
+  let serLine = '';
+  const sk = sketchPanel(stage, ui, host, {
+    sketches: Object.keys(SKETCH_MODE),
+    explain: 'Its output goes to the serial monitor under the model. Unplug it and the slowed-down model below takes over again.',
+    inputs: realInputs,
+    serial(text) {
+      let part = '';
+      for (const ch of text) {
+        if (ch === '\r') continue;
+        if (ch === '\n') { ser.println(part); part = ''; if (/UNLOCKED/.test(serLine)) ui.complete('lock'); serLine = ''; } else { part += ch; serLine += ch; }
+      }
+      if (part) ser.print(part);
+    },
+    serialNote: (t) => ser.note(`The real sketch: ${t}.`),
+    paint(S, uno) {
+      if (!S) {
+        glow(greenLed, 0); glow(redLed, 0);
+        if (realBuzz) { realBuzz = false; buzz(false); }
+        realPin = '';
+        return true;
+      }
+      const d = (p) => (OUT(S[p].mode) ? S[p].duty : 0);
+      glow(greenLed, d(8));
+      glow(redLed, d(9));
+      const b = d(10) > 0.5;
+      if (b !== realBuzz) { realBuzz = b; buzz(b); }
+      if (pinTag.visible) {
+        const v = uno.readInput(2), fl = uno.mode(2) === PinState.Input && !held[0];
+        const key = v + ':' + fl;
+        if (key !== realPin) { realPin = key; setPinLook(v, fl); }
+      }
+      return true;
+    },
+    onState(st) {
+      if (st.why === 'choose' || st.why === 'upload') {
+        const m = SKETCH_MODE[st.open];
+        if (m && m !== mode) { mode = m; upload(); }
+      }
+      if (st.powered && (st.why === 'run' || st.why === 'upload')) {
+        tm.reset();
+        clearInterval(watchTimer);
+        ser.clear();
+        serLine = '';
+        spring.visible = false;
+        memBox.hidden = true; // the model's picture of memory: the real chip keeps its own
+        ser.note('The real sketch is running: what it prints appears here.');
+      }
+      if (!st.powered && st.why !== 'choose' && st.why !== 'reset' && st.why !== 'load') upload(); // back to the model, from the start
+    },
+  });
+
   upload();
+  sk.choose('b3_02_serial_watch');
   host.labDebug = { press, get mode() { return mode; }, set mode(m) { mode = m; upload(); }, setPull(v) { pull = v; upload(); }, ser, lock };
 }

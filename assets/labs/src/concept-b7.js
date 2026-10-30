@@ -8,6 +8,9 @@
 import { THREE, mat, rbox, decal, label } from './runtime.js';
 import * as P from './parts.js';
 import { livePlate, reducedMotion, esc } from './concept-b6.js';
+import { sketchPanel } from './sketchpanel.js';
+import { HD44780, Backpack } from './hd44780.js';
+import { wireSonar } from './devices.js';
 
 const { V } = P;
 const SANS = 'Rubik, "Segoe UI", Arial, sans-serif';
@@ -36,7 +39,7 @@ export const config = {
   label: '3D model of a distance sensor, a book on a ruler and a screen. Arrow keys turn it, plus and minus zoom, 0 resets. The buttons beside it move the book and change the sketch.',
 };
 
-export default function lab(stage, ui) {
+export default function lab(stage, ui, host) {
   const { scene } = stage;
   const world = new THREE.Group();
   scene.add(world);
@@ -400,7 +403,7 @@ export default function lab(stage, ui) {
   ui.button('Send one ping', () => { if (!S.ping) startPing(); }, { group: gPing });
   const gScr = ui.group('The screen');
   const scrs = [['flicker', 'b7_04: clear() every round'], ['leftover', 'clear() taken out'], ['fixed', 'b7_05: pad to 16, skip if same']];
-  const scrBtns = scrs.map(([id, t]) => ui.button(t, () => setScreen(id), { group: gScr }));
+  const scrBtns = scrs.map(([id, t]) => ui.button(t, () => { if (sk?.powered && !syncing) sk.unplug('lab'); setScreen(id); }, { group: gScr }));
 
   function setThing(id) {
     S.thing = id;
@@ -479,6 +482,7 @@ export default function lab(stage, ui) {
     // the sketch on the board runs at its real speed
     const period = S.screen === 'fixed' ? 50 : 60;
     S.loopAcc += dt * 1000;
+    if (sk?.powered) S.loopAcc = 0; // the real sketch writes the screen itself
     while (S.loopAcc >= period) { S.loopAcc -= period; sketchRound(); }
     while (S.writes.length && S.writes[0] < S.t - 1) S.writes.shift();
     while (S.blanks.length && S.blanks[0] < S.t - 1) S.blanks.shift();
@@ -501,4 +505,44 @@ export default function lab(stage, ui) {
   drawLcd();
   drawScope();
   void label;
+
+  // ---------- the real sketch (sketchpanel.js): Trig on pin 10, Echo on pin 11, the I2C screen ----------
+  // The sensor answers the real chip: an echo as long as the trip to what is in
+  // front, or none at all (38 ms, longer than pulseIn waits) for a towel, an
+  // angle or nothing. The screen is a real HD44780 behind an I2C backpack.
+  const SKETCH_SCREEN = { b7_01_ping_given: null, b7_04_buggy_flicker: 'flicker', b7_05_bin_worked_i2c: 'fixed' };
+  const sonar = { cm: S.cm };
+  let chip = null;
+  let syncing = false;
+  const blankScreen = () => { for (const r of S.buf) r.fill(' '); lcdKey = ''; drawLcd(); };
+  const sk = sketchPanel(stage, ui, host, {
+    sketches: Object.keys(SKETCH_SCREEN),
+    explain: 'The sensor below answers its real pulses, and the screen shows what it really sends. The slowed-down ping is a picture of the same thing.',
+    wire(u) {
+      wireSonar(u, sonar, 10, 11);
+      chip = new HD44780();
+      u.twi.eventHandler = new Backpack(u.twi, chip);
+    },
+    inputs() { sonar.cm = hear().echo ? S.cm : 999; },
+    paint(P) {
+      if (!P) { chip = chip && null; blankScreen(); return true; }
+      if (chip?.dirty) {
+        chip.dirty = false;
+        const rows = chip.text();
+        for (let r = 0; r < 2; r++) for (let i = 0; i < 16; i++) { S.buf[r][i] = chip.light || rows[r][i] !== ' ' ? rows[r][i] : ' '; S.wrote[r][i] = S.round; }
+        S.writes.push(S.t);
+        drawLcd();
+        lastInfo = '';
+      }
+      return false;
+    },
+    onState(st) {
+      if (st.why === 'choose' || st.why === 'upload') {
+        const m = SKETCH_SCREEN[st.open];
+        if (m && m !== S.screen) { syncing = true; setScreen(m); syncing = false; }
+      }
+      if (st.powered && (st.why === 'run' || st.why === 'upload')) blankScreen();
+    },
+  });
+  sk.choose('b7_04_buggy_flicker');
 }

@@ -125,10 +125,12 @@ A band's **badge** (its resistor colour) is earned when every section has been r
 question is done (checkable ones right, open ones self-marked). Concept-lab missions are a bonus, never
 required. `assets/progress.js` works this out and draws the course home dashboard ("Continue where you left
 off", badges, a quiet line on each band card) and the line on the site home's course card.
-`arduino/profile.html` (`assets/profile.js`) shows badges, dates, scores, missions and 3D builds run, prints a
+`arduino/profile.html` (`assets/profile.js`) shows badges, dates, scores, missions, 3D builds run and builds wired
+right in "Build it yourself", prints a
 record for a facilitator, and can export, import and clear progress. Everything is kept in the browser only
 (localStorage keys `ladder-read-N`, `ladder-check-N`, `ladder-badge-N`, `ladder-meta-N`, `ladder-where`,
-`ladder-name`, `ladder-3d-runs`, plus the labs' `ard-lab-*` and `ard-sketch-edit:*`).
+`ladder-name`, `ladder-3d-runs`, `ladder-builds-wired`, each build's practice board `ladder-build-<id>`, plus the
+labs' `ard-lab-*` and `ard-sketch-edit:*`).
 
 ## Videos
 
@@ -159,6 +161,9 @@ The board has three states, shown by a coloured dot beside the buttons: **Run** 
 sketch, **Pause** freezes it where it is, **Stop** unplugs it (every output off, the screen blank, the servo
 left where it stopped) so the next Run starts from the beginning, and **Reset** starts the sketch again while it
 stays plugged in.
+The same Run / Pause, Stop and Reset also sit on the 3D view itself (top left) and pinned at the top of the
+Code tab, so in full screen they are never hidden away. The red signpost under the model is **Show me
+around** (the tour, `T`), not Run.
 
 Learners can also **change the code and upload it**. The Code tab is an editor (line numbers, colours, Tab to
 indent) with **Verify**, **Upload and run** and **Back to the course's sketch**; each learner's version of each
@@ -171,11 +176,48 @@ always says which is on the board: the course's sketch (compiled for the real ch
 the interpreter). `node tools/interp_check.mjs` runs every course sketch both ways and compares them; all 54
 match.
 
+Every 3D build also has a **Build** tab, for building it with your own hands:
+
+- **Guided build** steps through the build one part at a time, in the order the page's own steps and pin-plan
+  tables place them (read from the steps after the wiring picture; where a page cannot say, as in the 3D
+  Workshop, parts left to right, then signal wires, then the wires to the rails and the feeds). Each part drops
+  into its holes, the holes light up and are named ("f5 +", "f6 −"), and the page's own "You should see" goes
+  with it, with the step's test ("Then: plug in…") after the part it follows. A part the page says is already on
+  the board from before is marked so. **Next** / **Back**, or `N` / `B` on the model.
+- **Build it yourself** starts from an empty breadboard and the Uno, with a tray of the build's parts and as many
+  wires as you like (colours to choose). Pick a part, then tap the hole for each leg; or type where ("f5",
+  "pin 8", "GND", "-top"); or click the model and use the arrow keys to move a gold ring and `Enter` to place
+  (`Delete` removes, `Esc` cancels). Placed parts can be moved, flipped (an LED) or put back. **Check my
+  wiring** runs the same guards as the diagrams (`tools/bbdraw.py`): two legs in one hole, two wires in one
+  Arduino socket, 5V into a − rail or GND into a + rail, a rail that is used but not fed, or fed from the wrong
+  half; then that nothing shorts 5V to GND; then compares what is joined to what (through columns, rails and
+  wires) with the build's own wiring, so any equivalent layout passes and identical parts may swap places. It
+  names the usual faults kindly and lights the holes in question: an LED or buzzer in backwards, both legs of a
+  part in one column, a resistor not in series, "these two should be joined" and "should not be". The rules
+  are in `assets/labs/src/practice-rules.js` (no three.js in it, so it runs in node too). When the wiring is
+  right, or wrong but safe, **Run the sketch on your build** opens the same 3D view on the learner's own
+  wiring with the virtual Arduino running, so a wrong wiring visibly misbehaves; **Back to Build it yourself**
+  returns. The board is kept per build in the browser (`ladder-build-<id>`), and a build checked right is
+  recorded in `ladder-builds-wired` and shown on My progress. Placing a part adds only that part to the scene;
+  holes are lit through the board's instanced colours, so it stays quick on old computers and phones.
+
 Each band also has a **concept lab** ("Try it in 3D") placed where its big idea is taught: the Uno tour and
 upload journey (Band 0), current in a loop and resistor colours (1), PWM and colour mixing (2), floating pins
 and the lock's array (3), the light-sensor divider and calibration (4), functions and `millis` vs `delay` (5),
 servo pulses, deadband and shared ground (6), ultrasonic echo and flicker-free LCD output (7), and state
 machines with power-cut behaviour (8). Their source is `assets/labs/src/concept-bN.js`.
+
+Every concept lab that shows a sketch also **runs the real one** ("Run the real sketch", from
+`assets/labs/src/sketchpanel.js`): the course's compiled sketch on the emulated chip by default, an
+editable Code tab with **Verify**, **Upload and run** and **Back to the course's sketch** (edits run on the
+interpreter and are kept under the same `localStorage` key as the build viewer, so an edited `b0_02` shows in
+both), Run / Pause, Stop (unplug) and Reset with the state dot, and a line saying what is on the board.
+Band 0 runs b0_01 to b0_03 on the Uno's L light (Stop unplugs the cable; on the phone charger the sketch
+runs but Upload finds no board; b0_03 shows the real compiler's error). Bands 2 to 8 keep their slowed-down
+models (the PWM picture, the divider, the state-machine rooms…) and add the band's sketches running on the
+same 3D parts: b2_01/b2_04/b2_02/b2_03, b3_02/b3_05, b4_05/b4_04/b4_03, b5_02/b5_03/b5_04, b6_01–b6_03,
+b7_01/b7_04/b7_05 (real sonar timing and I2C screen) and b8_01–b8_03 (the room token follows what the sketch
+prints). Touching a model's own controls unplugs the board so the two never fight over a light.
 
 Each band page's section bar starts with a **3D lab** pill that lists every 3D view on the page, and
 `labs.html`, the **3D Workshop**, shows all of them with thumbnails, grouped by band. It is generated by

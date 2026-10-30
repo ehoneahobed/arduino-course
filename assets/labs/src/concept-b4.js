@@ -9,6 +9,7 @@
 // example Part 8 gives. Real sensors differ, which is the point of Part 8.
 import { THREE, rbox, mat } from './runtime.js';
 import { shell, box, monitor, glow, tag, setLabel, prepareFrom, frame, partsWhere } from './concept-b3.js';
+import { sketchPanel, serialTo, OUT } from './sketchpanel.js';
 
 const V = (x, y, z) => new THREE.Vector3(x, y, z);
 
@@ -181,6 +182,7 @@ export default function lab(stage, ui, host, W) {
 
   // ---- drawing ----
   function update() {
+    if (sk?.powered) lampWas = -1; // the real sketch's lamp is drawn again on the next frame
     const L = lightNow(false);
     const lux = luxNow();
     hand.visible = cover === 'hand';
@@ -289,6 +291,7 @@ export default function lab(stage, ui, host, W) {
 
   // ---- the serial monitor, at the sketch's own pace ----
   function tick() {
+    if (sk?.powered) return; // the real sketch prints for itself
     if (sketch === 'guard') {
       const L = lightNow(true);
       if (lampMode === 'switch') {
@@ -334,21 +337,22 @@ export default function lab(stage, ui, host, W) {
   }
 
   // ---- the side panel ----
-  const g1 = ui.group('Which sketch is on the board?');
+  const g1 = ui.group('The model: which sketch?');
+  const toModel = () => { if (sk?.powered) sk.unplug('lab'); };
   const modeBtns = [
-    ui.button('b4_05: the night guard (Parts 7 to 10)', () => { sketch = 'guard'; upload(); }, { group: g1, pressed: true }),
-    ui.button('b4_04: the division trap (Part 9)', () => { sketch = 'trap'; upload(); }, { group: g1, pressed: false }),
+    ui.button('b4_05: the night guard (Parts 7 to 10)', () => { toModel(); sketch = 'guard'; upload(); }, { group: g1, pressed: true }),
+    ui.button('b4_04: the division trap (Part 9)', () => { toModel(); sketch = 'trap'; upload(); }, { group: g1, pressed: false }),
   ];
   modeBtns[0].dataset.m = 'guard';
   modeBtns[1].dataset.m = 'trap';
   const lampG = ui.group('The lamp');
   const lampBtns = [
-    ui.button('On below the threshold (b4_05)', () => { lampMode = 'switch'; lampBtns.forEach((b, i) => b.setAttribute('aria-pressed', String(i === 0))); upload(); }, { group: lampG, pressed: true }),
-    ui.button('Fades with map (the Bronze task)', () => { lampMode = 'fade'; lampBtns.forEach((b, i) => b.setAttribute('aria-pressed', String(i === 1))); upload(); }, { group: lampG, pressed: false }),
+    ui.button('On below the threshold (b4_05)', () => { toModel(); lampMode = 'switch'; lampBtns.forEach((b, i) => b.setAttribute('aria-pressed', String(i === 0))); upload(); }, { group: lampG, pressed: true }),
+    ui.button('Fades with map (the Bronze task)', () => { toModel(); lampMode = 'fade'; lampBtns.forEach((b, i) => b.setAttribute('aria-pressed', String(i === 1))); upload(); }, { group: lampG, pressed: false }),
   ];
   const lineG = ui.group('The volts line in b4_04');
   const lineOpts = [['bug', '5 / 1023 (as it came)'], ['fix', '5.0 / 1023.0 (the fix)'], ['mv', '5000 * (long)reading / 1023']];
-  const lineBtns = lineOpts.map(([id, t]) => ui.button(t, () => { line = id; lineBtns.forEach((b, i) => b.setAttribute('aria-pressed', String(lineOpts[i][0] === id))); upload(); }, { group: lineG, pressed: id === 'bug' }));
+  const lineBtns = lineOpts.map(([id, t]) => ui.button(t, () => { toModel(); line = id; lineBtns.forEach((b, i) => b.setAttribute('aria-pressed', String(lineOpts[i][0] === id))); upload(); }, { group: lineG, pressed: id === 'bug' }));
   ui.element('<p class="lab-tip">The numbers here come from a model of one sensor and one 10 000 ohm resistor. Yours will be different, and that is exactly why you calibrate.</p>');
 
   // dark mode: the "ink" wires follow the page's text colour
@@ -360,6 +364,40 @@ export default function lab(stage, ui, host, W) {
 
   // (The whole build is framed to fill the view, sensor included.)
   void mat;
+  // ---- the real sketch (sketchpanel.js): the knob and the sensor's divider on A0 and A1 ----
+  const SKETCH_MODE = { b4_05_night_guard_worked: 'guard', b4_04_buggy_intdiv: 'trap', b4_03_light_read: 'guard' };
+  let lampWas = -1;
+  const sk = sketchPanel(stage, ui, host, {
+    sketches: Object.keys(SKETCH_MODE),
+    explain: 'The knob and the light on the sensor (set under the model) reach A0 and A1 as voltages; what it prints goes to the serial monitor. Unplug it and the model takes over again.',
+    inputs(uno) {
+      uno.adc.channelValues[0] = (knob / 1023) * 5;
+      uno.adc.channelValues[1] = lightNow(false).v;
+      uno.adcNoise[0] = uno.adcNoise[1] = 0.005;
+    },
+    serial: serialTo(ser),
+    serialNote: (t) => ser.note(`The real sketch: ${t}.`),
+    paint(S) {
+      if (!S) { lampWas = -1; update(); return true; }
+      const k = OUT(S[9].mode) ? S[9].duty : 0;
+      if (Math.abs(k - lampWas) > 0.02) { lampWas = k; glow(lamp, k); setLabel(lampTag, k > 0.98 ? 'lamp ON' : k < 0.02 ? 'lamp off' : `lamp ${Math.round(k * 100)}%`); }
+      // the chain mission, from what the real sensor would read
+      const L = lightNow(false);
+      if (cover === 'hand' && L.reading < 300) seen.dark = true;
+      if (cover === 'torch' && L.reading > 900) seen.bright = true;
+      if (seen.dark && seen.bright) ui.complete('chain');
+      return true;
+    },
+    onState(st) {
+      if (st.why === 'choose' || st.why === 'upload') {
+        const m = SKETCH_MODE[st.open];
+        if (m && m !== sketch) { sketch = m; upload(); }
+      }
+      if (st.powered && (st.why === 'run' || st.why === 'upload')) { clearInterval(timer); ser.clear(); ser.note('The real sketch is running: what it prints appears here.'); }
+      if (!st.powered && !['choose', 'reset', 'load'].includes(st.why)) upload();
+    },
+  });
   upload();
+  sk.choose('b4_05_night_guard_worked');
   host.labDebug = { ser, rows, set: (o) => { if ('place' in o) place = o.place; if ('time' in o) time = o.time; if ('cover' in o) cover = o.cover; if ('knob' in o) { knob = o.knob; knobIn.value = knob; } update(); }, readingOf: (p, t) => toReading(voltsAt(sensorOhms(PLACES[p].lux[t]))) };
 }
