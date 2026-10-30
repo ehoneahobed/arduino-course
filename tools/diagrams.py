@@ -11,6 +11,9 @@ render, it raises.
 Run:  python3 diagrams.py          builds every SVG into site-build/repo/assets/wiring
       python3 diagrams.py --check  builds nothing, just runs the guards and the
                                    hole-by-hole diff against each page's text
+      python3 diagrams.py --json   writes every build's parts and holes (the same
+                                   data the SVGs are drawn from) to
+                                   ../assets/labs/src/builds.json for the 3D viewer
 """
 import io, os, re, sys
 
@@ -723,7 +726,38 @@ def b8p10():
 
 # =========================================================================
 
+def export_json():
+    """Every build as plain data for the 3D build viewer. Reads no page text,
+    so it runs anywhere; the guards still run (json() audits the board)."""
+    import json
+    data = {"pins": {"dig": B.DIG_PINS, "pwr": B.PWR_PINS},
+            "colours": {"red": B.RED, "blue": B.BLU, "green": B.GRN,
+                        "yellow": B.YEL, "copper": B.COP},
+            "builds": {}}
+    bad = 0
+    for fn in BUILDS:
+        try:
+            r = fn()
+            if r is None:
+                continue
+            name, board = r[0], r[1]
+            data["builds"][name] = board.json()
+        except Exception as e:
+            print("RAISED  %-12s %s" % (fn.__name__, e))
+            bad += 1
+    path = os.path.join(HERE, "..", "assets", "labs", "src", "builds.json")
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with io.open(path, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=1, ensure_ascii=False)
+        f.write("\n")
+    print("%d builds written to %s, %d problems"
+          % (len(data["builds"]), os.path.normpath(path), bad))
+    return 1 if bad else 0
+
+
 def main():
+    if "--json" in sys.argv:
+        return export_json()
     check_only = "--check" in sys.argv
     out = os.path.join(HERE, "wiring")
     if not check_only:

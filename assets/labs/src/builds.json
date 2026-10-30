@@ -1,0 +1,4629 @@
+{
+ "pins": {
+  "dig": [
+   "SCL",
+   "SDA",
+   "AREF",
+   "GND",
+   "13",
+   "12",
+   "11",
+   "10",
+   "9",
+   "8",
+   null,
+   "7",
+   "6",
+   "5",
+   "4",
+   "3",
+   "2",
+   "1",
+   "0"
+  ],
+  "pwr": [
+   "IOR",
+   "RST",
+   "3V3",
+   "5V",
+   "GND",
+   "GND",
+   "VIN",
+   null,
+   "A0",
+   "A1",
+   "A2",
+   "A3",
+   "A4",
+   "A5"
+  ]
+ },
+ "colours": {
+  "red": "#C8452F",
+  "blue": "#3D6FA8",
+  "green": "#2E7D46",
+  "yellow": "#C9971C",
+  "copper": "#8E4C21"
+ },
+ "builds": {
+  "b1p5": {
+   "c0": 1,
+   "c1": 14,
+   "title": "Band 1 Part 5: one light on pin 8",
+   "uno": true,
+   "fed": [
+    "-top"
+   ],
+   "parts": [
+    {
+     "type": "led",
+     "anode": "f5",
+     "cathode": "f6",
+     "colour": "red",
+     "label": ""
+    },
+    {
+     "type": "res",
+     "a": "j5",
+     "b": "j3",
+     "value": "220"
+    },
+    {
+     "type": "wire",
+     "a": "h3",
+     "b": "8",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 9,
+      "name": "8"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "j6",
+     "b": "-top",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "power",
+     "socket": {
+      "hdr": "pwr",
+      "i": 4,
+      "name": "GND"
+     },
+     "rail": "-top",
+     "colour": "#3D6FA8",
+     "label": ""
+    }
+   ]
+  },
+  "b1p6": {
+   "c0": 1,
+   "c1": 20,
+   "title": "Band 1 Part 6: the signal tower",
+   "uno": true,
+   "fed": [
+    "-top"
+   ],
+   "parts": [
+    {
+     "type": "led",
+     "anode": "f5",
+     "cathode": "f6",
+     "colour": "red",
+     "label": ""
+    },
+    {
+     "type": "res",
+     "a": "j5",
+     "b": "j3",
+     "value": "220"
+    },
+    {
+     "type": "wire",
+     "a": "h3",
+     "b": "9",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 8,
+      "name": "9"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "j6",
+     "b": "-top",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "led",
+     "anode": "f10",
+     "cathode": "f11",
+     "colour": "yellow",
+     "label": ""
+    },
+    {
+     "type": "res",
+     "a": "j10",
+     "b": "j8",
+     "value": "220"
+    },
+    {
+     "type": "wire",
+     "a": "h8",
+     "b": "8",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 9,
+      "name": "8"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "j11",
+     "b": "-top",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "led",
+     "anode": "f15",
+     "cathode": "f16",
+     "colour": "green",
+     "label": ""
+    },
+    {
+     "type": "res",
+     "a": "j15",
+     "b": "j13",
+     "value": "220"
+    },
+    {
+     "type": "wire",
+     "a": "h13",
+     "b": "7",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 11,
+      "name": "7"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "j16",
+     "b": "-top",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "power",
+     "socket": {
+      "hdr": "pwr",
+      "i": 4,
+      "name": "GND"
+     },
+     "rail": "-top",
+     "colour": "#3D6FA8",
+     "label": ""
+    }
+   ]
+  },
+  "b2p5": {
+   "c0": 1,
+   "c1": 14,
+   "title": "Band 2 Part 5: one light on pin 9",
+   "uno": true,
+   "fed": [
+    "-top"
+   ],
+   "parts": [
+    {
+     "type": "led",
+     "anode": "f5",
+     "cathode": "f6",
+     "colour": "red",
+     "label": ""
+    },
+    {
+     "type": "res",
+     "a": "j5",
+     "b": "j3",
+     "value": "220"
+    },
+    {
+     "type": "wire",
+     "a": "h3",
+     "b": "9",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 8,
+      "name": "9"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "j6",
+     "b": "-top",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "power",
+     "socket": {
+      "hdr": "pwr",
+      "i": 4,
+      "name": "GND"
+     },
+     "rail": "-top",
+     "colour": "#3D6FA8",
+     "label": ""
+    }
+   ]
+  },
+  "b2p7": {
+   "c0": 1,
+   "c1": 15,
+   "title": "Band 2 Part 7: RGB LED, common cathode",
+   "uno": true,
+   "fed": [
+    "-top"
+   ],
+   "parts": [
+    {
+     "type": "blk",
+     "label": "RGB LED  red / long / green / blue",
+     "holes": [
+      "f5",
+      "f6",
+      "f7",
+      "f8"
+     ],
+     "rails": []
+    },
+    {
+     "type": "wire",
+     "a": "j6",
+     "b": "-top",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "res",
+     "a": "j5",
+     "b": "j2",
+     "value": "220"
+    },
+    {
+     "type": "wire",
+     "a": "h2",
+     "b": "9",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 8,
+      "name": "9"
+     }
+    },
+    {
+     "type": "res",
+     "a": "j7",
+     "b": "j10",
+     "value": "220"
+    },
+    {
+     "type": "wire",
+     "a": "h10",
+     "b": "10",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 7,
+      "name": "10"
+     }
+    },
+    {
+     "type": "res",
+     "a": "j8",
+     "b": "j12",
+     "value": "220"
+    },
+    {
+     "type": "wire",
+     "a": "h12",
+     "b": "11",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 6,
+      "name": "11"
+     }
+    },
+    {
+     "type": "power",
+     "socket": {
+      "hdr": "pwr",
+      "i": 4,
+      "name": "GND"
+     },
+     "rail": "-top",
+     "colour": "#3D6FA8",
+     "label": ""
+    }
+   ]
+  },
+  "b2p7b": {
+   "c0": 1,
+   "c1": 15,
+   "title": "Band 2 Part 7: RGB LED, common anode",
+   "uno": true,
+   "fed": [
+    "+top"
+   ],
+   "parts": [
+    {
+     "type": "blk",
+     "label": "RGB LED  red / long / green / blue",
+     "holes": [
+      "f5",
+      "f6",
+      "f7",
+      "f8"
+     ],
+     "rails": []
+    },
+    {
+     "type": "wire",
+     "a": "j6",
+     "b": "+top",
+     "to": "rail",
+     "colour": "#C8452F",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "res",
+     "a": "j5",
+     "b": "j2",
+     "value": "220"
+    },
+    {
+     "type": "wire",
+     "a": "h2",
+     "b": "9",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 8,
+      "name": "9"
+     }
+    },
+    {
+     "type": "res",
+     "a": "j7",
+     "b": "j10",
+     "value": "220"
+    },
+    {
+     "type": "wire",
+     "a": "h10",
+     "b": "10",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 7,
+      "name": "10"
+     }
+    },
+    {
+     "type": "res",
+     "a": "j8",
+     "b": "j12",
+     "value": "220"
+    },
+    {
+     "type": "wire",
+     "a": "h12",
+     "b": "11",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 6,
+      "name": "11"
+     }
+    },
+    {
+     "type": "power",
+     "socket": {
+      "hdr": "pwr",
+      "i": 3,
+      "name": "5V"
+     },
+     "rail": "+top",
+     "colour": "#C8452F",
+     "label": ""
+    }
+   ]
+  },
+  "b3p3": {
+   "c0": 1,
+   "c1": 12,
+   "title": "Band 3 Part 3: one button",
+   "uno": true,
+   "fed": [
+    "-bot"
+   ],
+   "parts": [
+    {
+     "type": "btn",
+     "holes": [
+      "f1",
+      "f3",
+      "e1",
+      "e3"
+     ]
+    },
+    {
+     "type": "wire",
+     "a": "j1",
+     "b": "2",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 16,
+      "name": "2"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "a3",
+     "b": "-bot",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "power",
+     "socket": {
+      "hdr": "pwr",
+      "i": 4,
+      "name": "GND"
+     },
+     "rail": "-bot",
+     "colour": "#3D6FA8",
+     "label": ""
+    }
+   ]
+  },
+  "b3p6": {
+   "c0": 1,
+   "c1": 22,
+   "title": "Band 3 Part 6: button and light",
+   "uno": true,
+   "fed": [
+    "-bot"
+   ],
+   "parts": [
+    {
+     "type": "btn",
+     "holes": [
+      "f1",
+      "f3",
+      "e1",
+      "e3"
+     ]
+    },
+    {
+     "type": "wire",
+     "a": "j1",
+     "b": "2",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 16,
+      "name": "2"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "a3",
+     "b": "-bot",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "led",
+     "anode": "b18",
+     "cathode": "b20",
+     "colour": "green",
+     "label": ""
+    },
+    {
+     "type": "res",
+     "a": "a18",
+     "b": "a16",
+     "value": "220"
+    },
+    {
+     "type": "wire",
+     "a": "b16",
+     "b": "8",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 9,
+      "name": "8"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "a20",
+     "b": "-bot",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "power",
+     "socket": {
+      "hdr": "pwr",
+      "i": 4,
+      "name": "GND"
+     },
+     "rail": "-bot",
+     "colour": "#3D6FA8",
+     "label": ""
+    }
+   ]
+  },
+  "b3p11": {
+   "c0": 1,
+   "c1": 34,
+   "title": "Band 3 Part 11: the lock",
+   "uno": true,
+   "fed": [
+    "-bot"
+   ],
+   "parts": [
+    {
+     "type": "btn",
+     "holes": [
+      "f1",
+      "f3",
+      "e1",
+      "e3"
+     ]
+    },
+    {
+     "type": "wire",
+     "a": "j1",
+     "b": "2",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 16,
+      "name": "2"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "a3",
+     "b": "-bot",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "btn",
+     "holes": [
+      "f5",
+      "f7",
+      "e5",
+      "e7"
+     ]
+    },
+    {
+     "type": "wire",
+     "a": "j5",
+     "b": "3",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 15,
+      "name": "3"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "a7",
+     "b": "-bot",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "btn",
+     "holes": [
+      "f9",
+      "f11",
+      "e9",
+      "e11"
+     ]
+    },
+    {
+     "type": "wire",
+     "a": "j9",
+     "b": "4",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 14,
+      "name": "4"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "a11",
+     "b": "-bot",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "btn",
+     "holes": [
+      "f13",
+      "f15",
+      "e13",
+      "e15"
+     ]
+    },
+    {
+     "type": "wire",
+     "a": "j13",
+     "b": "5",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 13,
+      "name": "5"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "a15",
+     "b": "-bot",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "led",
+     "anode": "b18",
+     "cathode": "b20",
+     "colour": "green",
+     "label": ""
+    },
+    {
+     "type": "res",
+     "a": "a18",
+     "b": "a16",
+     "value": "220"
+    },
+    {
+     "type": "wire",
+     "a": "b16",
+     "b": "8",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 9,
+      "name": "8"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "a20",
+     "b": "-bot",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "led",
+     "anode": "b23",
+     "cathode": "b25",
+     "colour": "red",
+     "label": ""
+    },
+    {
+     "type": "res",
+     "a": "a23",
+     "b": "a21",
+     "value": "220"
+    },
+    {
+     "type": "wire",
+     "a": "b21",
+     "b": "9",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 8,
+      "name": "9"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "a25",
+     "b": "-bot",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "buz",
+     "plus": "b27",
+     "minus": "b29",
+     "label": "buzzer"
+    },
+    {
+     "type": "wire",
+     "a": "a27",
+     "b": "10",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 7,
+      "name": "10"
+     }
+    },
+    {
+     "type": "res",
+     "a": "a29",
+     "b": "a31",
+     "value": "220"
+    },
+    {
+     "type": "wire",
+     "a": "b31",
+     "b": "-bot",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "power",
+     "socket": {
+      "hdr": "pwr",
+      "i": 4,
+      "name": "GND"
+     },
+     "rail": "-bot",
+     "colour": "#3D6FA8",
+     "label": ""
+    }
+   ]
+  },
+  "b4p5": {
+   "c0": 1,
+   "c1": 14,
+   "title": "Band 4 Part 5: the knob",
+   "uno": true,
+   "fed": [
+    "+top",
+    "-top"
+   ],
+   "parts": [
+    {
+     "type": "pot",
+     "holes": [
+      "f5",
+      "f6",
+      "f7"
+     ],
+     "label": "knob"
+    },
+    {
+     "type": "wire",
+     "a": "j5",
+     "b": "+top",
+     "to": "rail",
+     "colour": "#C8452F",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "wire",
+     "a": "j7",
+     "b": "-top",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "wire",
+     "a": "j6",
+     "b": "A0",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "pwr",
+      "i": 8,
+      "name": "A0"
+     }
+    },
+    {
+     "type": "power",
+     "socket": {
+      "hdr": "pwr",
+      "i": 3,
+      "name": "5V"
+     },
+     "rail": "+top",
+     "colour": "#C8452F",
+     "label": ""
+    },
+    {
+     "type": "power",
+     "socket": {
+      "hdr": "pwr",
+      "i": 4,
+      "name": "GND"
+     },
+     "rail": "-top",
+     "colour": "#3D6FA8",
+     "label": ""
+    }
+   ]
+  },
+  "b4p6": {
+   "c0": 1,
+   "c1": 25,
+   "title": "Band 4 Part 6: knob and light",
+   "uno": true,
+   "fed": [
+    "+top",
+    "-top"
+   ],
+   "parts": [
+    {
+     "type": "pot",
+     "holes": [
+      "f5",
+      "f6",
+      "f7"
+     ],
+     "label": "knob"
+    },
+    {
+     "type": "wire",
+     "a": "j5",
+     "b": "+top",
+     "to": "rail",
+     "colour": "#C8452F",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "wire",
+     "a": "j7",
+     "b": "-top",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "wire",
+     "a": "j6",
+     "b": "A0",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "pwr",
+      "i": 8,
+      "name": "A0"
+     }
+    },
+    {
+     "type": "led",
+     "anode": "f20",
+     "cathode": "f22",
+     "colour": "red",
+     "label": ""
+    },
+    {
+     "type": "res",
+     "a": "j20",
+     "b": "j18",
+     "value": "220"
+    },
+    {
+     "type": "wire",
+     "a": "h18",
+     "b": "9",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 8,
+      "name": "9"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "j22",
+     "b": "-top",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "power",
+     "socket": {
+      "hdr": "pwr",
+      "i": 3,
+      "name": "5V"
+     },
+     "rail": "+top",
+     "colour": "#C8452F",
+     "label": ""
+    },
+    {
+     "type": "power",
+     "socket": {
+      "hdr": "pwr",
+      "i": 4,
+      "name": "GND"
+     },
+     "rail": "-top",
+     "colour": "#3D6FA8",
+     "label": ""
+    }
+   ]
+  },
+  "b4p7": {
+   "c0": 1,
+   "c1": 25,
+   "title": "Band 4 Part 7: knob, light sensor and light",
+   "uno": true,
+   "fed": [
+    "+top",
+    "-top"
+   ],
+   "parts": [
+    {
+     "type": "pot",
+     "holes": [
+      "f5",
+      "f6",
+      "f7"
+     ],
+     "label": "knob"
+    },
+    {
+     "type": "wire",
+     "a": "j5",
+     "b": "+top",
+     "to": "rail",
+     "colour": "#C8452F",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "wire",
+     "a": "j7",
+     "b": "-top",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "wire",
+     "a": "j6",
+     "b": "A0",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "pwr",
+      "i": 8,
+      "name": "A0"
+     }
+    },
+    {
+     "type": "blk",
+     "label": "light sensor",
+     "holes": [
+      "f12",
+      "f14"
+     ],
+     "rails": []
+    },
+    {
+     "type": "wire",
+     "a": "j12",
+     "b": "+top",
+     "to": "rail",
+     "colour": "#C8452F",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "res",
+     "a": "j14",
+     "b": "j16",
+     "value": "10k"
+    },
+    {
+     "type": "wire",
+     "a": "h16",
+     "b": "-top",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "wire",
+     "a": "h14",
+     "b": "A1",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "pwr",
+      "i": 9,
+      "name": "A1"
+     }
+    },
+    {
+     "type": "led",
+     "anode": "f20",
+     "cathode": "f22",
+     "colour": "red",
+     "label": ""
+    },
+    {
+     "type": "res",
+     "a": "j20",
+     "b": "j18",
+     "value": "220"
+    },
+    {
+     "type": "wire",
+     "a": "h18",
+     "b": "9",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 8,
+      "name": "9"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "j22",
+     "b": "-top",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "power",
+     "socket": {
+      "hdr": "pwr",
+      "i": 3,
+      "name": "5V"
+     },
+     "rail": "+top",
+     "colour": "#C8452F",
+     "label": ""
+    },
+    {
+     "type": "power",
+     "socket": {
+      "hdr": "pwr",
+      "i": 4,
+      "name": "GND"
+     },
+     "rail": "-top",
+     "colour": "#3D6FA8",
+     "label": ""
+    }
+   ]
+  },
+  "b5p4": {
+   "c0": 1,
+   "c1": 45,
+   "title": "Band 5 Part 4: four lights, four buttons, one buzzer",
+   "uno": true,
+   "fed": [
+    "-bot"
+   ],
+   "parts": [
+    {
+     "type": "led",
+     "anode": "b3",
+     "cathode": "b4",
+     "colour": "red",
+     "label": ""
+    },
+    {
+     "type": "res",
+     "a": "a3",
+     "b": "a1",
+     "value": "220"
+    },
+    {
+     "type": "wire",
+     "a": "b1",
+     "b": "2",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 16,
+      "name": "2"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "a4",
+     "b": "-bot",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "led",
+     "anode": "b7",
+     "cathode": "b8",
+     "colour": "green",
+     "label": ""
+    },
+    {
+     "type": "res",
+     "a": "a7",
+     "b": "a5",
+     "value": "220"
+    },
+    {
+     "type": "wire",
+     "a": "b5",
+     "b": "3",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 15,
+      "name": "3"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "a8",
+     "b": "-bot",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "led",
+     "anode": "b11",
+     "cathode": "b12",
+     "colour": "yellow",
+     "label": ""
+    },
+    {
+     "type": "res",
+     "a": "a11",
+     "b": "a9",
+     "value": "220"
+    },
+    {
+     "type": "wire",
+     "a": "b9",
+     "b": "4",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 14,
+      "name": "4"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "a12",
+     "b": "-bot",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "led",
+     "anode": "b15",
+     "cathode": "b16",
+     "colour": "blue",
+     "label": ""
+    },
+    {
+     "type": "res",
+     "a": "a15",
+     "b": "a13",
+     "value": "220"
+    },
+    {
+     "type": "wire",
+     "a": "b13",
+     "b": "5",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 13,
+      "name": "5"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "a16",
+     "b": "-bot",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "btn",
+     "holes": [
+      "e19",
+      "e21",
+      "f19",
+      "f21"
+     ]
+    },
+    {
+     "type": "wire",
+     "a": "j19",
+     "b": "8",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 9,
+      "name": "8"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "a21",
+     "b": "-bot",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "btn",
+     "holes": [
+      "e24",
+      "e26",
+      "f24",
+      "f26"
+     ]
+    },
+    {
+     "type": "wire",
+     "a": "j24",
+     "b": "9",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 8,
+      "name": "9"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "a26",
+     "b": "-bot",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "btn",
+     "holes": [
+      "e29",
+      "e31",
+      "f29",
+      "f31"
+     ]
+    },
+    {
+     "type": "wire",
+     "a": "j29",
+     "b": "10",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 7,
+      "name": "10"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "a31",
+     "b": "-bot",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "btn",
+     "holes": [
+      "e34",
+      "e36",
+      "f34",
+      "f36"
+     ]
+    },
+    {
+     "type": "wire",
+     "a": "j34",
+     "b": "11",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 6,
+      "name": "11"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "a36",
+     "b": "-bot",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "buz",
+     "plus": "b40",
+     "minus": "b42",
+     "label": "buzzer"
+    },
+    {
+     "type": "wire",
+     "a": "a40",
+     "b": "12",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 5,
+      "name": "12"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "a42",
+     "b": "-bot",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "power",
+     "socket": {
+      "hdr": "pwr",
+      "i": 4,
+      "name": "GND"
+     },
+     "rail": "-bot",
+     "colour": "#3D6FA8",
+     "label": ""
+    }
+   ]
+  },
+  "b6p5": {
+   "c0": 1,
+   "c1": 14,
+   "title": "Band 6 Part 5: the knob drives the arm",
+   "uno": true,
+   "fed": [
+    "+top",
+    "-top"
+   ],
+   "parts": [
+    {
+     "type": "pot",
+     "holes": [
+      "f5",
+      "f6",
+      "f7"
+     ],
+     "label": "knob"
+    },
+    {
+     "type": "wire",
+     "a": "j5",
+     "b": "-top",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "wire",
+     "a": "j6",
+     "b": "A0",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "pwr",
+      "i": 8,
+      "name": "A0"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "j7",
+     "b": "+top",
+     "to": "rail",
+     "colour": "#C8452F",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "power",
+     "socket": {
+      "hdr": "pwr",
+      "i": 3,
+      "name": "5V"
+     },
+     "rail": "+top",
+     "colour": "#C8452F",
+     "label": ""
+    },
+    {
+     "type": "power",
+     "socket": {
+      "hdr": "pwr",
+      "i": 4,
+      "name": "GND"
+     },
+     "rail": "-top",
+     "colour": "#3D6FA8",
+     "label": ""
+    },
+    {
+     "type": "mod",
+     "label": "servo",
+     "pins": [
+      {
+       "name": "orange",
+       "to": "socket",
+       "socket": {
+        "hdr": "dig",
+        "i": 8,
+        "name": "9"
+       },
+       "colour": "#2E7D46"
+      },
+      {
+       "name": "red",
+       "to": "rail",
+       "rail": "+top",
+       "colour": "#C8452F"
+      },
+      {
+       "name": "brown",
+       "to": "rail",
+       "rail": "-top",
+       "colour": "#3D6FA8"
+      }
+     ]
+    }
+   ]
+  },
+  "b6p8": {
+   "c0": 1,
+   "c1": 24,
+   "title": "Band 6 Part 8: the gate",
+   "uno": true,
+   "fed": [
+    "+top",
+    "-top"
+   ],
+   "parts": [
+    {
+     "type": "pot",
+     "holes": [
+      "f5",
+      "f6",
+      "f7"
+     ],
+     "label": "knob"
+    },
+    {
+     "type": "wire",
+     "a": "j5",
+     "b": "-top",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "wire",
+     "a": "j6",
+     "b": "A0",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "pwr",
+      "i": 8,
+      "name": "A0"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "j7",
+     "b": "5V",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "pwr",
+      "i": 3,
+      "name": "5V"
+     }
+    },
+    {
+     "type": "btn",
+     "holes": [
+      "e19",
+      "e21",
+      "f19",
+      "f21"
+     ]
+    },
+    {
+     "type": "wire",
+     "a": "j19",
+     "b": "2",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 16,
+      "name": "2"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "a21",
+     "b": "-top",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "led",
+     "anode": "b3",
+     "cathode": "b4",
+     "colour": "red",
+     "label": ""
+    },
+    {
+     "type": "res",
+     "a": "a3",
+     "b": "a1",
+     "value": "220"
+    },
+    {
+     "type": "wire",
+     "a": "b1",
+     "b": "7",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 11,
+      "name": "7"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "a4",
+     "b": "-top",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "batt",
+     "plus": "+top",
+     "minus": "-top",
+     "label": "6 V battery pack"
+    },
+    {
+     "type": "power",
+     "socket": {
+      "hdr": "pwr",
+      "i": 4,
+      "name": "GND"
+     },
+     "rail": "-top",
+     "colour": "#3D6FA8",
+     "label": ""
+    },
+    {
+     "type": "mod",
+     "label": "servo",
+     "pins": [
+      {
+       "name": "orange",
+       "to": "socket",
+       "socket": {
+        "hdr": "dig",
+        "i": 8,
+        "name": "9"
+       },
+       "colour": "#2E7D46"
+      },
+      {
+       "name": "red",
+       "to": "rail",
+       "rail": "+top",
+       "colour": "#C8452F"
+      },
+      {
+       "name": "brown",
+       "to": "rail",
+       "rail": "-top",
+       "colour": "#3D6FA8"
+      }
+     ]
+    }
+   ]
+  },
+  "b7p3": {
+   "c0": 16,
+   "c1": 30,
+   "title": "Band 7 Part 3: the sensor alone",
+   "uno": true,
+   "fed": [],
+   "parts": [
+    {
+     "type": "blk",
+     "label": "HC-SR04  VCC / Trig / Echo / GND",
+     "holes": [
+      "f20",
+      "f21",
+      "f22",
+      "f23"
+     ],
+     "rails": []
+    },
+    {
+     "type": "wire",
+     "a": "j20",
+     "b": "5V",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "pwr",
+      "i": 3,
+      "name": "5V"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "j21",
+     "b": "10",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 7,
+      "name": "10"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "j22",
+     "b": "11",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 6,
+      "name": "11"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "j23",
+     "b": "GND",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 3,
+      "name": "GND"
+     }
+    }
+   ]
+  },
+  "b7p8i2c": {
+   "c0": 16,
+   "c1": 45,
+   "title": "Band 7 Part 8: parking guard, I2C screen",
+   "uno": true,
+   "fed": [
+    "+top",
+    "-top"
+   ],
+   "parts": [
+    {
+     "type": "blk",
+     "label": "HC-SR04  VCC / Trig / Echo / GND",
+     "holes": [
+      "f20",
+      "f21",
+      "f22",
+      "f23"
+     ],
+     "rails": []
+    },
+    {
+     "type": "wire",
+     "a": "j20",
+     "b": "+top",
+     "to": "rail",
+     "colour": "#C8452F",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "wire",
+     "a": "j21",
+     "b": "10",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 7,
+      "name": "10"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "j22",
+     "b": "11",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 6,
+      "name": "11"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "j23",
+     "b": "-top",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "buz",
+     "plus": "b40",
+     "minus": "b42",
+     "label": "buzzer"
+    },
+    {
+     "type": "wire",
+     "a": "a40",
+     "b": "6",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 12,
+      "name": "6"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "a42",
+     "b": "-top",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "power",
+     "socket": {
+      "hdr": "pwr",
+      "i": 3,
+      "name": "5V"
+     },
+     "rail": "+top",
+     "colour": "#C8452F",
+     "label": ""
+    },
+    {
+     "type": "power",
+     "socket": {
+      "hdr": "pwr",
+      "i": 4,
+      "name": "GND"
+     },
+     "rail": "-top",
+     "colour": "#3D6FA8",
+     "label": ""
+    }
+   ]
+  },
+  "b8p3": {
+   "c0": 1,
+   "c1": 24,
+   "title": "Band 8 Part 3: the state machine demo",
+   "uno": true,
+   "fed": [
+    "-top"
+   ],
+   "parts": [
+    {
+     "type": "led",
+     "anode": "b3",
+     "cathode": "b4",
+     "colour": "red",
+     "label": ""
+    },
+    {
+     "type": "res",
+     "a": "a3",
+     "b": "a1",
+     "value": "220"
+    },
+    {
+     "type": "wire",
+     "a": "b1",
+     "b": "7",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 11,
+      "name": "7"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "a4",
+     "b": "-top",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "btn",
+     "holes": [
+      "e19",
+      "e21",
+      "f19",
+      "f21"
+     ]
+    },
+    {
+     "type": "wire",
+     "a": "j19",
+     "b": "2",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 16,
+      "name": "2"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "a21",
+     "b": "-top",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "power",
+     "socket": {
+      "hdr": "pwr",
+      "i": 4,
+      "name": "GND"
+     },
+     "rail": "-top",
+     "colour": "#3D6FA8",
+     "label": ""
+    }
+   ]
+  },
+  "b8p8": {
+   "c0": 1,
+   "c1": 45,
+   "title": "Band 8 Part 8: the water tank alarm",
+   "uno": true,
+   "fed": [
+    "+top",
+    "-top"
+   ],
+   "parts": [
+    {
+     "type": "blk",
+     "label": "HC-SR04  VCC / Trig / Echo / GND",
+     "holes": [
+      "f24",
+      "f25",
+      "f26",
+      "f27"
+     ],
+     "rails": []
+    },
+    {
+     "type": "wire",
+     "a": "j24",
+     "b": "+top",
+     "to": "rail",
+     "colour": "#C8452F",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "wire",
+     "a": "j25",
+     "b": "10",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 7,
+      "name": "10"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "j26",
+     "b": "11",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 6,
+      "name": "11"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "j27",
+     "b": "-top",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "led",
+     "anode": "b3",
+     "cathode": "b4",
+     "colour": "green",
+     "label": ""
+    },
+    {
+     "type": "res",
+     "a": "a3",
+     "b": "a1",
+     "value": "220"
+    },
+    {
+     "type": "wire",
+     "a": "b1",
+     "b": "7",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 11,
+      "name": "7"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "a4",
+     "b": "-top",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "led",
+     "anode": "b7",
+     "cathode": "b8",
+     "colour": "red",
+     "label": ""
+    },
+    {
+     "type": "res",
+     "a": "a7",
+     "b": "a5",
+     "value": "220"
+    },
+    {
+     "type": "wire",
+     "a": "b5",
+     "b": "8",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 9,
+      "name": "8"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "a8",
+     "b": "-top",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "btn",
+     "holes": [
+      "e19",
+      "e21",
+      "f19",
+      "f21"
+     ]
+    },
+    {
+     "type": "wire",
+     "a": "j19",
+     "b": "2",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 16,
+      "name": "2"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "a21",
+     "b": "-top",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "buz",
+     "plus": "b40",
+     "minus": "b42",
+     "label": "buzzer"
+    },
+    {
+     "type": "wire",
+     "a": "a40",
+     "b": "6",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 12,
+      "name": "6"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "a42",
+     "b": "-top",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "power",
+     "socket": {
+      "hdr": "pwr",
+      "i": 3,
+      "name": "5V"
+     },
+     "rail": "+top",
+     "colour": "#C8452F",
+     "label": ""
+    },
+    {
+     "type": "power",
+     "socket": {
+      "hdr": "pwr",
+      "i": 4,
+      "name": "GND"
+     },
+     "rail": "-top",
+     "colour": "#3D6FA8",
+     "label": ""
+    }
+   ]
+  },
+  "benchmm": {
+   "c0": 1,
+   "c1": 14,
+   "title": "Bench: the light, rebuilt to be measured",
+   "uno": true,
+   "fed": [
+    "-top"
+   ],
+   "parts": [
+    {
+     "type": "led",
+     "anode": "f5",
+     "cathode": "f6",
+     "colour": "red",
+     "label": ""
+    },
+    {
+     "type": "res",
+     "a": "j5",
+     "b": "j3",
+     "value": "220"
+    },
+    {
+     "type": "wire",
+     "a": "h3",
+     "b": "5V",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "pwr",
+      "i": 3,
+      "name": "5V"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "j6",
+     "b": "-top",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "power",
+     "socket": {
+      "hdr": "pwr",
+      "i": 4,
+      "name": "GND"
+     },
+     "rail": "-top",
+     "colour": "#3D6FA8",
+     "label": ""
+    }
+   ]
+  },
+  "spseries": {
+   "c0": 1,
+   "c1": 16,
+   "title": "Bench: two LEDs in series",
+   "uno": true,
+   "fed": [
+    "+bot",
+    "-bot"
+   ],
+   "parts": [
+    {
+     "type": "wire",
+     "a": "a5",
+     "b": "+bot",
+     "to": "rail",
+     "colour": "#C8452F",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "led",
+     "anode": "b5",
+     "cathode": "b7",
+     "colour": "red",
+     "label": ""
+    },
+    {
+     "type": "led",
+     "anode": "a7",
+     "cathode": "b9",
+     "colour": "red",
+     "label": ""
+    },
+    {
+     "type": "res",
+     "a": "a9",
+     "b": "a11",
+     "value": "220"
+    },
+    {
+     "type": "wire",
+     "a": "b11",
+     "b": "-bot",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "power",
+     "socket": {
+      "hdr": "pwr",
+      "i": 3,
+      "name": "5V"
+     },
+     "rail": "+bot",
+     "colour": "#C8452F",
+     "label": ""
+    },
+    {
+     "type": "power",
+     "socket": {
+      "hdr": "pwr",
+      "i": 4,
+      "name": "GND"
+     },
+     "rail": "-bot",
+     "colour": "#3D6FA8",
+     "label": ""
+    }
+   ]
+  },
+  "spparallel": {
+   "c0": 1,
+   "c1": 22,
+   "title": "Bench: two LEDs in parallel",
+   "uno": true,
+   "fed": [
+    "+bot",
+    "-bot"
+   ],
+   "parts": [
+    {
+     "type": "wire",
+     "a": "a5",
+     "b": "+bot",
+     "to": "rail",
+     "colour": "#C8452F",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "led",
+     "anode": "b5",
+     "cathode": "b7",
+     "colour": "red",
+     "label": ""
+    },
+    {
+     "type": "res",
+     "a": "a7",
+     "b": "a9",
+     "value": "220"
+    },
+    {
+     "type": "wire",
+     "a": "b9",
+     "b": "-bot",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "wire",
+     "a": "a15",
+     "b": "+bot",
+     "to": "rail",
+     "colour": "#C8452F",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "led",
+     "anode": "b15",
+     "cathode": "b17",
+     "colour": "red",
+     "label": ""
+    },
+    {
+     "type": "res",
+     "a": "a17",
+     "b": "a19",
+     "value": "220"
+    },
+    {
+     "type": "wire",
+     "a": "b19",
+     "b": "-bot",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "power",
+     "socket": {
+      "hdr": "pwr",
+      "i": 3,
+      "name": "5V"
+     },
+     "rail": "+bot",
+     "colour": "#C8452F",
+     "label": ""
+    },
+    {
+     "type": "power",
+     "socket": {
+      "hdr": "pwr",
+      "i": 4,
+      "name": "GND"
+     },
+     "rail": "-bot",
+     "colour": "#3D6FA8",
+     "label": ""
+    }
+   ]
+  },
+  "spshared": {
+   "c0": 1,
+   "c1": 22,
+   "title": "Bench: two LEDs sharing one resistor",
+   "uno": true,
+   "fed": [
+    "+bot",
+    "-bot"
+   ],
+   "parts": [
+    {
+     "type": "wire",
+     "a": "a5",
+     "b": "+bot",
+     "to": "rail",
+     "colour": "#C8452F",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "led",
+     "anode": "b5",
+     "cathode": "b7",
+     "colour": "red",
+     "label": ""
+    },
+    {
+     "type": "wire",
+     "a": "a15",
+     "b": "+bot",
+     "to": "rail",
+     "colour": "#C8452F",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "led",
+     "anode": "b15",
+     "cathode": "b17",
+     "colour": "green",
+     "label": ""
+    },
+    {
+     "type": "wire",
+     "a": "a7",
+     "b": "a17",
+     "to": "hole",
+     "colour": "ink",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "res",
+     "a": "c17",
+     "b": "c19",
+     "value": "220"
+    },
+    {
+     "type": "wire",
+     "a": "a19",
+     "b": "-bot",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "power",
+     "socket": {
+      "hdr": "pwr",
+      "i": 3,
+      "name": "5V"
+     },
+     "rail": "+bot",
+     "colour": "#C8452F",
+     "label": ""
+    },
+    {
+     "type": "power",
+     "socket": {
+      "hdr": "pwr",
+      "i": 4,
+      "name": "GND"
+     },
+     "rail": "-bot",
+     "colour": "#3D6FA8",
+     "label": ""
+    }
+   ]
+  },
+  "b3keypad": {
+   "c0": 1,
+   "c1": 45,
+   "title": "Keypad lock",
+   "uno": true,
+   "fed": [
+    "-bot"
+   ],
+   "parts": [
+    {
+     "type": "blk",
+     "label": "4x4 keypad",
+     "holes": [
+      "a20",
+      "a21",
+      "a22",
+      "a23",
+      "a24",
+      "a25",
+      "a26",
+      "a27"
+     ],
+     "rails": []
+    },
+    {
+     "type": "wire",
+     "a": "b20",
+     "b": "9",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 8,
+      "name": "9"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "b21",
+     "b": "8",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 9,
+      "name": "8"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "b22",
+     "b": "7",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 11,
+      "name": "7"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "b23",
+     "b": "6",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 12,
+      "name": "6"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "b24",
+     "b": "5",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 13,
+      "name": "5"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "b25",
+     "b": "4",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 14,
+      "name": "4"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "b26",
+     "b": "3",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 15,
+      "name": "3"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "b27",
+     "b": "2",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 16,
+      "name": "2"
+     }
+    },
+    {
+     "type": "led",
+     "anode": "b3",
+     "cathode": "b4",
+     "colour": "green",
+     "label": ""
+    },
+    {
+     "type": "res",
+     "a": "a3",
+     "b": "a1",
+     "value": "220"
+    },
+    {
+     "type": "wire",
+     "a": "b1",
+     "b": "10",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 7,
+      "name": "10"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "a4",
+     "b": "-bot",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "led",
+     "anode": "b7",
+     "cathode": "b8",
+     "colour": "red",
+     "label": ""
+    },
+    {
+     "type": "res",
+     "a": "a7",
+     "b": "a5",
+     "value": "220"
+    },
+    {
+     "type": "wire",
+     "a": "b5",
+     "b": "11",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 6,
+      "name": "11"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "a8",
+     "b": "-bot",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "buz",
+     "plus": "b40",
+     "minus": "b42",
+     "label": "buzzer"
+    },
+    {
+     "type": "wire",
+     "a": "a40",
+     "b": "12",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 5,
+      "name": "12"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "a42",
+     "b": "-bot",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "power",
+     "socket": {
+      "hdr": "pwr",
+      "i": 4,
+      "name": "GND"
+     },
+     "rail": "-bot",
+     "colour": "#3D6FA8",
+     "label": ""
+    }
+   ]
+  },
+  "b4rain": {
+   "c0": 1,
+   "c1": 45,
+   "title": "Rain alarm",
+   "uno": true,
+   "fed": [
+    "+bot",
+    "-bot"
+   ],
+   "parts": [
+    {
+     "type": "blk",
+     "label": "rain sensor board",
+     "holes": [
+      "a25",
+      "a26",
+      "a27",
+      "a28"
+     ],
+     "rails": []
+    },
+    {
+     "type": "wire",
+     "a": "b25",
+     "b": "+bot",
+     "to": "rail",
+     "colour": "#C8452F",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "wire",
+     "a": "b26",
+     "b": "-bot",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "wire",
+     "a": "b27",
+     "b": "A0",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "pwr",
+      "i": 8,
+      "name": "A0"
+     }
+    },
+    {
+     "type": "led",
+     "anode": "b3",
+     "cathode": "b4",
+     "colour": "green",
+     "label": ""
+    },
+    {
+     "type": "res",
+     "a": "a3",
+     "b": "a1",
+     "value": "220"
+    },
+    {
+     "type": "wire",
+     "a": "b1",
+     "b": "7",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 11,
+      "name": "7"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "a4",
+     "b": "-bot",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "led",
+     "anode": "b7",
+     "cathode": "b8",
+     "colour": "red",
+     "label": ""
+    },
+    {
+     "type": "res",
+     "a": "a7",
+     "b": "a5",
+     "value": "220"
+    },
+    {
+     "type": "wire",
+     "a": "b5",
+     "b": "8",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 9,
+      "name": "8"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "a8",
+     "b": "-bot",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "buz",
+     "plus": "b40",
+     "minus": "b42",
+     "label": "buzzer"
+    },
+    {
+     "type": "wire",
+     "a": "a40",
+     "b": "6",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 12,
+      "name": "6"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "a42",
+     "b": "-bot",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "power",
+     "socket": {
+      "hdr": "pwr",
+      "i": 3,
+      "name": "5V"
+     },
+     "rail": "+bot",
+     "colour": "#C8452F",
+     "label": ""
+    },
+    {
+     "type": "power",
+     "socket": {
+      "hdr": "pwr",
+      "i": 4,
+      "name": "GND"
+     },
+     "rail": "-bot",
+     "colour": "#3D6FA8",
+     "label": ""
+    }
+   ]
+  },
+  "b4room": {
+   "c0": 1,
+   "c1": 32,
+   "title": "Room monitor, three-pin module",
+   "uno": true,
+   "fed": [
+    "+bot",
+    "-bot"
+   ],
+   "parts": [
+    {
+     "type": "blk",
+     "label": "DHT11 module",
+     "holes": [
+      "a25",
+      "a26",
+      "a27"
+     ],
+     "rails": []
+    },
+    {
+     "type": "wire",
+     "a": "b25",
+     "b": "-bot",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "wire",
+     "a": "b26",
+     "b": "+bot",
+     "to": "rail",
+     "colour": "#C8452F",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "wire",
+     "a": "b27",
+     "b": "4",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 14,
+      "name": "4"
+     }
+    },
+    {
+     "type": "led",
+     "anode": "b3",
+     "cathode": "b4",
+     "colour": "green",
+     "label": ""
+    },
+    {
+     "type": "res",
+     "a": "a3",
+     "b": "a1",
+     "value": "220"
+    },
+    {
+     "type": "wire",
+     "a": "b1",
+     "b": "7",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 11,
+      "name": "7"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "a4",
+     "b": "-bot",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "led",
+     "anode": "b7",
+     "cathode": "b8",
+     "colour": "red",
+     "label": ""
+    },
+    {
+     "type": "res",
+     "a": "a7",
+     "b": "a5",
+     "value": "220"
+    },
+    {
+     "type": "wire",
+     "a": "b5",
+     "b": "8",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 9,
+      "name": "8"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "a8",
+     "b": "-bot",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "power",
+     "socket": {
+      "hdr": "pwr",
+      "i": 3,
+      "name": "5V"
+     },
+     "rail": "+bot",
+     "colour": "#C8452F",
+     "label": ""
+    },
+    {
+     "type": "power",
+     "socket": {
+      "hdr": "pwr",
+      "i": 4,
+      "name": "GND"
+     },
+     "rail": "-bot",
+     "colour": "#3D6FA8",
+     "label": ""
+    }
+   ]
+  },
+  "b5race": {
+   "c0": 1,
+   "c1": 45,
+   "title": "Reaction race",
+   "uno": true,
+   "fed": [
+    "-bot"
+   ],
+   "parts": [
+    {
+     "type": "led",
+     "anode": "b3",
+     "cathode": "b4",
+     "colour": "red",
+     "label": ""
+    },
+    {
+     "type": "res",
+     "a": "a3",
+     "b": "a1",
+     "value": "220"
+    },
+    {
+     "type": "wire",
+     "a": "b1",
+     "b": "7",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 11,
+      "name": "7"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "a4",
+     "b": "-bot",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "btn",
+     "holes": [
+      "e19",
+      "e21",
+      "f19",
+      "f21"
+     ]
+    },
+    {
+     "type": "wire",
+     "a": "j19",
+     "b": "2",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 16,
+      "name": "2"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "a21",
+     "b": "-bot",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "buz",
+     "plus": "b40",
+     "minus": "b42",
+     "label": "buzzer"
+    },
+    {
+     "type": "wire",
+     "a": "a40",
+     "b": "8",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 9,
+      "name": "8"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "a42",
+     "b": "-bot",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "power",
+     "socket": {
+      "hdr": "pwr",
+      "i": 4,
+      "name": "GND"
+     },
+     "rail": "-bot",
+     "colour": "#3D6FA8",
+     "label": ""
+    }
+   ]
+  },
+  "b6fan": {
+   "c0": 1,
+   "c1": 24,
+   "title": "Fan on a transistor",
+   "uno": true,
+   "fed": [
+    "+top",
+    "-top"
+   ],
+   "parts": [
+    {
+     "type": "npn",
+     "e": "e12",
+     "b": "e13",
+     "c": "e14",
+     "label": "transistor"
+    },
+    {
+     "type": "res",
+     "a": "a13",
+     "b": "a11",
+     "value": "220"
+    },
+    {
+     "type": "wire",
+     "a": "b11",
+     "b": "5",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 13,
+      "name": "5"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "a12",
+     "b": "-top",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "blk",
+     "label": "motor, and the diode across it: striped end in the + rail",
+     "holes": [
+      "a14",
+      "b14"
+     ],
+     "rails": [
+      {
+       "rail": "+top",
+       "colour": "#C8452F"
+      }
+     ]
+    },
+    {
+     "type": "pot",
+     "holes": [
+      "f5",
+      "f6",
+      "f7"
+     ],
+     "label": "knob"
+    },
+    {
+     "type": "wire",
+     "a": "j5",
+     "b": "-top",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "wire",
+     "a": "j6",
+     "b": "A0",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "pwr",
+      "i": 8,
+      "name": "A0"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "j7",
+     "b": "5V",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "pwr",
+      "i": 3,
+      "name": "5V"
+     }
+    },
+    {
+     "type": "led",
+     "anode": "b3",
+     "cathode": "b4",
+     "colour": "red",
+     "label": ""
+    },
+    {
+     "type": "res",
+     "a": "a3",
+     "b": "a1",
+     "value": "220"
+    },
+    {
+     "type": "wire",
+     "a": "b1",
+     "b": "7",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 11,
+      "name": "7"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "a4",
+     "b": "-top",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "btn",
+     "holes": [
+      "e19",
+      "e21",
+      "f19",
+      "f21"
+     ]
+    },
+    {
+     "type": "wire",
+     "a": "j19",
+     "b": "2",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 16,
+      "name": "2"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "a21",
+     "b": "-top",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "batt",
+     "plus": "+top",
+     "minus": "-top",
+     "label": "6 V battery pack"
+    },
+    {
+     "type": "power",
+     "socket": {
+      "hdr": "pwr",
+      "i": 4,
+      "name": "GND"
+     },
+     "rail": "-top",
+     "colour": "#3D6FA8",
+     "label": ""
+    }
+   ]
+  },
+  "b6step": {
+   "c0": 1,
+   "c1": 24,
+   "title": "Stepper dial",
+   "uno": true,
+   "fed": [
+    "+top",
+    "-top"
+   ],
+   "parts": [
+    {
+     "type": "mod",
+     "label": "ULN2003 driver board",
+     "pins": [
+      {
+       "name": "IN1",
+       "to": "socket",
+       "socket": {
+        "hdr": "dig",
+        "i": 9,
+        "name": "8"
+       },
+       "colour": "#2E7D46"
+      },
+      {
+       "name": "IN2",
+       "to": "socket",
+       "socket": {
+        "hdr": "dig",
+        "i": 7,
+        "name": "10"
+       },
+       "colour": "#2E7D46"
+      },
+      {
+       "name": "IN3",
+       "to": "socket",
+       "socket": {
+        "hdr": "dig",
+        "i": 8,
+        "name": "9"
+       },
+       "colour": "#2E7D46"
+      },
+      {
+       "name": "IN4",
+       "to": "socket",
+       "socket": {
+        "hdr": "dig",
+        "i": 6,
+        "name": "11"
+       },
+       "colour": "#2E7D46"
+      },
+      {
+       "name": "-",
+       "to": "rail",
+       "rail": "-top",
+       "colour": "#3D6FA8"
+      },
+      {
+       "name": "+",
+       "to": "rail",
+       "rail": "+top",
+       "colour": "#C8452F"
+      }
+     ]
+    },
+    {
+     "type": "pot",
+     "holes": [
+      "f5",
+      "f6",
+      "f7"
+     ],
+     "label": "knob"
+    },
+    {
+     "type": "wire",
+     "a": "j5",
+     "b": "-top",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "wire",
+     "a": "j6",
+     "b": "A0",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "pwr",
+      "i": 8,
+      "name": "A0"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "j7",
+     "b": "5V",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "pwr",
+      "i": 3,
+      "name": "5V"
+     }
+    },
+    {
+     "type": "btn",
+     "holes": [
+      "e19",
+      "e21",
+      "f19",
+      "f21"
+     ]
+    },
+    {
+     "type": "wire",
+     "a": "j19",
+     "b": "2",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 16,
+      "name": "2"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "a21",
+     "b": "-top",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "batt",
+     "plus": "+top",
+     "minus": "-top",
+     "label": "6 V battery pack"
+    },
+    {
+     "type": "power",
+     "socket": {
+      "hdr": "pwr",
+      "i": 4,
+      "name": "GND"
+     },
+     "rail": "-top",
+     "colour": "#3D6FA8",
+     "label": ""
+    }
+   ]
+  },
+  "tm1637": {
+   "c0": 16,
+   "c1": 45,
+   "title": "Parking guard on a TM1637 display",
+   "uno": true,
+   "fed": [
+    "+top",
+    "-top"
+   ],
+   "parts": [
+    {
+     "type": "blk",
+     "label": "HC-SR04  VCC / Trig / Echo / GND",
+     "holes": [
+      "f20",
+      "f21",
+      "f22",
+      "f23"
+     ],
+     "rails": []
+    },
+    {
+     "type": "wire",
+     "a": "j20",
+     "b": "+top",
+     "to": "rail",
+     "colour": "#C8452F",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "wire",
+     "a": "j21",
+     "b": "10",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 7,
+      "name": "10"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "j22",
+     "b": "11",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 6,
+      "name": "11"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "j23",
+     "b": "-top",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "buz",
+     "plus": "b40",
+     "minus": "b42",
+     "label": "buzzer"
+    },
+    {
+     "type": "wire",
+     "a": "a40",
+     "b": "6",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 12,
+      "name": "6"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "a42",
+     "b": "-top",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "power",
+     "socket": {
+      "hdr": "pwr",
+      "i": 3,
+      "name": "5V"
+     },
+     "rail": "+top",
+     "colour": "#C8452F",
+     "label": ""
+    },
+    {
+     "type": "power",
+     "socket": {
+      "hdr": "pwr",
+      "i": 4,
+      "name": "GND"
+     },
+     "rail": "-top",
+     "colour": "#3D6FA8",
+     "label": ""
+    }
+   ]
+  },
+  "b1p5var": {
+   "c0": 1,
+   "c1": 14,
+   "title": "Band 1 Part 7: the resistor on the other side",
+   "uno": true,
+   "fed": [
+    "-top"
+   ],
+   "parts": [
+    {
+     "type": "led",
+     "anode": "f5",
+     "cathode": "f6",
+     "colour": "red",
+     "label": ""
+    },
+    {
+     "type": "wire",
+     "a": "h5",
+     "b": "8",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 9,
+      "name": "8"
+     }
+    },
+    {
+     "type": "res",
+     "a": "j6",
+     "b": "j8",
+     "value": "220"
+    },
+    {
+     "type": "wire",
+     "a": "h8",
+     "b": "-top",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "power",
+     "socket": {
+      "hdr": "pwr",
+      "i": 4,
+      "name": "GND"
+     },
+     "rail": "-top",
+     "colour": "#3D6FA8",
+     "label": ""
+    }
+   ]
+  },
+  "b1traffic": {
+   "c0": 1,
+   "c1": 14,
+   "title": "Traffic light module",
+   "uno": true,
+   "fed": [
+    "-top"
+   ],
+   "parts": [
+    {
+     "type": "mod",
+     "label": "traffic light module",
+     "pins": [
+      {
+       "name": "R",
+       "to": "socket",
+       "socket": {
+        "hdr": "dig",
+        "i": 8,
+        "name": "9"
+       },
+       "colour": "#2E7D46"
+      },
+      {
+       "name": "Y",
+       "to": "socket",
+       "socket": {
+        "hdr": "dig",
+        "i": 9,
+        "name": "8"
+       },
+       "colour": "#2E7D46"
+      },
+      {
+       "name": "G",
+       "to": "socket",
+       "socket": {
+        "hdr": "dig",
+        "i": 11,
+        "name": "7"
+       },
+       "colour": "#2E7D46"
+      },
+      {
+       "name": "GND",
+       "to": "rail",
+       "rail": "-top",
+       "colour": "#3D6FA8"
+      }
+     ]
+    },
+    {
+     "type": "power",
+     "socket": {
+      "hdr": "pwr",
+      "i": 4,
+      "name": "GND"
+     },
+     "rail": "-top",
+     "colour": "#3D6FA8",
+     "label": ""
+    }
+   ]
+  },
+  "b2rgbmod": {
+   "c0": 1,
+   "c1": 14,
+   "title": "RGB module",
+   "uno": true,
+   "fed": [
+    "-top"
+   ],
+   "parts": [
+    {
+     "type": "mod",
+     "label": "RGB module",
+     "pins": [
+      {
+       "name": "R",
+       "to": "socket",
+       "socket": {
+        "hdr": "dig",
+        "i": 8,
+        "name": "9"
+       },
+       "colour": "#2E7D46"
+      },
+      {
+       "name": "G",
+       "to": "socket",
+       "socket": {
+        "hdr": "dig",
+        "i": 7,
+        "name": "10"
+       },
+       "colour": "#2E7D46"
+      },
+      {
+       "name": "B",
+       "to": "socket",
+       "socket": {
+        "hdr": "dig",
+        "i": 6,
+        "name": "11"
+       },
+       "colour": "#2E7D46"
+      },
+      {
+       "name": "GND",
+       "to": "rail",
+       "rail": "-top",
+       "colour": "#3D6FA8"
+      }
+     ]
+    },
+    {
+     "type": "power",
+     "socket": {
+      "hdr": "pwr",
+      "i": 4,
+      "name": "GND"
+     },
+     "rail": "-top",
+     "colour": "#3D6FA8",
+     "label": ""
+    }
+   ]
+  },
+  "b4roomb": {
+   "c0": 1,
+   "c1": 36,
+   "title": "Room monitor, bare four-pin sensor",
+   "uno": true,
+   "fed": [
+    "+bot",
+    "-bot"
+   ],
+   "parts": [
+    {
+     "type": "blk",
+     "label": "DHT11, bare: + / data / nothing / -",
+     "holes": [
+      "a30",
+      "a31",
+      "a32",
+      "a33"
+     ],
+     "rails": []
+    },
+    {
+     "type": "wire",
+     "a": "b30",
+     "b": "+bot",
+     "to": "rail",
+     "colour": "#C8452F",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "wire",
+     "a": "b31",
+     "b": "4",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 14,
+      "name": "4"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "b33",
+     "b": "-bot",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "res",
+     "a": "c30",
+     "b": "c31",
+     "value": "10k"
+    },
+    {
+     "type": "led",
+     "anode": "b3",
+     "cathode": "b4",
+     "colour": "green",
+     "label": ""
+    },
+    {
+     "type": "res",
+     "a": "a3",
+     "b": "a1",
+     "value": "220"
+    },
+    {
+     "type": "wire",
+     "a": "b1",
+     "b": "7",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 11,
+      "name": "7"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "a4",
+     "b": "-bot",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "led",
+     "anode": "b7",
+     "cathode": "b8",
+     "colour": "red",
+     "label": ""
+    },
+    {
+     "type": "res",
+     "a": "a7",
+     "b": "a5",
+     "value": "220"
+    },
+    {
+     "type": "wire",
+     "a": "b5",
+     "b": "8",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 9,
+      "name": "8"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "a8",
+     "b": "-bot",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "power",
+     "socket": {
+      "hdr": "pwr",
+      "i": 3,
+      "name": "5V"
+     },
+     "rail": "+bot",
+     "colour": "#C8452F",
+     "label": ""
+    },
+    {
+     "type": "power",
+     "socket": {
+      "hdr": "pwr",
+      "i": 4,
+      "name": "GND"
+     },
+     "rail": "-bot",
+     "colour": "#3D6FA8",
+     "label": ""
+    }
+   ]
+  },
+  "b6p7": {
+   "c0": 1,
+   "c1": 14,
+   "title": "Band 6 Part 7: the servo on a battery",
+   "uno": true,
+   "fed": [
+    "+top",
+    "-top"
+   ],
+   "parts": [
+    {
+     "type": "mod",
+     "label": "servo",
+     "pins": [
+      {
+       "name": "orange",
+       "to": "socket",
+       "socket": {
+        "hdr": "dig",
+        "i": 8,
+        "name": "9"
+       },
+       "colour": "#2E7D46"
+      },
+      {
+       "name": "red",
+       "to": "rail",
+       "rail": "+top",
+       "colour": "#C8452F"
+      },
+      {
+       "name": "brown",
+       "to": "rail",
+       "rail": "-top",
+       "colour": "#3D6FA8"
+      }
+     ]
+    },
+    {
+     "type": "batt",
+     "plus": "+top",
+     "minus": "-top",
+     "label": "6 V battery pack"
+    },
+    {
+     "type": "power",
+     "socket": {
+      "hdr": "pwr",
+      "i": 4,
+      "name": "GND"
+     },
+     "rail": "-top",
+     "colour": "#3D6FA8",
+     "label": ""
+    }
+   ]
+  },
+  "b7p6a": {
+   "c0": 16,
+   "c1": 32,
+   "title": "Band 7 Part 6a: sensor and I2C screen",
+   "uno": true,
+   "fed": [
+    "+top",
+    "-top"
+   ],
+   "parts": [
+    {
+     "type": "blk",
+     "label": "HC-SR04  VCC / Trig / Echo / GND",
+     "holes": [
+      "f20",
+      "f21",
+      "f22",
+      "f23"
+     ],
+     "rails": []
+    },
+    {
+     "type": "wire",
+     "a": "j20",
+     "b": "+top",
+     "to": "rail",
+     "colour": "#C8452F",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "wire",
+     "a": "j21",
+     "b": "10",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 7,
+      "name": "10"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "j22",
+     "b": "11",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 6,
+      "name": "11"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "j23",
+     "b": "-top",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "mod",
+     "label": "LCD1602, I2C",
+     "pins": [
+      {
+       "name": "GND",
+       "to": "rail",
+       "rail": "-top",
+       "colour": "#3D6FA8"
+      },
+      {
+       "name": "VCC",
+       "to": "rail",
+       "rail": "+top",
+       "colour": "#C8452F"
+      },
+      {
+       "name": "SDA",
+       "to": "socket",
+       "socket": {
+        "hdr": "pwr",
+        "i": 12,
+        "name": "A4"
+       },
+       "colour": "#2E7D46"
+      },
+      {
+       "name": "SCL",
+       "to": "socket",
+       "socket": {
+        "hdr": "pwr",
+        "i": 13,
+        "name": "A5"
+       },
+       "colour": "#2E7D46"
+      }
+     ]
+    },
+    {
+     "type": "power",
+     "socket": {
+      "hdr": "pwr",
+      "i": 3,
+      "name": "5V"
+     },
+     "rail": "+top",
+     "colour": "#C8452F",
+     "label": ""
+    },
+    {
+     "type": "power",
+     "socket": {
+      "hdr": "pwr",
+      "i": 4,
+      "name": "GND"
+     },
+     "rail": "-top",
+     "colour": "#3D6FA8",
+     "label": ""
+    }
+   ]
+  },
+  "b7p6b": {
+   "c0": 1,
+   "c1": 35,
+   "title": "Band 7 Part 6b: the bare 16-pin screen",
+   "uno": true,
+   "fed": [
+    "+top",
+    "-top"
+   ],
+   "parts": [
+    {
+     "type": "blk",
+     "label": "LCD1602, bare 16-pin header in row j",
+     "holes": [
+      "j1",
+      "j2",
+      "j3",
+      "j4",
+      "j5",
+      "j6",
+      "j7",
+      "j8",
+      "j9",
+      "j10",
+      "j11",
+      "j12",
+      "j13",
+      "j14",
+      "j15",
+      "j16"
+     ],
+     "rails": []
+    },
+    {
+     "type": "wire",
+     "a": "f1",
+     "b": "-top",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "wire",
+     "a": "f2",
+     "b": "+top",
+     "to": "rail",
+     "colour": "#C8452F",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "wire",
+     "a": "f3",
+     "b": "j31",
+     "to": "hole",
+     "colour": "ink",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "wire",
+     "a": "f4",
+     "b": "12",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 5,
+      "name": "12"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "f5",
+     "b": "-top",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "wire",
+     "a": "f6",
+     "b": "11",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 6,
+      "name": "11"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "f11",
+     "b": "5",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 13,
+      "name": "5"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "f12",
+     "b": "4",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 14,
+      "name": "4"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "f13",
+     "b": "3",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 15,
+      "name": "3"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "f14",
+     "b": "2",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 16,
+      "name": "2"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "f15",
+     "b": "+top",
+     "to": "rail",
+     "colour": "#C8452F",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "wire",
+     "a": "f16",
+     "b": "-top",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "pot",
+     "holes": [
+      "f30",
+      "f31",
+      "f32"
+     ],
+     "label": "contrast"
+    },
+    {
+     "type": "wire",
+     "a": "j30",
+     "b": "-top",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "wire",
+     "a": "j32",
+     "b": "+top",
+     "to": "rail",
+     "colour": "#C8452F",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "blk",
+     "label": "HC-SR04",
+     "holes": [
+      "f20",
+      "f21",
+      "f22",
+      "f23"
+     ],
+     "rails": []
+    },
+    {
+     "type": "wire",
+     "a": "j20",
+     "b": "+top",
+     "to": "rail",
+     "colour": "#C8452F",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "wire",
+     "a": "j21",
+     "b": "10",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 7,
+      "name": "10"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "j22",
+     "b": "9",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 8,
+      "name": "9"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "j23",
+     "b": "-top",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "power",
+     "socket": {
+      "hdr": "pwr",
+      "i": 3,
+      "name": "5V"
+     },
+     "rail": "+top",
+     "colour": "#C8452F",
+     "label": ""
+    },
+    {
+     "type": "power",
+     "socket": {
+      "hdr": "pwr",
+      "i": 4,
+      "name": "GND"
+     },
+     "rail": "-top",
+     "colour": "#3D6FA8",
+     "label": ""
+    }
+   ]
+  },
+  "b8p10": {
+   "c0": 36,
+   "c1": 48,
+   "title": "Band 8 Part 10: the documented example",
+   "uno": true,
+   "fed": [
+    "+top",
+    "-top"
+   ],
+   "parts": [
+    {
+     "type": "buz",
+     "plus": "b40",
+     "minus": "b42",
+     "label": "buzzer"
+    },
+    {
+     "type": "wire",
+     "a": "a40",
+     "b": "6",
+     "to": "socket",
+     "colour": "#2E7D46",
+     "label": "",
+     "socket": {
+      "hdr": "dig",
+      "i": 12,
+      "name": "6"
+     }
+    },
+    {
+     "type": "wire",
+     "a": "a42",
+     "b": "-top",
+     "to": "rail",
+     "colour": "#3D6FA8",
+     "label": "",
+     "socket": null
+    },
+    {
+     "type": "mod",
+     "label": "servo",
+     "pins": [
+      {
+       "name": "orange",
+       "to": "socket",
+       "socket": {
+        "hdr": "dig",
+        "i": 8,
+        "name": "9"
+       },
+       "colour": "#2E7D46"
+      },
+      {
+       "name": "red",
+       "to": "rail",
+       "rail": "+top",
+       "colour": "#C8452F"
+      },
+      {
+       "name": "brown",
+       "to": "rail",
+       "rail": "-top",
+       "colour": "#3D6FA8"
+      }
+     ]
+    },
+    {
+     "type": "batt",
+     "plus": "+top",
+     "minus": "-top",
+     "label": "6 V battery pack"
+    },
+    {
+     "type": "power",
+     "socket": {
+      "hdr": "pwr",
+      "i": 4,
+      "name": "GND"
+     },
+     "rail": "-top",
+     "colour": "#3D6FA8",
+     "label": ""
+    }
+   ]
+  }
+ }
+}

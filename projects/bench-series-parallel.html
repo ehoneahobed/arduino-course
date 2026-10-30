@@ -9,6 +9,8 @@
   <link rel="icon" type="image/png" sizes="192x192" href="../assets/brand/icon-192.png">
   <link rel="apple-touch-icon" href="../assets/brand/icon-180.png">
   <link rel="stylesheet" href="../assets/course.css">
+  <link rel="stylesheet" href="../assets/labs/labs.css">
+  <script defer src="../assets/labs/labs.js"></script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to the project</a>
@@ -57,7 +59,8 @@
 
 <section class="part">
   <div class="parthead"><span class="tag">Build</span><h2>One after the other: a series circuit</h2><span class="mins">30 min</span></div>
-    <figure class="wiring">
+    <figure class="wiring" data-build="spseries">
+      <p class="view3d" hidden><button type="button" class="view3d-btn" data-build="spseries" aria-pressed="false" hidden>View in 3D</button></p>
       <svg viewBox="0 -64 618 730" role="img" aria-label="Bench: two LEDs in series" style="width:618px; max-width:100%; min-width:560px">
 <defs><circle id="bh" r="3.6" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/><rect id="sk" x="-6.5" y="-6.5" width="13" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1" opacity=".5"/></defs>
 <rect x="100" y="18" width="442" height="376" rx="7" fill="none" stroke="currentColor" stroke-width="1.3" opacity=".55"/>
@@ -532,7 +535,8 @@
 
 <section class="part">
   <div class="parthead"><span class="tag">Build</span><h2>Side by side: a parallel circuit</h2><span class="mins">25 min</span></div>
-    <figure class="wiring">
+    <figure class="wiring" data-build="spparallel">
+      <p class="view3d" hidden><button type="button" class="view3d-btn" data-build="spparallel" aria-pressed="false" hidden>View in 3D</button></p>
       <svg viewBox="0 -64 774 730" role="img" aria-label="Bench: two LEDs in parallel" style="width:774px; max-width:100%; min-width:560px">
 <defs><circle id="bh" r="3.6" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/><rect id="sk" x="-6.5" y="-6.5" width="13" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1" opacity=".5"/></defs>
 <rect x="100" y="18" width="598" height="376" rx="7" fill="none" stroke="currentColor" stroke-width="1.3" opacity=".55"/>
@@ -1111,7 +1115,8 @@
     <p><strong>Every build in this course from Band 1 onward puts its branches in parallel.</strong> The four buttons, the two lights of the night guard, the lights and the buzzer of the lock. All of them: separate branches sharing the rails, and each branch with its own parts in series inside it. The two shapes are not rivals. Real circuits are made of both, nested.</p>
 
     <h3 style="margin-top:.8rem">Why the RGB LED needs three resistors and not one</h3>
-    <figure class="wiring">
+    <figure class="wiring" data-build="spshared">
+      <p class="view3d" hidden><button type="button" class="view3d-btn" data-build="spshared" aria-pressed="false" hidden>View in 3D</button></p>
       <svg viewBox="0 -64 774 730" role="img" aria-label="Bench: two LEDs sharing one resistor" style="width:774px; max-width:100%; min-width:560px">
 <defs><circle id="bh" r="3.6" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/><rect id="sk" x="-6.5" y="-6.5" width="13" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1" opacity=".5"/></defs>
 <rect x="100" y="18" width="598" height="376" rx="7" fill="none" stroke="currentColor" stroke-width="1.3" opacity=".55"/>

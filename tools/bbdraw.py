@@ -377,6 +377,79 @@ class Board:
         o.append("</svg>")
         return "\n".join(o)
 
+    # ---- data export, for the 3D build viewer (assets/labs) ----
+    def json(self):
+        """The same parts and holes the SVG is drawn from, as plain data.
+        Runs the same audit first, so a board that will not draw will not
+        export either. Colours are the ones the SVG uses ("ink" means the
+        page's text colour)."""
+        self.audit()
+
+        def sock(key):
+            if key is None:
+                return None
+            hdr, i = key
+            return {"hdr": hdr, "i": i,
+                    "name": (DIG_PINS if hdr == "dig" else PWR_PINS)[i]}
+
+        def railcol(r):
+            return RED if r.startswith("+") else BLU
+
+        out = []
+        for p in self.parts:
+            kind = p[0]
+            if kind == "led":
+                out.append({"type": "led", "anode": p[1], "cathode": p[2],
+                            "colour": p[3] or "red", "label": p[4]})
+            elif kind == "res":
+                out.append({"type": "res", "a": p[1], "b": p[2], "value": p[3]})
+            elif kind == "wire":
+                _, a, q, colour, label, key = p
+                if q in RAILS:
+                    to, col = "rail", colour or railcol(q)
+                elif is_hole(q):
+                    to, col = "hole", colour or "ink"
+                else:
+                    to, col = "socket", colour or GRN
+                out.append({"type": "wire", "a": a, "b": q, "to": to,
+                            "colour": col, "label": label, "socket": sock(key)})
+            elif kind == "power":
+                out.append({"type": "power", "socket": sock(p[5]), "rail": p[2],
+                            "colour": railcol(p[2]), "label": p[4]})
+            elif kind == "link":
+                out.append({"type": "link", "a": p[1], "b": p[2],
+                            "colour": railcol(p[1]), "label": p[4]})
+            elif kind == "btn":
+                out.append({"type": "btn", "holes": list(p[1])})
+            elif kind == "pot":
+                out.append({"type": "pot", "holes": list(p[1]), "label": p[4]})
+            elif kind == "buz":
+                out.append({"type": "buz", "plus": p[1][0], "minus": p[1][1],
+                            "label": p[4]})
+            elif kind == "npn":
+                out.append({"type": "npn", "e": p[1][0], "b": p[1][1], "c": p[1][2],
+                            "label": p[4]})
+            elif kind == "blk":
+                out.append({"type": "blk", "label": p[4], "holes": list(p[1]),
+                            "rails": [{"rail": r, "colour": railcol(r)} for r in (p[2] or ())]})
+            elif kind == "mod":
+                pins = []
+                for name, dest, key in p[1]:
+                    if dest in RAILS:
+                        pins.append({"name": name, "to": "rail", "rail": dest,
+                                     "colour": railcol(dest)})
+                    elif key is not None:
+                        pins.append({"name": name, "to": "socket", "socket": sock(key),
+                                     "colour": GRN})
+                    else:
+                        pins.append({"name": name, "to": None})
+                out.append({"type": "mod", "label": p[4], "pins": pins})
+            elif kind == "batt":
+                out.append({"type": "batt", "plus": p[1][0], "minus": p[1][1],
+                            "label": p[4]})
+        return {"c0": self.c0, "c1": self.c1, "title": self.title, "uno": self.uno,
+                "fed": sorted(self.fed), "parts": out}
+
     # ---- helpers ----
     def _cx(self, n):
         return X0 + (n - self.c0) * DX

@@ -109,3 +109,60 @@ that sits IN the board), `battery` (a pack feeding the rails instead of the
 Arduino), and `mod` (a module with no breadboard presence at all: a servo, a
 driver board, an I2C screen). `blk` takes `rails=` for a module that also reaches
 a rail directly.
+
+## The 3D build viewer: `build_labs.mjs`, `inject_3d.py`, `labtest.html`
+
+Every wiring diagram can also be seen as a 3D model you can turn, click and
+X-ray. It is drawn from the same data as the SVG: `Board.json()` in
+`bbdraw.py`, exported for all builds by
+
+    python3 diagrams.py --json      writes ../assets/labs/src/builds.json
+
+Sources live in `assets/labs/src/` (`runtime.js` is the BIH Tech Club 3D
+runtime, ported; `build.js` is the viewer; `parts.js` the part models;
+`main.js` mounts labs). three.js 0.180.0 is vendored in
+`assets/vendor/three@0.180.0/`. Pages load nothing from a CDN.
+
+Because the site must open from a USB stick (file://, where browsers refuse
+ES modules), everything is bundled into one committed classic script,
+`assets/labs/labs.bundle.js`. After changing a build in `diagrams.py` or
+anything in `assets/labs/src/`, rebuild it:
+
+    node tools/build_labs.mjs            runs diagrams.py --json, then bundles
+    node tools/build_labs.mjs --dev      unminified, for reading errors
+
+It needs esbuild: it uses an installed `esbuild` package, or `$ESBUILD`, or
+the BIH Tech Club repo's copy next to this folder. Anywhere else:
+`npm install --no-save esbuild` first.
+
+A page carries two tags in its head, and a hidden button in each wiring figure:
+
+    <link rel="stylesheet" href="../assets/labs/labs.css">
+    <script defer src="../assets/labs/labs.js"></script>
+
+`labs.js` is a 2 KB loader. The 800 KB bundle is fetched only when someone
+presses **View in 3D**, so a band page costs nothing extra on mobile data.
+Without JavaScript or WebGL the button stays hidden and the flat SVG teaches
+exactly as before. Any page may also hold `<div class="lab" data-lab="build"
+data-build="b1p5"></div>`, which is filled straight away.
+
+    python3 tools/inject_3d.py           add the head tags and buttons to bands/ and projects/
+    python3 tools/inject_3d.py --check   report only
+    python3 tools/inject_3d.py --undo    take them out again
+    python3 tools/inject_3d.py --root DIR   work on a copy
+
+`inject_3d.py` matches each figure to its build by the SVG's `aria-label`
+(the build's title). A label that matches no build, or two, stops the run
+before anything is written. Running it twice changes nothing.
+
+`tools/labtest.html` is a test bench, not linked from the site: it shows the
+flat SVG above the 3D view for any builds (`?b=b1p5,b5p4`), and
+`&lowpower` forces the settings used on software WebGL.
+
+What the viewer does: drag, pinch or the toolbar to turn and zoom; arrow keys,
+`+`, `-`, `0`, `X` (X-ray) and `Esc` on the focused model. Click a part, a
+hole or an Arduino socket to see what it is and everything it is joined to.
+X-ray makes the board see-through, shows the metal strips (one per column of
+five, one per rail, nothing across the channel, top and bottom rails
+separate) and lights up each electrical connection in its own colour.
+"Show me around" visits every part in build order.

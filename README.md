@@ -53,6 +53,14 @@ to system fonts and everything still works.
 Every diagram is hand-drawn inline SVG that follows the reader's light or dark
 theme. Nothing is a bitmap, so nothing goes blurry.
 
+## The 3D labs
+
+Every wiring diagram has a **View in 3D** button. The 3D build is generated from the same hole data as the
+flat picture (`python3 tools/diagrams.py --json`), so the two cannot disagree. Pages load a 2 KB loader
+(`assets/labs/labs.js`); the 3D bundle (`assets/labs/labs.bundle.js`, three.js included) is fetched only when a
+learner presses the button, and it works from a USB stick with no internet. Lab source is in `assets/labs/src/`;
+rebuild the bundle with `node tools/build_labs.mjs` (see `tools/README.md`).
+
 ## Publishing it
 
 ### GitHub Pages
