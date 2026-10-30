@@ -16,6 +16,7 @@
 // a jumper between two points) that the Band 7 and Band 8 labs share.
 import { THREE, mat, rbox, decal, label, setLabel } from './runtime.js';
 import * as P from './parts.js';
+import { buildUno } from './build.js';
 
 const { V } = P;
 const SANS = 'Rubik, "Segoe UI", Arial, sans-serif';
@@ -46,107 +47,17 @@ export function livePlate(w, h, ppu = 40) {
   };
 }
 
-// A simple Arduino Uno: board, USB, chip, the two headers with their
-// printing, and the green ON light. sock(name, k) is the top of a socket.
+// The Arduino Uno: the shared model (build.js), centred on the origin.
+// sock(name, k) is the top of a socket; setOn(level) lights the ON light.
 export function miniUno() {
-  const g = new THREE.Group();
-  const W = 27, D = 21, top = 0.96;
-  const pcb = rbox(W, 0.32, D, 0x0f7d86, 0.25, { roughness: 0.6 });
-  pcb.position.set(0, 0.8, 0);
-  g.add(pcb);
-  const usb = rbox(6.2, 4.0, 4.8, 0xc9ccd1, 0.15, { metalness: 0.5, roughness: 0.4 });
-  usb.position.set(-W / 2 + 1.4, 3.0, -D / 2 + 5.5);
-  const jack = rbox(5.4, 4.0, 3.6, 0x1c1d21, 0.2);
-  jack.position.set(-W / 2 + 1.2, 3.0, D / 2 - 3.8);
-  const chip = rbox(14, 0.9, 3.4, 0x1c1d21, 0.08);
-  chip.position.set(3.5, top + 0.45, 3.6);
-  g.add(usb, jack, chip);
-  const DIG = ['AREF', 'GND', '13', '12', '~11', '~10', '~9', '8', '', '7', '~6', '~5', '4', '~3', '2', 'TX 1', 'RX 0'];
-  const PWR = ['IOREF', 'RESET', '3V3', '5V', 'GND', 'GND', 'VIN', '', 'A0', 'A1', 'A2', 'A3', 'A4', 'A5'];
+  const W = 27, D = 21;
+  const u = buildUno({ parts: [] }, -W / 2, -D / 2);
   const socks = {};
-  const holeM = mat(0x050505);
-  const header = (names, x0, z, labelSide) => {
-    const xs = [];
-    names.forEach((n, i) => {
-      const x = x0 + i;
-      xs.push(x);
-      if (!n) return;
-      const key = n.replace(/^~/, '').replace(/^(TX|RX) /, '');
-      (socks[key] ??= []).push(V(x, top + 0.9, z));
-    });
-    // one black body per unbroken run of sockets
-    let run = [];
-    const flush = () => {
-      if (!run.length) return;
-      const body = new THREE.Mesh(new THREE.BoxGeometry(run.length, 0.9, 0.9), mat(0x1c1d21));
-      body.position.set((run[0] + run[run.length - 1]) / 2, top + 0.45, z);
-      g.add(body);
-      run = [];
-    };
-    names.forEach((n, i) => { if (n) run.push(xs[i]); else flush(); });
-    flush();
-    names.forEach((n, i) => {
-      if (!n) return;
-      const h = new THREE.Mesh(new THREE.BoxGeometry(0.42, 0.04, 0.42), holeM);
-      h.position.set(xs[i], top + 0.91, z);
-      h.userData.noInk = true;
-      g.add(h);
-    });
-    // the printing, sideways like the real board
-    const pl = decal(names.length, 2.4, (c, CW, CH) => {
-      c.clearRect(0, 0, CW, CH);
-      c.fillStyle = '#ffffff';
-      const u = CW / names.length;
-      c.font = `700 ${u * 0.56}px ${SANS}`;
-      c.textBaseline = 'middle';
-      names.forEach((n, i) => {
-        if (!n) return;
-        c.save();
-        c.translate(u * (i + 0.5), labelSide < 0 ? CH * 0.04 : CH * 0.96);
-        c.rotate(-Math.PI / 2);
-        c.textAlign = labelSide < 0 ? 'right' : 'left';
-        c.fillText(n, 0, 0);
-        c.restore();
-      });
-    }, { px: 96 });
-    pl.rotation.x = -Math.PI / 2;
-    pl.position.set(x0 + (names.length - 1) / 2, top + 0.01, z - labelSide * 1.75);
-    g.add(pl);
-  };
-  header(DIG, -W / 2 + 8.4, -D / 2 + 1.1, -1);
-  header(PWR, -W / 2 + 9.4, D / 2 - 1.1, 1);
-  const brand = decal(10, 2.2, (c, CW, CH) => {
-    c.fillStyle = '#ffffff';
-    c.font = `700 ${CH * 0.62}px ${SANS}`;
-    c.textAlign = 'center';
-    c.textBaseline = 'middle';
-    c.fillText('UNO', CW / 2, CH / 2);
-  }, { px: 96 });
-  brand.rotation.x = -Math.PI / 2;
-  brand.position.set(4, top + 0.01, -2.6);
-  g.add(brand);
-  // the ON light
-  const onMat = mat(0x2fae55, { emissive: 0x2fae55, emissiveIntensity: 1.0 });
-  const onLed = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.45, 0.6), onMat);
-  onLed.position.set(W / 2 - 4.5, top + 0.22, -1.5);
-  const onTxt = decal(1.8, 0.9, (c, CW, CH) => {
-    c.fillStyle = '#ffffff';
-    c.font = `700 ${CH * 0.8}px ${SANS}`;
-    c.textAlign = 'center';
-    c.textBaseline = 'middle';
-    c.fillText('ON', CW / 2, CH / 2);
-  }, { px: 64 });
-  onTxt.rotation.x = -Math.PI / 2;
-  onTxt.position.set(W / 2 - 4.5, top + 0.01, -0.4);
-  g.add(onLed, onTxt);
-  P.shadowAll(g);
+  for (const sk of u.socks) (socks[sk.name] ??= []).push(u.sockPos(sk));
   return {
-    group: g, W, D, onLed,
+    group: u.group, W, D, onLed: u.leds.ON.mesh, uno: u,
     sock: (name, k = 0) => socks[name][k].clone(),
-    setOn(level) {
-      onMat.emissiveIntensity = level;
-      onMat.color.setHex(level > 0.2 ? 0x2fae55 : 0x1d4d2c);
-    },
+    setOn(level) { u.leds.ON.set(level > 0.02, level); },
   };
 }
 

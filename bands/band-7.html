@@ -21,6 +21,7 @@
 </div>
 <div class="wrap" id="main">
 <nav aria-label="Sections">
+  <a class="nav-3d" href="#try-3d">3D lab</a>
   <a href="#start">Start here</a>
   <a href="#echo">Think first</a>
   <a href="#sensor">The sensor</a>
@@ -2332,7 +2333,7 @@ lastShown = cm;</code></pre>
 
     <div class="ifnot"><b>Count it yourself</b>The screen is 16 characters wide, and the row must always receive exactly 16. Count it for a reading of 42:<br><br>One space from the first <code>if</code>, because 42 is under 100. Then <code>42</code>, which is 2. That is 3 so far, and the number is now three wide as promised. Then <code>" cm"</code> plus ten spaces, which is 13. Three plus thirteen is <strong>16</strong>.<br><br>Now do it for 7 and for 742 and check you get 16 both times.<br><br>Write too few and a long value leaves a leftover digit behind. Write too many and the extra characters go off the end into memory you cannot see, so the row quietly stops matching what you counted, which is harder to spot than the leftover.</div>
 
-    <h3 style="margin-top:.8rem">Try it in 3D: the ping, the sum and the screen</h3>
+    <h3 id="try-3d" style="margin-top:.8rem">Try it in 3D: the ping, the sum and the screen</h3>
     <p>This lab puts Parts 2 to 7 on one table. Watch the click leave the sensor, bounce off a book and come home, slowed right down so you can see it. Then follow the sum the board does with the time: <code>microseconds / 29 / 2</code>, in whole numbers, exactly as in b7_01. Move the book along the ruler, swap it for a towel, or turn it at an angle.</p>
     <p>The screen beside it runs the three versions from Part 7: b7_04 with <code>clear()</code> every round, the same with <code>clear()</code> taken out, and the b7_05 way. The side panel shows the screen character by character, so you can see which ones were written and which were left behind. The wires are left out; Parts 3 and 6 have them in 3D. If no button appears below, your computer cannot show 3D. Nothing in this band needs it.</p>
     <p class="view3d" hidden><button type="button" class="view3d-btn" data-lab-open="concept-b7" aria-expanded="false" hidden>Open the 3D lab</button></p>

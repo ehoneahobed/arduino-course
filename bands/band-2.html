@@ -21,6 +21,7 @@
 </div>
 <div class="wrap" id="main">
 <nav aria-label="Sections">
+  <a class="nav-3d" href="#try-3d">3D lab</a>
   <a href="#start">Start here</a>
   <a href="#torch">The torch test</a>
   <a href="#pwm">How dimming works</a>
@@ -272,7 +273,7 @@ void loop() {
     <p><strong>Why <code>&lt;=</code> and not <code>&lt;</code>?</strong> <code>&lt;=</code> means "less than or equal to". With <code>&lt;</code> the loop would stop before ever reaching the top value. Using <code>&lt;=</code> means 255 itself is allowed. This one character makes a real difference and there is a question about it at the end.</p>
 
     <div class="concept" id="lab-pwm">
-      <h3 style="margin-top:1rem">Try it in 3D: the fake dimming, the for loop, and colour</h3>
+      <h3 id="try-3d" style="margin-top:1rem">Try it in 3D: the fake dimming, the for loop, and colour</h3>
       <p>The lab has Band 2&rsquo;s own circuits: the LED on pin 9 from Part 5, and the RGB LED on pins 9, 10 and 11 from Part 7. Slide <code>analogWrite</code> from 0 to 255 and watch a picture of what the pin is really doing, then slow it right down. Step through the first <code>for</code> loop of <code>b2_01_fade_given.ino</code> one stage at a time and watch <code>level</code> count. Its colour missions go with Parts 6 and 7, so come back to them then.</p>
       <p class="view3d" hidden><button type="button" class="view3d-btn" data-lab-open="concept-b2" aria-expanded="false" aria-controls="lab-b2" hidden>Open the 3D lab</button></p>
       <div class="lab" id="lab-b2" data-lab="concept-b2" data-lazy hidden aria-label="3D lab: analogWrite as fast switching, the for loop counting, and mixing red, green and blue light"></div>

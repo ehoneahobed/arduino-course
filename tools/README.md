@@ -140,7 +140,7 @@ A page carries two tags in its head, and a hidden button in each wiring figure:
     <link rel="stylesheet" href="../assets/labs/labs.css">
     <script defer src="../assets/labs/labs.js"></script>
 
-`labs.js` is a 2 KB loader. The 800 KB bundle is fetched only when someone
+`labs.js` is a small loader (about 13 KB). The 1 MB bundle is fetched only when someone
 presses **View in 3D**, so a band page costs nothing extra on mobile data.
 Without JavaScript or WebGL the button stays hidden and the flat SVG teaches
 exactly as before. Any page may also hold `<div class="lab" data-lab="build"
@@ -159,10 +159,48 @@ before anything is written. Running it twice changes nothing.
 flat SVG above the 3D view for any builds (`?b=b1p5,b5p4`), and
 `&lowpower` forces the settings used on software WebGL.
 
-What the viewer does: drag, pinch or the toolbar to turn and zoom; arrow keys,
-`+`, `-`, `0`, `X` (X-ray) and `Esc` on the focused model. Click a part, a
+What the viewer does: drag, pinch or the toolbar to turn and zoom, right-drag
+or two fingers to move; on the focused model `W A S D` or arrows move it, `Q`
+and `E` turn it, `+` and `-` zoom, `R` resets, `L` labels, `T` the tour, `X`
+X-ray, `F` full screen and `Esc` leaves it. Click a part, a
 hole or an Arduino socket to see what it is and everything it is joined to.
 X-ray makes the board see-through, shows the metal strips (one per column of
 five, one per rail, nothing across the channel, top and bottom rails
 separate) and lights up each electrical connection in its own colour.
 "Show me around" visits every part in build order.
+
+## Full screen, the "3D lab" pill and the 3D Workshop: `inject_nav3d.py`, `labs_page.py`, `lab_thumbs.mjs`
+
+Every lab and build viewer has a **Full screen** button (and the `F` key). It
+uses the browser's Fullscreen API, or a full-window "theatre" where there is
+none (iPhones); `?theatre` on a page forces the theatre to test it. In full
+screen the panel becomes a drawer (a sheet on phones). In a page the lab
+breaks out of the text column to the window's width. The model is framed to
+fill the view (`stage.autoFit()` in `runtime.js`; a lab can pass
+`autoFit: false` or `fitPad` in its config).
+
+The panel has tabs: **Explore** (the lab's own buttons), **Code** (a group made
+with `ui.group(title, { tab: 'code' })`, or holding a `codeView(…, { tab: true })`;
+a lab's bench strip also moves there in full screen), **Missions** and **Help**.
+`codeView()` in `runtime.js` is the code box: Arduino C++ highlighting, line
+numbers, the running line, header buttons (`code.action('▶ Run', fn)`) and
+Copy. Callout cards get a line icon picked from their title.
+
+    python3 tools/inject_nav3d.py           a "3D lab" pill first in each band's section bar
+    python3 tools/inject_nav3d.py --check   report only
+    python3 tools/inject_nav3d.py --undo    take it out again
+
+The pill links to the band's "Try it in 3D" heading (`id="try-3d"`, which the
+tool adds). With JavaScript, `labs.js` makes it a menu of every 3D view on the
+page. A link to `#try-3d`, or to `#3d-b1p5` for a build, opens that view.
+
+`labs.html` is the 3D Workshop: every concept lab and build, by band, each
+opening full size at `labs.html?open=<id>`. It is generated:
+
+    python3 tools/labs_page.py              write labs.html (after adding a build, a figure or a lab)
+    node tools/lab_thumbs.mjs               the thumbnails, assets/labs/thumbs/<id>.webp
+    node tools/lab_thumbs.mjs b1p5 --soft   one of them, on software WebGL
+
+`lab_thumbs.mjs` needs Google Chrome and playwright-core (found here, in
+`$PLAYWRIGHT`, or in the BIH Tech Club repo next to this one). Rerun it
+whenever the models change; a missing thumbnail shows a drawn cube instead.

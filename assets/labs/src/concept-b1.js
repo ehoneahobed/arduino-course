@@ -18,7 +18,7 @@ const { V } = P;
 const BT = 1.3; // breadboard top (as build.js)
 const HOUSE = 1.5; // jumper housing height
 const UY = 0.95;
-const SOCK_Y = UY + 0.9;
+const SOCK_Y = UY + 1.3; // top of the Uno's sockets (build.js HDR_H)
 
 // The nine bands of this course, named after the colour code.
 const BANDS = ['Bench Ready', 'Signal Tower', 'Mood Lamp', 'Combination Lock', 'Night Guard', 'Simon Says', 'Things That Move', 'Distance and Display', 'Build for Nzemaland'];

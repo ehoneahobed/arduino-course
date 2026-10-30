@@ -21,6 +21,7 @@
 </div>
 <div class="wrap" id="main">
 <nav aria-label="Sections">
+  <a class="nav-3d" href="#try-3d">3D lab</a>
   <a href="#start">Start here</a>
   <a href="#push">Think first</a>
   <a href="#servo">What a servo is</a>
@@ -1309,7 +1310,7 @@ if (abs(wanted - lastAngle) &gt;= deadband) {
 
     <div class="ifnot"><b>One more instruction worth knowing</b><code>gate.detach()</code> stops the signal going out, and the servo goes limp and stops holding. It also stops drawing much current. If your build only needs to move now and then, <code>attach</code>, move, wait for it to arrive, then <code>detach</code>, and your batteries will last many times longer. It also stops the buzzing entirely while it is detached.</div>
 
-    <h3 style="margin-top:.8rem">Try it in 3D: the signal, the shiver and the ground</h3>
+    <h3 id="try-3d" style="margin-top:.8rem">Try it in 3D: the signal, the shiver and the ground</h3>
     <p>Parts 4, 6 and 7 all happen inside wires you cannot see into. This lab lets you look. The screen behind the Arduino shows what pin 9 really sends: one short pulse every 20 thousandths of a second. <strong>The width of that pulse is the angle.</strong> You do not write the pulse yourself. <code>gate.write</code> asks the Servo library to make it.</p>
     <p>You can pick an angle, run the sweep from b6_01, turn the knob with and without a deadband, and move the servo onto the battery pack. The wires are drawn straight to the rails to keep the picture clear; for the real holes, follow Part 7. If no button appears below, your computer cannot show 3D. Nothing in this band needs it.</p>
     <p class="view3d" hidden><button type="button" class="view3d-btn" data-lab-open="concept-b6" aria-expanded="false" hidden>Open the 3D lab</button></p>

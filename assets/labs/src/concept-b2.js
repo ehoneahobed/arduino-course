@@ -177,8 +177,9 @@ export default function lab(stage, ui, host, W) {
   loopRead.className = 'cl-meter';
   loopRead.setAttribute('aria-live', 'polite');
   gLoop.appendChild(loopRead);
-  const playBtn = ui.button('▶ Play', () => (L.playing ? stopLoop() : playLoop()), { group: gLoop, primary: true });
-  ui.button('One step', () => { stopLoop(); stepLoop(true); }, { group: gLoop });
+  // Play and One step sit on the code itself.
+  const playBtn = code.action('▶ Play', () => (L.playing ? stopLoop() : playLoop()), { primary: true });
+  code.action('One step', () => { stopLoop(); stepLoop(true); });
   ui.button('Jump to the last rounds', () => { stopLoop(); jump(); }, { group: gLoop });
   const sizes = document.createElement('div');
   sizes.className = 'cl-chips';

@@ -358,7 +358,7 @@ export default function lab(stage, ui, host, W) {
     stage.invalidate();
   }, 50)).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme', 'class'] });
 
-  stage.lookAt(W.L.hole('h13').clone().setY(0), 1.45);
+  // (The whole build is framed to fill the view, sensor included.)
   void mat;
   upload();
   host.labDebug = { ser, rows, set: (o) => { if ('place' in o) place = o.place; if ('time' in o) time = o.time; if ('cover' in o) cover = o.cover; if ('knob' in o) { knob = o.knob; knobIn.value = knob; } update(); }, readingOf: (p, t) => toReading(voltsAt(sensorOhms(PLACES[p].lux[t]))) };

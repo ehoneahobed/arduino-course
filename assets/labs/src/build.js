@@ -8,7 +8,8 @@
 // One world unit is one breadboard pitch (0.1 inch). Columns run along x,
 // rows along z (row j at the back, row a at the front), up is y. The Arduino
 // sits in front of the board, as it sits below the board in the SVG.
-import { THREE, mat, rbox, decal, label } from './runtime.js';
+import { THREE, mat, rbox, decal, label, lowPower } from './runtime.js';
+import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 import * as P from './parts.js';
 import DATA from './builds.json';
 
@@ -22,7 +23,7 @@ const BZ1 = 15.6;
 const UNO_W = 27;
 const UNO_D = 21;
 const UY = 0.95; // Arduino board top
-const HDR_H = 0.9;
+const HDR_H = 1.3; // female header height (real ones are taller still)
 const SOCK_Y = UY + HDR_H;
 const HOUSE = 1.5; // jumper housing height
 const PAL = ['#FFBE00', '#1FB5A6', '#E0479E', '#FF7A1A', '#4FA3F0', '#8BC34A'];
@@ -118,7 +119,7 @@ export function prepare(host) {
   const tags = [];
 
   const jumperMat = (hex) => {
-    const m = mat(0, { roughness: 0.7 });
+    const m = P.plasticMat(0, { rough: 0.42, gloss: 0.4 });
     if (hex === 'ink') { m.color.setHex(ink); inkMats.push(m); } else m.color.set(hex);
     return m;
   };
@@ -585,20 +586,47 @@ function modWhat(label) {
 }
 
 // ---------- breadboard ----------
+// One body (a profile extruded along the board, so the middle channel is a
+// real groove and the edges are softly rounded), the printing on a canvas,
+// and every hole as one instanced funnel (one draw call for ~600 holes).
 function buildBoard(b, L) {
   const g = new THREE.Group();
+  const low = lowPower();
   const W = L.x1 - L.x0;
   const D = BZ1 - BZ0;
   const cx = (L.x0 + L.x1) / 2;
   const cz = (BZ0 + BZ1) / 2;
-  const bodyMat = new THREE.MeshStandardMaterial({ color: 0xf6f3ec, roughness: 0.7 });
-  const body = new THREE.Mesh(new THREE.BoxGeometry(W, BT, D), bodyMat);
-  body.position.set(cx, BT / 2, cz);
+  const bodyMat = new THREE.MeshStandardMaterial({ color: 0xf5f3ee, roughness: 0.72 });
+  // the cross-section, in (BZ1 - z, y); the groove is centred on z = 5.5
+  const sec = new THREE.Shape();
+  const c = 0.22;
+  const gz = BZ1 - 5.5, gw = 0.62, gd = 0.55, sl = 0.28;
+  sec.moveTo(0, 0);
+  sec.lineTo(D, 0);
+  sec.lineTo(D, BT - c);
+  sec.lineTo(D - c, BT);
+  sec.lineTo(gz + gw + sl, BT);
+  sec.lineTo(gz + gw, BT - gd);
+  sec.lineTo(gz - gw, BT - gd);
+  sec.lineTo(gz - gw - sl, BT);
+  sec.lineTo(c, BT);
+  sec.lineTo(0, BT - c);
+  sec.lineTo(0, 0);
+  const bt = 0.16;
+  const geo = new THREE.ExtrudeGeometry(sec, { depth: W - 2 * bt, bevelEnabled: true, bevelThickness: bt, bevelSize: 0.14, bevelOffset: -0.14, bevelSegments: low ? 1 : 2, curveSegments: 1 });
+  geo.rotateY(Math.PI / 2); // extrusion runs along +x; the section's x becomes -z
+  geo.computeBoundingBox();
+  geo.translate(L.x0 - geo.boundingBox.min.x, 0, BZ1);
+  const body = new THREE.Mesh(geo, bodyMat);
   body.castShadow = body.receiveShadow = true;
+  body.userData.round = true;
   g.add(body);
-  // the middle channel: a groove you can see
-  const groove = new THREE.Mesh(new THREE.BoxGeometry(W, 0.05, 1.2), new THREE.MeshStandardMaterial({ color: 0xd9d4c8, roughness: 0.8 }));
-  groove.position.set(cx, BT + 0.005, 5.5);
+  g.add(P.contactShadow(W, D, { blur: 1.1, opacity: 0.34 }));
+  g.children[g.children.length - 1].position.set(cx, 0.015, cz);
+  // the groove's floor, a shade darker (kept as `groove` for X-ray)
+  const groove = new THREE.Mesh(new THREE.PlaneGeometry(W - 0.4, gw * 2), new THREE.MeshStandardMaterial({ color: 0xd9d4c8, roughness: 0.85 }));
+  groove.rotation.x = -Math.PI / 2;
+  groove.position.set(cx, BT - gd + 0.01, 5.5);
   groove.userData.noInk = true;
   g.add(groove);
 
@@ -608,7 +636,7 @@ function buildBoard(b, L) {
     for (const k of ['anode', 'cathode', 'a', 'b', 'plus', 'minus', 'e', 'c']) if (typeof p[k] === 'string' && isHole(p[k])) used.add(p[k]);
     if (p.holes) p.holes.forEach((h) => used.add(h));
   }
-  const ppu = Math.max(24, Math.min(48, Math.floor(2048 / W)));
+  const ppu = Math.max(28, Math.min(low ? 40 : 64, Math.floor((low ? 2048 : 3072) / W)));
   const print = decal(W, D, (c, CW, CH) => {
     const sx = CW / W;
     const sz = CH / D;
@@ -617,19 +645,19 @@ function buildBoard(b, L) {
     c.clearRect(0, 0, CW, CH);
     c.textAlign = 'center';
     c.textBaseline = 'middle';
-    // rail lines
-    const line = (z, col) => { c.fillStyle = col; c.fillRect(X(-0.6), Z(z) - sz * 0.05, X(L.n + 0.6) - X(-0.6), sz * 0.1); };
-    line(-3.75, RED); line(-1.65, BLU); line(12.65, BLU); line(14.75, RED);
-    c.font = `700 ${sz * 0.8}px Rubik, Arial, sans-serif`;
+    // rail lines, as printed on a real board: a solid stripe outside each rail pair
+    const line = (z, col) => { c.fillStyle = col; c.beginPath(); c.roundRect(X(-0.7), Z(z) - sz * 0.07, X(L.n + 0.7) - X(-0.7), sz * 0.14, sz * 0.07); c.fill(); };
+    line(-3.85, RED); line(-1.55, BLU); line(12.55, BLU); line(14.85, RED);
+    c.font = `700 ${sz * 0.9}px Rubik, Arial, sans-serif`;
     for (const r of RAILS) {
       c.fillStyle = r[0] === '+' ? RED : BLU;
-      for (const x of [-1.35, L.n + 0.75]) c.fillText(r[0] === '+' ? '+' : '−', X(x), Z(RAILZ[r]) + sz * 0.04);
+      for (const x of [-1.4, L.n + 0.8]) c.fillText(r[0] === '+' ? '+' : '−', X(x), Z(RAILZ[r]) + sz * 0.04);
     }
-    c.font = `600 ${sz * 0.5}px ui-monospace, "IBM Plex Mono", Menlo, monospace`;
+    c.font = `600 ${sz * 0.52}px "IBM Plex Mono", ui-monospace, Menlo, monospace`;
     c.fillStyle = 'rgba(36,24,46,.62)';
-    for (const [row, z] of Object.entries(ROWZ)) for (const x of [-1.35, L.n + 0.75]) c.fillText(row, X(x), Z(z));
+    for (const [row, z] of Object.entries(ROWZ)) for (const x of [-1.4, L.n + 0.8]) c.fillText(row, X(x), Z(z));
     for (let n = b.c0; n <= b.c1; n++) {
-      if (n % 5 === 0 || n === b.c0) for (const z of [-1.05, 12.05]) c.fillText(String(n), X(L.X(n)), Z(z));
+      if (n % 5 === 0 || n === b.c0) for (const z of [-0.95, 11.95]) c.fillText(String(n), X(L.X(n)), Z(z));
     }
     // "+" beside each long leg, outboard of it, as in the SVG
     c.font = `700 ${sz * 0.62}px Rubik, Arial, sans-serif`;
@@ -642,34 +670,34 @@ function buildBoard(b, L) {
       c.fillText('+', X(a.x + side * 0.6), Z(a.z) - sz * 0.02);
     }
     // used holes: a ring and the name, like the SVG
-    c.font = `700 ${sz * 0.4}px ui-monospace, "IBM Plex Mono", Menlo, monospace`;
+    c.font = `700 ${sz * 0.4}px "IBM Plex Mono", ui-monospace, Menlo, monospace`;
     for (const h of used) {
       const p = L.hole(h);
       c.strokeStyle = 'rgba(36,24,46,.85)';
       c.lineWidth = sz * 0.07;
       c.beginPath();
-      c.arc(X(p.x), Z(p.z), sz * 0.42, 0, Math.PI * 2);
+      c.arc(X(p.x), Z(p.z), sz * 0.44, 0, Math.PI * 2);
       c.stroke();
       c.fillStyle = '#24182E';
-      c.fillText(h, X(p.x), Z(p.z + 0.62));
+      c.fillText(h, X(p.x), Z(p.z + 0.64));
     }
-  }, { px: Math.round(D * ppu), maxPx: 2048 });
+  }, { px: Math.round(D * ppu), maxPx: low ? 2048 : 3072 });
+  print.material.map.anisotropy = 16;
   print.rotation.x = -Math.PI / 2;
   print.position.set(cx, BT + 0.012, cz);
   print.material.depthWrite = false;
   print.renderOrder = 2;
   g.add(print);
 
-  // holes: one instanced mesh, one draw call, ~600 squares on a 45-column board
+  // holes: one instanced funnel each, one draw call for the lot
   const ids = []; // instance -> { kind, name/rail, col }
   const cols = [];
   for (let c = b.c0; c <= b.c1; c++) cols.push(c);
   const count = cols.length * 14;
-  const holeGeo = new THREE.BoxGeometry(0.36, 0.05, 0.36);
-  const holeMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
-  const holes = new THREE.InstancedMesh(holeGeo, holeMat, count);
+  const holeMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.85, vertexColors: true });
+  const holes = new THREE.InstancedMesh(HOLE_GEO(), holeMat, count);
   const m4 = new THREE.Matrix4();
-  const base = new THREE.Color(0x4a4744);
+  const base = new THREE.Color(0xc4beb2);
   let k = 0;
   const holeIndex = {};
   const railIndex = {};
@@ -692,6 +720,7 @@ function buildBoard(b, L) {
   holes.instanceMatrix.needsUpdate = true;
   holes.userData.noGlow = true;
   holes.userData.ids = ids;
+  holes.receiveShadow = true;
   g.add(holes);
 
   // the metal strips inside: two per column, and the four long rails.
@@ -724,10 +753,28 @@ function buildBoard(b, L) {
   g.add(strips);
   return { group: g, body, bodyMat, print, groove, holes, holeIndex, railIndex, strips, colStrips, stripIndex, railStrips, base, silver, used };
 }
+let holeGeo;
+const HOLE_GEO = () => (holeGeo ??= P.funnelGeo(0.3, 0.12, 0.2, 1));
 
 // ---------- Arduino Uno ----------
+// Board-local coordinates: x 0..27 from the USB edge, z 0..21 from the
+// digital-pin edge (one unit = 0.1 inch, so 68.6 × 53.3 mm). Pin positions
+// are the ones bbdraw uses; everything else follows the real R3 layout.
+const UNO_OUTLINE = [[0, 0], [25.5, 0], [26, 0.5], [26, 5], [27, 6], [27, 19], [26, 20], [26, 21], [0, 21]];
+const UNO_HOLES = [[6.0, 1.0], [5.5, 20.0], [26.0, 7.0], [26.0, 18.0]];
+const UNO_LEDS = { L: [11.6, 4.3, 0xffa21a], TX: [10.2, 7.0, 0xffd21a], RX: [10.2, 8.1, 0xffd21a], ON: [24.6, 5.2, 0x2fd15a] };
+const CHIP = { x: 18.2, z: 14.6 };
+// small parts dotted round the board: [kind, x, z, rotated]
+const UNO_SMD = [
+  ['fuse', 5.8, 2.4, 0], ['c', 5.9, 9.9, 0], ['c', 9.3, 9.8, 0], ['r', 9.3, 10.5, 0], ['r', 12.6, 6.0, 0], ['r', 12.6, 6.8, 0],
+  ['c', 12.6, 12.25, 0], ['c', 14.3, 12.3, 0], ['r', 23.2, 7.4, 1], ['r', 22.4, 7.4, 1], ['c', 22.6, 12.2, 0], ['c', 10.2, 15.2, 1],
+  ['r', 10.2, 13.4, 1], ['d', 5.6, 13.4, 0], ['r', 11.2, 9.4, 0], ['c', 24.2, 8.3, 0], ['r', 20.2, 12.25, 0], ['c', 18.7, 12.25, 0],
+];
+const SOIC = { x: 12.9, z: 9.4 };
+
 export function buildUno(b, ux0, uz0) {
   const g = new THREE.Group();
+  const low = lowPower();
   const DIG = DATA.pins.dig;
   const PWR = DATA.pins.pwr;
   const usedS = new Set();
@@ -741,118 +788,436 @@ export function buildUno(b, ux0, uz0) {
   const digZ = uz0 + 1.1;
   const pwrZ = uz0 + UNO_D - 1.1;
   const sockPos = (s) => V(s.hdr === 'dig' ? digX(s.i) : pwrX(s.i), SOCK_Y, s.hdr === 'dig' ? digZ : pwrZ);
+  const W = (x, y, z) => [ux0 + x, y, uz0 + z]; // board-local to world
+  const dxl = (i) => 7.6 + i; // local x of digital pin i
+  const pxl = (i) => 10.6 + i;
+  const DZ = 1.1, PZ = UNO_D - 1.1;
 
-  const pcb = rbox(UNO_W, 0.32, UNO_D, 0x0f7d86, 0.25, { roughness: 0.6 });
-  pcb.position.set(ux0 + UNO_W / 2, UY - 0.16, uz0 + UNO_D / 2);
-  g.add(pcb);
-  for (const [fx, fz] of [[1.5, 1.5], [UNO_W - 1.5, 2], [1.5, UNO_D - 1.5], [UNO_W - 1.5, UNO_D - 2]]) {
-    const foot = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.5, UY - 0.32, 10), mat(0xdcdcdc));
-    foot.position.set(ux0 + fx, (UY - 0.32) / 2, uz0 + fz);
-    foot.userData.noInk = true;
-    g.add(foot);
+  // ---- the board: real outline and mounting holes, printed top ----
+  const T = 0.45;
+  const shape = new THREE.Shape();
+  UNO_OUTLINE.forEach(([x, z], i) => (i ? shape.lineTo(x, -z) : shape.moveTo(x, -z)));
+  for (const [hx, hz] of UNO_HOLES) {
+    const h = new THREE.Path();
+    h.absarc(hx, -hz, 0.62, 0, Math.PI * 2, true);
+    shape.holes.push(h);
   }
-  // printing on the board
-  const ppu = 40;
-  const silk = decal(UNO_W, UNO_D, (c, CW, CH) => {
-    const s = CW / UNO_W;
-    const X = (x) => (x - ux0) * s;
-    const Z = (z) => (z - uz0) * s;
-    c.clearRect(0, 0, CW, CH);
-    c.textAlign = 'center';
-    c.textBaseline = 'middle';
-    const pinLabel = (x, z, name, used, below) => {
-      const t = (PWM.has(name) ? '~' : '') + name;
-      c.save();
-      c.translate(X(x), Z(z));
-      c.rotate(-Math.PI / 2);
-      c.font = `700 ${s * 0.52}px ui-monospace, "IBM Plex Mono", Menlo, monospace`;
-      const w = c.measureText(t).width + s * 0.3;
-      const ax = below ? -w / 2 : w / 2; // text grows away from the header
-      if (used) {
-        c.fillStyle = '#2E7D46';
-        c.beginPath();
-        c.roundRect(ax - w / 2, -s * 0.38, w, s * 0.76, s * 0.18);
-        c.fill();
-      }
-      c.fillStyle = used ? '#ffffff' : 'rgba(255,255,255,.88)';
-      c.fillText(t, ax, s * 0.03);
-      c.restore();
-    };
-    DIG.forEach((nm, i) => nm && pinLabel(digX(i), digZ + 0.75, nm, usedS.has('dig' + i), true));
-    PWR.forEach((nm, i) => nm && pinLabel(pwrX(i), pwrZ - 0.75, nm, usedS.has('pwr' + i), false));
-    c.fillStyle = 'rgba(255,255,255,.85)';
-    c.font = `600 ${s * 0.55}px Rubik, Arial, sans-serif`;
-    c.fillText('DIGITAL (PWM ~)', X(digX(9)), Z(digZ + 3.2));
-    c.fillText('POWER', X(pwrX(3)), Z(pwrZ - 3.1));
-    c.fillText('ANALOG IN', X(pwrX(10.5)), Z(pwrZ - 3.1));
-    c.font = `800 ${s * 2.1}px Rubik, Arial, sans-serif`;
-    c.fillText('UNO', X(ux0 + 17), Z(uz0 + 8.6));
-    c.font = `700 ${s * 0.95}px Rubik, Arial, sans-serif`;
-    c.fillText('ARDUINO', X(ux0 + 17), Z(uz0 + 6.6));
-  }, { px: Math.round(UNO_D * ppu) });
-  silk.rotation.x = -Math.PI / 2;
-  silk.position.set(ux0 + UNO_W / 2, UY + 0.006, uz0 + UNO_D / 2);
-  silk.material.depthWrite = false;
-  g.add(silk);
+  const pg = new THREE.ExtrudeGeometry(shape, { depth: T - 0.08, bevelEnabled: true, bevelThickness: 0.04, bevelSize: 0.05, bevelOffset: -0.05, bevelSegments: low ? 1 : 2, curveSegments: low ? 10 : 18 });
+  pg.rotateX(-Math.PI / 2);
+  pg.computeBoundingBox();
+  pg.translate(ux0, UY - pg.boundingBox.max.y, uz0);
+  const s = low ? 52 : 76; // texture pixels per unit
+  const silkTex = P.canvasTexture(UNO_W * s, UNO_D * s, (c) => drawUnoTop(c, s, { DIG, PWR, usedS, dxl, pxl, DZ, PZ }));
+  silkTex.repeat.set(1 / UNO_W, 1 / UNO_D);
+  silkTex.offset.set(0, 1);
+  const topMat = new THREE.MeshStandardMaterial({ map: silkTex, roughness: 0.5, metalness: 0, envMap: P.envMap(), envMapIntensity: 0.25 });
+  const edgeMat = new THREE.MeshStandardMaterial({ color: 0x0b5e66, roughness: 0.75 });
+  const pcb = new THREE.Mesh(pg, [topMat, edgeMat]);
+  pcb.castShadow = pcb.receiveShadow = true;
+  pcb.userData.round = true;
+  g.add(pcb);
+  const shadow = P.contactShadow(UNO_W, UNO_D, { blur: 1.0, opacity: 0.38 });
+  shadow.position.set(ux0 + UNO_W / 2, 0.015, uz0 + UNO_D / 2);
+  g.add(shadow);
 
-  // headers: black blocks, sockets as one instanced mesh
-  const hdrMat = mat(0x1d1e22, { roughness: 0.6 });
+  const pl = new P.Merge(); // plastic and paint, one mesh
+  const mt = new P.Merge(); // metal, one mesh
+  const pr = new P.Merge({ uv: true }); // small printing (chip names...), one mesh
+  const B = (w, h, d) => new THREE.BoxGeometry(w, h, d);
+  const C = (r, h, seg = 20) => new THREE.CylinderGeometry(r, r, h, seg);
+  const Y = UY;
+
+  // rubber feet under the corners
+  for (const [fx, fz] of [[1.6, 1.6], [24.6, 1.6], [1.6, 19.4], [24.6, 19.4]]) pl.add(C(0.55, Y - T, 12), { p: W(fx, (Y - T) / 2, fz), c: 0x3b3b40, ink: false });
+
+  // ---- female headers, with real holes (the sockets) ----
+  const HC = 0x1c1c20;
   const block = (x0, n, z) => {
-    const m = new THREE.Mesh(new THREE.BoxGeometry(n, HDR_H, 0.95), hdrMat);
-    m.position.set(x0 + (n - 1) / 2, UY + HDR_H / 2, z);
-    m.castShadow = true;
-    g.add(m);
+    pl.add(B(n, HDR_H, 0.95), { p: W(x0 + (n - 1) / 2, Y + HDR_H / 2, z), c: HC, ink: 25 });
+    // the seam a moulded header shows between its pins
+    for (let k = 1; k < n; k++) for (const sz of [-1, 1]) pl.add(B(0.05, HDR_H * 0.7, 0.02), { p: W(x0 - 0.5 + k, Y + HDR_H * 0.55, z + sz * 0.48), c: 0x2c2c31, ink: false });
   };
-  block(digX(0), 10, digZ);
-  block(digX(11), 8, digZ);
-  block(pwrX(0), 7, pwrZ);
-  block(pwrX(8), 6, pwrZ);
+  block(dxl(0), 10, DZ);
+  block(dxl(11), 8, DZ);
+  block(pxl(-1), 8, PZ);
+  block(pxl(8), 6, PZ);
+  const SOCK_GEO = P.funnelGeo(0.3, 0.12, 0.12, 1);
+  pl.add(SOCK_GEO, { p: W(pxl(-1), SOCK_Y + 0.012, PZ), c: 0x45454c, ink: false }); // the unused pin by IOREF
+
   const socks = [];
   DIG.forEach((nm, i) => nm && socks.push({ hdr: 'dig', i, name: nm }));
   PWR.forEach((nm, i) => nm && socks.push({ hdr: 'pwr', i, name: nm }));
-  const sockMesh = new THREE.InstancedMesh(new THREE.BoxGeometry(0.46, 0.04, 0.46), new THREE.MeshBasicMaterial({ color: 0xffffff }), socks.length);
+  const sockMesh = new THREE.InstancedMesh(SOCK_GEO, P.plasticMat(0xffffff, { rough: 0.6, vertexColors: true }), socks.length);
   const m4 = new THREE.Matrix4();
-  const sockBase = new THREE.Color(0x050505);
+  const sockBase = new THREE.Color(0x45454c);
   const sockIndex = {};
-  socks.forEach((s, k) => {
-    const p = sockPos(s);
-    m4.makeTranslation(p.x, SOCK_Y + 0.01, p.z);
+  socks.forEach((sk, k) => {
+    const p = sockPos(sk);
+    m4.makeTranslation(p.x, SOCK_Y + 0.012, p.z);
     sockMesh.setMatrixAt(k, m4);
     sockMesh.setColorAt(k, sockBase);
-    sockIndex[s.hdr + s.i] = k;
+    sockIndex[sk.hdr + sk.i] = k;
   });
   sockMesh.userData.noGlow = true;
   sockMesh.userData.socks = socks;
   g.add(sockMesh);
 
-  // USB socket, power jack, the chip, a reset button
-  const usb = rbox(6.2, 4.3, 4.7, 0xc9ccd1, 0.1, { metalness: 0.6, roughness: 0.35 });
-  usb.position.set(ux0 + 2.1, UY + 2.15, uz0 + 6.0);
-  const usbHole = new THREE.Mesh(new THREE.BoxGeometry(0.05, 2.6, 3.0), mat(0x2a2b30));
-  usbHole.position.set(ux0 - 1.0, UY + 2.15, uz0 + 6.0);
-  usbHole.userData.noInk = true;
-  const jack = rbox(5.6, 4.3, 3.6, 0x1d1e22, 0.12);
-  jack.position.set(ux0 + 1.9, UY + 2.15, uz0 + 16.4);
-  const chip = rbox(14.2, 1.3, 3.0, 0x1d1e22, 0.08);
-  chip.position.set(ux0 + 18.2, UY + 0.65, uz0 + 14.6);
-  const dent = new THREE.Mesh(new THREE.CircleGeometry(0.35, 12), mat(0x121316));
-  dent.rotation.x = -Math.PI / 2;
-  dent.position.set(ux0 + 11.8, UY + 1.31, uz0 + 14.6);
-  dent.userData.noInk = true;
-  const reset = rbox(1.6, 0.8, 1.6, 0xc9ccd1, 0.08, { metalness: 0.5 });
-  reset.position.set(ux0 + 7.6, UY + 0.4, uz0 + 3.6);
-  const resetCap = new THREE.Mesh(new THREE.CylinderGeometry(0.45, 0.45, 0.4, 14), mat(0xca1f3f));
-  resetCap.position.set(ux0 + 7.6, UY + 1.0, uz0 + 3.6);
-  g.add(usb, usbHole, jack, chip, dent, reset, resetCap);
-  // the chip's legs, as two thin strips
-  for (const s of [-1, 1]) {
-    const legs = new THREE.Mesh(new THREE.BoxGeometry(13.6, 0.3, 0.3), mat(0xc9ccd1, { metalness: 0.6 }));
-    legs.position.set(ux0 + 18.2, UY + 0.2, uz0 + 14.6 + s * 1.65);
-    legs.userData.noInk = true;
-    g.add(legs);
+  // ---- ICSP headers: 2 × 3 male pins ----
+  const icsp = (x0, z0) => {
+    pl.add(B(2, 0.9, 3), { p: W(x0 + 0.5, Y + 0.45, z0 + 1), c: HC, ink: 25 });
+    for (let i = 0; i < 2; i++) for (let j = 0; j < 3; j++) {
+      mt.add(B(0.24, 2.0, 0.24), { p: W(x0 + i, Y + 1.2, z0 + j), c: 0xe2e4e7, ink: false });
+      mt.add(new THREE.ConeGeometry(0.17, 0.2, 4, 1), { p: W(x0 + i, Y + 2.3, z0 + j), r: [0, Math.PI / 4, 0], c: 0xe2e4e7, ink: false });
+    }
+  };
+  icsp(9.1, 3.3);
+  icsp(24.9, 9.5);
+
+  // ---- USB-B socket: a metal shell with a real opening, the tongue inside ----
+  {
+    const sec = new THREE.Shape();
+    sec.moveTo(-2.35, -2.15); sec.lineTo(2.35, -2.15); sec.lineTo(2.35, 2.15); sec.lineTo(-2.35, 2.15); sec.lineTo(-2.35, -2.15);
+    const hole = new THREE.Path();
+    const hw = 1.7, hb = -1.45, ht = 1.6, ch = 0.6;
+    hole.moveTo(-hw, hb); hole.lineTo(-hw, ht - ch); hole.lineTo(-hw + ch, ht); hole.lineTo(hw - ch, ht); hole.lineTo(hw, ht - ch); hole.lineTo(hw, hb); hole.lineTo(-hw, hb);
+    sec.holes.push(hole);
+    const shell = new THREE.ExtrudeGeometry(sec, { depth: 6.2, bevelEnabled: false });
+    shell.rotateY(Math.PI / 2);
+    mt.add(shell, { p: W(-1.0, Y + 2.15, 6.0), c: 0xd7dade, ink: 25 });
+    mt.add(B(0.12, 4.3, 4.7), { p: W(5.14, Y + 2.15, 6.0), c: 0xc9ccd1, ink: 25 });
+    // spring tabs and the folded seam on top, solder tabs at the sides
+    for (const z of [-1.2, 1.2]) mt.add(B(1.3, 0.06, 0.55), { p: W(0.6, Y + 4.32, 6.0 + z), r: [0, 0, -0.06], c: 0xc4c7cc, ink: 25 });
+    mt.add(B(4.6, 0.03, 0.12), { p: W(2.6, Y + 4.31, 6.0), c: 0xb8bcc2, ink: false });
+    for (const z of [-2.4, 2.4]) mt.add(B(0.8, 0.9, 0.08), { p: W(3.6, Y - 0.1, 6.0 + z), c: 0xc9ccd1, ink: false });
+    // inside: a dark well, the white tongue, four gold contacts
+    pl.add(B(5.0, 3.05, 3.38), { p: W(1.95 + 0.3, Y + 2.15 + 0.07, 6.0), c: 0x121214, ink: false });
+    pl.add(B(3.2, 1.25, 2.1), { p: W(0.2, Y + 2.15 + 0.1, 6.0), c: 0xeceae4, ink: 25 });
+    for (const sy of [-1, 1]) for (const z of [-0.45, 0.45]) mt.add(B(2.6, 0.04, 0.32), { p: W(0.1, Y + 2.25 + sy * 0.64, 6.0 + z), c: 0xe3c068, ink: false });
   }
-  g.traverse((m) => { if (m.isMesh && !m.isInstancedMesh) { m.castShadow = true; m.receiveShadow = true; } });
-  return { group: g, pcb, sockMesh, sockIndex, sockBase, socks, sockPos, used: usedS };
+
+  // ---- DC barrel jack ----
+  {
+    const jz = 16.4;
+    pl.add(B(5.6, 2.6, 3.6), { p: W(1.9, Y + 1.3, jz), c: 0x18181b, ink: 25 });
+    pl.add(C(1.8, 5.6, low ? 16 : 28), { p: W(1.9, Y + 2.5, jz), r: [0, 0, Math.PI / 2], c: 0x18181b, ink: 50, hull: true });
+    pl.add(C(1.55, 0.35, low ? 16 : 28), { p: W(-1.05, Y + 2.3, jz), r: [0, 0, Math.PI / 2], c: 0x1f1f23, ink: 50, hull: true });
+    // the bore: a lathe facing inwards, and its floor
+    const bore = new THREE.LatheGeometry([new THREE.Vector2(1.1, 2.0), new THREE.Vector2(1.1, 0)], low ? 16 : 24);
+    bore.rotateZ(-Math.PI / 2);
+    pl.add(bore, { p: W(-1.24, Y + 2.3, jz), c: 0x0a0a0c, ink: false });
+    const floor = new THREE.CircleGeometry(1.1, low ? 16 : 24);
+    floor.rotateY(-Math.PI / 2);
+    pl.add(floor, { p: W(0.75, Y + 2.3, jz), c: 0x050506, ink: false });
+    mt.add(C(0.4, 1.9, 12), { p: W(-0.2, Y + 2.3, jz), r: [0, 0, Math.PI / 2], c: 0xd8b65a, ink: false });
+    for (const z of [-1.0, 1.0]) mt.add(B(0.5, 0.6, 0.12), { p: W(4.4, Y - 0.1, jz + z), c: 0xc9ccd1, ink: false });
+  }
+
+  // ---- the main chip, ATmega328P, in its socket ----
+  {
+    const { x, z } = CHIP;
+    for (const sz of [-1, 1]) pl.add(B(14.4, 0.42, 0.85), { p: W(x, Y + 0.21, z + sz * 1.375), c: 0x1b1b1f, ink: 25 });
+    for (const sx of [-1, 1]) pl.add(B(0.6, 0.42, 1.9), { p: W(x + sx * 6.9, Y + 0.21, z), c: 0x1b1b1f, ink: 25 });
+    pl.add(B(13.2, 0.1, 1.9), { p: W(x, Y + 0.05, z), c: 0x121214, ink: false });
+    pl.add(rbox_(14, 1.25, 2.95, 0.07), { p: W(x, Y + 1.125, z), c: 0x222326, ink: 50, hull: true });
+    for (let k = 0; k < 14; k++) for (const sz of [-1, 1]) {
+      const lx = x - 6.5 + k;
+      mt.add(B(0.3, 0.1, 0.34), { p: W(lx, Y + 0.95, z + sz * 1.6), c: 0xcfd2d6, ink: false });
+      mt.add(B(0.16, 0.58, 0.08), { p: W(lx, Y + 0.64, z + sz * 1.73), c: 0xcfd2d6, ink: false });
+    }
+    pr.add(flat(14, 2.95), { p: W(x, Y + 1.755, z), uv: ATLAS.dip, ink: false });
+  }
+  // the ceramic resonator by the chip, and the USB chip (ATmega16U2) by the socket
+  pl.add(B(1.3, 0.45, 0.55), { p: W(16.2, Y + 0.225, 12.0), c: 0xd8cba8, ink: 25 });
+  for (const sx of [-1, 1]) mt.add(B(0.18, 0.47, 0.57), { p: W(16.2 + sx * 0.6, Y + 0.23, 12.0), c: TINC, ink: false });
+  pl.add(B(2, 0.36, 2), { p: W(7.4, Y + 0.18, 8.4), c: 0x2a2a2f, ink: 25 });
+  pr.add(flat(2, 2), { p: W(7.4, Y + 0.365, 8.4), uv: ATLAS.u2, ink: false });
+  // the op-amp (SOIC-8)
+  pl.add(B(1.0, 0.36, 0.8), { p: W(SOIC.x, Y + 0.18, SOIC.z), c: 0x222326, ink: 25 });
+  for (let k = 0; k < 4; k++) for (const sz of [-1, 1]) mt.add(B(0.12, 0.08, 0.3), { p: W(SOIC.x - 0.38 + k * 0.25, Y + 0.05, SOIC.z + sz * 0.5), c: TINC, ink: false });
+  pr.add(flat(1.0, 0.8), { p: W(SOIC.x, Y + 0.365, SOIC.z), uv: ATLAS.opamp, ink: false });
+
+  // ---- 16 MHz crystal (oval can) ----
+  mt.add(P.stadiumGeo(4.4, 1.8, 1.35), { p: W(7.4, Y, 11.3), c: 0xdadde1, ink: 50, hull: true });
+  pr.add(flat(4.0, 1.5), { p: W(7.4, Y + 1.356, 11.3), uv: ATLAS.xtal, ink: false });
+
+  // ---- 5 V regulator (SOT-223) ----
+  pl.add(B(2.6, 0.65, 1.4), { p: W(7.6, Y + 0.325, 14.9), c: 0x1f1f23, ink: 25 });
+  mt.add(B(2.4, 0.08, 1.0), { p: W(7.6, Y + 0.04, 13.75), c: 0xcfd2d6, ink: 25 });
+  for (const lx of [6.7, 7.6, 8.5]) mt.add(B(0.3, 0.08, 0.6), { p: W(lx, Y + 0.04, 15.85), c: 0xcfd2d6, ink: false });
+  pr.add(flat(2.3, 1.1), { p: W(7.6, Y + 0.655, 14.9), uv: ATLAS.reg, ink: false });
+
+  // ---- two electrolytic capacitors: black base, aluminium can ----
+  for (const [cx, cz] of [[6.3, 17.8], [9.0, 17.8]]) {
+    pl.add(B(2.5, 0.35, 2.5), { p: W(cx, Y + 0.175, cz), c: 0x1b1b1f, ink: 25 });
+    mt.add(C(1.15, 1.9, low ? 16 : 28), { p: W(cx, Y + 0.35 + 0.95, cz), c: 0xdfe2e6, ink: 50, hull: true });
+    pr.add(flat(2.3, 2.3), { p: W(cx, Y + 2.256, cz), uv: ATLAS.cap, ink: false });
+  }
+
+  // ---- reset button ----
+  pl.add(B(1.6, 0.5, 1.6), { p: W(7.6, Y + 0.25, 3.6), c: 0x1f1f23, ink: 25 });
+  mt.add(B(1.8, 0.08, 1.8), { p: W(7.6, Y + 0.54, 3.6), c: 0xd4d7db, ink: 25 });
+  for (const sx of [-1, 1]) mt.add(B(0.3, 0.45, 1.84), { p: W(7.6 + sx * 0.92, Y + 0.3, 3.6), c: 0xc4c7cc, ink: false });
+  pl.add(C(0.5, 0.42, low ? 12 : 20), { p: W(7.6, Y + 0.78, 3.6), c: 0xc8312f, ink: 50, hull: true });
+
+  // ---- small resistors, capacitors, the fuse and a diode ----
+  for (const [kind, x, z, rot] of UNO_SMD) {
+    const big = kind === 'fuse' || kind === 'd';
+    const L = big ? 1.0 : 0.62, D = big ? 0.6 : 0.32, H = kind === 'c' ? 0.26 : big ? 0.34 : 0.2;
+    const col = kind === 'c' ? 0xb69a6c : kind === 'fuse' ? 0x8f9a3a : 0x1d1d20;
+    const r = [0, rot ? Math.PI / 2 : 0, 0];
+    pl.add(B(L - 0.2, H, D), { p: W(x, Y + H / 2, z), r, c: col, ink: false });
+    const ex = rot ? [0, 0, 1] : [1, 0, 0];
+    for (const sx of [-1, 1]) mt.add(B(0.12, H + 0.02, D + 0.02), { p: W(x + ex[0] * sx * (L / 2 - 0.06), Y + H / 2, z + ex[2] * sx * (L / 2 - 0.06)), r, c: TINC, ink: false });
+    if (kind === 'd') pl.add(B(0.12, H + 0.01, D + 0.01), { p: W(x + 0.28, Y + H / 2, z), c: 0xdadada, ink: false });
+  }
+
+  // ---- the four little lights: ON, L, TX, RX ----
+  const leds = {};
+  for (const [name, [x, z, col]] of Object.entries(UNO_LEDS)) {
+    pl.add(B(0.8, 0.26, 0.5), { p: W(x, Y + 0.13, z), c: 0xf1ede4, ink: 25 });
+    const lens = P.plasticMat(0xe3dccd, { rough: 0.25, gloss: 0.8, emissive: col, emissiveIntensity: 0 });
+    const m = new THREE.Mesh(B(0.58, 0.07, 0.36), lens);
+    m.position.set(...W(x, Y + 0.29, z));
+    m.userData.noInk = true;
+    const halo = P.haloSprite(col, 3.2);
+    halo.position.set(...W(x, Y + 0.75, z));
+    g.add(m, halo);
+    leds[name] = {
+      mesh: m, halo,
+      set(on, k = 1) {
+        lens.emissiveIntensity = on ? 1.7 * k : 0;
+        lens.color.setHex(on ? col : 0xe3dccd);
+        halo.visible = !!on && k > 0.02;
+        halo.material.opacity = on ? 0.9 * Math.min(1, k) : 0;
+      },
+    };
+  }
+
+  const plM = pl.mesh(P.plasticMat(0xffffff, { rough: 0.5, gloss: 0.35 }), { hull: 0.03 });
+  const mtM = mt.mesh(P.metalMat(0xffffff, { rough: 0.3 }), { hull: 0.025 });
+  const prM = pr.mesh(new THREE.MeshStandardMaterial({ map: atlasTex(), transparent: true, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -4, roughness: 0.6 }), { shadow: false, colors: false });
+  prM.castShadow = false;
+  g.add(plM, mtM, prM);
+  g.traverse((m) => { if (m.isMesh && !m.userData.isInk && !m.userData.noShadow && m !== prM) { m.castShadow = true; m.receiveShadow = true; } });
+  return { group: g, pcb, sockMesh, sockIndex, sockBase, socks, sockPos, used: usedS, leds };
+}
+const TINC = 0xd2d5d9;
+const rbox_ = (w, h, d, r) => new RoundedBoxGeometry(w, h, d, 1, r);
+// a flat plane lying face up (for printing)
+const flat = (w, d) => { const p = new THREE.PlaneGeometry(w, d); p.rotateX(-Math.PI / 2); return p; };
+
+// The small printing on the Uno's parts, all in one texture.
+const ATLAS = (() => {
+  const r = (x0, y0, x1, y1) => [x0 / 1024, 1 - y1 / 512, x1 / 1024, 1 - y0 / 512];
+  return { dip: r(0, 0, 1024, 216), u2: r(0, 224, 128, 352), cap: r(128, 224, 256, 352), xtal: r(256, 224, 576, 344), reg: r(640, 224, 768, 288), opamp: r(768, 224, 896, 288) };
+})();
+let ATLAS_TEX;
+function atlasTex() {
+  return (ATLAS_TEX ??= P.canvasTexture(1024, 512, (c) => {
+    c.clearRect(0, 0, 1024, 512);
+    const txt = (t, x, y, size, col = 'rgba(235,235,232,0.92)', font = P.FONTS.SANS, weight = 600) => {
+      c.fillStyle = col;
+      c.font = `${weight} ${size}px ${font}`;
+      c.textAlign = 'center';
+      c.textBaseline = 'middle';
+      c.fillText(t, x, y);
+    };
+    // the main chip, upside down (its notch, and pin 1, are on the right)
+    c.save();
+    c.translate(512, 108);
+    c.rotate(Math.PI);
+    txt('ATMEGA328P-PU', -40, -22, 54, 'rgba(225,225,222,0.9)', P.FONTS.SANS, 600);
+    txt('AVR · 8-bit · 32 KB flash', -40, 34, 28, 'rgba(200,200,196,0.75)', P.FONTS.SANS, 500);
+    c.restore();
+    // notch (a half moon) and pin-1 dimple on the right end
+    c.fillStyle = 'rgba(0,0,0,0.55)';
+    c.beginPath(); c.arc(1024, 108, 34, Math.PI / 2, Math.PI * 1.5); c.fill();
+    c.fillStyle = 'rgba(0,0,0,0.4)';
+    c.beginPath(); c.arc(1024 - 58, 46, 15, 0, Math.PI * 2); c.fill();
+    c.strokeStyle = 'rgba(255,255,255,0.12)';
+    c.lineWidth = 3;
+    c.stroke();
+    // the USB chip
+    txt('16U2', 64, 270, 34, 'rgba(225,225,222,0.85)', P.FONTS.SANS, 600);
+    txt('MU', 64, 310, 24, 'rgba(200,200,196,0.7)', P.FONTS.SANS, 500);
+    c.fillStyle = 'rgba(255,255,255,0.35)';
+    c.beginPath(); c.arc(22, 244, 6, 0, Math.PI * 2); c.fill();
+    // capacitor top: the black arc marks the − side, and the value
+    c.fillStyle = '#1b1b1f';
+    c.beginPath(); c.arc(192, 288, 60, Math.PI * 0.62, Math.PI * 1.38); c.closePath(); c.fill();
+    c.strokeStyle = 'rgba(120,124,130,0.35)';
+    c.lineWidth = 2;
+    c.beginPath(); c.arc(192, 288, 50, 0, Math.PI * 2); c.stroke();
+    txt('47', 222, 288, 26, '#2a2a2e', P.FONTS.SANS, 700);
+    // crystal can
+    txt('16.000', 416, 284, 62, 'rgba(70,74,80,0.85)', P.FONTS.MONO, 600);
+    // regulator and op-amp
+    txt('1117', 704, 246, 34, 'rgba(225,225,222,0.85)', P.FONTS.SANS, 600);
+    txt('5.0', 704, 274, 22, 'rgba(200,200,196,0.75)', P.FONTS.SANS, 500);
+    txt('358', 832, 256, 34, 'rgba(225,225,222,0.85)', P.FONTS.SANS, 600);
+  }));
+}
+
+// The Uno's top: solder mask, copper traces, pads and the white printing.
+function drawUnoTop(c, s, { DIG, PWR, usedS, dxl, pxl, DZ, PZ }) {
+  const X = (x) => x * s;
+  const CW = UNO_W * s, CH = UNO_D * s;
+  c.fillStyle = '#077f8b';
+  c.fillRect(0, 0, CW, CH);
+  const gr = c.createRadialGradient(CW * 0.45, CH * 0.4, 0, CW * 0.45, CH * 0.4, CW * 0.7);
+  gr.addColorStop(0, 'rgba(255,255,255,0.07)');
+  gr.addColorStop(1, 'rgba(0,0,0,0.07)');
+  c.fillStyle = gr;
+  c.fillRect(0, 0, CW, CH);
+  // copper traces under the mask: a shade lighter
+  c.lineCap = 'round';
+  c.lineJoin = 'round';
+  const trace = (pts, w = 0.13, col = 'rgba(120,214,220,0.30)') => {
+    c.strokeStyle = col;
+    c.lineWidth = w * s;
+    c.beginPath();
+    pts.forEach(([x, z], i) => (i ? c.lineTo(X(x), X(z)) : c.moveTo(X(x), X(z))));
+    c.stroke();
+  };
+  const via = (x, z) => {
+    c.fillStyle = 'rgba(205,215,205,0.8)';
+    c.beginPath(); c.arc(X(x), X(z), s * 0.16, 0, Math.PI * 2); c.fill();
+    c.fillStyle = '#055f68';
+    c.beginPath(); c.arc(X(x), X(z), s * 0.07, 0, Math.PI * 2); c.fill();
+  };
+  // digital pins 0..8 down to the chip's top row (pin 1 is at the right end)
+  const topPin = { 18: 2, 17: 3, 16: 4, 15: 5, 14: 6, 13: 11, 12: 12, 11: 13, 9: 14 };
+  Object.entries(topPin).forEach(([i, n], k) => {
+    const x0 = dxl(+i);
+    const px = CHIP.x + 6.5 - (n - 1);
+    const zb = 4.6 + (k % 4) * 0.32;
+    trace([[x0, DZ + 0.5], [x0, zb], [px + (x0 > px ? 1 : -1) * 0.2, zb + Math.abs(x0 - px) * 0.18 + 0.5], [px, 11.9], [px, 12.9]]);
+  });
+  // analog pins up to the chip's bottom row
+  for (let a = 0; a < 6; a++) {
+    const x0 = pxl(8 + a);
+    const px = CHIP.x - 6.5 + (22 + a - 14);
+    trace([[x0, PZ - 0.5], [x0, 18.6 - a * 0.12], [px, 17.4], [px, 16.3]]);
+  }
+  // USB data lines to the 16U2, power from the jack through the regulator
+  trace([[5.2, 5.6], [6.2, 6.6], [6.6, 7.5]]);
+  trace([[5.2, 6.4], [5.9, 7.1], [6.4, 8.0]]);
+  trace([[4.7, 16.4], [6.0, 16.4], [6.6, 15.6]], 0.5, 'rgba(120,214,220,0.22)');
+  trace([[8.6, 14.9], [9.0, 16.4], [9.0, 17.8]], 0.5, 'rgba(120,214,220,0.22)');
+  trace([[9.0, 17.8], [pxl(3), 18.8], [pxl(3), PZ - 0.5]], 0.36, 'rgba(120,214,220,0.22)');
+  trace([[pxl(4), PZ - 0.5], [pxl(4), 18.3], [10.4, 16.6], [10.4, 12.6], [11.4, 12.0]], 0.36, 'rgba(120,214,220,0.22)');
+  trace([[8.4, 8.4], [9.4, 8.6], [10.2, 7.6]]);
+  trace([[7.4, 9.4], [7.4, 10.4]]);
+  trace([[12.6, 6.4], [11.6, 5.2], [11.6, 4.6]]);
+  trace([[23.6, 7.6], [24.6, 6.0]]);
+  trace([[24.9, 11.5], [24.9, 12.6], [23.7, 13.0]]);
+  for (const [x, z] of [[11.4, 12.0], [10.4, 12.6], [6.6, 7.5], [9.4, 8.6], [23.7, 13.0], [12.0, 6.0], [21.2, 11.6], [14.6, 10.8], [19.2, 4.4], [8.4, 6.6]]) via(x, z);
+
+  // pads: tinned copper showing through the mask
+  const pad = (x, z, w, d) => { c.fillStyle = '#cfd3cc'; c.fillRect(X(x - w / 2), X(z - d / 2), w * s, d * s); };
+  for (const [kind, x, z, rot] of UNO_SMD) {
+    const big = kind === 'fuse' || kind === 'd';
+    const L = big ? 1.0 : 0.62, D = (big ? 0.6 : 0.32) + 0.1;
+    for (const sx of [-1, 1]) rot ? pad(x, z + sx * (L / 2 - 0.06), D, 0.24) : pad(x + sx * (L / 2 - 0.06), z, 0.24, D);
+  }
+  for (const [x, z] of Object.values(UNO_LEDS)) for (const sx of [-1, 1]) pad(x + sx * 0.36, z, 0.22, 0.56);
+  for (let k = 0; k < 8; k++) { pad(7.4 - 0.75 + (k % 4) * 0.5, 8.4 + (k < 4 ? -1.12 : 1.12), 0.18, 0.28); pad(7.4 + (k < 4 ? -1.12 : 1.12), 8.4 - 0.75 + (k % 4) * 0.5, 0.28, 0.18); }
+  for (const sx of [-1, 1]) pad(16.2 + sx * 0.6, 12.0, 0.3, 0.7);
+  // mounting holes: a tinned ring round each
+  for (const [hx, hz] of UNO_HOLES) {
+    c.fillStyle = '#d6d9d2';
+    c.beginPath(); c.arc(X(hx), X(hz), s * 1.0, 0, Math.PI * 2); c.fill();
+    c.strokeStyle = 'rgba(0,0,0,0.12)';
+    c.lineWidth = s * 0.05;
+    c.stroke();
+  }
+
+  // ---- white printing ----
+  const INKW = '#f2f6f5';
+  c.fillStyle = INKW;
+  c.strokeStyle = INKW;
+  const text = (t, x, z, size, { weight = 700, font = P.FONTS.SANS, align = 'center', rot = 0, spacing = 0 } = {}) => {
+    c.save();
+    c.translate(X(x), X(z));
+    c.rotate(rot);
+    c.font = `${weight} ${size * s}px ${font}`;
+    c.textAlign = align;
+    c.textBaseline = 'middle';
+    if (spacing && 'letterSpacing' in c) c.letterSpacing = `${spacing * s}px`;
+    c.fillStyle = INKW;
+    c.fillText(t, 0, 0);
+    c.restore();
+  };
+  c.lineWidth = s * 0.07;
+  // header outlines and pin-1 marks
+  const outline = (x0, n, z, mark) => {
+    c.strokeRect(X(x0 - 0.56), X(z - 0.56), (n + 0.12) * s, 1.12 * s);
+    c.beginPath();
+    const tz = z + mark * 0.85;
+    c.moveTo(X(x0 - 0.1), X(tz)); c.lineTo(X(x0 + 0.3), X(tz)); c.lineTo(X(x0 + 0.1), X(tz + mark * 0.3)); c.closePath();
+    c.fill();
+  };
+  outline(dxl(0), 10, DZ, 1);
+  outline(dxl(11), 8, DZ, 1);
+  outline(pxl(-1), 8, PZ, -1);
+  outline(pxl(8), 6, PZ, -1);
+  c.strokeRect(X(8.55), X(2.75), 2.1 * s, 3.1 * s);
+  c.strokeRect(X(24.35), X(8.95), 2.1 * s, 3.1 * s);
+  c.beginPath(); c.arc(X(8.3), X(3.3), s * 0.14, 0, Math.PI * 2); c.fill();
+  c.beginPath(); c.arc(X(24.1), X(9.5), s * 0.14, 0, Math.PI * 2); c.fill();
+
+  // pin names, sideways as on the real board; pins this build uses on green
+  const pinLabel = (x, z, name, used, below) => {
+    let t = (PWM.has(name) ? '~' : '') + name;
+    if (name === '1') t = 'TX 1';
+    if (name === '0') t = 'RX 0';
+    c.save();
+    c.translate(X(x), X(z));
+    c.rotate(-Math.PI / 2);
+    c.font = `700 ${s * 0.5}px ${P.FONTS.MONO}`;
+    c.textBaseline = 'middle';
+    const w = c.measureText(t).width + s * 0.34;
+    // below the header the name runs away from it (down); above, up
+    const x0 = below ? -w : 0;
+    if (used) {
+      c.fillStyle = '#2E7D46';
+      c.beginPath();
+      c.roundRect(x0, -s * 0.37, w, s * 0.74, s * 0.18);
+      c.fill();
+    }
+    c.fillStyle = INKW;
+    c.textAlign = 'left';
+    c.fillText(t, x0 + s * 0.17, s * 0.03);
+    c.restore();
+  };
+  DIG.forEach((nm, i) => nm && pinLabel(dxl(i), DZ + 0.66, nm, usedS.has('dig' + i), true));
+  // the power names start a little way in, so the tall header does not hide them
+  PWR.forEach((nm, i) => nm && pinLabel(pxl(i), PZ - 1.62, nm, usedS.has('pwr' + i), false));
+  text('DIGITAL (PWM ~)', dxl(9), 3.85, 0.5, { weight: 600 });
+  text('POWER', pxl(3), 20.72, 0.4, { weight: 600, spacing: 0.06 });
+  text('ANALOG IN', pxl(10.5), 20.72, 0.4, { weight: 600, spacing: 0.06 });
+
+  // our drawing of the logo: two joined rings with − and +, the name, UNO in a box
+  c.lineWidth = s * 0.3;
+  for (const [x, sign] of [[15.2, '−'], [17.55, '+']]) {
+    c.beginPath();
+    c.ellipse(X(x), X(7.1), s * 1.12, s * 0.92, 0, 0, Math.PI * 2);
+    c.stroke();
+    text(sign, x, 7.12, 1.1, { weight: 800 });
+  }
+  text('ARDUINO', 16.4, 9.15, 0.78, { weight: 800, font: P.FONTS.HEAD, spacing: 0.08 });
+  c.lineWidth = s * 0.12;
+  c.beginPath(); c.roundRect(X(19.4), X(6.15), 4.4 * s, 2.5 * s, s * 0.45); c.stroke();
+  text('UNO', 21.6, 7.5, 1.85, { weight: 800, font: P.FONTS.HEAD, spacing: 0.04 });
+  // the lights, the button, the headers, some part names
+  text('L', 12.75, 4.3, 0.42);
+  text('TX', 11.45, 7.0, 0.38);
+  text('RX', 11.45, 8.1, 0.38);
+  text('ON', 24.6, 6.15, 0.42);
+  text('RESET', 7.0, 5.0, 0.34, { weight: 600 });
+  text('ICSP', 25.4, 12.42, 0.32, { weight: 600 });
+  text('16 MHz', 7.4, 12.6, 0.3, { weight: 600 });
+  for (const [t, x, z] of [['C1', 6.3, 19.35], ['C2', 9.0, 19.35], ['X1', 1.9, 13.95], ['Y1', 9.95, 11.3], ['F1', 5.8, 3.05]]) text(t, x, z, 0.28, { weight: 600 });
 }
 
 // ---------- the lab ----------
@@ -1219,24 +1584,38 @@ export default function buildLab(stage, ui, host, W) {
 }
 
 // ---------- camera framing, from the finished world ----------
-export function config(W) {
-  const elev = THREE.MathUtils.degToRad(46);
-  const box = new THREE.Box3().setFromObject(W.world);
-  const cs = Math.cos(elev), sn = Math.sin(elev);
+export function config(W, { yaw = -18, elev = 44 } = {}) {
+  // A three-quarter view: a little from the left, so the USB and power
+  // sockets' openings show, while rows and columns still read like the SVG.
+  const e = THREE.MathUtils.degToRad(elev);
+  const a = THREE.MathUtils.degToRad(yaw);
+  const right = V(Math.cos(a), 0, -Math.sin(a));
+  const upv = V(-Math.sin(e) * Math.sin(a), Math.cos(e), -Math.sin(e) * Math.cos(a));
+  const fwd = V(Math.sin(a), 0, Math.cos(a));
+  const dir = V(Math.cos(e) * Math.sin(a), Math.sin(e), Math.cos(e) * Math.cos(a));
+  const box = new THREE.Box3();
+  W.world.updateMatrixWorld(true);
+  W.world.traverse((o) => {
+    // the soft shadow pads and the (hidden) glows do not count
+    if (!o.geometry || o.isSprite || o.userData.noShadow || o.userData.isInk) return;
+    o.geometry.boundingBox ?? o.geometry.computeBoundingBox();
+    box.union(o.geometry.boundingBox.clone().applyMatrix4(o.matrixWorld));
+  });
   let u0 = Infinity, u1 = -Infinity, v0 = Infinity, v1 = -Infinity;
+  const p = new THREE.Vector3();
   for (const x of [box.min.x, box.max.x]) for (const y of [box.min.y, box.max.y]) for (const z of [box.min.z, box.max.z]) {
-    const v = y * cs - z * sn;
-    u0 = Math.min(u0, x); u1 = Math.max(u1, x);
+    p.set(x, y, z);
+    const u = p.dot(right), v = p.dot(upv);
+    u0 = Math.min(u0, u); u1 = Math.max(u1, u);
     v0 = Math.min(v0, v); v1 = Math.max(v1, v);
   }
-  const fitW = (u1 - u0) * 1.04 + 1.5;
-  const fitH = (v1 - v0) * 1.04 + 1.5;
+  const fitW = (u1 - u0) * 1.02 + 1.5;
+  const fitH = (v1 - v0) * 1.02 + 1.5;
   W.fitW = fitW;
-  const uc = (u0 + u1) / 2;
-  const vc = (v0 + v1) / 2;
-  const target = [uc, 0, -vc / sn];
+  const T = right.clone().multiplyScalar((u0 + u1) / 2).addScaledVector(fwd, -((v0 + v1) / 2) / Math.sin(e));
+  const target = T.toArray();
   const D = 160;
-  const camera = [target[0], D * sn, target[2] + D * cs];
+  const camera = T.clone().addScaledVector(dir, D).toArray();
   const size = box.getSize(new THREE.Vector3());
   const half = Math.max(size.x, size.z) / 2 + 4;
   return {

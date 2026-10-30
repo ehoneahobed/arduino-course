@@ -10,7 +10,7 @@
 //
 // It also holds a few helpers the Band 1 and Band 2 labs share (glow, code
 // boxes, a little CSS, preparing a wiring build from builds.json).
-import { THREE, mat, rbox, cable, decal } from './runtime.js';
+import { THREE, mat, rbox, cable, decal, codeView } from './runtime.js';
 import * as P from './parts.js';
 import { buildUno, config as buildConfig, prepare as buildPrepare } from './build.js';
 
@@ -114,31 +114,11 @@ export function ensureStyle() {
   document.head.appendChild(s);
 }
 
-// A code box: lines [{n, t}], optionally clickable. Returns { el, mark(n, cls), clear(cls), set(lines) }.
-export function codeBox(group, file, lines, onLine) {
-  const el = document.createElement('div');
-  el.className = 'cl-code';
-  const rows = new Map();
-  const set = (ls, f = file) => {
-    el.innerHTML = `<span class="cl-file">${esc(f)}</span>`;
-    rows.clear();
-    for (const l of ls) {
-      const r = document.createElement(onLine ? 'button' : 'div');
-      if (onLine) { r.type = 'button'; r.setAttribute('aria-label', `Line ${l.n}: ${l.t.trim() || 'blank'}`); r.addEventListener('click', () => onLine(l.n)); }
-      r.className = 'cl-line';
-      r.innerHTML = `<span class="n">${l.n}</span><span>${esc(l.t) || ' '}</span>`;
-      el.appendChild(r);
-      rows.set(l.n, r);
-    }
-  };
-  set(lines);
-  group.appendChild(el);
-  return {
-    el,
-    set,
-    mark(n, cls) { for (const [k, r] of rows) r.classList.toggle(cls, k === n); },
-    clear(cls) { for (const r of rows.values()) r.classList.remove(cls); },
-  };
+// A code box: lines [{n, t}], optionally clickable. Returns { el, mark(n, cls), clear(cls), set(lines), action(text, fn) }.
+// It is the runtime's code view (highlighting, line numbers, Copy); { tab: true }
+// moves its group into the panel's Code tab.
+export function codeBox(group, file, lines, onLine, opts) {
+  return codeView(group, file, lines, onLine, opts);
 }
 const numbered = (first, text) => text.split('\n').map((t, i) => ({ n: first + i, t }));
 
@@ -254,36 +234,11 @@ export default function lab(stage, ui, host, W) {
   const { uno } = W;
   const ON = 1, OFF = 0;
 
-  // ---- the little lights the shared Uno model leaves out ----
-  const smd = (x, z, col) => {
-    const m = new THREE.Mesh(new THREE.BoxGeometry(0.75, 0.32, 0.5), mat(col, { emissive: col, emissiveIntensity: 0 }));
-    m.position.set(x, UY + 0.16, z);
-    m.userData.noInk = false;
-    const h = glow(col, 3.2);
-    h.position.set(x, UY + 0.7, z);
-    W.world.add(m, h);
-    const set = (on, k = 1) => {
-      m.material.emissiveIntensity = on ? 1.6 * k : 0;
-      m.material.color.setHex(on ? col : 0xb9b2a6);
-      h.material.opacity = on ? 0.95 * k : 0;
-    };
-    set(false);
-    return { m, h, set };
-  };
-  const print = (x, z, t) => {
-    const p = P.textPlate(1.6, 0.6, t, { color: '#ffffff', size: 0.42, weight: 700 });
-    p.rotation.x = -Math.PI / 2;
-    p.position.set(x, UY + 0.012, z);
-    W.world.add(p);
-  };
-  const Lled = smd(11.6, 4.3, 0xffa21a);
-  const TX = smd(10.2, 7.0, 0xffd21a);
-  const RX = smd(10.2, 8.1, 0xffd21a);
-  const ONled = smd(24.6, 5.2, 0x2fd15a);
-  print(12.9, 4.3, 'L');
-  print(11.6, 7.0, 'TX');
-  print(11.6, 8.1, 'RX');
-  print(24.6, 6.2, 'ON');
+  // ---- the little lights: built into the shared Uno model (and printed on it) ----
+  const Lled = uno.leds.L;
+  const TX = uno.leds.TX;
+  const RX = uno.leds.RX;
+  const ONled = uno.leds.ON;
 
   // ---- pickable regions (invisible boxes over the parts) ----
   const zone = (id, w, h, d, x, y, z) => {
@@ -485,13 +440,14 @@ export default function lab(stage, ui, host, W) {
   let sketchShown = 'b0_01';
   let fixed = false;
   let errorShown = false;
-  const code = codeBox(gCode, SK.b0_01.file, numbered(17, SK.b0_01.text), (n) => clickLine(n));
+  const code = codeBox(gCode, SK.b0_01.file, numbered(17, SK.b0_01.text), (n) => clickLine(n), { tab: true });
   const consoleEl = document.createElement('div');
   consoleEl.className = 'cl-console';
   consoleEl.setAttribute('aria-live', 'polite');
   consoleEl.textContent = 'Choose a sketch, then press Verify or Upload.';
-  const vBtn = ui.button('✓ Verify', () => compile(false), { group: gCode });
-  const uBtn = ui.button('→ Upload', () => compile(true), { group: gCode, primary: true });
+  // Verify and Upload sit at the top of the code, as in the Arduino IDE.
+  const vBtn = code.action('✓ Verify', () => compile(false), { title: 'Check the code (it does not send it)' });
+  const uBtn = code.action('→ Upload', () => compile(true), { primary: true, title: 'Check the code and send it to the board' });
   const fixBtn = ui.button('Add the semicolon', () => fix(), { group: gCode });
   fixBtn.hidden = true;
   gCode.appendChild(consoleEl);

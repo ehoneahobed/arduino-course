@@ -507,7 +507,9 @@ export default function lab(stage, ui, host, W) {
     if (m === 'fn') { right.innerHTML = ''; renderFn(); renderVars(''); glow(lamp6, 0); glow(answer6, 0); }
     else { restartTiming(); startRaf(); }
     const focus = m === 'fn' ? W4.L.hole('h21') : W6.L.hole('h11');
-    stage.lookAt(focus.clone().setY(0), m === 'fn' ? 1.15 : 1.6);
+    // Part 5's board is framed whole; Parts 6 and 7 look closer at the button and lamp.
+    if (m === 'fn') stage.view.reset();
+    else stage.lookAt(focus.clone().setY(0), 1.35);
     explain();
     stage.invalidate();
   }
