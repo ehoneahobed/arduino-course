@@ -5,16 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Band 6: Things That Move · Arduino Ladder</title>
   <meta name="description" content="A servo, a gate made of card, and the first problem that is not about code at all: a moving thing needs real power, and two power sources need one shared ground.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+  <meta name="theme-color" content="#24182E">
+  <link rel="icon" type="image/png" sizes="192x192" href="../assets/brand/icon-192.png">
+  <link rel="apple-touch-icon" href="../assets/brand/icon-180.png">
   <link rel="stylesheet" href="../assets/course.css">
 </head>
 <body>
 <a class="skip" href="#main">Skip to the lesson</a>
 <div class="topbar">
-  <a class="home" href="../index.html">Arduino Ladder <span>· Bozoma Innovation Hub</span></a>
+  <a class="home" href="../index.html"><img src="../assets/brand/logo-mark-white.png" alt="" width="36" height="36"><span class="lock"><b>Arduino Ladder</b><small>Bozoma Innovation Hub</small></span></a>
   <nav class="bandlinks" aria-label="Bands"><a href="../bands/band-0.html">0</a><a href="../bands/band-1.html">1</a><a href="../bands/band-2.html">2</a><a href="../bands/band-3.html">3</a><a href="../bands/band-4.html">4</a><a href="../bands/band-5.html">5</a><a href="../bands/band-6.html" aria-current="page">6</a><a href="../bands/band-7.html">7</a><a href="../bands/band-8.html">8</a></nav>
+  <a class="bih" href="https://bozomainnovationhub.com"><span class="long">bozomainnovationhub.com</span><span class="short">BIH website</span></a>
 </div>
 <div class="wrap" id="main">
 <nav aria-label="Sections">
@@ -31,6 +32,7 @@
   <a href="#motors">Motors</a>
   <a href="#change">Change it</a>
   <a href="#make">Make yours</a>
+  <a href="#ideas">Ideas</a>
   <a href="#check">Check yourself</a>
   <a href="#recall">Say these out loud</a>
   <a href="#problems">Problems</a>
@@ -2104,6 +2106,94 @@ if (abs(wanted - lastAngle) &gt;= deadband) {
   </div>
 </section>
 
+<!-- Band 6: "What you can build now". Insert as its own section; see INSERT.md. -->
+<section class="part" id="ideas">
+  <div class="parthead"><span class="tag">Ideas</span><h2>What you can build now</h2></div>
+  <div class="col stack">
+    <p>Every idea here uses only parts and ideas from Bands 0 to 6. Each one practises what this band added: moving a servo with a library, stopping a shivering reading with a deadband, and giving a moving part its own battery with one shared ground.</p>
+    <p>None of them is a lesson. You get the person, the rule and the parts, and the code is yours, like a Practice page. Stars show how hard it is: one star is an afternoon, three stars will take you a few evenings.</p>
+  </div>
+  <div class="grid-2" style="margin-top:1rem">
+    <div class="card stack-sm" id="idea-6-1">
+      <h4>Seats-left dial for a trotro &nbsp;<span class="ptype invent" role="img" aria-label="Difficulty: two stars of three">★★☆</span></h4>
+      <dl class="tier" style="grid-template-columns:minmax(0,1fr); gap:.15rem 0">
+        <dt>For</dt><dd>The mate at the lorry park, shouting how many seats are left to people who cannot hear him.</dd>
+        <dt style="margin-top:.45rem">Rule</dt><dd>Each press moves a card needle one seat towards “full”; at full a light comes on and stays on until the second button sends the needle back to empty.</dd>
+        <dt style="margin-top:.45rem">Parts</dt><dd>Servo, 2 push buttons, 1 LED and resistor, battery pack, jumper wires, card for the dial.</dd>
+        <dt style="margin-top:.45rem">Practises</dt><dd>Turning a count into an angle, and a servo on its own battery with one shared ground.</dd>
+      </dl>
+      <p class="note">A <a href="../projects/b6-stepper-dial.html">stepper</a> does this too, and can show more seats than 180 degrees allows.</p>
+    </div>
+    <div class="card stack-sm" id="idea-6-2">
+      <h4>Kiosk OPEN / CLOSED flag &nbsp;<span class="ptype invent" role="img" aria-label="Difficulty: one star of three">★☆☆</span></h4>
+      <dl class="tier" style="grid-template-columns:minmax(0,1fr); gap:.15rem 0">
+        <dt>For</dt><dd>A roadside kiosk owner who goes for lunch and leaves customers waiting.</dd>
+        <dt style="margin-top:.45rem">Rule</dt><dd>Each press turns a card sign slowly from OPEN to CLOSED or back, one degree at a time, so it does not slap.</dd>
+        <dt style="margin-top:.45rem">Parts</dt><dd>Servo, 1 push button, battery pack, jumper wires, card.</dd>
+        <dt style="margin-top:.45rem">Practises</dt><dd>Moving to a position slowly with a <code>for</code> loop, and why a servo takes time to arrive.</dd>
+      </dl>
+      <p class="note">After a power cut, which way does it point? Write down what it does now. Band 8 is about choosing it.</p>
+    </div>
+    <div class="card stack-sm" id="idea-6-3">
+      <h4>Seedling tray rain cover &nbsp;<span class="ptype invent" role="img" aria-label="Difficulty: three stars of three">★★★</span></h4>
+      <dl class="tier" style="grid-template-columns:minmax(0,1fr); gap:.15rem 0">
+        <dt>For</dt><dd>Somebody raising pepper or tomato seedlings in a tray. Heavy rain beats them flat in minutes.</dd>
+        <dt style="margin-top:.45rem">Rule</dt><dd>When the rain plate is wet, swing a light card lid over the tray; open it again only when the plate has been dry for ten minutes.</dd>
+        <dt style="margin-top:.45rem">Parts</dt><dd>Servo, rain sensor board and plate, battery pack, jumper wires, light card or a thin plastic sheet.</dd>
+        <dt style="margin-top:.45rem">Practises</dt><dd>A servo answering a sensor, with two thresholds and a timer so it does not flap open and shut.</dd>
+      </dl>
+      <p class="note">This is a model-size tray. A servo can only push something light. The board, battery and servo must be in a dry box; only the plate is out in the rain. Power the plate from the 5V pin, never the + rail.</p>
+    </div>
+    <div class="card stack-sm" id="idea-6-4">
+      <h4>Bird scarer flag &nbsp;<span class="ptype invent" role="img" aria-label="Difficulty: three stars of three">★★★</span></h4>
+      <dl class="tier" style="grid-template-columns:minmax(0,1fr); gap:.15rem 0">
+        <dt>For</dt><dd>A farmer whose rice or maize is eaten by birds, and whose children are sent to chase them instead of going to school.</dd>
+        <dt style="margin-top:.45rem">Rule</dt><dd>In daylight, wave a bright flag at a random moment every twenty to ninety seconds; at night stay still to save the battery.</dd>
+        <dt style="margin-top:.45rem">Parts</dt><dd>Servo, light sensor and its 10 kΩ resistor (top leg to the 5V pin), battery pack, jumper wires, a stick and a strip of bright cloth or a cut sachet.</dd>
+        <dt style="margin-top:.45rem">Practises</dt><dd>A servo plus <code>random</code> plus a light threshold, all on one battery.</dd>
+      </dl>
+      <p class="note">Be honest: birds learn to ignore anything that repeats, and four AA cells will not last a season. Measure how many days they last. Keep everything except the flag in a covered box.</p>
+    </div>
+    <div class="card stack-sm" id="idea-6-5">
+      <h4>Stall turntable &nbsp;<span class="ptype invent" role="img" aria-label="Difficulty: two stars of three">★★☆</span></h4>
+      <dl class="tier" style="grid-template-columns:minmax(0,1fr); gap:.15rem 0">
+        <dt>For</dt><dd>A seller of beads, watches or phone cases, who wants people walking past to see every side of the best item.</dd>
+        <dt style="margin-top:.45rem">Rule</dt><dd>Turn the display slowly and forever; a press stops it for ten seconds so a customer can look, then it carries on.</dd>
+        <dt style="margin-top:.45rem">Parts</dt><dd>28BYJ-48 stepper and its ULN2003 board (the <a href="../projects/b6-stepper-dial.html">stepper dial</a> swap), 1 push button, battery pack, jumper wires, a card disc.</dd>
+        <dt style="margin-top:.45rem">Practises</dt><dd>A stepper that can turn for ever, and a pause that does not lose count.</dd>
+      </dl>
+    </div>
+    <div class="card stack-sm" id="idea-6-6">
+      <h4>Fly chaser for the fish table &nbsp;<span class="ptype invent" role="img" aria-label="Difficulty: three stars of three">★★★</span></h4>
+      <dl class="tier" style="grid-template-columns:minmax(0,1fr); gap:.15rem 0">
+        <dt>For</dt><dd>A fish or meat seller at the market who waves a fan at flies all day.</dd>
+        <dt style="margin-top:.45rem">Rule</dt><dd>Spin paper streamers for ten seconds every minute, faster when the knob is turned up; a button stops it at once.</dd>
+        <dt style="margin-top:.45rem">Parts</dt><dd>Small DC motor, NPN transistor, 1N4001-type diode, 220 Ω resistor, potentiometer, 1 push button, battery pack, jumper wires (the <a href="../projects/b6-fan-transistor.html">fan</a> swap).</dd>
+        <dt style="margin-top:.45rem">Practises</dt><dd>Speed instead of position, and a motor on its own power.</dd>
+      </dl>
+      <p class="note">The diode is not optional. Paper streamers only, never stiff blades, and nothing a finger can be caught in. Keep the board and battery away from ice water and fish water. Ask the seller after one day whether it helped at all.</p>
+    </div>
+  </div>
+  <div class="col stack" style="margin-top:1rem">
+    <div class="brief">
+      <h5>Find your own idea</h5>
+      <p>The best idea is not on this list. It is a problem somebody near you has. Ask yourself, or ask them:</p>
+      <ul class="plain">
+        <li>What does somebody push, wave, open or turn by hand many times a day?</li>
+        <li>Is the thing light enough for a small servo: card, paper, cloth, a thin flap?</li>
+        <li>Where would the battery pack live, and who will change the cells?</li>
+        <li>What should it do when it is stopped half way?</li>
+      </ul>
+      <p>Then write the rule as one sentence with <em>when</em>, <em>until</em> or <em>unless</em> in it. <a href="../projects/invent-a-project.html">Invent a project</a> has the whole method: the pin budget and the four questions that kill a bad idea in five minutes. The <a href="../projects/idea-bank.html">idea bank</a> has every idea from every band in one place.</p>
+    </div>
+    <div class="callout">
+      <h5>Be honest about what these can do</h5>
+      <p>Every idea here uses the band's power rules: battery red to the + rail and black to the − rail, one wire from the − rail to an Arduino GND, no Arduino pin ever touching the + rail, and sensors fed from the 5V pin. A servo moves card and paper, not doors or gates. Keep fingers out of anything that turns, and keep batteries and boards dry. Nothing here switches anything that plugs into the wall.</p>
+    </div>
+  </div>
+</section>
+
+
 <section class="part" id="check">
   <div class="parthead"><span class="tag">Part 12</span><h2>Check yourself</h2><span class="mins">20 min</span></div>
   <div class="col stack">
@@ -2243,10 +2333,30 @@ void loop() {
 <a class="next" href="band-7.html"><span class="dir">Next</span><span class="name">Band 7: Distance and Display &rarr;</span></a>
 </nav>
 
-<footer>
-  <p>Bozoma Innovation Hub &nbsp;&middot;&nbsp; Aiyinasi, Ellembelle District. Band 6 of nine. Every sketch used here was compiled and tested before it reached you.</p>
-</footer>
 
 </div>
+<footer class="bihfoot">
+<div class="wrap">
+  <p class="pagenote">Bozoma Innovation Hub &nbsp;&middot;&nbsp; Aiyinasi, Ellembelle District. Band 6 of nine. Every sketch used here was compiled and tested before it reached you.</p>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a class="lockup" href="../index.html"><img src="../assets/brand/logo-mark-white.png" alt="" width="42" height="42"><span>The Arduino Ladder<small>Bozoma Innovation Hub</small></span></a>
+      <p>A Bozoma Innovation Hub programme. Free to use, nothing to sign up for, at your own speed.</p>
+    </div>
+    <div><h4>The course</h4><ul>
+      <li><a href="../index.html">Course home</a></li>
+      <li><a href="../bands/band-0.html">Start with Band 0</a></li>
+      <li><a href="../guide.html">Facilitator guide</a></li>
+      <li><a href="../downloads/arduino-ladder-sketches.zip">All the sketches (zip)</a></li>
+    </ul></div>
+    <div><h4>Bozoma Innovation Hub</h4><ul>
+      <li>Aiyinasi, Ellembelle District, Western Region, Ghana</li>
+      <li><a href="https://bozomainnovationhub.com">bozomainnovationhub.com</a></li>
+      <li><a href="mailto:info@bozomainnovationhub.com">info@bozomainnovationhub.com</a></li>
+    </ul></div>
+  </div>
+  <div class="foot-bottom"><span>&copy; Bozoma Innovation Hub, Aiyinasi, Ghana</span><span class="tagline">World-class begins at home.</span></div>
+</div>
+</footer>
 </body>
 </html>

@@ -5,16 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Band 5: Simon Says · Arduino Ladder</title>
   <meta name="description" content="The hardest band and the most important. You write your own instructions, and find out why delay has been holding you back since Band 0.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+  <meta name="theme-color" content="#24182E">
+  <link rel="icon" type="image/png" sizes="192x192" href="../assets/brand/icon-192.png">
+  <link rel="apple-touch-icon" href="../assets/brand/icon-180.png">
   <link rel="stylesheet" href="../assets/course.css">
 </head>
 <body>
 <a class="skip" href="#main">Skip to the lesson</a>
 <div class="topbar">
-  <a class="home" href="../index.html">Arduino Ladder <span>· Bozoma Innovation Hub</span></a>
+  <a class="home" href="../index.html"><img src="../assets/brand/logo-mark-white.png" alt="" width="36" height="36"><span class="lock"><b>Arduino Ladder</b><small>Bozoma Innovation Hub</small></span></a>
   <nav class="bandlinks" aria-label="Bands"><a href="../bands/band-0.html">0</a><a href="../bands/band-1.html">1</a><a href="../bands/band-2.html">2</a><a href="../bands/band-3.html">3</a><a href="../bands/band-4.html">4</a><a href="../bands/band-5.html" aria-current="page">5</a><a href="../bands/band-6.html">6</a><a href="../bands/band-7.html">7</a><a href="../bands/band-8.html">8</a></nav>
+  <a class="bih" href="https://bozomainnovationhub.com"><span class="long">bozomainnovationhub.com</span><span class="short">BIH website</span></a>
 </div>
 <div class="wrap" id="main">
 <nav aria-label="Sections">
@@ -31,6 +32,7 @@
   <a href="#closer">Look closer</a>
   <a href="#change">Change it</a>
   <a href="#make">Make yours</a>
+  <a href="#ideas">Ideas</a>
   <a href="#check">Check yourself</a>
   <a href="#problems">Problems</a>
 </nav>
@@ -1956,6 +1958,90 @@ int addUp(int a, int b) {
   </div>
 </section>
 
+<!-- Band 5: "What you can build now". Insert as its own section; see INSERT.md. -->
+<section class="part" id="ideas">
+  <div class="parthead"><span class="tag">Ideas</span><h2>What you can build now</h2></div>
+  <div class="col stack">
+    <p>Every idea here uses only parts and ideas from Bands 0 to 5. Each one practises what this band added: writing your own functions, making notes with <code>tone</code>, using <code>random</code>, and timing with <code>millis</code> so the board keeps listening.</p>
+    <p>None of them is a lesson. You get the person, the rule and the parts, and the code is yours, like a Practice page. Stars show how hard it is: one star is an afternoon, three stars will take you a few evenings.</p>
+  </div>
+  <div class="grid-2" style="margin-top:1rem">
+    <div class="card stack-sm" id="idea-5-1">
+      <h4>Hand-washing song timer &nbsp;<span class="ptype invent" role="img" aria-label="Difficulty: two stars of three">★★☆</span></h4>
+      <dl class="tier" style="grid-template-columns:minmax(0,1fr); gap:.15rem 0">
+        <dt>For</dt><dd>A school or clinic tap where children rush. Twenty seconds feels long without something to follow.</dd>
+        <dt style="margin-top:.45rem">Rule</dt><dd>Press to start a twenty-second tune with four lights going out one by one; pressing again during the tune starts it over.</dd>
+        <dt style="margin-top:.45rem">Parts</dt><dd>1 push button, 4 LEDs and resistors, passive buzzer, jumper wires.</dd>
+        <dt style="margin-top:.45rem">Practises</dt><dd><code>millis</code>, so the button still works while the tune is playing.</dd>
+      </dl>
+      <p class="note">Keep the board, the button wires and the power bank dry, on a shelf above the tap. Wet hands press the button: put it in a small plastic bag.</p>
+    </div>
+    <div class="card stack-sm" id="idea-5-2">
+      <h4>Order-ready caller &nbsp;<span class="ptype invent" role="img" aria-label="Difficulty: two stars of three">★★☆</span></h4>
+      <dl class="tier" style="grid-template-columns:minmax(0,1fr); gap:.15rem 0">
+        <dt>For</dt><dd>A busy chop bar where the cook shouts table numbers and customers miss them in the noise.</dd>
+        <dt style="margin-top:.45rem">Rule</dt><dd>Each table has its own short tune; when the cook presses that table's button, its tune plays twice and its light stays on until pressed again.</dd>
+        <dt style="margin-top:.45rem">Parts</dt><dd>3 push buttons, 3 LEDs and resistors, passive buzzer, jumper wires.</dd>
+        <dt style="margin-top:.45rem">Practises</dt><dd>One function, <code>playCall(table)</code>, used three times with different values.</dd>
+      </dl>
+    </div>
+    <div class="card stack-sm" id="idea-5-3">
+      <h4>Hot potato &nbsp;<span class="ptype invent" role="img" aria-label="Difficulty: one star of three">★☆☆</span></h4>
+      <dl class="tier" style="grid-template-columns:minmax(0,1fr); gap:.15rem 0">
+        <dt>For</dt><dd>Children at a party or in a class break. Pass the box round; whoever is holding it when it buzzes is out.</dd>
+        <dt style="margin-top:.45rem">Rule</dt><dd>Press to start; tick faster and faster for a random time between ten and thirty seconds; then a long low buzz.</dd>
+        <dt style="margin-top:.45rem">Parts</dt><dd>1 push button, 1 LED and resistor, passive buzzer, jumper wires, a box, a power bank.</dd>
+        <dt style="margin-top:.45rem">Practises</dt><dd><code>random</code>, and why A0 is left empty for <code>randomSeed</code>.</dd>
+      </dl>
+    </div>
+    <div class="card stack-sm" id="idea-5-4">
+      <h4>Cooking timer with a knob &nbsp;<span class="ptype invent" role="img" aria-label="Difficulty: three stars of three">★★★</span></h4>
+      <dl class="tier" style="grid-template-columns:minmax(0,1fr); gap:.15rem 0">
+        <dt>For</dt><dd>A chop bar cook with three pots on the fire, who cannot watch a clock.</dd>
+        <dt style="margin-top:.45rem">Rule</dt><dd>Turn the knob to set 1 to 30 minutes, press to start, see the time left as lights going out, and hear a beep that repeats until the button is pressed.</dd>
+        <dt style="margin-top:.45rem">Parts</dt><dd>Potentiometer on A1, 1 push button, 4 LEDs and resistors, passive buzzer, jumper wires.</dd>
+        <dt style="margin-top:.45rem">Practises</dt><dd>Functions that each do one job: read the knob, show time left, sound the alarm.</dd>
+      </dl>
+      <p class="note">Build it in fast-forward, with seconds standing in for minutes, then change one number. The <a href="../projects/practice-pomodoro.html">pomodoro practice</a> shows the habit. And keep it well back from the fire: card and plastic melt.</p>
+    </div>
+    <div class="card stack-sm" id="idea-5-5">
+      <h4>Park football referee timer &nbsp;<span class="ptype invent" role="img" aria-label="Difficulty: two stars of three">★★☆</span></h4>
+      <dl class="tier" style="grid-template-columns:minmax(0,1fr); gap:.15rem 0">
+        <dt>For</dt><dd>An evening match on the park with no referee's watch. Nobody agrees when half-time is.</dd>
+        <dt style="margin-top:.45rem">Rule</dt><dd>Press to start a half; a short whistle at one minute left, a long whistle at the end; a second button pauses and restarts the clock.</dd>
+        <dt style="margin-top:.45rem">Parts</dt><dd>2 push buttons, 2 LEDs and resistors, passive buzzer, jumper wires, a power bank.</dd>
+        <dt style="margin-top:.45rem">Practises</dt><dd>Pausing time with <code>millis</code>: you have to remember how much was left, not when it started.</dd>
+      </dl>
+    </div>
+    <div class="card stack-sm" id="idea-5-6">
+      <h4>Whack-a-light &nbsp;<span class="ptype invent" role="img" aria-label="Difficulty: three stars of three">★★★</span></h4>
+      <dl class="tier" style="grid-template-columns:minmax(0,1fr); gap:.15rem 0">
+        <dt>For</dt><dd>Anybody at the hub's open day. A crowd game that people queue for.</dd>
+        <dt style="margin-top:.45rem">Rule</dt><dd>Light one of four lights at random; hit its button before it goes out to score; each hit makes the next window a little shorter.</dd>
+        <dt style="margin-top:.45rem">Parts</dt><dd>4 push buttons, 4 LEDs and resistors, passive buzzer, jumper wires.</dd>
+        <dt style="margin-top:.45rem">Practises</dt><dd><code>random</code>, <code>millis</code> and a function that hands back which button was pressed, all at once.</dd>
+      </dl>
+    </div>
+  </div>
+  <div class="col stack" style="margin-top:1rem">
+    <div class="brief">
+      <h5>Find your own idea</h5>
+      <p>The best idea is not on this list. It is a problem somebody near you has. Ask yourself, or ask them:</p>
+      <ul class="plain">
+        <li>What needs timing while somebody is still allowed to press, change or stop it?</li>
+        <li>Which game do children here play that needs a fair referee or a fair timer?</li>
+        <li>Which sound would people understand without being told what it means?</li>
+      </ul>
+      <p>Then write the rule as one sentence with <em>when</em>, <em>until</em> or <em>unless</em> in it. <a href="../projects/invent-a-project.html">Invent a project</a> has the whole method: the pin budget and the four questions that kill a bad idea in five minutes. The <a href="../projects/idea-bank.html">idea bank</a> has every idea from every band in one place.</p>
+    </div>
+    <div class="callout">
+      <h5>Be honest about what these can do</h5>
+      <p><code>millis</code> starts again from zero every time the board powers up, so a power cut loses any timing in progress. The board never knows what time of day it is. Leave A0 empty when you use <code>random</code>. A passive buzzer is not loud: test it in the real noise before you promise anybody it can be heard.</p>
+    </div>
+  </div>
+</section>
+
+
 <section class="part" id="check">
   <div class="parthead"><span class="tag">Part 13</span><h2>Check yourself</h2><span class="mins">20 min</span></div>
   <div class="col stack">
@@ -2081,10 +2167,30 @@ void loop() {
 <a class="next" href="band-6.html"><span class="dir">Next</span><span class="name">Band 6: Things That Move &rarr;</span></a>
 </nav>
 
-<footer>
-  <p>Bozoma Innovation Hub &nbsp;·&nbsp; Aiyinasi, Ellembelle District. Band 5 of nine. Every sketch used here was compiled and tested before it reached you.</p>
-</footer>
 
 </div>
+<footer class="bihfoot">
+<div class="wrap">
+  <p class="pagenote">Bozoma Innovation Hub &nbsp;·&nbsp; Aiyinasi, Ellembelle District. Band 5 of nine. Every sketch used here was compiled and tested before it reached you.</p>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a class="lockup" href="../index.html"><img src="../assets/brand/logo-mark-white.png" alt="" width="42" height="42"><span>The Arduino Ladder<small>Bozoma Innovation Hub</small></span></a>
+      <p>A Bozoma Innovation Hub programme. Free to use, nothing to sign up for, at your own speed.</p>
+    </div>
+    <div><h4>The course</h4><ul>
+      <li><a href="../index.html">Course home</a></li>
+      <li><a href="../bands/band-0.html">Start with Band 0</a></li>
+      <li><a href="../guide.html">Facilitator guide</a></li>
+      <li><a href="../downloads/arduino-ladder-sketches.zip">All the sketches (zip)</a></li>
+    </ul></div>
+    <div><h4>Bozoma Innovation Hub</h4><ul>
+      <li>Aiyinasi, Ellembelle District, Western Region, Ghana</li>
+      <li><a href="https://bozomainnovationhub.com">bozomainnovationhub.com</a></li>
+      <li><a href="mailto:info@bozomainnovationhub.com">info@bozomainnovationhub.com</a></li>
+    </ul></div>
+  </div>
+  <div class="foot-bottom"><span>&copy; Bozoma Innovation Hub, Aiyinasi, Ghana</span><span class="tagline">World-class begins at home.</span></div>
+</div>
+</footer>
 </body>
 </html>

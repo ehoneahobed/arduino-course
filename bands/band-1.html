@@ -5,16 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Band 1: Signal Tower · Arduino Ladder</title>
   <meta name="description" content="Your first real circuit. How a breadboard works, how to wire a light so it does not burn out, and how to run three lights in an order you designed.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+  <meta name="theme-color" content="#24182E">
+  <link rel="icon" type="image/png" sizes="192x192" href="../assets/brand/icon-192.png">
+  <link rel="apple-touch-icon" href="../assets/brand/icon-180.png">
   <link rel="stylesheet" href="../assets/course.css">
 </head>
 <body>
 <a class="skip" href="#main">Skip to the lesson</a>
 <div class="topbar">
-  <a class="home" href="../index.html">Arduino Ladder <span>· Bozoma Innovation Hub</span></a>
+  <a class="home" href="../index.html"><img src="../assets/brand/logo-mark-white.png" alt="" width="36" height="36"><span class="lock"><b>Arduino Ladder</b><small>Bozoma Innovation Hub</small></span></a>
   <nav class="bandlinks" aria-label="Bands"><a href="../bands/band-0.html">0</a><a href="../bands/band-1.html" aria-current="page">1</a><a href="../bands/band-2.html">2</a><a href="../bands/band-3.html">3</a><a href="../bands/band-4.html">4</a><a href="../bands/band-5.html">5</a><a href="../bands/band-6.html">6</a><a href="../bands/band-7.html">7</a><a href="../bands/band-8.html">8</a></nav>
+  <a class="bih" href="https://bozomainnovationhub.com"><span class="long">bozomainnovationhub.com</span><span class="short">BIH website</span></a>
 </div>
 <div class="wrap" id="main">
 <nav aria-label="Sections">
@@ -28,6 +29,7 @@
   <a href="#closer">Look closer</a>
   <a href="#change">Change it</a>
   <a href="#make">Make yours</a>
+  <a href="#ideas">Ideas</a>
   <a href="#check">Check yourself</a>
   <a href="#problems">Problems</a>
 </nav>
@@ -2411,6 +2413,82 @@ int goTime = 5000;</code></pre>
   </div>
 </section>
 
+<!-- Band 1: "What you can build now". Insert as its own section; see INSERT.md. -->
+<section class="part" id="ideas">
+  <div class="parthead"><span class="tag">Ideas</span><h2>What you can build now</h2></div>
+  <div class="col stack">
+    <p>Every idea here uses only parts and ideas from Bands 0 to 1. Each one practises what this band added: wiring your own lights on a breadboard, and holding every pin and timing in a name at the top of the sketch.</p>
+    <p>None of them is a lesson. You get the person, the rule and the parts, and the code is yours, like a Practice page. Stars show how hard it is: one star is an afternoon, three stars will take you a few evenings.</p>
+  </div>
+  <div class="grid-2" style="margin-top:1rem">
+    <div class="card stack-sm" id="idea-1-1">
+      <h4>Lighthouse model &nbsp;<span class="ptype invent" role="img" aria-label="Difficulty: one star of three">★☆☆</span></h4>
+      <dl class="tier" style="grid-template-columns:minmax(0,1fr); gap:.15rem 0">
+        <dt>For</dt><dd>A class making a model of the coast for a geography lesson. A still light on a model lighthouse does not look like a lighthouse.</dd>
+        <dt style="margin-top:.45rem">Rule</dt><dd>Light the three LEDs one after another round a ring, over and over, so it looks like a beam turning.</dd>
+        <dt style="margin-top:.45rem">Parts</dt><dd>3 LEDs, 3 × 220 Ω resistors, jumper wires, card for the tower.</dd>
+        <dt style="margin-top:.45rem">Practises</dt><dd>A sequence in order, with one timing name you can change to speed the whole beam up.</dd>
+      </dl>
+    </div>
+    <div class="card stack-sm" id="idea-1-2">
+      <h4>Fire-drill exit arrow &nbsp;<span class="ptype invent" role="img" aria-label="Difficulty: one star of three">★☆☆</span></h4>
+      <dl class="tier" style="grid-template-columns:minmax(0,1fr); gap:.15rem 0">
+        <dt>For</dt><dd>A school getting ready for a fire drill. Small children follow moving lights better than a sign on the wall.</dd>
+        <dt style="margin-top:.45rem">Rule</dt><dd>Light the three LEDs left to right, one at a time, then all off, and repeat, so they run towards the door.</dd>
+        <dt style="margin-top:.45rem">Parts</dt><dd>3 LEDs, 3 × 220 Ω resistors, jumper wires, a card arrow to push them through.</dd>
+        <dt style="margin-top:.45rem">Practises</dt><dd>One hole, one leg, and a sequence a stranger can read without you.</dd>
+      </dl>
+    </div>
+    <div class="card stack-sm" id="idea-1-3">
+      <h4>Kundum drum lights &nbsp;<span class="ptype invent" role="img" aria-label="Difficulty: two stars of three">★★☆</span></h4>
+      <dl class="tier" style="grid-template-columns:minmax(0,1fr); gap:.15rem 0">
+        <dt>For</dt><dd>A drumming group practising for the Kundum festival. New drummers lose their place in the pattern.</dd>
+        <dt style="margin-top:.45rem">Rule</dt><dd>One light for each of three drums, flashing in the rhythm the master drummer taught you, with the rest at the end held longer.</dd>
+        <dt style="margin-top:.45rem">Parts</dt><dd>3 LEDs, 3 × 220 Ω resistors, jumper wires.</dd>
+        <dt style="margin-top:.45rem">Practises</dt><dd>Timings held in names, so the drummer can ask for it faster and you change one number.</dd>
+      </dl>
+      <p class="note">Tap the rhythm with the drummer first and write it down as milliseconds. Do not guess it.</p>
+    </div>
+    <div class="card stack-sm" id="idea-1-4">
+      <h4>Chop bar menu board chaser &nbsp;<span class="ptype invent" role="img" aria-label="Difficulty: one star of three">★☆☆</span></h4>
+      <dl class="tier" style="grid-template-columns:minmax(0,1fr); gap:.15rem 0">
+        <dt>For</dt><dd>A chop bar or food kiosk by the road. People drive past the menu board without looking at it.</dd>
+        <dt style="margin-top:.45rem">Rule</dt><dd>Three lights along the edge of the board chase round fast, then all three flash together twice, then pause.</dd>
+        <dt style="margin-top:.45rem">Parts</dt><dd>3 LEDs, 3 × 220 Ω resistors, jumper wires, card.</dd>
+        <dt style="margin-top:.45rem">Practises</dt><dd>Building a longer sequence from short pieces you have named.</dd>
+      </dl>
+    </div>
+    <div class="card stack-sm" id="idea-1-5">
+      <h4>Standpipe turn timer &nbsp;<span class="ptype invent" role="img" aria-label="Difficulty: two stars of three">★★☆</span></h4>
+      <dl class="tier" style="grid-template-columns:minmax(0,1fr); gap:.15rem 0">
+        <dt>For</dt><dd>A busy standpipe or borehole tap, where people argue about how long each person may fill.</dd>
+        <dt style="margin-top:.45rem">Rule</dt><dd>Green for two minutes (fill), yellow for thirty seconds (finish up), red for ten seconds (change over), then green again.</dd>
+        <dt style="margin-top:.45rem">Parts</dt><dd>3 LEDs, 3 × 220 Ω resistors, jumper wires, a card tower.</dd>
+        <dt style="margin-top:.45rem">Practises</dt><dd>Saying in one sentence why each timing is the length it is.</dd>
+      </dl>
+      <p class="note">Be honest with the people using it: it cannot tell whether anybody is there. It just keeps time. A button that starts each turn is Band 3. Keep the board and the USB plug dry and well back from the water.</p>
+    </div>
+  </div>
+  <div class="col stack" style="margin-top:1rem">
+    <div class="brief">
+      <h5>Find your own idea</h5>
+      <p>The best idea is not on this list. It is a problem somebody near you has. Ask yourself, or ask them:</p>
+      <ul class="plain">
+        <li>Where do people wait their turn near you, and how do they know when it is theirs?</li>
+        <li>Which sign, notice or shout could be three lights instead?</li>
+        <li>Which timing would you have to go and measure, rather than guess?</li>
+        <li>Could a stranger read your three lights without you standing next to them?</li>
+      </ul>
+      <p>Then write the rule as one sentence with <em>when</em>, <em>until</em> or <em>unless</em> in it. <a href="../projects/invent-a-project.html">Invent a project</a> has the whole method: the pin budget and the four questions that kill a bad idea in five minutes. The <a href="../projects/idea-bank.html">idea bank</a> has every idea from every band in one place.</p>
+    </div>
+    <div class="callout">
+      <h5>Be honest about what these can do</h5>
+      <p>Three LEDs on 220 Ω resistors are easy to see indoors and hard to see in strong sun. Nothing in this band notices the world, so every idea here keeps time and nothing more. Card housings are for indoors. And nothing you build ever connects to a mains light, socket or cable: your lights are the signal.</p>
+    </div>
+  </div>
+</section>
+
+
 <section class="part" id="check">
   <div class="parthead"><span class="tag">Part 10</span><h2>Check yourself</h2><span class="mins">15 min</span></div>
   <div class="col stack">
@@ -2519,10 +2597,30 @@ void loop() {
 <a class="next" href="band-2.html"><span class="dir">Next</span><span class="name">Band 2: Mood Lamp &rarr;</span></a>
 </nav>
 
-<footer>
-  <p>Bozoma Innovation Hub &nbsp;·&nbsp; Aiyinasi, Ellembelle District. Band 1 of nine. Every sketch used here was compiled and tested before it reached you.</p>
-</footer>
 
 </div>
+<footer class="bihfoot">
+<div class="wrap">
+  <p class="pagenote">Bozoma Innovation Hub &nbsp;·&nbsp; Aiyinasi, Ellembelle District. Band 1 of nine. Every sketch used here was compiled and tested before it reached you.</p>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a class="lockup" href="../index.html"><img src="../assets/brand/logo-mark-white.png" alt="" width="42" height="42"><span>The Arduino Ladder<small>Bozoma Innovation Hub</small></span></a>
+      <p>A Bozoma Innovation Hub programme. Free to use, nothing to sign up for, at your own speed.</p>
+    </div>
+    <div><h4>The course</h4><ul>
+      <li><a href="../index.html">Course home</a></li>
+      <li><a href="../bands/band-0.html">Start with Band 0</a></li>
+      <li><a href="../guide.html">Facilitator guide</a></li>
+      <li><a href="../downloads/arduino-ladder-sketches.zip">All the sketches (zip)</a></li>
+    </ul></div>
+    <div><h4>Bozoma Innovation Hub</h4><ul>
+      <li>Aiyinasi, Ellembelle District, Western Region, Ghana</li>
+      <li><a href="https://bozomainnovationhub.com">bozomainnovationhub.com</a></li>
+      <li><a href="mailto:info@bozomainnovationhub.com">info@bozomainnovationhub.com</a></li>
+    </ul></div>
+  </div>
+  <div class="foot-bottom"><span>&copy; Bozoma Innovation Hub, Aiyinasi, Ghana</span><span class="tagline">World-class begins at home.</span></div>
+</div>
+</footer>
 </body>
 </html>

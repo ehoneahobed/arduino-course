@@ -5,16 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Band 4: Night Guard · Arduino Ladder</title>
   <meta name="description" content="Sensors give you a number instead of a yes or no. And a number means nothing until you go and measure what it means.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+  <meta name="theme-color" content="#24182E">
+  <link rel="icon" type="image/png" sizes="192x192" href="../assets/brand/icon-192.png">
+  <link rel="apple-touch-icon" href="../assets/brand/icon-180.png">
   <link rel="stylesheet" href="../assets/course.css">
 </head>
 <body>
 <a class="skip" href="#main">Skip to the lesson</a>
 <div class="topbar">
-  <a class="home" href="../index.html">Arduino Ladder <span>· Bozoma Innovation Hub</span></a>
+  <a class="home" href="../index.html"><img src="../assets/brand/logo-mark-white.png" alt="" width="36" height="36"><span class="lock"><b>Arduino Ladder</b><small>Bozoma Innovation Hub</small></span></a>
   <nav class="bandlinks" aria-label="Bands"><a href="../bands/band-0.html">0</a><a href="../bands/band-1.html">1</a><a href="../bands/band-2.html">2</a><a href="../bands/band-3.html">3</a><a href="../bands/band-4.html" aria-current="page">4</a><a href="../bands/band-5.html">5</a><a href="../bands/band-6.html">6</a><a href="../bands/band-7.html">7</a><a href="../bands/band-8.html">8</a></nav>
+  <a class="bih" href="https://bozomainnovationhub.com"><span class="long">bozomainnovationhub.com</span><span class="short">BIH website</span></a>
 </div>
 <div class="wrap" id="main">
 <nav aria-label="Sections">
@@ -32,6 +33,7 @@
   <a href="#closer">Look closer</a>
   <a href="#change">Change it</a>
   <a href="#make">Make yours</a>
+  <a href="#ideas">Ideas</a>
   <a href="#check">Check yourself</a>
   <a href="#problems">Problems</a>
 </nav>
@@ -2239,6 +2241,93 @@ int reading = analogRead(knobPin);</code></pre>
   </div>
 </section>
 
+<!-- Band 4: "What you can build now". Insert as its own section; see INSERT.md. -->
+<section class="part" id="ideas">
+  <div class="parthead"><span class="tag">Ideas</span><h2>What you can build now</h2></div>
+  <div class="col stack">
+    <p>Every idea here uses only parts and ideas from Bands 0 to 4. Each one practises what this band added: reading a sensor as a number with <code>analogRead</code>, <code>map</code>, a threshold, and calibration in the place the device will live.</p>
+    <p>None of them is a lesson. You get the person, the rule and the parts, and the code is yours, like a Practice page. Stars show how hard it is: one star is an afternoon, three stars will take you a few evenings.</p>
+  </div>
+  <div class="grid-2" style="margin-top:1rem">
+    <div class="card stack-sm" id="idea-4-1">
+      <h4>Dawn alarm &nbsp;<span class="ptype invent" role="img" aria-label="Difficulty: two stars of three">★★☆</span></h4>
+      <dl class="tier" style="grid-template-columns:minmax(0,1fr); gap:.15rem 0">
+        <dt>For</dt><dd>A fisherman or a farmer who must be up at first light and sleeps through the phone alarm, or whose phone is flat after a power cut.</dd>
+        <dt style="margin-top:.45rem">Rule</dt><dd>When the light rises above your measured dawn number, buzz until the button is pressed, then stay quiet until it has been properly dark again.</dd>
+        <dt style="margin-top:.45rem">Parts</dt><dd>Light sensor and its 10 kΩ resistor, 1 push button, 1 active buzzer and its 220 Ω resistor, jumper wires, a power bank.</dd>
+        <dt style="margin-top:.45rem">Practises</dt><dd>A threshold you measured at the real window, at the real dawn.</dd>
+      </dl>
+      <p class="note">A torch, a car's headlights or the room light can fool it. Find out how, and write it down.</p>
+    </div>
+    <div class="card stack-sm" id="idea-4-2">
+      <h4>Drying-sun meter &nbsp;<span class="ptype invent" role="img" aria-label="Difficulty: two stars of three">★★☆</span></h4>
+      <dl class="tier" style="grid-template-columns:minmax(0,1fr); gap:.15rem 0">
+        <dt>For</dt><dd>A cocoa farmer drying beans on mats, or a woman drying fish, deciding whether today's sun is worth spreading everything out.</dd>
+        <dt style="margin-top:.45rem">Rule</dt><dd>Light one, two or three LEDs for weak, fair and strong sun, using three numbers you measured outside on different days.</dd>
+        <dt style="margin-top:.45rem">Parts</dt><dd>Light sensor and its 10 kΩ resistor, 3 LEDs and resistors, jumper wires, a power bank.</dd>
+        <dt style="margin-top:.45rem">Practises</dt><dd><code>map</code> or a chain of <code>if</code> tests turning one reading into three bands.</dd>
+      </dl>
+      <p class="note">In full sun the light sensor may read its top number all the time. That is a real finding: try putting a scrap of thin white paper over it and calibrate again.</p>
+    </div>
+    <div class="card stack-sm" id="idea-4-3">
+      <h4>Torch telegraph &nbsp;<span class="ptype invent" role="img" aria-label="Difficulty: one star of three">★☆☆</span></h4>
+      <dl class="tier" style="grid-template-columns:minmax(0,1fr); gap:.15rem 0">
+        <dt>For</dt><dd>Two friends across a compound at night who want a secret signal.</dd>
+        <dt style="margin-top:.45rem">Rule</dt><dd>When a torch shines on the sensor, light the lamp and beep, and stop as soon as the torch goes away.</dd>
+        <dt style="margin-top:.45rem">Parts</dt><dd>Light sensor and its 10 kΩ resistor, 1 LED and resistor, 1 active buzzer and its resistor, jumper wires, a torch.</dd>
+        <dt style="margin-top:.45rem">Practises</dt><dd>Calibration: the room's own light is your zero, and it is not the same every night.</dd>
+      </dl>
+    </div>
+    <div class="card stack-sm" id="idea-4-4">
+      <h4>Tank tap drip alarm &nbsp;<span class="ptype invent" role="img" aria-label="Difficulty: two stars of three">★★☆</span></h4>
+      <dl class="tier" style="grid-template-columns:minmax(0,1fr); gap:.15rem 0">
+        <dt>For</dt><dd>A household with a poly tank on a stand, where a dripping tap empties it overnight and nobody notices until morning.</dd>
+        <dt style="margin-top:.45rem">Rule</dt><dd>When the rain plate under the tap reads wet, light red and beep; clear only when it reads properly dry again.</dd>
+        <dt style="margin-top:.45rem">Parts</dt><dd>Rain sensor board and plate (the <a href="../projects/b4-rain-alarm.html">rain alarm</a> swap), 2 LEDs and resistors, a buzzer, jumper wires.</dd>
+        <dt style="margin-top:.45rem">Practises</dt><dd>Two thresholds, so one splash does not set it off and a damp plate does not flap.</dd>
+      </dl>
+      <p class="note">Only the plate goes near the water. The board, the buzzer and the power bank stay in a dry box well above it. The plate wears away if it is powered all the time, so read the swap page's Gold task.</p>
+    </div>
+    <div class="card stack-sm" id="idea-4-5">
+      <h4>Grain store damp warning &nbsp;<span class="ptype invent" role="img" aria-label="Difficulty: two stars of three">★★☆</span></h4>
+      <dl class="tier" style="grid-template-columns:minmax(0,1fr); gap:.15rem 0">
+        <dt>For</dt><dd>A farmer storing maize or groundnuts in a small room. Damp air makes grain go mouldy, and you cannot see it happening.</dd>
+        <dt style="margin-top:.45rem">Rule</dt><dd>Green when the air is dry, yellow when the humidity is creeping up, red when it has passed the number the farmer says is too damp.</dd>
+        <dt style="margin-top:.45rem">Parts</dt><dd>DHT11 (the <a href="../projects/b4-room-monitor.html">room monitor</a> swap), 3 LEDs and resistors, jumper wires.</dd>
+        <dt style="margin-top:.45rem">Practises</dt><dd>Turning a reading into three bands with two gaps, so it does not flicker between colours.</dd>
+      </dl>
+      <p class="note">Ask the farmer for the number, and when the grain has gone bad before. The DHT11 measures the air, not the grain, and it is only accurate to a few percent.</p>
+    </div>
+    <div class="card stack-sm" id="idea-4-6">
+      <h4>Knob safe-cracker &nbsp;<span class="ptype invent" role="img" aria-label="Difficulty: two stars of three">★★☆</span></h4>
+      <dl class="tier" style="grid-template-columns:minmax(0,1fr); gap:.15rem 0">
+        <dt>For</dt><dd>Anybody who likes a puzzle. A good one to leave on the table at the hub.</dd>
+        <dt style="margin-top:.45rem">Rule</dt><dd>A secret number is hidden in the code; as the knob gets nearer to it the RGB light goes from blue to red, and when it is within 10 the buzzer sounds.</dd>
+        <dt style="margin-top:.45rem">Parts</dt><dd>Potentiometer, RGB LED and its resistors, 1 active buzzer and its resistor, jumper wires.</dd>
+        <dt style="margin-top:.45rem">Practises</dt><dd><code>map</code> running a distance onto a colour, and the trap of mixing 0 to 1023 with 0 to 255.</dd>
+      </dl>
+    </div>
+  </div>
+  <div class="col stack" style="margin-top:1rem">
+    <div class="brief">
+      <h5>Find your own idea</h5>
+      <p>The best idea is not on this list. It is a problem somebody near you has. Ask yourself, or ask them:</p>
+      <ul class="plain">
+        <li>What in your home changes with light, heat or wet, and who needs to know?</li>
+        <li>Where would you go to measure the real numbers, and at what time of day?</li>
+        <li>What should happen when the reading sits right on the limit, so it does not flicker?</li>
+        <li>Who would set the limit, and could they do it without touching the code?</li>
+      </ul>
+      <p>Then write the rule as one sentence with <em>when</em>, <em>until</em> or <em>unless</em> in it. <a href="../projects/invent-a-project.html">Invent a project</a> has the whole method: the pin budget and the four questions that kill a bad idea in five minutes. The <a href="../projects/idea-bank.html">idea bank</a> has every idea from every band in one place.</p>
+    </div>
+    <div class="callout">
+      <h5>Be honest about what these can do</h5>
+      <p>A sensor number means nothing until you measure it in the place the device will live, so every idea here starts with a calibration table. The DHT11 reads from 0 to 50 degrees and is only roughly right. Keep the board and power away from water; only a sensor plate goes near it. Nothing here can tell you a room is safe, only that a number crossed a line you chose.</p>
+    </div>
+  </div>
+</section>
+
+
 <section class="part" id="check">
   <div class="parthead"><span class="tag">Part 14</span><h2>Check yourself</h2><span class="mins">15 min</span></div>
   <div class="col stack">
@@ -2347,10 +2436,30 @@ void loop() {
 <a class="next" href="band-5.html"><span class="dir">Next</span><span class="name">Band 5: Simon Says &rarr;</span></a>
 </nav>
 
-<footer>
-  <p>Bozoma Innovation Hub &nbsp;·&nbsp; Aiyinasi, Ellembelle District. Band 4 of nine. Every sketch used here was compiled and tested before it reached you.</p>
-</footer>
 
 </div>
+<footer class="bihfoot">
+<div class="wrap">
+  <p class="pagenote">Bozoma Innovation Hub &nbsp;·&nbsp; Aiyinasi, Ellembelle District. Band 4 of nine. Every sketch used here was compiled and tested before it reached you.</p>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a class="lockup" href="../index.html"><img src="../assets/brand/logo-mark-white.png" alt="" width="42" height="42"><span>The Arduino Ladder<small>Bozoma Innovation Hub</small></span></a>
+      <p>A Bozoma Innovation Hub programme. Free to use, nothing to sign up for, at your own speed.</p>
+    </div>
+    <div><h4>The course</h4><ul>
+      <li><a href="../index.html">Course home</a></li>
+      <li><a href="../bands/band-0.html">Start with Band 0</a></li>
+      <li><a href="../guide.html">Facilitator guide</a></li>
+      <li><a href="../downloads/arduino-ladder-sketches.zip">All the sketches (zip)</a></li>
+    </ul></div>
+    <div><h4>Bozoma Innovation Hub</h4><ul>
+      <li>Aiyinasi, Ellembelle District, Western Region, Ghana</li>
+      <li><a href="https://bozomainnovationhub.com">bozomainnovationhub.com</a></li>
+      <li><a href="mailto:info@bozomainnovationhub.com">info@bozomainnovationhub.com</a></li>
+    </ul></div>
+  </div>
+  <div class="foot-bottom"><span>&copy; Bozoma Innovation Hub, Aiyinasi, Ghana</span><span class="tagline">World-class begins at home.</span></div>
+</div>
+</footer>
 </body>
 </html>

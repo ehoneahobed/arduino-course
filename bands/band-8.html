@@ -5,16 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Band 8: Build for Nzemaland · Arduino Ladder</title>
   <meta name="description" content="No new parts. A brief from a real person, criteria written before you build, a state machine, and an honest answer to whether it worked.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+  <meta name="theme-color" content="#24182E">
+  <link rel="icon" type="image/png" sizes="192x192" href="../assets/brand/icon-192.png">
+  <link rel="apple-touch-icon" href="../assets/brand/icon-180.png">
   <link rel="stylesheet" href="../assets/course.css">
 </head>
 <body>
 <a class="skip" href="#main">Skip to the lesson</a>
 <div class="topbar">
-  <a class="home" href="../index.html">Arduino Ladder <span>· Bozoma Innovation Hub</span></a>
+  <a class="home" href="../index.html"><img src="../assets/brand/logo-mark-white.png" alt="" width="36" height="36"><span class="lock"><b>Arduino Ladder</b><small>Bozoma Innovation Hub</small></span></a>
   <nav class="bandlinks" aria-label="Bands"><a href="../bands/band-0.html">0</a><a href="../bands/band-1.html">1</a><a href="../bands/band-2.html">2</a><a href="../bands/band-3.html">3</a><a href="../bands/band-4.html">4</a><a href="../bands/band-5.html">5</a><a href="../bands/band-6.html">6</a><a href="../bands/band-7.html">7</a><a href="../bands/band-8.html" aria-current="page">8</a></nav>
+  <a class="bih" href="https://bozomainnovationhub.com"><span class="long">bozomainnovationhub.com</span><span class="short">BIH website</span></a>
 </div>
 <div class="wrap" id="main">
 <nav aria-label="Sections">
@@ -31,6 +32,7 @@
   <a href="#docs">Documenting it</a>
   <a href="#change">Change it</a>
   <a href="#make">Your capstone</a>
+  <a href="#ideas">Ideas</a>
   <a href="#evidence">Evidence</a>
   <a href="#check">Check yourself</a>
   <a href="#recall">Say these out loud</a>
@@ -2567,6 +2569,95 @@ int clearLevel = 20;          // must fall below this to count as safe</code></p
   </div>
 </section>
 
+<!-- Band 8: "What you can build now". Insert as its own section; see INSERT.md. -->
+<section class="part" id="ideas">
+  <div class="parthead"><span class="tag">Ideas</span><h2>What you can build now</h2></div>
+  <div class="col stack">
+    <p>Every idea here uses only parts and ideas from Bands 0 to 8. Each one practises what this band added: writing a device as states, writing criteria before you build, choosing what it does when the power comes back, and judging it honestly.</p>
+    <p>None of them is a lesson. You get the person, the rule and the parts, and the code is yours, like a Practice page. Stars show how hard it is: one star is an afternoon, three stars will take you a few evenings.</p>
+  </div>
+  <div class="grid-2" style="margin-top:1rem">
+    <div class="card stack-sm" id="idea-8-1">
+      <h4>Clinic “now serving” number &nbsp;<span class="ptype invent" role="img" aria-label="Difficulty: three stars of three">★★★</span></h4>
+      <dl class="tier" style="grid-template-columns:minmax(0,1fr); gap:.15rem 0">
+        <dt>For</dt><dd>A clinic or a bank queue where people lose their place, or are afraid to go outside in case they miss their turn.</dd>
+        <dt style="margin-top:.45rem">Rule</dt><dd>Show the number being served; when the nurse presses Next, flash the new number and beep twice; Break shows a message (dashes on a TM1637, a word on the LCD) until it is pressed again.</dd>
+        <dt style="margin-top:.45rem">Parts</dt><dd>TM1637 or LCD1602, 2 push buttons, passive buzzer, jumper wires.</dd>
+        <dt style="margin-top:.45rem">Practises</dt><dd>States (SERVING, CALLING, BREAK), and choosing what number it shows after a power cut.</dd>
+      </dl>
+      <p class="note">If it comes back at 1 after a power cut, the queue is ruined. That is a real reason to reach for EEPROM.</p>
+    </div>
+    <div class="card stack-sm" id="idea-8-2">
+      <h4>Coop night guard &nbsp;<span class="ptype invent" role="img" aria-label="Difficulty: three stars of three">★★★</span></h4>
+      <dl class="tier" style="grid-template-columns:minmax(0,1fr); gap:.15rem 0">
+        <dt>For</dt><dd>A woman who keeps chickens and loses one every few weeks at night to a dog or a cat.</dd>
+        <dt style="margin-top:.45rem">Rule</dt><dd>Only when it is dark, sound the alarm when something comes close to the coop door; a button snoozes it for five minutes; it re-arms by itself.</dd>
+        <dt style="margin-top:.45rem">Parts</dt><dd>Light sensor and its 10 kΩ resistor, HC-SR04, passive buzzer, 1 push button, 2 LEDs and resistors, jumper wires, a power bank.</dd>
+        <dt style="margin-top:.45rem">Practises</dt><dd>States (DAY, ARMED, ALARM, SNOOZED) that combine two sensors.</dd>
+      </dl>
+      <p class="note">Chickens moving inside will set it off if the sensor can see them. Measure where it points. After a power cut at night it must come back armed.</p>
+    </div>
+    <div class="card stack-sm" id="idea-8-3">
+      <h4>Seedling watering reminder &nbsp;<span class="ptype invent" role="img" aria-label="Difficulty: two stars of three">★★☆</span></h4>
+      <dl class="tier" style="grid-template-columns:minmax(0,1fr); gap:.15rem 0">
+        <dt>For</dt><dd>A pupil looking after the school garden nursery, who forgets which day it was last watered.</dd>
+        <dt style="margin-top:.45rem">Rule</dt><dd>Press when you water; after the time you chose the light turns yellow, and later red with a short beep every minute until it is pressed again.</dd>
+        <dt style="margin-top:.45rem">Parts</dt><dd>1 push button, 3 LEDs and resistors, passive buzzer, jumper wires, a power bank.</dd>
+        <dt style="margin-top:.45rem">Practises</dt><dd>States (WATERED, DUE, OVERDUE), and being honest that it does not know whether the soil is dry.</dd>
+      </dl>
+      <p class="note">After a power cut it cannot know how long it has been. Decide on paper which state is the safe one to come back in. Usually that is DUE.</p>
+    </div>
+    <div class="card stack-sm" id="idea-8-4">
+      <h4>Fish cool-box warning &nbsp;<span class="ptype invent" role="img" aria-label="Difficulty: two stars of three">★★☆</span></h4>
+      <dl class="tier" style="grid-template-columns:minmax(0,1fr); gap:.15rem 0">
+        <dt>For</dt><dd>A fish seller carrying fish in a cool box with ice to the market. When the ice is gone the fish spoils, and you cannot see it until it smells.</dd>
+        <dt style="margin-top:.45rem">Rule</dt><dd>When the air inside the box has been above your threshold for ten minutes, light red and beep; clear only when it is well below again.</dd>
+        <dt style="margin-top:.45rem">Parts</dt><dd>DHT11, 2 LEDs and resistors, passive buzzer, jumper wires, a power bank, a small sealed plastic bag.</dd>
+        <dt style="margin-top:.45rem">Practises</dt><dd>A threshold with a timer and two numbers, written as states.</dd>
+      </dl>
+      <p class="note">The DHT11 measures the air in the box, not the fish, and only between 0 and 50 degrees. Seal the sensor in its bag on the lid side, away from the melt water, and keep the board outside the box.</p>
+    </div>
+    <div class="card stack-sm" id="idea-8-5">
+      <h4>Chop bar order board &nbsp;<span class="ptype invent" role="img" aria-label="Difficulty: three stars of three">★★★</span></h4>
+      <dl class="tier" style="grid-template-columns:minmax(0,1fr); gap:.15rem 0">
+        <dt>For</dt><dd>A chop bar with three tables, where the cook and the server keep losing track of which order is at which stage.</dd>
+        <dt style="margin-top:.45rem">Rule</dt><dd>Each table has a light and a button; each press moves that table from ordered (slow blink) to cooking (fast blink) to ready (on, with a beep) to served (off).</dd>
+        <dt style="margin-top:.45rem">Parts</dt><dd>3 push buttons, 3 LEDs and resistors, passive buzzer, jumper wires.</dd>
+        <dt style="margin-top:.45rem">Practises</dt><dd>Three copies of the same state machine, one per table, kept in arrays.</dd>
+      </dl>
+      <p class="note">Blinking two speeds at once needs <code>millis</code>, not <code>delay</code>. Count your pins first: seven.</p>
+    </div>
+    <div class="card stack-sm" id="idea-8-6">
+      <h4>Medicine time helper &nbsp;<span class="ptype invent" role="img" aria-label="Difficulty: three stars of three">★★★</span></h4>
+      <dl class="tier" style="grid-template-columns:minmax(0,1fr); gap:.15rem 0">
+        <dt>For</dt><dd>A grandmother who takes tablets morning and evening, and a family who worry she forgets.</dd>
+        <dt style="margin-top:.45rem">Rule</dt><dd>Light and beep when twelve hours have passed since the last press; she presses to say taken; if it is not pressed within an hour, it changes to a different light the family can see.</dd>
+        <dt style="margin-top:.45rem">Parts</dt><dd>1 push button, 3 LEDs and resistors, passive buzzer, jumper wires, a power bank.</dd>
+        <dt style="margin-top:.45rem">Practises</dt><dd>States (WAITING, DUE, TAKEN, MISSED), and a hard power-cut question.</dd>
+      </dl>
+      <p class="note">The board does not know the time of day, only how long since it was set, and a power cut wipes even that. It is a helper for a family that is still in charge, never the only reminder. Write that into your criteria.</p>
+    </div>
+  </div>
+  <div class="col stack" style="margin-top:1rem">
+    <div class="brief">
+      <h5>Find your own idea</h5>
+      <p>The best idea is not on this list. It is a problem somebody near you has. Ask yourself, or ask them:</p>
+      <ul class="plain">
+        <li>Who near you has a problem that keeps coming back? Write it in their words, not yours.</li>
+        <li>What modes would the device have: waiting, working, warning, quiet?</li>
+        <li>What must it do when the power comes back and nobody is there?</li>
+        <li>Which five things would you check to call it working, written before you build?</li>
+      </ul>
+      <p>Then write the rule as one sentence with <em>when</em>, <em>until</em> or <em>unless</em> in it. <a href="../projects/invent-a-project.html">Invent a project</a> has the whole method: the pin budget and the four questions that kill a bad idea in five minutes. The <a href="../projects/idea-bank.html">idea bank</a> has every idea from every band in one place.</p>
+    </div>
+    <div class="callout">
+      <h5>Be honest about what these can do</h5>
+      <p>No idea on this list needs mains electricity, and none may touch it: if a brief seems to, go back and ask the person what they would see, hear or feel, and sense that instead. Every device here will lose power, so every one needs a power-cut criterion. And a device that helps with health, food or safety is a helper to a person, never a replacement for them.</p>
+    </div>
+  </div>
+</section>
+
+
 <section class="part" id="check">
   <div class="parthead"><span class="tag">Part 12</span><h2>Check yourself</h2><span class="mins">20 min</span></div>
   <div class="col stack">
@@ -2717,9 +2808,29 @@ void loop() {
 <a class="next" href="../guide.html"><span class="dir">Next</span><span class="name">That is the whole ladder. Read the facilitator guide &rarr;</span></a>
 </nav>
 
-<footer>
-  <p>Bozoma Innovation Hub &nbsp;&middot;&nbsp; Aiyinasi, Ellembelle District. Band 8 of nine, and the end of the ladder. Every sketch used here was compiled and tested before it reached you.</p>
-</footer>
 </div>
+<footer class="bihfoot">
+<div class="wrap">
+  <p class="pagenote">Bozoma Innovation Hub &nbsp;&middot;&nbsp; Aiyinasi, Ellembelle District. Band 8 of nine, and the end of the ladder. Every sketch used here was compiled and tested before it reached you.</p>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a class="lockup" href="../index.html"><img src="../assets/brand/logo-mark-white.png" alt="" width="42" height="42"><span>The Arduino Ladder<small>Bozoma Innovation Hub</small></span></a>
+      <p>A Bozoma Innovation Hub programme. Free to use, nothing to sign up for, at your own speed.</p>
+    </div>
+    <div><h4>The course</h4><ul>
+      <li><a href="../index.html">Course home</a></li>
+      <li><a href="../bands/band-0.html">Start with Band 0</a></li>
+      <li><a href="../guide.html">Facilitator guide</a></li>
+      <li><a href="../downloads/arduino-ladder-sketches.zip">All the sketches (zip)</a></li>
+    </ul></div>
+    <div><h4>Bozoma Innovation Hub</h4><ul>
+      <li>Aiyinasi, Ellembelle District, Western Region, Ghana</li>
+      <li><a href="https://bozomainnovationhub.com">bozomainnovationhub.com</a></li>
+      <li><a href="mailto:info@bozomainnovationhub.com">info@bozomainnovationhub.com</a></li>
+    </ul></div>
+  </div>
+  <div class="foot-bottom"><span>&copy; Bozoma Innovation Hub, Aiyinasi, Ghana</span><span class="tagline">World-class begins at home.</span></div>
+</div>
+</footer>
 </body>
 </html>

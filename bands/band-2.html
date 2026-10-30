@@ -5,16 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Band 2: Mood Lamp · Arduino Ladder</title>
   <meta name="description" content="Brightness, colour, and your first repeating loop. You find out the board cannot really dim a light at all, and you prove it with your own hand.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+  <meta name="theme-color" content="#24182E">
+  <link rel="icon" type="image/png" sizes="192x192" href="../assets/brand/icon-192.png">
+  <link rel="apple-touch-icon" href="../assets/brand/icon-180.png">
   <link rel="stylesheet" href="../assets/course.css">
 </head>
 <body>
 <a class="skip" href="#main">Skip to the lesson</a>
 <div class="topbar">
-  <a class="home" href="../index.html">Arduino Ladder <span>· Bozoma Innovation Hub</span></a>
+  <a class="home" href="../index.html"><img src="../assets/brand/logo-mark-white.png" alt="" width="36" height="36"><span class="lock"><b>Arduino Ladder</b><small>Bozoma Innovation Hub</small></span></a>
   <nav class="bandlinks" aria-label="Bands"><a href="../bands/band-0.html">0</a><a href="../bands/band-1.html">1</a><a href="../bands/band-2.html" aria-current="page">2</a><a href="../bands/band-3.html">3</a><a href="../bands/band-4.html">4</a><a href="../bands/band-5.html">5</a><a href="../bands/band-6.html">6</a><a href="../bands/band-7.html">7</a><a href="../bands/band-8.html">8</a></nav>
+  <a class="bih" href="https://bozomainnovationhub.com"><span class="long">bozomainnovationhub.com</span><span class="short">BIH website</span></a>
 </div>
 <div class="wrap" id="main">
 <nav aria-label="Sections">
@@ -29,6 +30,7 @@
   <a href="#closer">Look closer</a>
   <a href="#change">Change it</a>
   <a href="#make">Make yours</a>
+  <a href="#ideas">Ideas</a>
   <a href="#check">Check yourself</a>
   <a href="#problems">Problems</a>
 </nav>
@@ -1988,6 +1990,90 @@ int r = r1 + (r2 - r1) * step / 100;</code></pre>
   </div>
 </section>
 
+<!-- Band 2: "What you can build now". Insert as its own section; see INSERT.md. -->
+<section class="part" id="ideas">
+  <div class="parthead"><span class="tag">Ideas</span><h2>What you can build now</h2></div>
+  <div class="col stack">
+    <p>Every idea here uses only parts and ideas from Bands 0 to 2. Each one practises what this band added: fading with <code>analogWrite</code> on the ~ pins, mixing colour from three numbers, and repeating with a <code>for</code> loop.</p>
+    <p>None of them is a lesson. You get the person, the rule and the parts, and the code is yours, like a Practice page. Stars show how hard it is: one star is an afternoon, three stars will take you a few evenings.</p>
+  </div>
+  <div class="grid-2" style="margin-top:1rem">
+    <div class="card stack-sm" id="idea-2-1">
+      <h4>Sleep-time fade light &nbsp;<span class="ptype invent" role="img" aria-label="Difficulty: one star of three">★☆☆</span></h4>
+      <dl class="tier" style="grid-template-columns:minmax(0,1fr); gap:.15rem 0">
+        <dt>For</dt><dd>A small child who is afraid of the dark and will not sleep with the room lamp off.</dd>
+        <dt style="margin-top:.45rem">Rule</dt><dd>Start at a soft warm colour, then fade very slowly down to off over ten minutes, so the dark arrives too slowly to notice.</dd>
+        <dt style="margin-top:.45rem">Parts</dt><dd>RGB LED (or the RGB module), 3 × 220 Ω resistors, jumper wires, a paper or sachet-bottle diffuser.</dd>
+        <dt style="margin-top:.45rem">Practises</dt><dd>A <code>for</code> loop with a long step delay. Work out the step from the ten minutes.</dd>
+      </dl>
+    </div>
+    <div class="card stack-sm" id="idea-2-2">
+      <h4>Breathing guide &nbsp;<span class="ptype invent" role="img" aria-label="Difficulty: one star of three">★☆☆</span></h4>
+      <dl class="tier" style="grid-template-columns:minmax(0,1fr); gap:.15rem 0">
+        <dt>For</dt><dd>Pupils before an exam, or anybody who gets anxious. Slow breathing calms you, and it is easier with something to follow.</dd>
+        <dt style="margin-top:.45rem">Rule</dt><dd>Fade up for four seconds (breathe in), hold for four, fade down for six (breathe out), and repeat.</dd>
+        <dt style="margin-top:.45rem">Parts</dt><dd>1 LED on a ~ pin and its 220 Ω resistor, or the RGB LED, jumper wires, a diffuser.</dd>
+        <dt style="margin-top:.45rem">Practises</dt><dd>Fades whose length you choose, and why it must be a ~ pin.</dd>
+      </dl>
+    </div>
+    <div class="card stack-sm" id="idea-2-3">
+      <h4>“We are open” kiosk sign &nbsp;<span class="ptype invent" role="img" aria-label="Difficulty: one star of three">★☆☆</span></h4>
+      <dl class="tier" style="grid-template-columns:minmax(0,1fr); gap:.15rem 0">
+        <dt>For</dt><dd>A phone-credit or provisions kiosk. Customers walk past at dusk because they cannot tell it is still open.</dd>
+        <dt style="margin-top:.45rem">Rule</dt><dd>Breathe slowly in the kiosk's own colour all evening, never snapping on or off.</dd>
+        <dt style="margin-top:.45rem">Parts</dt><dd>RGB LED or module, resistors as your part needs, jumper wires, a big diffuser such as a white bottle.</dd>
+        <dt style="margin-top:.45rem">Practises</dt><dd>Mixing a named colour from three numbers.</dd>
+      </dl>
+    </div>
+    <div class="card stack-sm" id="idea-2-4">
+      <h4>Black Stars match lamp &nbsp;<span class="ptype invent" role="img" aria-label="Difficulty: two stars of three">★★☆</span></h4>
+      <dl class="tier" style="grid-template-columns:minmax(0,1fr); gap:.15rem 0">
+        <dt>For</dt><dd>Friends watching a Ghana match together, for fun.</dd>
+        <dt style="margin-top:.45rem">Rule</dt><dd>Fade between red, gold and green, holding each for a moment, and repeat until the final whistle.</dd>
+        <dt style="margin-top:.45rem">Parts</dt><dd>RGB LED or module, resistors, jumper wires, a diffuser.</dd>
+        <dt style="margin-top:.45rem">Practises</dt><dd>Making gold from light, which is not how you would make it from paint.</dd>
+      </dl>
+    </div>
+    <div class="card stack-sm" id="idea-2-5">
+      <h4>Nursery activity colours &nbsp;<span class="ptype invent" role="img" aria-label="Difficulty: two stars of three">★★☆</span></h4>
+      <dl class="tier" style="grid-template-columns:minmax(0,1fr); gap:.15rem 0">
+        <dt>For</dt><dd>A nursery or KG teacher. Young children cannot read a clock, but they can learn that blue means story time and green means play.</dd>
+        <dt style="margin-top:.45rem">Rule</dt><dd>Each activity has its own colour. Hold it for that activity's length, then fade slowly to the next one.</dd>
+        <dt style="margin-top:.45rem">Parts</dt><dd>RGB LED or module, resistors, jumper wires, a large diffuser the class can see.</dd>
+        <dt style="margin-top:.45rem">Practises</dt><dd>Keeping all the colour numbers and lengths at the top of the sketch, so the teacher's timetable is one place to change.</dd>
+      </dl>
+      <p class="note">It cannot be paused or skipped yet. That needs a button, which is Band 3.</p>
+    </div>
+    <div class="card stack-sm" id="idea-2-6">
+      <h4>Campfire glow for a drama &nbsp;<span class="ptype invent" role="img" aria-label="Difficulty: two stars of three">★★☆</span></h4>
+      <dl class="tier" style="grid-template-columns:minmax(0,1fr); gap:.15rem 0">
+        <dt>For</dt><dd>A church or school drama with a night-time scene. A real fire on stage is not allowed.</dd>
+        <dt style="margin-top:.45rem">Rule</dt><dd>Fade between deep red, orange and a little yellow at uneven speeds, so it never looks like it is repeating.</dd>
+        <dt style="margin-top:.45rem">Parts</dt><dd>RGB LED or module, resistors, jumper wires, crumpled tissue paper as a diffuser.</dd>
+        <dt style="margin-top:.45rem">Practises</dt><dd>Many short fades of different lengths, written so they can be retuned.</dd>
+      </dl>
+      <p class="note">Without <code>random</code> (Band 5) the flicker does repeat. Make the loop long enough that the audience cannot tell.</p>
+    </div>
+  </div>
+  <div class="col stack" style="margin-top:1rem">
+    <div class="brief">
+      <h5>Find your own idea</h5>
+      <p>The best idea is not on this list. It is a problem somebody near you has. Ask yourself, or ask them:</p>
+      <ul class="plain">
+        <li>What would be nicer if it changed slowly instead of snapping on and off?</li>
+        <li>Which colours mean something to people here: a team, a church, a festival, a warning?</li>
+        <li>Who sits in the dark, or waits in the dark, and would like a gentle light?</li>
+      </ul>
+      <p>Then write the rule as one sentence with <em>when</em>, <em>until</em> or <em>unless</em> in it. <a href="../projects/invent-a-project.html">Invent a project</a> has the whole method: the pin budget and the four questions that kill a bad idea in five minutes. The <a href="../projects/idea-bank.html">idea bank</a> has every idea from every band in one place.</p>
+    </div>
+    <div class="callout">
+      <h5>Be honest about what these can do</h5>
+      <p>Your LED is a signal, not a room light. It will not light a room or replace a lamp, and you never wire anything to a mains lamp. A correctly wired LED stays cool, so if a diffuser ever feels warm, unplug and check your resistors. Only pins marked ~ can fade.</p>
+    </div>
+  </div>
+</section>
+
+
 <section class="part" id="check">
   <div class="parthead"><span class="tag">Part 11</span><h2>Check yourself</h2><span class="mins">15 min</span></div>
   <div class="col stack">
@@ -2087,10 +2173,30 @@ void loop() {
 <a class="next" href="band-3.html"><span class="dir">Next</span><span class="name">Band 3: Combination Lock &rarr;</span></a>
 </nav>
 
-<footer>
-  <p>Bozoma Innovation Hub &nbsp;·&nbsp; Aiyinasi, Ellembelle District. Band 2 of nine. Every sketch used here was compiled and tested before it reached you.</p>
-</footer>
 
 </div>
+<footer class="bihfoot">
+<div class="wrap">
+  <p class="pagenote">Bozoma Innovation Hub &nbsp;·&nbsp; Aiyinasi, Ellembelle District. Band 2 of nine. Every sketch used here was compiled and tested before it reached you.</p>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a class="lockup" href="../index.html"><img src="../assets/brand/logo-mark-white.png" alt="" width="42" height="42"><span>The Arduino Ladder<small>Bozoma Innovation Hub</small></span></a>
+      <p>A Bozoma Innovation Hub programme. Free to use, nothing to sign up for, at your own speed.</p>
+    </div>
+    <div><h4>The course</h4><ul>
+      <li><a href="../index.html">Course home</a></li>
+      <li><a href="../bands/band-0.html">Start with Band 0</a></li>
+      <li><a href="../guide.html">Facilitator guide</a></li>
+      <li><a href="../downloads/arduino-ladder-sketches.zip">All the sketches (zip)</a></li>
+    </ul></div>
+    <div><h4>Bozoma Innovation Hub</h4><ul>
+      <li>Aiyinasi, Ellembelle District, Western Region, Ghana</li>
+      <li><a href="https://bozomainnovationhub.com">bozomainnovationhub.com</a></li>
+      <li><a href="mailto:info@bozomainnovationhub.com">info@bozomainnovationhub.com</a></li>
+    </ul></div>
+  </div>
+  <div class="foot-bottom"><span>&copy; Bozoma Innovation Hub, Aiyinasi, Ghana</span><span class="tagline">World-class begins at home.</span></div>
+</div>
+</footer>
 </body>
 </html>

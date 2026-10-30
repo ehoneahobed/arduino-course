@@ -5,16 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Band 7: Distance and Display · Arduino Ladder</title>
   <meta name="description" content="Measuring distance with sound you cannot hear, and saying the answer on a screen of its own. Sixteen characters turns out to be a design problem.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+  <meta name="theme-color" content="#24182E">
+  <link rel="icon" type="image/png" sizes="192x192" href="../assets/brand/icon-192.png">
+  <link rel="apple-touch-icon" href="../assets/brand/icon-180.png">
   <link rel="stylesheet" href="../assets/course.css">
 </head>
 <body>
 <a class="skip" href="#main">Skip to the lesson</a>
 <div class="topbar">
-  <a class="home" href="../index.html">Arduino Ladder <span>· Bozoma Innovation Hub</span></a>
+  <a class="home" href="../index.html"><img src="../assets/brand/logo-mark-white.png" alt="" width="36" height="36"><span class="lock"><b>Arduino Ladder</b><small>Bozoma Innovation Hub</small></span></a>
   <nav class="bandlinks" aria-label="Bands"><a href="../bands/band-0.html">0</a><a href="../bands/band-1.html">1</a><a href="../bands/band-2.html">2</a><a href="../bands/band-3.html">3</a><a href="../bands/band-4.html">4</a><a href="../bands/band-5.html">5</a><a href="../bands/band-6.html">6</a><a href="../bands/band-7.html" aria-current="page">7</a><a href="../bands/band-8.html">8</a></nav>
+  <a class="bih" href="https://bozomainnovationhub.com"><span class="long">bozomainnovationhub.com</span><span class="short">BIH website</span></a>
 </div>
 <div class="wrap" id="main">
 <nav aria-label="Sections">
@@ -30,6 +31,7 @@
   <a href="#closer">Look closer</a>
   <a href="#change">Change it</a>
   <a href="#make">Make yours</a>
+  <a href="#ideas">Ideas</a>
   <a href="#check">Check yourself</a>
   <a href="#recall">Say these out loud</a>
   <a href="#problems">Problems</a>
@@ -3125,6 +3127,93 @@ lastShown = cm;</code></pre>
   </div>
 </section>
 
+<!-- Band 7: "What you can build now". Insert as its own section; see INSERT.md. -->
+<section class="part" id="ideas">
+  <div class="parthead"><span class="tag">Ideas</span><h2>What you can build now</h2></div>
+  <div class="col stack">
+    <p>Every idea here uses only parts and ideas from Bands 0 to 7. Each one practises what this band added: measuring distance by echo with the HC-SR04, handling “I heard nothing”, and writing to a screen without flicker.</p>
+    <p>None of them is a lesson. You get the person, the rule and the parts, and the code is yours, like a Practice page. Stars show how hard it is: one star is an afternoon, three stars will take you a few evenings.</p>
+  </div>
+  <div class="grid-2" style="margin-top:1rem">
+    <div class="card stack-sm" id="idea-7-1">
+      <h4>Height measurer for weighing day &nbsp;<span class="ptype invent" role="img" aria-label="Difficulty: two stars of three">★★☆</span></h4>
+      <dl class="tier" style="grid-template-columns:minmax(0,1fr); gap:.15rem 0">
+        <dt>For</dt><dd>The nurse or volunteer at a child welfare clinic or school health day, measuring a long line of children with a tape.</dd>
+        <dt style="margin-top:.45rem">Rule</dt><dd>Fixed at a measured height and pointing down, it shows the child's height once the reading has held steady for two seconds, and “Stand under me” when it hears nothing.</dd>
+        <dt style="margin-top:.45rem">Parts</dt><dd>HC-SR04, LCD1602 (either kind) for the words, or a TM1637 if the number is enough, passive buzzer, jumper wires, a frame or doorway to fix it to.</dd>
+        <dt style="margin-top:.45rem">Practises</dt><dd>Turning a distance into the number a person actually wants, and checking it against a tape measure.</dd>
+      </dl>
+      <p class="note">Hair and caps confuse it. Write down how far out it is on five children. The nurse's tape stays the real record: this is a helper for a long queue, not a medical instrument.</p>
+    </div>
+    <div class="card stack-sm" id="idea-7-2">
+      <h4>Chop bar welcome screen &nbsp;<span class="ptype invent" role="img" aria-label="Difficulty: two stars of three">★★☆</span></h4>
+      <dl class="tier" style="grid-template-columns:minmax(0,1fr); gap:.15rem 0">
+        <dt>For</dt><dd>A chop bar where customers stand at the counter asking “what is there today?” while the cook is busy.</dd>
+        <dt style="margin-top:.45rem">Rule</dt><dd>When somebody stands within a metre, show “Akwaaba!” and then today's dishes one at a time, until nobody has been there for thirty seconds.</dd>
+        <dt style="margin-top:.45rem">Parts</dt><dd>HC-SR04, LCD1602, jumper wires, a box to mount it in.</dd>
+        <dt style="margin-top:.45rem">Practises</dt><dd>Sixteen-character messages, changed without flicker, timed with <code>millis</code>.</dd>
+      </dl>
+      <p class="note">Put the dishes in a list at the top of the sketch. The menu changes every day and the owner will ask you to change it.</p>
+    </div>
+    <div class="card stack-sm" id="idea-7-3">
+      <h4>Hand on the mark &nbsp;<span class="ptype invent" role="img" aria-label="Difficulty: two stars of three">★★☆</span></h4>
+      <dl class="tier" style="grid-template-columns:minmax(0,1fr); gap:.15rem 0">
+        <dt>For</dt><dd>Anybody waiting at the hub. A game that teaches you how good your eye for distance is.</dd>
+        <dt style="margin-top:.45rem">Rule</dt><dd>Show a random target distance; the player holds a hand still at that distance; score when they are within 2 cm for one second.</dd>
+        <dt style="margin-top:.45rem">Parts</dt><dd>HC-SR04, LCD1602 or TM1637, passive buzzer, jumper wires.</dd>
+        <dt style="margin-top:.45rem">Practises</dt><dd>Treating “no echo” as its own case, not as zero.</dd>
+      </dl>
+    </div>
+    <div class="card stack-sm" id="idea-7-4">
+      <h4>Speech and debate timer &nbsp;<span class="ptype invent" role="img" aria-label="Difficulty: two stars of three">★★☆</span></h4>
+      <dl class="tier" style="grid-template-columns:minmax(0,1fr); gap:.15rem 0">
+        <dt>For</dt><dd>A school debate club, or a church where announcements run long.</dd>
+        <dt style="margin-top:.45rem">Rule</dt><dd>Show minutes and seconds left; flash “ONE MINUTE” with one minute left; show “TIME” and beep at zero; the chair can pause with a button.</dd>
+        <dt style="margin-top:.45rem">Parts</dt><dd>LCD1602 for the words, or a TM1637 showing minutes and seconds with the colon (it flashes instead of saying ONE MINUTE), 2 push buttons, passive buzzer, jumper wires.</dd>
+        <dt style="margin-top:.45rem">Practises</dt><dd>A display that only rewrites what changed, so the numbers never flicker.</dd>
+      </dl>
+      <p class="note">This one does not need the distance sensor at all. A screen is a reason on its own.</p>
+    </div>
+    <div class="card stack-sm" id="idea-7-5">
+      <h4>Park football scoreboard &nbsp;<span class="ptype invent" role="img" aria-label="Difficulty: two stars of three">★★☆</span></h4>
+      <dl class="tier" style="grid-template-columns:minmax(0,1fr); gap:.15rem 0">
+        <dt>For</dt><dd>An evening match where nobody remembers the score by the end.</dd>
+        <dt style="margin-top:.45rem">Rule</dt><dd>Home score on the left two digits, away on the right, the colon between; a press adds a goal and a long press takes one back.</dd>
+        <dt style="margin-top:.45rem">Parts</dt><dd>TM1637 display (the <a href="../projects/b7-guard-tm1637.html">four-digit</a> swap), 2 push buttons, jumper wires, a power bank.</dd>
+        <dt style="margin-top:.45rem">Practises</dt><dd>Fitting two numbers into four digits, and deciding what to do at 100.</dd>
+      </dl>
+    </div>
+    <div class="card stack-sm" id="idea-7-6">
+      <h4>Morning rain gauge &nbsp;<span class="ptype invent" role="img" aria-label="Difficulty: three stars of three">★★★</span></h4>
+      <dl class="tier" style="grid-template-columns:minmax(0,1fr); gap:.15rem 0">
+        <dt>For</dt><dd>A farmer deciding whether last night's rain means there is no need to water today.</dd>
+        <dt style="margin-top:.45rem">Rule</dt><dd>Each morning bring the straight-sided rain bucket under the sensor; it shows the depth of water in centimetres and keeps showing it until the next morning's reading.</dd>
+        <dt style="margin-top:.45rem">Parts</dt><dd>HC-SR04 fixed on a stand indoors, LCD1602 or TM1637, jumper wires, a straight-sided bucket left out in the open.</dd>
+        <dt style="margin-top:.45rem">Practises</dt><dd>Subtracting from a measured empty-bucket distance, and a ruler-accuracy table at small depths.</dd>
+      </dl>
+      <p class="note">The sensor is not waterproof, so it never goes out in the rain: only the bucket does. It is good to about half a centimetre. Check that with a ruler and say so.</p>
+    </div>
+  </div>
+  <div class="col stack" style="margin-top:1rem">
+    <div class="brief">
+      <h5>Find your own idea</h5>
+      <p>The best idea is not on this list. It is a problem somebody near you has. Ask yourself, or ask them:</p>
+      <ul class="plain">
+        <li>What does somebody measure with a stick or a tape, or guess by eye, every day?</li>
+        <li>What message would help a person walking past, in sixteen characters or four digits?</li>
+        <li>What should the screen say when the sensor hears nothing at all?</li>
+        <li>Where would a person stand to read it, and in what light?</li>
+      </ul>
+      <p>Then write the rule as one sentence with <em>when</em>, <em>until</em> or <em>unless</em> in it. <a href="../projects/invent-a-project.html">Invent a project</a> has the whole method: the pin budget and the four questions that kill a bad idea in five minutes. The <a href="../projects/idea-bank.html">idea bank</a> has every idea from every band in one place.</p>
+    </div>
+    <div class="callout">
+      <h5>Be honest about what these can do</h5>
+      <p>The distance sensor misses soft, angled and very small things, and it is not waterproof. An LCD is hard to read in direct sun. Every idea here needs a ruler-accuracy table before you tell anybody a number is right, and a plan for “no echo”. None of these is a medical or safety instrument: they help a person who is still in charge.</p>
+    </div>
+  </div>
+</section>
+
+
 <section class="part" id="check">
   <div class="parthead"><span class="tag">Part 11</span><h2>Check yourself</h2><span class="mins">20 min</span></div>
   <div class="col stack">
@@ -3276,10 +3365,30 @@ void loop() {
 <a class="next" href="band-8.html"><span class="dir">Next</span><span class="name">Band 8: Build for Nzemaland &rarr;</span></a>
 </nav>
 
-<footer>
-  <p>Bozoma Innovation Hub &nbsp;&middot;&nbsp; Aiyinasi, Ellembelle District. Band 7 of nine. Every sketch used here was compiled and tested before it reached you.</p>
-</footer>
 
 </div>
+<footer class="bihfoot">
+<div class="wrap">
+  <p class="pagenote">Bozoma Innovation Hub &nbsp;&middot;&nbsp; Aiyinasi, Ellembelle District. Band 7 of nine. Every sketch used here was compiled and tested before it reached you.</p>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a class="lockup" href="../index.html"><img src="../assets/brand/logo-mark-white.png" alt="" width="42" height="42"><span>The Arduino Ladder<small>Bozoma Innovation Hub</small></span></a>
+      <p>A Bozoma Innovation Hub programme. Free to use, nothing to sign up for, at your own speed.</p>
+    </div>
+    <div><h4>The course</h4><ul>
+      <li><a href="../index.html">Course home</a></li>
+      <li><a href="../bands/band-0.html">Start with Band 0</a></li>
+      <li><a href="../guide.html">Facilitator guide</a></li>
+      <li><a href="../downloads/arduino-ladder-sketches.zip">All the sketches (zip)</a></li>
+    </ul></div>
+    <div><h4>Bozoma Innovation Hub</h4><ul>
+      <li>Aiyinasi, Ellembelle District, Western Region, Ghana</li>
+      <li><a href="https://bozomainnovationhub.com">bozomainnovationhub.com</a></li>
+      <li><a href="mailto:info@bozomainnovationhub.com">info@bozomainnovationhub.com</a></li>
+    </ul></div>
+  </div>
+  <div class="foot-bottom"><span>&copy; Bozoma Innovation Hub, Aiyinasi, Ghana</span><span class="tagline">World-class begins at home.</span></div>
+</div>
+</footer>
 </body>
 </html>

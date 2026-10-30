@@ -5,16 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Band 3: Combination Lock · Arduino Ladder</title>
   <meta name="description" content="Buttons, and why they are stranger than they look. Floating pins, the serial monitor, and teaching the board to remember.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+  <meta name="theme-color" content="#24182E">
+  <link rel="icon" type="image/png" sizes="192x192" href="../assets/brand/icon-192.png">
+  <link rel="apple-touch-icon" href="../assets/brand/icon-180.png">
   <link rel="stylesheet" href="../assets/course.css">
 </head>
 <body>
 <a class="skip" href="#main">Skip to the lesson</a>
 <div class="topbar">
-  <a class="home" href="../index.html">Arduino Ladder <span>· Bozoma Innovation Hub</span></a>
+  <a class="home" href="../index.html"><img src="../assets/brand/logo-mark-white.png" alt="" width="36" height="36"><span class="lock"><b>Arduino Ladder</b><small>Bozoma Innovation Hub</small></span></a>
   <nav class="bandlinks" aria-label="Bands"><a href="../bands/band-0.html">0</a><a href="../bands/band-1.html">1</a><a href="../bands/band-2.html">2</a><a href="../bands/band-3.html" aria-current="page">3</a><a href="../bands/band-4.html">4</a><a href="../bands/band-5.html">5</a><a href="../bands/band-6.html">6</a><a href="../bands/band-7.html">7</a><a href="../bands/band-8.html">8</a></nav>
+  <a class="bih" href="https://bozomainnovationhub.com"><span class="long">bozomainnovationhub.com</span><span class="short">BIH website</span></a>
 </div>
 <div class="wrap" id="main">
 <nav aria-label="Sections">
@@ -33,6 +34,7 @@
   <a href="#closer">Look closer</a>
   <a href="#change">Change it</a>
   <a href="#make">Make yours</a>
+  <a href="#ideas">Ideas</a>
   <a href="#check">Check yourself</a>
   <a href="#problems">Problems</a>
 </nav>
@@ -2686,6 +2688,94 @@ if (reading == LOW &amp;&amp; lastReading == HIGH) {</code></pre>
   </div>
 </section>
 
+<!-- Band 3: "What you can build now". Insert as its own section; see INSERT.md. -->
+<section class="part" id="ideas">
+  <div class="parthead"><span class="tag">Ideas</span><h2>What you can build now</h2></div>
+  <div class="col stack">
+    <p>Every idea here uses only parts and ideas from Bands 0 to 3. Each one practises what this band added: reading buttons, deciding with <code>if</code> and <code>else</code>, remembering between rounds, counting one press as one, and keeping a list in an array.</p>
+    <p>None of them is a lesson. You get the person, the rule and the parts, and the code is yours, like a Practice page. Stars show how hard it is: one star is an afternoon, three stars will take you a few evenings.</p>
+  </div>
+  <div class="grid-2" style="margin-top:1rem">
+    <div class="card stack-sm" id="idea-3-1">
+      <h4>Whose turn? light for Ludo and oware &nbsp;<span class="ptype invent" role="img" aria-label="Difficulty: one star of three">★☆☆</span></h4>
+      <dl class="tier" style="grid-template-columns:minmax(0,1fr); gap:.15rem 0">
+        <dt>For</dt><dd>Players under a tree arguing about whose turn it is, especially in a four-player game.</dd>
+        <dt style="margin-top:.45rem">Rule</dt><dd>Each press moves the light to the next player, and after the last player it goes back to the first.</dd>
+        <dt style="margin-top:.45rem">Parts</dt><dd>2 to 4 LEDs, one 220 Ω resistor each, 1 push button, jumper wires.</dd>
+        <dt style="margin-top:.45rem">Practises</dt><dd>Remembering, and counting one press as one press however long it is held.</dd>
+      </dl>
+    </div>
+    <div class="card stack-sm" id="idea-3-2">
+      <h4>Shared bathroom sign &nbsp;<span class="ptype invent" role="img" aria-label="Difficulty: one star of three">★☆☆</span></h4>
+      <dl class="tier" style="grid-template-columns:minmax(0,1fr); gap:.15rem 0">
+        <dt>For</dt><dd>A compound where several families share one bathroom, and people knock or walk in.</dd>
+        <dt style="margin-top:.45rem">Rule</dt><dd>Each press swaps between green (free) and red (in use), and it stays that way until somebody presses again.</dd>
+        <dt style="margin-top:.45rem">Parts</dt><dd>1 green and 1 red LED, 2 × 220 Ω resistors, 1 push button, jumper wires.</dd>
+        <dt style="margin-top:.45rem">Practises</dt><dd>A toggle written from nothing. The <a href="../projects/practice-toggle-lamp.html">toggle lamp</a> practice is the same idea.</dd>
+      </dl>
+      <p class="note">Mount the button outside the door, away from splashing water, and run the board from a power bank kept dry.</p>
+    </div>
+    <div class="card stack-sm" id="idea-3-3">
+      <h4>Class election counter &nbsp;<span class="ptype invent" role="img" aria-label="Difficulty: two stars of three">★★☆</span></h4>
+      <dl class="tier" style="grid-template-columns:minmax(0,1fr); gap:.15rem 0">
+        <dt>For</dt><dd>A class choosing its prefect, where counting hands is slow and people say it was unfair.</dd>
+        <dt style="margin-top:.45rem">Rule</dt><dd>Each candidate has a button; every press adds one vote and beeps once; the totals appear on the serial monitor only when the teacher holds two buttons together.</dd>
+        <dt style="margin-top:.45rem">Parts</dt><dd>2 or 3 push buttons, 1 active buzzer with its 220 Ω resistor, 1 LED and resistor, jumper wires.</dd>
+        <dt style="margin-top:.45rem">Practises</dt><dd>An array of counts, and edge detection so one voter cannot press forty times.</dd>
+      </dl>
+      <p class="note">Anyone can press twice, so a teacher still watches the line. And every count is gone if the power cuts. Band 8 shows how to survive that.</p>
+    </div>
+    <div class="card stack-sm" id="idea-3-4">
+      <h4>Clinic room call light &nbsp;<span class="ptype invent" role="img" aria-label="Difficulty: two stars of three">★★☆</span></h4>
+      <dl class="tier" style="grid-template-columns:minmax(0,1fr); gap:.15rem 0">
+        <dt>For</dt><dd>A small clinic with two consulting rooms and patients who cannot hear their name called.</dd>
+        <dt style="margin-top:.45rem">Rule</dt><dd>When a nurse presses her room's button, that room's light comes on and the buzzer beeps twice; the light stays on until the patient presses “coming”.</dd>
+        <dt style="margin-top:.45rem">Parts</dt><dd>3 push buttons, 2 LEDs and resistors, 1 active buzzer and its resistor, jumper wires.</dd>
+        <dt style="margin-top:.45rem">Practises</dt><dd><code>if</code> and <code>else</code> choosing between two rooms, and remembering which one called.</dd>
+      </dl>
+      <p class="note">Build it as a model on one breadboard first. Long wires between rooms are a later problem, and a real clinic should test it beside the way they already call people, not instead of it.</p>
+    </div>
+    <div class="card stack-sm" id="idea-3-5">
+      <h4>Chop bar plate counter &nbsp;<span class="ptype invent" role="img" aria-label="Difficulty: two stars of three">★★☆</span></h4>
+      <dl class="tier" style="grid-template-columns:minmax(0,1fr); gap:.15rem 0">
+        <dt>For</dt><dd>A chop bar owner who wants to know which dish sold most today, without writing it down while serving.</dd>
+        <dt style="margin-top:.45rem">Rule</dt><dd>One button for each dish; each press counts one plate and blinks that dish's light once; a fourth button prints the day's totals on the serial monitor.</dd>
+        <dt style="margin-top:.45rem">Parts</dt><dd>4 push buttons, 3 LEDs and resistors, jumper wires. The laptop at closing time, to read the totals.</dd>
+        <dt style="margin-top:.45rem">Practises</dt><dd>An array of counts, one place per dish.</dd>
+      </dl>
+      <p class="note">Every number is lost when the power cuts, and in Aiyinasi it will. Say so to the owner. Band 8 teaches EEPROM, the memory that survives.</p>
+    </div>
+    <div class="card stack-sm" id="idea-3-6">
+      <h4>Penalty shoot-out &nbsp;<span class="ptype invent" role="img" aria-label="Difficulty: two stars of three">★★☆</span></h4>
+      <dl class="tier" style="grid-template-columns:minmax(0,1fr); gap:.15rem 0">
+        <dt>For</dt><dd>Two friends with no ball and a long wait at the lorry park.</dd>
+        <dt style="margin-top:.45rem">Rule</dt><dd>The keeper secretly presses left, middle or right; then the kicker presses one; if they match it is saved (red and a buzz), if not it is a goal (green).</dd>
+        <dt style="margin-top:.45rem">Parts</dt><dd>6 push buttons (3 each, or share 3 and take turns), 1 green and 1 red LED with resistors, 1 active buzzer and its resistor, jumper wires.</dd>
+        <dt style="margin-top:.45rem">Practises</dt><dd>Remembering one player's choice until the other has made theirs.</dd>
+      </dl>
+      <p class="note">Count your pins before you wire. Six buttons, two lights and a buzzer is nine, which fits. Sharing three buttons is the cheaper design.</p>
+    </div>
+  </div>
+  <div class="col stack" style="margin-top:1rem">
+    <div class="brief">
+      <h5>Find your own idea</h5>
+      <p>The best idea is not on this list. It is a problem somebody near you has. Ask yourself, or ask them:</p>
+      <ul class="plain">
+        <li>Where near you do people press, count, take turns or wait to be called?</li>
+        <li>What gets counted on paper or by memory at the end of a day at a stall?</li>
+        <li>What should happen when somebody gets it wrong, not only when they get it right?</li>
+        <li>Who will press it, and with what hands: wet, busy, small or in a hurry?</li>
+      </ul>
+      <p>Then write the rule as one sentence with <em>when</em>, <em>until</em> or <em>unless</em> in it. <a href="../projects/invent-a-project.html">Invent a project</a> has the whole method: the pin budget and the four questions that kill a bad idea in five minutes. The <a href="../projects/idea-bank.html">idea bank</a> has every idea from every band in one place.</p>
+    </div>
+    <div class="callout">
+      <h5>Be honest about what these can do</h5>
+      <p>Everything the board remembers in this band is forgotten when the power goes off, and nothing warns you. If a count matters, say so to the person, or wait for Band 8. The active buzzer always needs its 220 Ω resistor. And buttons are for your own low-voltage circuits only: never open a doorbell, a switch or anything else that plugs into the wall.</p>
+    </div>
+  </div>
+</section>
+
+
 <section class="part" id="check">
   <div class="parthead"><span class="tag">Part 15</span><h2>Check yourself</h2><span class="mins">15 min</span></div>
   <div class="col stack">
@@ -2806,10 +2896,30 @@ void loop() {
 <a class="next" href="band-4.html"><span class="dir">Next</span><span class="name">Band 4: Night Guard &rarr;</span></a>
 </nav>
 
-<footer>
-  <p>Bozoma Innovation Hub &nbsp;·&nbsp; Aiyinasi, Ellembelle District. Band 3 of nine. Every sketch used here was compiled and tested before it reached you.</p>
-</footer>
 
 </div>
+<footer class="bihfoot">
+<div class="wrap">
+  <p class="pagenote">Bozoma Innovation Hub &nbsp;·&nbsp; Aiyinasi, Ellembelle District. Band 3 of nine. Every sketch used here was compiled and tested before it reached you.</p>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a class="lockup" href="../index.html"><img src="../assets/brand/logo-mark-white.png" alt="" width="42" height="42"><span>The Arduino Ladder<small>Bozoma Innovation Hub</small></span></a>
+      <p>A Bozoma Innovation Hub programme. Free to use, nothing to sign up for, at your own speed.</p>
+    </div>
+    <div><h4>The course</h4><ul>
+      <li><a href="../index.html">Course home</a></li>
+      <li><a href="../bands/band-0.html">Start with Band 0</a></li>
+      <li><a href="../guide.html">Facilitator guide</a></li>
+      <li><a href="../downloads/arduino-ladder-sketches.zip">All the sketches (zip)</a></li>
+    </ul></div>
+    <div><h4>Bozoma Innovation Hub</h4><ul>
+      <li>Aiyinasi, Ellembelle District, Western Region, Ghana</li>
+      <li><a href="https://bozomainnovationhub.com">bozomainnovationhub.com</a></li>
+      <li><a href="mailto:info@bozomainnovationhub.com">info@bozomainnovationhub.com</a></li>
+    </ul></div>
+  </div>
+  <div class="foot-bottom"><span>&copy; Bozoma Innovation Hub, Aiyinasi, Ghana</span><span class="tagline">World-class begins at home.</span></div>
+</div>
+</footer>
 </body>
 </html>

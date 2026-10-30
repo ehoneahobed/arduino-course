@@ -7,3 +7,4 @@ _site.zip
 _tools.tgz
 _transfer.tgz
 node_modules/
+tools/__pycache__/
