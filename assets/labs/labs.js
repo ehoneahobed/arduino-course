@@ -179,6 +179,8 @@
     return out;
   }
   function go(target, full) {
+    // One section at a time: open the section that holds this lab first.
+    if (window.ArduinoPager) window.ArduinoPager.reveal(target);
     var host = target.closest('.view3d') || target;
     var sk = skeleton(host);
     return load(sk.onProgress).then(function () {

@@ -53,6 +53,14 @@ to system fonts and everything still works.
 Every diagram is hand-drawn inline SVG that follows the reader's light or dark
 theme. Nothing is a bitmap, so nothing goes blurry.
 
+## One section at a time
+
+Band pages show one section at a time, with **Previous** and **Next** at the foot, a progress bar, and a tick
+in the section bar for every section read (`assets/pager.js`). Learners come back to where they left off.
+Progress is kept in that browser only. Any link into a section (an idea card, a 3D build, `#try-3d`) opens
+that section. "Show the whole band on one page" switches back to the long page; printing, and browsers
+without JavaScript, always get the whole band.
+
 ## The 3D labs
 
 Every wiring diagram has a **View in 3D** button. The 3D build is generated from the same hole data as the

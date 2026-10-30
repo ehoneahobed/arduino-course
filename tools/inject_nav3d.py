@@ -1,5 +1,6 @@
 """
-Put a "3D lab" pill at the front of each band page's section bar, pointing at
+Put a "3D lab" pill in each band page's section bar, straight after the link
+to the section the lab sits in (so the bar keeps the order of the lesson), pointing at
 the band's concept lab ("Try it in 3D: ..."), and give that heading the id
 the pill links to.
 
@@ -10,6 +11,8 @@ the pill links to.
 What it writes, per band page:
 
     <nav aria-label="Sections">
+      ...
+      <a href="#what">What is it</a>
       <a class="nav-3d" href="#try-3d">3D lab</a>
       ...
     <h3 id="try-3d" ...>Try it in 3D: ...</h3>
@@ -38,8 +41,12 @@ def process(s, undo):
     if not H3_RE.search(s) or not NAV_RE.search(s):
         return None
     s = H3_RE.sub(r'<h3 id="try-3d"\1>\2', s, count=1)
-    s = NAV_RE.sub(lambda m: m.group(1) + PILL, s, count=1)
-    return s
+    # The section that holds the lab is the last one opened before its heading.
+    ids = re.findall(r'<section[^>]*\bid="([^"]+)"', s[:s.index('id="try-3d"')])
+    link = re.compile(r'([ \t]*<a href="#%s">[^<]*</a>\n)' % re.escape(ids[-1])) if ids else None
+    if link and link.search(s):
+        return link.sub(lambda m: m.group(1) + PILL, s, count=1)
+    return NAV_RE.sub(lambda m: m.group(1) + PILL, s, count=1)
 
 
 def main():

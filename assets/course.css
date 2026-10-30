@@ -508,3 +508,24 @@ figure.wiring figcaption{
   .bandcard{border-left-width:4px}
   a{color:inherit}
 }
+
+/* ---- One section at a time (assets/pager.js) ---- */
+.pg-on [hidden]{display:none !important}
+nav[aria-label="Sections"] a.pg-done::after{content:"✓"; margin-left:.3em; color:var(--good); font-weight:700}
+nav[aria-label="Sections"] a[aria-current="step"]{color:#fff; background:var(--plum,#24182E); border-color:var(--plum,#24182E)}
+.pg-strip{display:flex; align-items:center; gap:.8rem; flex-wrap:wrap; margin:1rem 0 0; font-family:"Outfit","Rubik",Arial,sans-serif}
+.pg-meter{flex:1 1 220px; height:8px; border-radius:99px; background:var(--surface-2); overflow:hidden; border:1px solid var(--line-soft)}
+.pg-meter span{display:block; height:100%; width:0; background:linear-gradient(90deg,var(--accent),#FFBE00); transition:width .4s}
+.pg-count{font-size:.85rem; color:var(--muted); margin:0}
+.pg-mode{font:inherit; font-size:.78rem; color:var(--accent-ink); background:none; border:1px solid var(--line); border-radius:99px; padding:.3rem .8rem; cursor:pointer}
+.pg-mode:hover,.pg-mode:focus-visible{border-color:var(--accent)}
+.pg-foot{display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin:2.5rem 0 1rem}
+.pg-foot a{display:flex; flex-direction:column; gap:.15rem; padding:1rem 1.2rem; border:1px solid var(--line); border-radius:12px; background:var(--surface);
+  text-decoration:none; color:var(--ink); box-shadow:var(--shadow); font-family:"Outfit","Rubik",Arial,sans-serif}
+.pg-foot a:hover,.pg-foot a:focus-visible{border-color:var(--accent)}
+.pg-foot small{font-size:.78rem; letter-spacing:.06em; text-transform:uppercase; color:var(--muted)}
+.pg-foot b{font-size:1.05rem}
+.pg-foot .pg-next{text-align:right; grid-column:2; background:var(--accent); border-color:var(--accent); color:#fff}
+.pg-foot .pg-next small{color:rgba(255,255,255,.8)}
+@media (max-width:560px){.pg-foot{grid-template-columns:1fr}.pg-foot .pg-next{grid-column:1; order:-1}}
+@media print{.pg-strip,.pg-foot{display:none !important}}
