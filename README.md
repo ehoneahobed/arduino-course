@@ -61,6 +61,10 @@ Progress is kept in that browser only. Any link into a section (an idea card, a 
 that section. "Show the whole band on one page" switches back to the long page; printing, and browsers
 without JavaScript, always get the whole band.
 
+On wide screens the section list is a sidebar with the band's progress at the top; on phones and tablets a
+"Sections" bar at the top opens it as a drawer. Every page has a light / dark switch in the top bar
+(`assets/theme.js`, saved in the browser; with no choice saved the page follows the device setting).
+
 ## The 3D labs
 
 Every wiring diagram has a **View in 3D** button. The 3D build is generated from the same hole data as the

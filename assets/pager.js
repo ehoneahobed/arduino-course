@@ -55,6 +55,7 @@
   foot.setAttribute('aria-label', 'Section pages');
   bar.parentNode.insertBefore(foot, outro[0] || null);
 
+  var renderSide = null;
   var cur = 0, paged = load(PREF, true) !== false;
 
   function indexOfTarget(id) {
@@ -68,12 +69,12 @@
 
   function markBar() {
     sections.forEach(function (s, i) {
-      var a = bar.querySelector('a[href="#' + s.id + '"]');
+      var a = bar.querySelector(':scope > a[href="#' + s.id + '"]');
       if (!a) return;
       a.classList.toggle('pg-done', state.read.indexOf(s.id) >= 0);
       if (paged && i === cur) a.setAttribute('aria-current', 'step'); else a.removeAttribute('aria-current');
     });
-    var c = bar.querySelector('a[aria-current="step"]');
+    var c = bar.querySelector(':scope > a[aria-current="step"]');
     if (c && c.scrollIntoView && bar.scrollWidth > bar.clientWidth) c.scrollIntoView({ block: 'nearest', inline: 'center' });
   }
 
@@ -101,6 +102,7 @@
       foot.hidden = true;
       strip.querySelector('.pg-count').textContent = done + ' of ' + sections.length + ' sections read';
       markBar();
+      if (typeof renderSide === 'function') renderSide();
       return;
     }
     sections.forEach(function (s, i) { s.hidden = i !== cur; });
@@ -114,6 +116,7 @@
     foot.innerHTML = link(cur - 1, 'prev') + link(cur + 1, 'next');
     strip.querySelector('.pg-count').textContent = done + ' of ' + sections.length + ' sections read';
     markBar();
+    if (typeof renderSide === 'function') renderSide();
     // A 3D lab that was laid out while hidden needs to measure itself again.
     try { window.dispatchEvent(new Event('resize')); } catch (e) {}
   }
@@ -172,6 +175,42 @@
   // Printing always shows everything.
   window.addEventListener('beforeprint', function () { sections.concat(intro, outro).forEach(function (el) { el.hidden = false; }); });
   window.addEventListener('afterprint', render);
+
+  // ---- The section bar becomes a sidebar (wide screens) or a drawer (phones and tablets) ----
+  var sideHead = document.createElement('div');
+  sideHead.className = 'side-head';
+  sideHead.innerHTML = '<a class="side-band" href="#' + sections[0].id + '"></a><button type="button" class="side-close" aria-label="Close the section list">×</button>';
+  sideHead.querySelector('.side-band').textContent = bandName;
+  bar.insertBefore(sideHead, bar.firstChild);
+  sideHead.appendChild(strip);              // progress and "whole band" live at the top of the sidebar
+  var opener = document.createElement('button');
+  opener.type = 'button';
+  opener.className = 'side-open';
+  opener.setAttribute('aria-expanded', 'false');
+  opener.setAttribute('aria-controls', 'sections-nav');
+  bar.id = bar.id || 'sections-nav';
+  bar.parentNode.insertBefore(opener, bar);
+  var shade = document.createElement('div');
+  shade.className = 'side-shade';
+  document.body.appendChild(shade);
+  document.documentElement.classList.add('has-side');
+  function drawer(on) {
+    document.documentElement.classList.toggle('side-is-open', on);
+    opener.setAttribute('aria-expanded', on ? 'true' : 'false');
+    if (on) { var c = bar.querySelector('a[aria-current="step"]') || bar.querySelector('a[href]'); if (c) c.focus(); }
+  }
+  opener.addEventListener('click', function () { drawer(true); });
+  sideHead.querySelector('.side-close').addEventListener('click', function () { drawer(false); opener.focus(); });
+  shade.addEventListener('click', function () { drawer(false); });
+  bar.addEventListener('click', function (e) { if (e.target.closest('a[href^="#"]')) drawer(false); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && document.documentElement.classList.contains('side-is-open')) { drawer(false); opener.focus(); }
+  });
+  renderSide = function () {
+    opener.innerHTML = '<span class="so-ico" aria-hidden="true">☰</span><span class="so-txt"><small>' +
+      (paged ? 'Section ' + (cur + 1) + ' of ' + sections.length : 'Sections') + '</small><b>' +
+      titles[cur].replace(/</g, '&lt;') + '</b></span><span class="so-n">' + state.read.length + '/' + sections.length + ' ✓</span>';
+  };
 
   // Other scripts (the 3D menu) call this before jumping to something inside a section.
   window.ArduinoPager = {

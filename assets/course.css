@@ -207,7 +207,7 @@ a:hover{text-decoration-thickness:2px}
    scrolls inside itself rather than making the page scroll sideways. */
 figure.wiring{
   margin:1.3rem 0 1.6rem;
-  width:min(var(--wide), calc(100vw - 2.5rem));
+  width:min(var(--wide), calc(100vw - var(--side-w, 0px) - 2.5rem));
   max-width:none;
   overflow-x:auto;
 }
@@ -543,3 +543,77 @@ a.pg-arrow:hover,a.pg-arrow:focus-visible{border-color:var(--accent); color:var(
 @keyframes pg-in{from{opacity:0; transform:translateX(18px)} to{opacity:1; transform:none}}
 @media (prefers-reduced-motion:reduce){.pg-enter{animation:none}}
 @media print{.pg-head{display:none !important}}
+
+/* ---- light / dark toggle (assets/theme.js) ---- */
+.theme-toggle{display:inline-grid; place-items:center; width:2.25rem; height:2.25rem; flex:none; border-radius:50%; cursor:pointer;
+  border:1px solid rgba(255,255,255,.25); background:rgba(255,255,255,.08); color:#fff; padding:0}
+.theme-toggle:hover,.theme-toggle:focus-visible{background:rgba(255,255,255,.18); border-color:rgba(255,255,255,.5)}
+.theme-toggle svg{display:block}
+@media print{.theme-toggle{display:none}}
+
+/* ---- Section sidebar (wide screens) and drawer (phones, tablets), from assets/pager.js ---- */
+html.has-side nav[aria-label="Sections"]{
+  position:fixed; z-index:40; top:0; bottom:0; left:0; width:var(--side-w-real,300px);
+  margin:0; padding:0 0 1.5rem; display:flex; flex-direction:column; flex-wrap:nowrap; align-items:stretch; gap:2px;
+  overflow-y:auto; overflow-x:hidden; overscroll-behavior:contain;
+  background:var(--surface); border-right:1px solid var(--line); border-bottom:0;
+  -webkit-backdrop-filter:none; backdrop-filter:none; -webkit-mask-image:none; mask-image:none;
+  counter-reset:sec;
+}
+html.has-side nav[aria-label="Sections"] > a{
+  display:flex; align-items:center; gap:.6rem; margin:0 .7rem; padding:.5rem .7rem; border-radius:10px;
+  font-size:.88rem; font-weight:500; letter-spacing:0; white-space:normal; line-height:1.3;
+  color:var(--ink-2); background:none; border:1px solid transparent;
+}
+html.has-side nav[aria-label="Sections"] > a:not(.nav-3d)::before{
+  counter-increment:sec; content:counter(sec); flex:none; display:grid; place-items:center;
+  width:1.6rem; height:1.6rem; border-radius:50%; font-size:.72rem; font-weight:600;
+  background:var(--surface-2); color:var(--muted); border:1px solid var(--line-soft);
+}
+html.has-side nav[aria-label="Sections"] > a.pg-done::before{content:"✓"; background:var(--good-soft); color:var(--good); border-color:transparent}
+html.has-side nav[aria-label="Sections"] > a.pg-done::after{content:none}
+html.has-side nav[aria-label="Sections"] > a:hover{background:var(--surface-2); color:var(--ink)}
+html.has-side nav[aria-label="Sections"] > a[aria-current="step"]{background:var(--plum,#24182E); color:#fff; border-color:var(--plum,#24182E)}
+html.has-side nav[aria-label="Sections"] > a[aria-current="step"]::before{background:#FFBE00; color:#24182E; border-color:transparent}
+html.has-side nav[aria-label="Sections"] > a.nav-3d{margin:.15rem .7rem .15rem 3rem; padding:.4rem .7rem; font-size:.82rem; justify-content:flex-start}
+.side-head{position:sticky; top:0; z-index:1; display:grid; grid-template-columns:1fr auto; gap:.6rem; align-items:center;
+  padding:1.1rem 1.1rem .9rem; margin-bottom:.4rem; background:var(--surface); border-bottom:1px solid var(--line)}
+.side-band{font-family:"Outfit","Rubik",Arial,sans-serif; font-weight:700; font-size:1rem; color:var(--ink); text-decoration:none; line-height:1.25}
+.side-close{display:none; width:2.2rem; height:2.2rem; border-radius:50%; border:1px solid var(--line); background:var(--ground); color:var(--ink); font-size:1.3rem; line-height:1; cursor:pointer}
+.side-head .pg-strip{grid-column:1 / -1; margin:0; display:grid; gap:.45rem}
+.side-head .pg-meter{flex:none}
+.side-head .pg-count{font-size:.8rem}
+.side-head .pg-mode{justify-self:start; font-size:.74rem}
+.side-open{display:none}
+.side-shade{display:none}
+
+/* Wide screens: a fixed sidebar, and the page moves over to make room. */
+@media (min-width:1180px){
+  html.has-side{--side-w:300px}
+  html.has-side body{padding-left:calc(300px + 1.25rem)}
+}
+/* Phones and tablets: a "Sections" bar opens the same list as a drawer. */
+@media (max-width:1179.98px){
+  html.has-side nav[aria-label="Sections"]{width:min(330px,88vw); transform:translateX(-105%); transition:transform .25s ease; box-shadow:0 0 40px rgba(0,0,0,.3)}
+  html.side-is-open nav[aria-label="Sections"]{transform:none}
+  html.side-is-open .side-shade{display:block; position:fixed; inset:0; z-index:39; background:rgba(15,10,20,.45)}
+  html.has-side .side-close{display:grid; place-items:center}
+  html.has-side .side-open{
+    display:flex; align-items:center; gap:.7rem; position:sticky; top:0; z-index:30; width:calc(100% + 2.5rem); margin:0 -1.25rem;
+    padding:.6rem 1.25rem; border:0; border-bottom:1px solid var(--line); background:color-mix(in srgb, var(--ground) 94%, transparent);
+    -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px); color:var(--ink); font:inherit; text-align:left; cursor:pointer}
+  .so-ico{display:grid; place-items:center; width:2.2rem; height:2.2rem; border-radius:10px; background:var(--plum,#24182E); color:#fff; font-size:1.1rem; flex:none}
+  .so-txt{display:flex; flex-direction:column; min-width:0; flex:1; font-family:"Outfit","Rubik",Arial,sans-serif}
+  .so-txt small{font-size:.72rem; color:var(--muted); letter-spacing:.04em; text-transform:uppercase}
+  .so-txt b{font-size:.95rem; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+  .so-n{font-size:.75rem; color:var(--good); font-weight:600; flex:none}
+}
+@media (prefers-reduced-motion:reduce){html.has-side nav[aria-label="Sections"]{transition:none}}
+@media print{.side-open,.side-shade,.side-head{display:none !important} html.has-side body{padding-left:0}}
+html.has-side nav[aria-label="Sections"] .side-head a.side-band{padding:0; border:0; background:none; color:var(--ink); font-size:1rem; font-weight:700; letter-spacing:0; white-space:normal}
+html.has-side nav[aria-label="Sections"] .side-head a.side-band:hover{color:var(--accent)}
+html.has-side nav[aria-label="Sections"] .side-head a.side-band::before,html.has-side nav[aria-label="Sections"] .side-head a.side-band::after{content:none}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]).has-side nav[aria-label="Sections"] > a[aria-current="step"]{background:var(--accent-soft); color:var(--ink); border-color:var(--accent)}
+}
+:root[data-theme="dark"].has-side nav[aria-label="Sections"] > a[aria-current="step"]{background:var(--accent-soft); color:var(--ink); border-color:var(--accent)}

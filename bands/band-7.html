@@ -2,6 +2,7 @@
 <html lang="en" data-band="7">
 <head>
   <meta charset="utf-8">
+  <script src="../assets/theme.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Band 7: Distance and Display · Arduino Ladder</title>
   <meta name="description" content="Measuring distance with sound you cannot hear, and saying the answer on a screen of its own. Sixteen characters turns out to be a design problem.">
@@ -2338,7 +2339,7 @@ lastShown = cm;</code></pre>
     <p>This lab puts Parts 2 to 7 on one table. Watch the click leave the sensor, bounce off a book and come home, slowed right down so you can see it. Then follow the sum the board does with the time: <code>microseconds / 29 / 2</code>, in whole numbers, exactly as in b7_01. Move the book along the ruler, swap it for a towel, or turn it at an angle.</p>
     <p>The screen beside it runs the three versions from Part 7: b7_04 with <code>clear()</code> every round, the same with <code>clear()</code> taken out, and the b7_05 way. The side panel shows the screen character by character, so you can see which ones were written and which were left behind. The wires are left out; Parts 3 and 6 have them in 3D. If no button appears below, your computer cannot show 3D. Nothing in this band needs it.</p>
     <p class="view3d" hidden><button type="button" class="view3d-btn" data-lab-open="concept-b7" aria-expanded="false" hidden>Open the 3D lab</button></p>
-    <div class="lab" data-lab="concept-b7" data-lazy hidden style="width:min(1000px, calc(100vw - 2.5rem))" aria-label="3D lab: an ultrasonic ping, the distance sum, and an LCD screen"></div>
+    <div class="lab" data-lab="concept-b7" data-lazy hidden style="width:min(1000px, calc(100vw - var(--side-w, 0px) - 2.5rem))" aria-label="3D lab: an ultrasonic ping, the distance sum, and an LCD screen"></div>
     <div class="see"><b>What you should see</b>With the book at 60 cm, the echo lasts about 3500 microseconds, and 3500 / 29 / 2 gives 60. The towel, the angled book and open space all give 0, because nothing came back. With <code>clear()</code> every round the screen blinks all the time, even when the number stays the same. Take <code>clear()</code> out and move the book from 100 cm to 99 cm: the last character of the old reading stays behind, so it reads <code>99 cmm</code>. The b7_05 way is steady and never leaves anything behind.</div>
   </div>
 </section>

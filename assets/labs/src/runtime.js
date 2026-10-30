@@ -181,14 +181,16 @@ export function ensureShell(host, hint) {
 const placed = new Set();
 function placeOne(host) {
   if (!host.isConnected || host.hidden || host.classList.contains('lab-full') || host.classList.contains('lab-app')) return;
-  const vw = document.documentElement.clientWidth || window.innerWidth;
+  // A band page's sidebar (assets/pager.js) takes the left edge on wide screens.
+  const side = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--side-w')) || 0;
+  const vw = (document.documentElement.clientWidth || window.innerWidth) - side;
   const W = vw >= 900 ? Math.min(1480, vw - 40) : vw;
   host.style.width = W + 'px';
   host.style.maxWidth = 'none';
   host.style.marginLeft = '0px';
   host.style.marginRight = '0px';
   const left = host.getBoundingClientRect().left;
-  host.style.marginLeft = Math.round((vw - W) / 2 - left) + 'px';
+  host.style.marginLeft = Math.round(side + (vw - W) / 2 - left) + 'px';
   host.style.setProperty('--lab-w', W + 'px');
 }
 let placing = 0;

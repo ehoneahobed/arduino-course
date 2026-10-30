@@ -2,6 +2,7 @@
 <html lang="en" data-band="8">
 <head>
   <meta charset="utf-8">
+  <script src="../assets/theme.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Band 8: Build for Nzemaland · Arduino Ladder</title>
   <meta name="description" content="No new parts. A brief from a real person, criteria written before you build, a state machine, and an honest answer to whether it worked.">
@@ -2066,7 +2067,7 @@ int clearLevel = 20;          // must fall below this to count as safe</code></p
     <p>This lab draws Parts 2 to 9 as a map. Each state is a room, each arrow is the only way out of it, and a gold marker shows the room the device is in right now. Press the button, wait, change the water, or pull the USB out, and watch the marker move. Underneath, each machine runs its own sketch line for line: b8_01, b8_02 and b8_03.</p>
     <p>For b8_02 the map has eight rooms, one for every way three flags can be set, on two floors. The grey rooms are the ones no branch handles. The wires are left out; Parts 3 and 8 have them in 3D. If no button appears below, your computer cannot show 3D. Nothing in this band needs it.</p>
     <p class="view3d" hidden><button type="button" class="view3d-btn" data-lab-open="concept-b8" aria-expanded="false" hidden>Open the 3D lab</button></p>
-    <div class="lab" data-lab="concept-b8" data-lazy hidden style="width:min(1000px, calc(100vw - 2.5rem))" aria-label="3D lab: a state machine drawn as rooms and arrows, and a power cut"></div>
+    <div class="lab" data-lab="concept-b8" data-lazy hidden style="width:min(1000px, calc(100vw - var(--side-w, 0px) - 2.5rem))" aria-label="3D lab: a state machine drawn as rooms and arrows, and a power cut"></div>
     <div class="see"><b>What you should see</b>In b8_01 the marker only ever travels along an arrow: 0, 1, 2, 3, then back to 1 when the five seconds run out. In b8_02 the third press walks it into <code>armed=0 alarming=1 snoozed=1</code>, a grey room, and the light stops changing. In b8_03, snooze the alarm with the water high and pull the USB out: it wakes in ARMED, the snooze is forgotten, and within a moment it is in ALARM again.</div>
   </div>
 </section>
