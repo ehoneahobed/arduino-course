@@ -65,7 +65,7 @@ def process(path, rel, by, undo):
     s = strip(s0)
     if undo:
         return s0, s, []
-    up = "../" * rel.count("/")
+    up = "../" * (rel.count("/") + 1)  # pages sit in arduino/; the shared assets/ are at the site root
     out = []
     pos = 0
     names = []
@@ -94,7 +94,7 @@ def process(path, rel, by, undo):
 
 
 def main(argv):
-    root = os.path.normpath(os.path.join(HERE, ".."))
+    root = os.path.normpath(os.path.join(HERE, "..", "arduino"))
     if "--root" in argv:
         root = os.path.abspath(argv[argv.index("--root") + 1])
     check = "--check" in argv

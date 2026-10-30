@@ -141,7 +141,7 @@ export function iconFor(title) {
   return 'info';
 }
 
-// The URL of a file next to labs.html (the 3D Workshop), worked out from
+// The URL of a file at the site root (e.g. arduino/labs.html), worked out from
 // where this script was loaded, so it is right from every folder.
 export function siteUrl(path) {
   try {
@@ -1529,7 +1529,7 @@ export function createUI(host) {
   </dl>
   <p class="lab-tip">The lab is a model, not your board. Real parts can look a little different: check the one in your hand too.</p>
   <p class="lab-tip">If it runs slowly, close other tabs, or leave full screen. Everything here works without the internet.</p>
-  <p><a class="lab-link" href="${siteUrl('labs.html')}">${icon('cube')} Every 3D lab in the course: the 3D Workshop</a></p>
+  <p><a class="lab-link" href="${siteUrl('arduino/labs.html')}">${icon('cube')} Every 3D lab in the course: the 3D Workshop</a></p>
 </div>`;
   }
 

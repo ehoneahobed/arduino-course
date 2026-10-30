@@ -1,0 +1,814 @@
+<!doctype html>
+<html lang="en" data-band="6">
+<head>
+  <meta charset="utf-8">
+  <script src="../../assets/theme.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The stepper dial · Swap · Arduino Ladder</title>
+  <meta name="description" content="A pointer that moves an exact number of steps and can turn for ever. It has no idea where it is, so you have to remember for it.">
+  <meta name="theme-color" content="#24182E">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../assets/brand/icon-192.png">
+  <link rel="apple-touch-icon" href="../../assets/brand/icon-180.png">
+  <link rel="stylesheet" href="../../assets/course.css">
+  <link rel="stylesheet" href="../../assets/labs/labs.css">
+  <script defer src="../../assets/labs/labs.js"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to the project</a>
+<div class="topbar">
+  <a class="home" href="../index.html"><img src="../../assets/brand/logo-mark-white.png" alt="" width="36" height="36"><span class="lock"><b>Arduino Ladder</b><small>Bozoma Innovation Hub</small></span></a>
+  <a class="hub" href="../../index.html" title="All courses: IoT at Bozoma Innovation Hub">&larr; IoT at BIH</a>
+  <nav class="bandlinks" aria-label="Bands"><a href="../bands/band-0.html">0</a><a href="../bands/band-1.html">1</a><a href="../bands/band-2.html">2</a><a href="../bands/band-3.html">3</a><a href="../bands/band-4.html">4</a><a href="../bands/band-5.html">5</a><a href="../bands/band-6.html" aria-current="page">6</a><a href="../bands/band-7.html">7</a><a href="../bands/band-8.html">8</a></nav>
+  <a class="bih" href="https://bozomainnovationhub.com"><span class="long">bozomainnovationhub.com</span><span class="short">BIH website</span></a>
+</div>
+<div class="wrap" id="main">
+<header style="padding:2.6rem 0 1rem">
+  <p class="eyebrow">Band 6 &nbsp;·&nbsp; Things That Move</p>
+  <h1 style="margin:.7rem 0 .5rem"><span class="ptype swap">Swap</span> &nbsp;The stepper dial</h1>
+  <p class="col sub" style="font-size:1.06em">A pointer that moves an exact number of steps and can turn for ever. It has no idea where it is, so you have to remember for it.</p>
+  <dl class="projmeta">
+    <div><dt>Time</dt><dd>85 min</dd></div>
+    <div><dt>You need</dt><dd>28BYJ-48 stepper, ULN2003 driver board, potentiometer, button, battery pack, 12 jumper wires</dd></div>
+    <div><dt>At once</dt><dd>One per stepper</dd></div>
+    <div><dt>Before this</dt><dd>Finish Band 6 Part 7 first. The shared-ground rule matters here exactly as much as it does for the servo.</dd></div>
+  </dl>
+</header>
+
+<section class="sketchbox">
+  <h2>Sketches for this project</h2>
+  <ul><li><a href="../sketches/b6_06_stepper_dial.ino">b6_06_stepper_dial.ino</a></li></ul>
+  <p>Every file opens with a plain-English header saying what it does and how to wire it, hole by hole.</p>
+</section>
+<section class="part">
+  <div class="parthead"><span class="tag">Why</span><h2>What a stepper does that a servo cannot</h2></div>
+  <div class="col stack">
+    <p>The gate in Band 6 uses a servo. You tell it an angle and it goes there. It can only reach 180 degrees, and it always knows where it is.</p>
+    <p>A stepper is the other way round in both respects.</p>
+    <ul class="plain">
+      <li><strong>It can turn for ever</strong>, in either direction, all the way round and round again. A servo cannot.</li>
+      <li><strong>It has no idea where it is.</strong> You tell it a number of steps and it takes exactly that many. Ask it where it is pointing and it cannot tell you, because nothing inside it is looking.</li>
+    </ul>
+    <p>That second one is the whole difficulty and the whole lesson. <strong>If the pointer's position matters, you have to remember it yourself</strong>, in a variable, and keep that variable honest every single time you move.</p>
+    <p class="note">This is the same shape as <code>lastAngle</code> in the servo gate, and it is not optional here. There the deadband was a comfort. Here the remembering <em>is</em> the mechanism.</p>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Build</span><h2>Wire it</h2><span class="mins">30 min</span></div>
+    <figure class="wiring" data-build="b6step">
+      <p class="view3d" hidden><button type="button" class="view3d-btn" data-build="b6step" aria-pressed="false" hidden>View in 3D</button></p>
+      <svg viewBox="0 -64 826 834" role="img" aria-label="Stepper dial" style="width:826px; max-width:100%; min-width:560px">
+<defs><circle id="bh" r="3.6" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/><rect id="sk" x="-6.5" y="-6.5" width="13" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1" opacity=".5"/></defs>
+<rect x="100" y="18" width="650" height="376" rx="7" fill="none" stroke="currentColor" stroke-width="1.3" opacity=".55"/>
+<rect x="100" y="200" width="650" height="26" fill="currentColor" opacity=".07"/>
+<line x1="108" y1="34" x2="742" y2="34" stroke="#C8452F" stroke-width="1.2" opacity=".45"/>
+<text x="87" y="38" font-size="12" fill="#C8452F" text-anchor="middle" font-family="Archivo,Arial,sans-serif">+</text>
+<use href="#bh" x="126" y="34"/>
+<use href="#bh" x="152" y="34"/>
+<use href="#bh" x="178" y="34"/>
+<use href="#bh" x="204" y="34"/>
+<use href="#bh" x="230" y="34"/>
+<use href="#bh" x="256" y="34"/>
+<use href="#bh" x="282" y="34"/>
+<use href="#bh" x="308" y="34"/>
+<use href="#bh" x="334" y="34"/>
+<use href="#bh" x="360" y="34"/>
+<use href="#bh" x="386" y="34"/>
+<use href="#bh" x="412" y="34"/>
+<use href="#bh" x="438" y="34"/>
+<use href="#bh" x="464" y="34"/>
+<use href="#bh" x="490" y="34"/>
+<use href="#bh" x="516" y="34"/>
+<use href="#bh" x="542" y="34"/>
+<use href="#bh" x="568" y="34"/>
+<use href="#bh" x="594" y="34"/>
+<use href="#bh" x="620" y="34"/>
+<use href="#bh" x="646" y="34"/>
+<use href="#bh" x="672" y="34"/>
+<use href="#bh" x="698" y="34"/>
+<use href="#bh" x="724" y="34"/>
+<line x1="108" y1="54" x2="742" y2="54" stroke="#3D6FA8" stroke-width="1.2" opacity=".45"/>
+<text x="87" y="58" font-size="12" fill="#3D6FA8" text-anchor="middle" font-family="Archivo,Arial,sans-serif">−</text>
+<use href="#bh" x="126" y="54"/>
+<use href="#bh" x="152" y="54"/>
+<use href="#bh" x="178" y="54"/>
+<use href="#bh" x="204" y="54"/>
+<use href="#bh" x="230" y="54"/>
+<use href="#bh" x="256" y="54"/>
+<use href="#bh" x="282" y="54"/>
+<use href="#bh" x="308" y="54"/>
+<use href="#bh" x="334" y="54"/>
+<use href="#bh" x="360" y="54"/>
+<use href="#bh" x="386" y="54"/>
+<use href="#bh" x="412" y="54"/>
+<use href="#bh" x="438" y="54"/>
+<use href="#bh" x="464" y="54"/>
+<use href="#bh" x="490" y="54"/>
+<use href="#bh" x="516" y="54"/>
+<use href="#bh" x="542" y="54"/>
+<use href="#bh" x="568" y="54"/>
+<use href="#bh" x="594" y="54"/>
+<use href="#bh" x="620" y="54"/>
+<use href="#bh" x="646" y="54"/>
+<use href="#bh" x="672" y="54"/>
+<use href="#bh" x="698" y="54"/>
+<use href="#bh" x="724" y="54"/>
+<line x1="108" y1="354" x2="742" y2="354" stroke="#3D6FA8" stroke-width="1.2" opacity=".45"/>
+<text x="87" y="358" font-size="12" fill="#3D6FA8" text-anchor="middle" font-family="Archivo,Arial,sans-serif">−</text>
+<use href="#bh" x="126" y="354"/>
+<use href="#bh" x="152" y="354"/>
+<use href="#bh" x="178" y="354"/>
+<use href="#bh" x="204" y="354"/>
+<use href="#bh" x="230" y="354"/>
+<use href="#bh" x="256" y="354"/>
+<use href="#bh" x="282" y="354"/>
+<use href="#bh" x="308" y="354"/>
+<use href="#bh" x="334" y="354"/>
+<use href="#bh" x="360" y="354"/>
+<use href="#bh" x="386" y="354"/>
+<use href="#bh" x="412" y="354"/>
+<use href="#bh" x="438" y="354"/>
+<use href="#bh" x="464" y="354"/>
+<use href="#bh" x="490" y="354"/>
+<use href="#bh" x="516" y="354"/>
+<use href="#bh" x="542" y="354"/>
+<use href="#bh" x="568" y="354"/>
+<use href="#bh" x="594" y="354"/>
+<use href="#bh" x="620" y="354"/>
+<use href="#bh" x="646" y="354"/>
+<use href="#bh" x="672" y="354"/>
+<use href="#bh" x="698" y="354"/>
+<use href="#bh" x="724" y="354"/>
+<line x1="108" y1="374" x2="742" y2="374" stroke="#C8452F" stroke-width="1.2" opacity=".45"/>
+<text x="87" y="378" font-size="12" fill="#C8452F" text-anchor="middle" font-family="Archivo,Arial,sans-serif">+</text>
+<use href="#bh" x="126" y="374"/>
+<use href="#bh" x="152" y="374"/>
+<use href="#bh" x="178" y="374"/>
+<use href="#bh" x="204" y="374"/>
+<use href="#bh" x="230" y="374"/>
+<use href="#bh" x="256" y="374"/>
+<use href="#bh" x="282" y="374"/>
+<use href="#bh" x="308" y="374"/>
+<use href="#bh" x="334" y="374"/>
+<use href="#bh" x="360" y="374"/>
+<use href="#bh" x="386" y="374"/>
+<use href="#bh" x="412" y="374"/>
+<use href="#bh" x="438" y="374"/>
+<use href="#bh" x="464" y="374"/>
+<use href="#bh" x="490" y="374"/>
+<use href="#bh" x="516" y="374"/>
+<use href="#bh" x="542" y="374"/>
+<use href="#bh" x="568" y="374"/>
+<use href="#bh" x="594" y="374"/>
+<use href="#bh" x="620" y="374"/>
+<use href="#bh" x="646" y="374"/>
+<use href="#bh" x="672" y="374"/>
+<use href="#bh" x="698" y="374"/>
+<use href="#bh" x="724" y="374"/>
+<text x="87" y="100" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">j</text>
+<use href="#bh" x="126" y="96"/>
+<use href="#bh" x="152" y="96"/>
+<use href="#bh" x="178" y="96"/>
+<use href="#bh" x="204" y="96"/>
+<use href="#bh" x="230" y="96"/>
+<use href="#bh" x="256" y="96"/>
+<use href="#bh" x="282" y="96"/>
+<use href="#bh" x="308" y="96"/>
+<use href="#bh" x="334" y="96"/>
+<use href="#bh" x="360" y="96"/>
+<use href="#bh" x="386" y="96"/>
+<use href="#bh" x="412" y="96"/>
+<use href="#bh" x="438" y="96"/>
+<use href="#bh" x="464" y="96"/>
+<use href="#bh" x="490" y="96"/>
+<use href="#bh" x="516" y="96"/>
+<use href="#bh" x="542" y="96"/>
+<use href="#bh" x="568" y="96"/>
+<use href="#bh" x="594" y="96"/>
+<use href="#bh" x="620" y="96"/>
+<use href="#bh" x="646" y="96"/>
+<use href="#bh" x="672" y="96"/>
+<use href="#bh" x="698" y="96"/>
+<use href="#bh" x="724" y="96"/>
+<text x="87" y="122" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">i</text>
+<use href="#bh" x="126" y="118"/>
+<use href="#bh" x="152" y="118"/>
+<use href="#bh" x="178" y="118"/>
+<use href="#bh" x="204" y="118"/>
+<use href="#bh" x="230" y="118"/>
+<use href="#bh" x="256" y="118"/>
+<use href="#bh" x="282" y="118"/>
+<use href="#bh" x="308" y="118"/>
+<use href="#bh" x="334" y="118"/>
+<use href="#bh" x="360" y="118"/>
+<use href="#bh" x="386" y="118"/>
+<use href="#bh" x="412" y="118"/>
+<use href="#bh" x="438" y="118"/>
+<use href="#bh" x="464" y="118"/>
+<use href="#bh" x="490" y="118"/>
+<use href="#bh" x="516" y="118"/>
+<use href="#bh" x="542" y="118"/>
+<use href="#bh" x="568" y="118"/>
+<use href="#bh" x="594" y="118"/>
+<use href="#bh" x="620" y="118"/>
+<use href="#bh" x="646" y="118"/>
+<use href="#bh" x="672" y="118"/>
+<use href="#bh" x="698" y="118"/>
+<use href="#bh" x="724" y="118"/>
+<text x="87" y="144" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">h</text>
+<use href="#bh" x="126" y="140"/>
+<use href="#bh" x="152" y="140"/>
+<use href="#bh" x="178" y="140"/>
+<use href="#bh" x="204" y="140"/>
+<use href="#bh" x="230" y="140"/>
+<use href="#bh" x="256" y="140"/>
+<use href="#bh" x="282" y="140"/>
+<use href="#bh" x="308" y="140"/>
+<use href="#bh" x="334" y="140"/>
+<use href="#bh" x="360" y="140"/>
+<use href="#bh" x="386" y="140"/>
+<use href="#bh" x="412" y="140"/>
+<use href="#bh" x="438" y="140"/>
+<use href="#bh" x="464" y="140"/>
+<use href="#bh" x="490" y="140"/>
+<use href="#bh" x="516" y="140"/>
+<use href="#bh" x="542" y="140"/>
+<use href="#bh" x="568" y="140"/>
+<use href="#bh" x="594" y="140"/>
+<use href="#bh" x="620" y="140"/>
+<use href="#bh" x="646" y="140"/>
+<use href="#bh" x="672" y="140"/>
+<use href="#bh" x="698" y="140"/>
+<use href="#bh" x="724" y="140"/>
+<text x="87" y="166" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">g</text>
+<use href="#bh" x="126" y="162"/>
+<use href="#bh" x="152" y="162"/>
+<use href="#bh" x="178" y="162"/>
+<use href="#bh" x="204" y="162"/>
+<use href="#bh" x="230" y="162"/>
+<use href="#bh" x="256" y="162"/>
+<use href="#bh" x="282" y="162"/>
+<use href="#bh" x="308" y="162"/>
+<use href="#bh" x="334" y="162"/>
+<use href="#bh" x="360" y="162"/>
+<use href="#bh" x="386" y="162"/>
+<use href="#bh" x="412" y="162"/>
+<use href="#bh" x="438" y="162"/>
+<use href="#bh" x="464" y="162"/>
+<use href="#bh" x="490" y="162"/>
+<use href="#bh" x="516" y="162"/>
+<use href="#bh" x="542" y="162"/>
+<use href="#bh" x="568" y="162"/>
+<use href="#bh" x="594" y="162"/>
+<use href="#bh" x="620" y="162"/>
+<use href="#bh" x="646" y="162"/>
+<use href="#bh" x="672" y="162"/>
+<use href="#bh" x="698" y="162"/>
+<use href="#bh" x="724" y="162"/>
+<text x="87" y="188" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">f</text>
+<use href="#bh" x="126" y="184"/>
+<use href="#bh" x="152" y="184"/>
+<use href="#bh" x="178" y="184"/>
+<use href="#bh" x="204" y="184"/>
+<use href="#bh" x="230" y="184"/>
+<use href="#bh" x="256" y="184"/>
+<use href="#bh" x="282" y="184"/>
+<use href="#bh" x="308" y="184"/>
+<use href="#bh" x="334" y="184"/>
+<use href="#bh" x="360" y="184"/>
+<use href="#bh" x="386" y="184"/>
+<use href="#bh" x="412" y="184"/>
+<use href="#bh" x="438" y="184"/>
+<use href="#bh" x="464" y="184"/>
+<use href="#bh" x="490" y="184"/>
+<use href="#bh" x="516" y="184"/>
+<use href="#bh" x="542" y="184"/>
+<use href="#bh" x="568" y="184"/>
+<use href="#bh" x="594" y="184"/>
+<use href="#bh" x="620" y="184"/>
+<use href="#bh" x="646" y="184"/>
+<use href="#bh" x="672" y="184"/>
+<use href="#bh" x="698" y="184"/>
+<use href="#bh" x="724" y="184"/>
+<text x="87" y="238" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">e</text>
+<use href="#bh" x="126" y="234"/>
+<use href="#bh" x="152" y="234"/>
+<use href="#bh" x="178" y="234"/>
+<use href="#bh" x="204" y="234"/>
+<use href="#bh" x="230" y="234"/>
+<use href="#bh" x="256" y="234"/>
+<use href="#bh" x="282" y="234"/>
+<use href="#bh" x="308" y="234"/>
+<use href="#bh" x="334" y="234"/>
+<use href="#bh" x="360" y="234"/>
+<use href="#bh" x="386" y="234"/>
+<use href="#bh" x="412" y="234"/>
+<use href="#bh" x="438" y="234"/>
+<use href="#bh" x="464" y="234"/>
+<use href="#bh" x="490" y="234"/>
+<use href="#bh" x="516" y="234"/>
+<use href="#bh" x="542" y="234"/>
+<use href="#bh" x="568" y="234"/>
+<use href="#bh" x="594" y="234"/>
+<use href="#bh" x="620" y="234"/>
+<use href="#bh" x="646" y="234"/>
+<use href="#bh" x="672" y="234"/>
+<use href="#bh" x="698" y="234"/>
+<use href="#bh" x="724" y="234"/>
+<text x="87" y="260" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">d</text>
+<use href="#bh" x="126" y="256"/>
+<use href="#bh" x="152" y="256"/>
+<use href="#bh" x="178" y="256"/>
+<use href="#bh" x="204" y="256"/>
+<use href="#bh" x="230" y="256"/>
+<use href="#bh" x="256" y="256"/>
+<use href="#bh" x="282" y="256"/>
+<use href="#bh" x="308" y="256"/>
+<use href="#bh" x="334" y="256"/>
+<use href="#bh" x="360" y="256"/>
+<use href="#bh" x="386" y="256"/>
+<use href="#bh" x="412" y="256"/>
+<use href="#bh" x="438" y="256"/>
+<use href="#bh" x="464" y="256"/>
+<use href="#bh" x="490" y="256"/>
+<use href="#bh" x="516" y="256"/>
+<use href="#bh" x="542" y="256"/>
+<use href="#bh" x="568" y="256"/>
+<use href="#bh" x="594" y="256"/>
+<use href="#bh" x="620" y="256"/>
+<use href="#bh" x="646" y="256"/>
+<use href="#bh" x="672" y="256"/>
+<use href="#bh" x="698" y="256"/>
+<use href="#bh" x="724" y="256"/>
+<text x="87" y="282" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">c</text>
+<use href="#bh" x="126" y="278"/>
+<use href="#bh" x="152" y="278"/>
+<use href="#bh" x="178" y="278"/>
+<use href="#bh" x="204" y="278"/>
+<use href="#bh" x="230" y="278"/>
+<use href="#bh" x="256" y="278"/>
+<use href="#bh" x="282" y="278"/>
+<use href="#bh" x="308" y="278"/>
+<use href="#bh" x="334" y="278"/>
+<use href="#bh" x="360" y="278"/>
+<use href="#bh" x="386" y="278"/>
+<use href="#bh" x="412" y="278"/>
+<use href="#bh" x="438" y="278"/>
+<use href="#bh" x="464" y="278"/>
+<use href="#bh" x="490" y="278"/>
+<use href="#bh" x="516" y="278"/>
+<use href="#bh" x="542" y="278"/>
+<use href="#bh" x="568" y="278"/>
+<use href="#bh" x="594" y="278"/>
+<use href="#bh" x="620" y="278"/>
+<use href="#bh" x="646" y="278"/>
+<use href="#bh" x="672" y="278"/>
+<use href="#bh" x="698" y="278"/>
+<use href="#bh" x="724" y="278"/>
+<text x="87" y="304" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">b</text>
+<use href="#bh" x="126" y="300"/>
+<use href="#bh" x="152" y="300"/>
+<use href="#bh" x="178" y="300"/>
+<use href="#bh" x="204" y="300"/>
+<use href="#bh" x="230" y="300"/>
+<use href="#bh" x="256" y="300"/>
+<use href="#bh" x="282" y="300"/>
+<use href="#bh" x="308" y="300"/>
+<use href="#bh" x="334" y="300"/>
+<use href="#bh" x="360" y="300"/>
+<use href="#bh" x="386" y="300"/>
+<use href="#bh" x="412" y="300"/>
+<use href="#bh" x="438" y="300"/>
+<use href="#bh" x="464" y="300"/>
+<use href="#bh" x="490" y="300"/>
+<use href="#bh" x="516" y="300"/>
+<use href="#bh" x="542" y="300"/>
+<use href="#bh" x="568" y="300"/>
+<use href="#bh" x="594" y="300"/>
+<use href="#bh" x="620" y="300"/>
+<use href="#bh" x="646" y="300"/>
+<use href="#bh" x="672" y="300"/>
+<use href="#bh" x="698" y="300"/>
+<use href="#bh" x="724" y="300"/>
+<text x="87" y="326" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">a</text>
+<use href="#bh" x="126" y="322"/>
+<use href="#bh" x="152" y="322"/>
+<use href="#bh" x="178" y="322"/>
+<use href="#bh" x="204" y="322"/>
+<use href="#bh" x="230" y="322"/>
+<use href="#bh" x="256" y="322"/>
+<use href="#bh" x="282" y="322"/>
+<use href="#bh" x="308" y="322"/>
+<use href="#bh" x="334" y="322"/>
+<use href="#bh" x="360" y="322"/>
+<use href="#bh" x="386" y="322"/>
+<use href="#bh" x="412" y="322"/>
+<use href="#bh" x="438" y="322"/>
+<use href="#bh" x="464" y="322"/>
+<use href="#bh" x="490" y="322"/>
+<use href="#bh" x="516" y="322"/>
+<use href="#bh" x="542" y="322"/>
+<use href="#bh" x="568" y="322"/>
+<use href="#bh" x="594" y="322"/>
+<use href="#bh" x="620" y="322"/>
+<use href="#bh" x="646" y="322"/>
+<use href="#bh" x="672" y="322"/>
+<use href="#bh" x="698" y="322"/>
+<use href="#bh" x="724" y="322"/>
+<text x="126" y="12" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">1</text>
+<text x="230" y="12" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">5</text>
+<text x="360" y="12" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">10</text>
+<text x="490" y="12" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">15</text>
+<text x="620" y="12" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">20</text>
+<rect x="100" y="606" width="463.2" height="118" rx="8" fill="currentColor" opacity=".05"/>
+<rect x="100" y="606" width="463.2" height="118" rx="8" fill="none" stroke="currentColor" stroke-width="1.3" opacity=".6"/>
+<rect x="88" y="622" width="34" height="22" rx="3" fill="none" stroke="currentColor" stroke-width="1" opacity=".5"/>
+<text x="105" y="636" font-size="8.5" fill="currentColor" opacity=".55" text-anchor="middle" font-family="IBM Plex Mono,monospace">USB</text>
+<text x="331.6" y="669" font-size="11" fill="currentColor" opacity=".55" text-anchor="middle" letter-spacing="1.6" font-family="Archivo,Arial,sans-serif">ARDUINO UNO</text>
+<use href="#sk" x="136" y="621"/>
+<use href="#sk" x="158" y="621"/>
+<use href="#sk" x="180" y="621"/>
+<use href="#sk" x="202" y="621"/>
+<use href="#sk" x="224" y="621"/>
+<use href="#sk" x="246" y="621"/>
+<use href="#sk" x="268" y="621"/>
+<rect x="261.5" y="614.5" width="13" height="13" rx="2" fill="#2E7D46" opacity=".18"/>
+<rect x="261.5" y="614.5" width="13" height="13" rx="2" fill="none" stroke="#2E7D46" stroke-width="1.6"/>
+<use href="#sk" x="290" y="621"/>
+<rect x="283.5" y="614.5" width="13" height="13" rx="2" fill="#2E7D46" opacity=".18"/>
+<rect x="283.5" y="614.5" width="13" height="13" rx="2" fill="none" stroke="#2E7D46" stroke-width="1.6"/>
+<use href="#sk" x="312" y="621"/>
+<rect x="305.5" y="614.5" width="13" height="13" rx="2" fill="#2E7D46" opacity=".18"/>
+<rect x="305.5" y="614.5" width="13" height="13" rx="2" fill="none" stroke="#2E7D46" stroke-width="1.6"/>
+<use href="#sk" x="334" y="621"/>
+<rect x="327.5" y="614.5" width="13" height="13" rx="2" fill="#2E7D46" opacity=".18"/>
+<rect x="327.5" y="614.5" width="13" height="13" rx="2" fill="none" stroke="#2E7D46" stroke-width="1.6"/>
+<use href="#sk" x="378" y="621"/>
+<use href="#sk" x="400" y="621"/>
+<use href="#sk" x="422" y="621"/>
+<use href="#sk" x="444" y="621"/>
+<use href="#sk" x="466" y="621"/>
+<use href="#sk" x="488" y="621"/>
+<rect x="481.5" y="614.5" width="13" height="13" rx="2" fill="#2E7D46" opacity=".18"/>
+<rect x="481.5" y="614.5" width="13" height="13" rx="2" fill="none" stroke="#2E7D46" stroke-width="1.6"/>
+<use href="#sk" x="510" y="621"/>
+<use href="#sk" x="532" y="621"/>
+<use href="#sk" x="136" y="709"/>
+<use href="#sk" x="158" y="709"/>
+<use href="#sk" x="180" y="709"/>
+<use href="#sk" x="202" y="709"/>
+<rect x="195.5" y="702.5" width="13" height="13" rx="2" fill="#2E7D46" opacity=".18"/>
+<rect x="195.5" y="702.5" width="13" height="13" rx="2" fill="none" stroke="#2E7D46" stroke-width="1.6"/>
+<use href="#sk" x="224" y="709"/>
+<rect x="217.5" y="702.5" width="13" height="13" rx="2" fill="#2E7D46" opacity=".18"/>
+<rect x="217.5" y="702.5" width="13" height="13" rx="2" fill="none" stroke="#2E7D46" stroke-width="1.6"/>
+<use href="#sk" x="246" y="709"/>
+<use href="#sk" x="268" y="709"/>
+<use href="#sk" x="312" y="709"/>
+<rect x="305.5" y="702.5" width="13" height="13" rx="2" fill="#2E7D46" opacity=".18"/>
+<rect x="305.5" y="702.5" width="13" height="13" rx="2" fill="none" stroke="#2E7D46" stroke-width="1.6"/>
+<use href="#sk" x="334" y="709"/>
+<use href="#sk" x="356" y="709"/>
+<use href="#sk" x="378" y="709"/>
+<use href="#sk" x="400" y="709"/>
+<use href="#sk" x="422" y="709"/>
+<rect x="106" y="443" width="306" height="34" rx="5" fill="currentColor" opacity=".12" stroke="currentColor" stroke-width="1.2"/>
+<text x="259" y="438" font-size="10" text-anchor="middle" font-weight="400" font-family="Archivo,Arial,sans-serif" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">ULN2003 driver board</text>
+<text x="259" y="438" font-size="10" text-anchor="middle" font-weight="400" font-family="Archivo,Arial,sans-serif" fill="currentColor" opacity=".92">ULN2003 driver board</text>
+<circle cx="334" cy="621" r="2.6" fill="#2E7D46"/>
+<path d="M 130 477 L 130 565 Q 130 572 137 572 L 327 572 Q 334 572 334 579 L 334 621" fill="none" stroke="#2E7D46" stroke-width="1.9" opacity=".92"/>
+<text x="130" y="465" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">IN1</text>
+<text x="130" y="465" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="#2E7D46" opacity=".95">IN1</text>
+<circle cx="290" cy="621" r="2.6" fill="#2E7D46"/>
+<path d="M 184.4 477 L 184.4 557 Q 184.4 564 191.4 564 L 283 564 Q 290 564 290 571 L 290 621" fill="none" stroke="#2E7D46" stroke-width="1.9" opacity=".92"/>
+<text x="184.4" y="465" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">IN2</text>
+<text x="184.4" y="465" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="#2E7D46" opacity=".95">IN2</text>
+<circle cx="312" cy="621" r="2.6" fill="#2E7D46"/>
+<path d="M 238.8 477 L 238.8 549 Q 238.8 556 245.8 556 L 305 556 Q 312 556 312 563 L 312 621" fill="none" stroke="#2E7D46" stroke-width="1.9" opacity=".92"/>
+<text x="238.8" y="465" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">IN3</text>
+<text x="238.8" y="465" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="#2E7D46" opacity=".95">IN3</text>
+<circle cx="268" cy="621" r="2.6" fill="#2E7D46"/>
+<path d="M 293.2 477 L 293.2 573 Q 293.2 580 286.2 580 L 275 580 Q 268 580 268 587 L 268 621" fill="none" stroke="#2E7D46" stroke-width="1.9" opacity=".92"/>
+<text x="293.2" y="465" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">IN4</text>
+<text x="293.2" y="465" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="#2E7D46" opacity=".95">IN4</text>
+<path d="M 347.6 443 L 347.6 433 Q 347.6 426 340.6 426 L 51 426 Q 44 426 44 419 L 44 61 Q 44 54 51 54 L 178 54" fill="none" stroke="#3D6FA8" stroke-width="1.9" opacity=".92"/>
+<text x="347.6" y="465" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">-</text>
+<text x="347.6" y="465" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="#3D6FA8" opacity=".95">-</text>
+<path d="M 402 443 L 402 433 Q 402 426 395 426 L 43 426 Q 36 426 36 419 L 36 41 Q 36 34 43 34 L 178 34" fill="none" stroke="#C8452F" stroke-width="1.9" opacity=".92"/>
+<text x="402" y="465" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">+</text>
+<text x="402" y="465" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="#C8452F" opacity=".95">+</text>
+<line x1="230" y1="184" x2="230" y2="153" stroke="currentColor" stroke-width="1.6"/>
+<line x1="256" y1="184" x2="256" y2="153" stroke="currentColor" stroke-width="1.6"/>
+<line x1="282" y1="184" x2="282" y2="153" stroke="currentColor" stroke-width="1.6"/>
+<rect x="222" y="131" width="68" height="22" rx="3" fill="currentColor" opacity=".13" stroke="currentColor" stroke-width="1.1"/>
+<circle cx="256" cy="142" r="8" fill="none" stroke="currentColor" stroke-width="1.3"/>
+<line x1="256" y1="142" x2="261" y2="136" stroke="currentColor" stroke-width="1.5"/>
+<text x="297" y="146" font-size="9" text-anchor="start" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">knob</text>
+<text x="297" y="146" font-size="9" text-anchor="start" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".8">knob</text>
+<line x1="230" y1="96" x2="230" y2="54" stroke="#3D6FA8" stroke-width="1.9" opacity=".9"/>
+<circle cx="230" cy="54" r="2.6" fill="#3D6FA8"/>
+<circle cx="230" cy="96" r="2.6" fill="#3D6FA8"/>
+<path d="M 256 96 L 256 -35 Q 256 -44 247 -44 L 39 -44 Q 30 -44 30 -35 L 30 763 Q 30 772 39 772 L 303 772 Q 312 772 312 763 L 312 709" fill="none" stroke="#2E7D46" stroke-width="1.9" opacity=".9"/>
+<circle cx="312" cy="709" r="2.6" fill="#2E7D46"/>
+<circle cx="256" cy="96" r="2.6" fill="#2E7D46"/>
+<path d="M 282 96 L 282 -11 Q 282 -20 273 -20 L 63 -20 Q 54 -20 54 -11 L 54 739 Q 54 748 63 748 L 193 748 Q 202 748 202 739 L 202 709" fill="none" stroke="#2E7D46" stroke-width="1.9" opacity=".9"/>
+<circle cx="202" cy="709" r="2.6" fill="#2E7D46"/>
+<circle cx="282" cy="96" r="2.6" fill="#2E7D46"/>
+<line x1="594" y1="234" x2="594" y2="227" stroke="currentColor" stroke-width="1.6"/>
+<line x1="646" y1="234" x2="646" y2="227" stroke="currentColor" stroke-width="1.6"/>
+<line x1="594" y1="184" x2="594" y2="199" stroke="currentColor" stroke-width="1.6"/>
+<line x1="646" y1="184" x2="646" y2="199" stroke="currentColor" stroke-width="1.6"/>
+<rect x="590" y="198" width="60" height="30" rx="3" fill="currentColor" opacity=".13" stroke="currentColor" stroke-width="1.1"/>
+<circle cx="620" cy="213" r="6.5" fill="currentColor" opacity=".25" stroke="currentColor" stroke-width="1"/>
+<text x="656" y="217" font-size="9" text-anchor="start" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">button</text>
+<text x="656" y="217" font-size="9" text-anchor="start" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".8">button</text>
+<path d="M 594 96 L 594 -19 Q 594 -28 603 -28 L 795 -28 Q 804 -28 804 -19 L 804 563 Q 804 572 795 572 L 497 572 Q 488 572 488 581 L 488 621" fill="none" stroke="#2E7D46" stroke-width="1.9" opacity=".9"/>
+<circle cx="488" cy="621" r="2.6" fill="#2E7D46"/>
+<circle cx="594" cy="96" r="2.6" fill="#2E7D46"/>
+<line x1="646" y1="322" x2="646" y2="54" stroke="#3D6FA8" stroke-width="1.9" opacity=".9"/>
+<circle cx="646" cy="54" r="2.6" fill="#3D6FA8"/>
+<circle cx="646" cy="322" r="2.6" fill="#3D6FA8"/>
+<rect x="554" y="505" width="170" height="30" rx="4" fill="currentColor" opacity=".12" stroke="currentColor" stroke-width="1.2"/>
+<text x="639" y="524" font-size="10" text-anchor="middle" font-weight="400" font-family="Archivo,Arial,sans-serif" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">6 V battery pack</text>
+<text x="639" y="524" font-size="10" text-anchor="middle" font-weight="400" font-family="Archivo,Arial,sans-serif" fill="currentColor" opacity=".92">6 V battery pack</text>
+<path d="M 594 505 L 594 495 Q 594 486 603 486 L 741 486 Q 750 486 750 477 L 750 43 Q 750 34 741 34 L 720 34" fill="none" stroke="#C8452F" stroke-width="2.1" opacity=".95"/>
+<circle cx="720" cy="34" r="2.8" fill="#C8452F"/>
+<path d="M 684 505 L 684 495 Q 684 486 693 486 L 759 486 Q 768 486 768 477 L 768 63 Q 768 54 759 54 L 694 54" fill="none" stroke="#3D6FA8" stroke-width="2.1" opacity=".95"/>
+<circle cx="694" cy="54" r="2.8" fill="#3D6FA8"/>
+<path d="M 224 709 L 224 755 Q 224 764 215 764 L 17 764 Q 8 764 8 755 L 8 63 Q 8 54 17 54 L 152 54" fill="none" stroke="#3D6FA8" stroke-width="2.1" opacity=".95"/>
+<circle cx="224" cy="709" r="2.8" fill="#3D6FA8"/>
+<circle cx="152" cy="54" r="2.8" fill="#3D6FA8"/>
+<circle cx="646" cy="322" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="646" y="337" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">a21</text>
+<text x="646" y="337" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">a21</text>
+<circle cx="594" cy="234" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="594" y="249" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">e19</text>
+<text x="594" y="249" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">e19</text>
+<circle cx="646" cy="234" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="646" y="249" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">e21</text>
+<text x="646" y="249" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">e21</text>
+<circle cx="594" cy="184" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="594" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">f19</text>
+<text x="594" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">f19</text>
+<circle cx="646" cy="184" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="646" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">f21</text>
+<text x="646" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">f21</text>
+<circle cx="230" cy="184" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="230" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">f5</text>
+<text x="230" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">f5</text>
+<circle cx="256" cy="184" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="256" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">f6</text>
+<text x="256" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">f6</text>
+<circle cx="282" cy="184" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="282" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">f7</text>
+<text x="282" y="199" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">f7</text>
+<circle cx="594" cy="96" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="594" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">j19</text>
+<text x="594" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">j19</text>
+<circle cx="230" cy="96" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="230" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">j5</text>
+<text x="230" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">j5</text>
+<circle cx="256" cy="96" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="256" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">j6</text>
+<text x="256" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">j6</text>
+<circle cx="282" cy="96" r="4.6" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>
+<text x="282" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">j7</text>
+<text x="282" y="111" font-size="9" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity="1">j7</text>
+<text x="136" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">SCL</text>
+<text x="136" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">SCL</text>
+<text x="158" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">SDA</text>
+<text x="158" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">SDA</text>
+<text x="180" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">AREF</text>
+<text x="180" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">AREF</text>
+<text x="202" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">GND</text>
+<text x="202" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">GND</text>
+<text x="224" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">13</text>
+<text x="224" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">13</text>
+<text x="246" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">12</text>
+<text x="246" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">12</text>
+<text x="268" y="637" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">11</text>
+<text x="268" y="637" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="#2E7D46" opacity=".95">11</text>
+<text x="290" y="637" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">10</text>
+<text x="290" y="637" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="#2E7D46" opacity=".95">10</text>
+<text x="312" y="637" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">9</text>
+<text x="312" y="637" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="#2E7D46" opacity=".95">9</text>
+<text x="334" y="637" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">8</text>
+<text x="334" y="637" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="#2E7D46" opacity=".95">8</text>
+<text x="378" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">7</text>
+<text x="378" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">7</text>
+<text x="400" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">6</text>
+<text x="400" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">6</text>
+<text x="422" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">5</text>
+<text x="422" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">5</text>
+<text x="444" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">4</text>
+<text x="444" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">4</text>
+<text x="466" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">3</text>
+<text x="466" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">3</text>
+<text x="488" y="637" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">2</text>
+<text x="488" y="637" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="#2E7D46" opacity=".95">2</text>
+<text x="510" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">1</text>
+<text x="510" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">1</text>
+<text x="532" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">0</text>
+<text x="532" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">0</text>
+<text x="136" y="697" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">IOR</text>
+<text x="136" y="697" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">IOR</text>
+<text x="158" y="697" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">RST</text>
+<text x="158" y="697" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">RST</text>
+<text x="180" y="697" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">3V3</text>
+<text x="180" y="697" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">3V3</text>
+<text x="202" y="697" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">5V</text>
+<text x="202" y="697" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="#2E7D46" opacity=".95">5V</text>
+<text x="224" y="697" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">GND</text>
+<text x="224" y="697" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="#2E7D46" opacity=".95">GND</text>
+<text x="246" y="697" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">GND</text>
+<text x="246" y="697" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">GND</text>
+<text x="268" y="697" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">VIN</text>
+<text x="268" y="697" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">VIN</text>
+<text x="312" y="697" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">A0</text>
+<text x="312" y="697" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="#2E7D46" opacity=".95">A0</text>
+<text x="334" y="697" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">A1</text>
+<text x="334" y="697" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">A1</text>
+<text x="356" y="697" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">A2</text>
+<text x="356" y="697" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">A2</text>
+<text x="378" y="697" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">A3</text>
+<text x="378" y="697" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">A3</text>
+<text x="400" y="697" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">A4</text>
+<text x="400" y="697" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">A4</text>
+<text x="422" y="697" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">A5</text>
+<text x="422" y="697" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">A5</text>
+</svg>
+      <figcaption>The driver board and the battery are the only things on the + rail. Four wires on the two rails before you add anything else.</figcaption>
+    </figure>
+  <div class="col stack">
+    <div class="ifnot" style="margin-bottom:.4rem"><b>Before you start</b>USB unplugged, battery switched off. Clear the servo and its wires off the board.</div>
+    <div class="words" style="margin-bottom:.6rem"><b>Which rails, before you plug anything in</b>Your board has two + rails and two &#8722; rails, one pair along each long edge, and on most boards <b>the top pair and the bottom pair are not joined to each other</b>. On this page, <b>the + rail and the &#8722; rail always mean the pair along the top edge, the ones nearest row <code>j</code></b>, the same pair Band 6 used. The button's <code>a21</code> wire starts down in the bottom block and still runs the long way round to the <em>top</em> &#8722; rail.<br><br>The check two steps below counts seven wires on those rails. It will count seven even if some of them are on the wrong strip, so count them on <em>one</em> strip.</div>
+
+    <h3>The motor end is easy</h3>
+    <p>The blue cylinder has a white plug on a short lead. It goes into the white socket on the driver board and it only fits one way. That end cannot be got wrong.</p>
+
+    <h3 style="margin-top:.7rem">The Arduino end has one trap in it</h3>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Driver board</th><th>Arduino pin</th><th>Note</th></tr></thead>
+        <tbody>
+          <tr><td><code>IN1</code></td><td class="n">8</td><td></td></tr>
+          <tr><td><code>IN2</code></td><td class="n"><strong>10</strong></td><td>Not 9. Read the box below.</td></tr>
+          <tr><td><code>IN3</code></td><td class="n"><strong>9</strong></td><td>Not 10.</td></tr>
+          <tr><td><code>IN4</code></td><td class="n">11</td><td></td></tr>
+          <tr><td><code>&#8722;</code></td><td>&mdash;</td><td>The breadboard &#8722; rail</td></tr>
+          <tr><td><code>+</code></td><td>&mdash;</td><td>The breadboard + rail</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="ifnot" style="margin-bottom:.4rem"><b>8, 10, 9, 11. The middle two are crossed on purpose.</b>The <code>Stepper</code> library treats the <strong>first two pins you give it as the two ends of one coil</strong>, and the last two as the two ends of the other. Inside a 28BYJ-48 the two ends of one coil are <code>IN1</code> and <code>IN3</code>, not <code>IN1</code> and <code>IN2</code>. So <code>IN3</code> has to land on pin 9, where the library is expecting pin 8's partner. Crossing the two middle wires is how you hand the library the pairs it thinks it has.<br><br>Wire them 8, 9, 10, 11 in the obvious order and the motor will buzz, shake, and go nowhere at all. It is not broken and neither are you. This is the single most common way this build fails, and now it cannot catch you.</div>
+
+    <h3 style="margin-top:.4rem">The rest</h3>
+    <div class="steps">
+      <div class="step"><div class="body">
+        <p><strong>Battery pack red to the + rail, black to the &#8722; rail.</strong> Then check it before any power: two reds on the + rail, two blacks on the &#8722; rail, nothing else on either <em>yet</em>.</p>
+        <div class="see"><b>You should see</b>Exactly four wires on the two rails at this moment. The driver board's two, and the battery's two. Three more will join the &#8722; rail in the next steps: the ground link, the knob's <code>j5</code> wire and the button's <code>a21</code> wire. Nothing else ever will.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>One wire from the &#8722; rail to an Arduino GND pin.</strong></p>
+        <p>Same wire, same reason, same band. A stepper on its own battery needs the shared ground exactly as much as the servo did. Leave it out and you get the buzzing again, from a different cause, which is why you check the pin order <em>and</em> this wire before suspecting anything else.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>The knob.</strong> Legs in <code>f5</code>, <code>f6</code>, <code>f7</code>. Wire <code>j5</code> to the &#8722; rail, <code>j6</code> to <code>A0</code>, and <code>j7</code> <strong>straight to the Arduino's 5V pin</strong>.</p>
+        <div class="ifnot"><b>Not to the + rail</b>The + rail is battery power, about six volts. An Arduino pin must never see more than five. The knob takes its power from the Arduino's own 5V pin, on its own wire.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>The button.</strong> Four legs into <code>e19</code>, <code>e21</code>, <code>f19</code>, <code>f21</code>, body over the middle channel. Wire <code>j19</code> to pin 2 and <code>a21</code> to the &#8722; rail.</p>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Make the pointer and the dial.</strong> Tape a strip of card to the motor's shaft so it sticks out like a hand. Then draw a dial on another piece of card, tape the motor to the middle of it, and mark where the pointer starts.</p>
+        <div class="see"><b>You should see</b>The pointer swinging clear of the card all the way round, and the motor held down firmly enough that it does not walk when it turns.</div>
+        <div class="ifnot"><b>Mark the starting position</b>Draw a line on the dial where the pointer is sitting right now, before you power anything. The sketch assumes the pointer starts at step 0, and if you ever get confused about where it is, switching off and turning it back to that line by hand is how you start again.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Plug in the USB, switch the battery on, and upload <code>b6_06_stepper_dial.ino</code>.</strong> Open the serial monitor at 9600.</p>
+        <div class="see"><b>You should see</b>The pointer moving to wherever the knob is set, slowly and smoothly, and holding there. Turn the knob and it follows. Press the button and it goes all the way round once and comes back to the knob's position.</div>
+        <div class="ifnot"><b>If it buzzes and shakes but does not turn</b>The pin order. 8, 10, 9, 11. This is the fault four times out of five.</div>
+        <div class="ifnot"><b>If nothing happens at all</b>The shared ground wire, or the battery is off. To test, turn the knob a long way from one end to the other and watch the four little lights on the driver board. They should flicker while it steps, and two of them stay lit when it stops. If they never light at all, even with the knob right round, the board has no power. Dark lights on their own are not proof of anything: if the pointer is already where the knob is asking for, the sketch is not stepping and the lights have nothing to show.</div>
+        <div class="ifnot"><b>If it turns but the wrong way</b>Swap the two wires on Arduino pins <b>8 and 9</b>, so that <code>IN1</code> goes to 9 and <code>IN3</code> goes to 8. That reverses the order of the first pair, which reverses the direction. Do not swap 8 and 11: that gives you the buzzing instead. Or leave it and remember which way is which, since nothing in this build cares.</div>
+        <div class="ifnot"><b>The button makes the sketch stop listening for six seconds</b>At the speed this sketch uses, one full turn takes about six seconds, and <code>dial.step()</code> does not return until the turn is finished. During those six seconds the knob is ignored and a second press of the button is not noticed. That is not a fault, but it is a real limit, and it is the same lesson <code>delay()</code> taught you in Band 5: while one thing is happening, nothing else is.</div>
+        <div class="ifnot"><b>If it gets hot when standing still</b>That is normal for a stepper and it is one of their real costs. A stepper holds its position by pushing constantly, whether anything is resisting it or not, so it draws its full current even when nothing is moving. A servo is different: it only pushes when something is pushing back, which is why it goes quiet once it has arrived, and why Band 6 Part 7 offers <code>detach()</code> as a way of saving battery rather than as a necessity. Neither is happy left powered for hours, but the stepper is the greedier of the two.</div>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Look closer</span><h2>The number you have to keep honest</h2><span class="mins">25 min</span></div>
+  <div class="col stack">
+    <p>Find these lines in the sketch:</p>
+    <pre><code>long atStep = 0;            // where we believe the pointer is
+
+void goToStep(long target) {
+  long move = target - atStep;
+  if (move == 0) {
+    return;
+  }
+  dial.step(move);
+  atStep = target;
+}</code></pre>
+    <p>Read the comment on the first line again. <strong>Where we <em>believe</em> the pointer is.</strong> Not where it is. Nothing in this circuit can tell you where it actually is.</p>
+    <p><code>dial.step(move)</code> takes a number of steps and a direction, worked out by subtracting. Then <code>atStep = target</code> updates the belief. Those two lines must always happen together, and the moment they stop matching reality, everything after it is wrong and nothing complains.</p>
+
+    <div class="callout">
+      <h5>Break it, and watch the belief go wrong</h5>
+      <ol class="num">
+        <li>Delete the line <code>atStep = target;</code>. Predict what will happen, then upload.</li>
+        <li>Put it back. Now, while it is running, take hold of the pointer and turn it by hand about a quarter turn. Let go. Turn the knob a little.</li>
+      </ol>
+      <details><summary>What happens, after you have tried both</summary><div class="inner">
+        <p><strong>Without the update:</strong> <code>atStep</code> stays at 0 for ever, so every move is calculated from 0 rather than from where it is. Turn the knob a little and the pointer flies off much further than you asked. It gets worse the further round you go, and it never recovers.</p>
+        <p><strong>Turning it by hand:</strong> the pointer is now a quarter turn away from where the sketch believes it to be, and the sketch has no way of finding out. Every future move is off by that quarter turn, permanently, until you restart. The gears will also have complained; do not make a habit of it.</p>
+        <p>Both faults have the same shape: <strong>a variable and the world stopped agreeing, and nothing in the system noticed.</strong> That is what &#8220;open loop&#8221; means, and almost every cheap moving thing you will ever meet is open loop.</p>
+      </div></details>
+    </div>
+
+    <h3 style="margin-top:.8rem">The number 2048</h3>
+    <p><code>STEPS_PER_TURN</code> is 2048, and that is not a round number by accident. The motor itself takes 32 steps per turn. A gearbox inside divides that down by about 64, which is why it is slow, and why it is far stronger than a motor that size has any right to be. 32 times 64 is 2048.</p>
+    <div class="ifnot"><b>2048 is a rounding, and you can see it</b>The gearbox is not exactly 64 to 1. It is closer to 63.68, which makes a true full turn about 2038 steps. Ask for one turn and you will not see the difference. Ask for twenty turns in a row and the pointer will end up noticeably past your starting line. Try it, count how far past, and work out what number would have been right. Cheap parts have specifications that are approximately true, and knowing which of your numbers is approximate is a real engineering skill.</div>
+
+    <h3 style="margin-top:.8rem">Why the deadband is in steps here</h3>
+    <p>In the servo gate the deadband was 3 degrees. Here it is 20 <em>steps</em>, which is only about three and a half degrees of the pointer, because 2048 steps make a whole turn.</p>
+    <p>Same idea, different units. Compare the two sketches side by side and check you can say why the numbers are so different for the same amount of movement.</p>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Change it</span><h2>Make it yours</h2><span class="mins">30 min</span></div>
+  <div class="col stack">
+    <dl class="tier">
+      <dt>Bronze</dt><dd>Make the button turn it <strong>anticlockwise</strong> instead, and then make a second button that turns it clockwise. Then say in one sentence why <code>atStep</code> does not need updating for either.</dd>
+      <dt>Silver</dt><dd>Turn the dial into a gauge for something real: the light sensor from Band 4, or the distance sensor from Band 7. Mark the card with the numbers you measure, not with numbers you assumed. That measuring step is the whole of Band 4 arriving in a new place. <b>Read the box under this list before you wire it.</b></dd>
+      <dt>Gold</dt><dd>Give it a <strong>home position</strong>. Add a button that returns the pointer to step 0 whatever it currently believes, and use it to fix the by-hand problem above. Then think about what would have to change for the device to find home <em>by itself</em> at switch-on, and write down what extra part you would need. Real machines have that part.</dd>
+    </dl>
+    <div class="ifnot"><b>Any sensor you swap in takes its power from the Arduino's 5V pin, never from the + rail</b>Band 4 told you to run the light sensor's top leg to &#8220;the + rail&#8221;, and in Band 4 the + rail was five volts from the Arduino. <strong>In this band the + rail is about six volts from the battery.</strong> Feed a sensor from that and its middle leg can hand your analog pin nearly six volts. That is over the limit, and it does its damage quietly, with nothing to tell you. The knob's own 5V wire already goes to the right place, so take the knob out and put the sensor's power leg on that same wire. Its bottom leg goes to the &#8722; rail as before. A DHT11 is worse again: it is a five-and-a-half volt part, so six volts damages the sensor as well as the pin. <strong>The rule has not changed since Part 7: anything the Arduino reads is powered by the Arduino. The + rail is only for things that push.</strong></div>
+
+    <div class="ifnot"><b>The answer to the Gold question, if you want to check yourself</b>A switch at the home position that the pointer presses when it reaches it. Switch on, turn slowly one way until the switch closes, and now you know where you are. Printers, scanners and 3D printers all do this every time you switch them on, and the noise they make while doing it is exactly this.</div>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Done</span><h2>You still owe Band 6 the same evidence</h2></div>
+  <div class="col stack">
+    <p>This Swap replaces the gate, not the band. To claim Band 6 you still need:</p>
+    <ul class="plain">
+      <li>A video of your dial responding to something, and a photo showing the ground link between the &#8722; rail and the Arduino</li>
+      <li>Your notes from the loaded-card activity in Part 1</li>
+      <li>The deadband table from Part 9b, done with your stepper's numbers</li>
+      <li>Your build log, including which way round the pin order caught you, if it did</li>
+      <li>The three deadband values you tried in Part 9c, and which you would choose for a gate and which for a dial</li>
+      <li>Five or six correct answers in Part 12, the Check yourself questions, <strong>including question 2</strong></li>
+    </ul>
+    <p class="note">Part 12 asks about a servo sketch you have not built. Answer it anyway. Every idea in it is one you have used here: the deadband, the remembered position, and what happens when a reading is acted on too eagerly. If you can answer it having built the dial, you have understood the band rather than the build, which is the point.</p>
+  </div>
+</section>
+
+<section class="ship">
+  <h2>Ship it</h2>
+  <p><b>One video under sixty seconds, and one post of five lines.</b> You built something
+  different from the person next to you, so your video is the one nobody else in the room can
+  post. Say in the post which build you chose <em>and why</em> &#8212; that choice is itself
+  worth a line.</p>
+  <p><b>The four shots:</b> three seconds of the thing still, fifteen of you doing something to
+  it, fifteen of it responding all the way to the end, and ten of your measurement or the thing
+  that went wrong first.</p>
+  <p><a href="show-your-work.html">Show your work</a> has the template and the three checks to
+  make before anything goes public. Tag it <code>#BozomaBuilds</code>.</p>
+</section>
+
+<nav class="pager" aria-label="Back">
+  <a href="../bands/band-6.html">Back to Band 6</a>
+</nav>
+
+
+</div>
+<footer class="bihfoot">
+<div class="wrap">
+  <p class="pagenote">Bozoma Innovation Hub &nbsp;·&nbsp; Aiyinasi, Ellembelle District. Swap project. Every sketch used here was compiled and tested before it reached you.</p>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a class="lockup" href="../index.html"><img src="../../assets/brand/logo-mark-white.png" alt="" width="42" height="42"><span>The Arduino Ladder<small>Bozoma Innovation Hub</small></span></a>
+      <p>A Bozoma Innovation Hub programme. Free to use, nothing to sign up for, at your own speed.</p>
+    </div>
+    <div><h4>The course</h4><ul>
+      <li><a href="../index.html">Course home</a></li>
+      <li><a href="../bands/band-0.html">Start with Band 0</a></li>
+      <li><a href="../guide.html">Facilitator guide</a></li>
+      <li><a href="../downloads/arduino-ladder-sketches.zip">All the sketches (zip)</a></li>
+    </ul></div>
+    <div><h4>Bozoma Innovation Hub</h4><ul>
+      <li>Aiyinasi, Ellembelle District, Western Region, Ghana</li>
+      <li><a href="https://bozomainnovationhub.com">bozomainnovationhub.com</a></li>
+      <li><a href="mailto:info@bozomainnovationhub.com">info@bozomainnovationhub.com</a></li>
+    </ul></div>
+  </div>
+  <div class="foot-bottom"><span>&copy; Bozoma Innovation Hub, Aiyinasi, Ghana</span><span class="tagline">World-class begins at home.</span></div>
+</div>
+</footer>
+</body>
+</html>

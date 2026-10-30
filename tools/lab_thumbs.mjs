@@ -19,6 +19,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const OUT = join(ROOT, 'assets/labs/thumbs');
+const COURSE = join(ROOT, 'arduino');
 const args = process.argv.slice(2);
 const soft = args.includes('--soft');
 const only = args.filter((a) => !a.startsWith('--'));
@@ -33,7 +34,7 @@ async function findPlaywright() {
 }
 const chrome = [process.env.CHROME, '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', '/usr/bin/google-chrome', '/usr/bin/chromium', 'C:/Program Files/Google/Chrome/Application/chrome.exe'].find((p) => p && existsSync(p));
 
-const html = readFileSync(join(ROOT, 'labs.html'), 'utf8');
+const html = readFileSync(join(COURSE, 'labs.html'), 'utf8');
 const catalog = JSON.parse(/<script type="application\/json" id="ws-catalog">([\s\S]*?)<\/script>/.exec(html)[1].replace(/<\\\//g, '</'));
 const ids = catalog.map((c) => c.id).filter((id) => !only.length || only.includes(id));
 mkdirSync(OUT, { recursive: true });
@@ -49,7 +50,7 @@ let made = 0;
 for (const id of ids) {
   const page = await ctx.newPage();
   try {
-    await page.goto(pathToFileURL(join(ROOT, 'labs.html')).href + `?open=${encodeURIComponent(id)}&shot`, { waitUntil: 'load' });
+    await page.goto(pathToFileURL(join(COURSE, 'labs.html')).href + `?open=${encodeURIComponent(id)}&shot`, { waitUntil: 'load' });
     await page.waitForSelector('.lab.lab-live', { timeout: 90000 });
     await page.waitForTimeout(1500);
     // 800 × 500 drawn, saved at 560 × 350 (sharp on a phone, small on disk)

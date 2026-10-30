@@ -3866,7 +3866,7 @@ void main() {
   </dl>
   <p class="lab-tip">The lab is a model, not your board. Real parts can look a little different: check the one in your hand too.</p>
   <p class="lab-tip">If it runs slowly, close other tabs, or leave full screen. Everything here works without the internet.</p>
-  <p><a class="lab-link" href="${gS("labs.html")}">${jt("cube")} Every 3D lab in the course: the 3D Workshop</a></p>
+  <p><a class="lab-link" href="${gS("arduino/labs.html")}">${jt("cube")} Every 3D lab in the course: the 3D Workshop</a></p>
 </div>`}function m(){if(!n||!a.length)return;let x=a.find(C=>!l.has(C.id)),M=a.filter(C=>l.has(C.id)).length,S=x?a.indexOf(x)+1:a.length;i.dispatchEvent(new CustomEvent("lab-missions",{bubbles:!0,detail:{lab:i.dataset.lab,done:M,total:a.length}})),n.innerHTML=`
       <div class="mission-head"><b>Missions</b><span>${M} of ${a.length} done</span><button type="button" class="mission-reset" title="Start the missions again" aria-label="Start the missions again">\u21BA</button></div>
       <div class="meter mission-meter"><span style="width:${M/a.length*100}%"></span></div>

@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <script src="../assets/theme.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Facilitator Guide · The Arduino Ladder</title>
+  <meta name="description" content="How a band is passed, what to collect, and the faults that account for most of the trouble.">
+  <meta name="theme-color" content="#24182E">
+  <link rel="icon" type="image/png" sizes="192x192" href="../assets/brand/icon-192.png">
+  <link rel="apple-touch-icon" href="../assets/brand/icon-180.png">
+  <link rel="stylesheet" href="../assets/course.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the lesson</a>
+<div class="topbar">
+  <a class="home" href="index.html"><img src="../assets/brand/logo-mark-white.png" alt="" width="36" height="36"><span class="lock"><b>Arduino Ladder</b><small>Bozoma Innovation Hub</small></span></a>
+  <a class="hub" href="../index.html" title="All courses: IoT at Bozoma Innovation Hub">&larr; IoT at BIH</a>
+  <nav class="bandlinks" aria-label="Bands"><a href="bands/band-0.html">0</a><a href="bands/band-1.html">1</a><a href="bands/band-2.html">2</a><a href="bands/band-3.html">3</a><a href="bands/band-4.html">4</a><a href="bands/band-5.html">5</a><a href="bands/band-6.html">6</a><a href="bands/band-7.html">7</a><a href="bands/band-8.html">8</a></nav>
+  <a class="bih" href="https://bozomainnovationhub.com"><span class="long">bozomainnovationhub.com</span><span class="short">BIH website</span></a>
+</div>
+<div class="wrap" id="main">
+
+<header style="padding:3.2rem 0 1rem">
+  <p class="eyebrow">Bozoma Innovation Hub &nbsp;&middot;&nbsp; Arduino Ladder</p>
+  <h1 style="margin:.8rem 0">Facilitator Guide</h1>
+  <p class="col sub" style="font-size:1.12em">For anyone running this course with a group: how a band is passed, what to collect, and the small number of faults that account for most of the trouble.</p>
+  <p class="col note" style="margin-top:.8rem">Learners do not need this page. It is for you.</p>
+</header>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Design</span><h2>What this course assumes</h2></div>
+  <div class="col stack">
+    <p>The pages carry the teaching. A learner working alone, with a kit and a laptop, can complete every band without asking anybody anything. That was the design goal and it is the standard every page is written to.</p>
+    <p>But one of the twelve pedagogy principles this course is built on cannot be delivered by a page, and that one is <strong>working together</strong>. Nor can the thing a person does that no page can: <strong>asking a learner a question at the moment they are about to go wrong</strong>. Those two need you.</p>
+    <div class="callout">
+      <h5>The thin layer that makes it work</h5>
+      <p>The design assumes a small amount of human contact around the self-paced pages:</p>
+      <ul class="plain">
+        <li>A <strong>build buddy</strong> each, so there is always one person to show something to</li>
+        <li>Posting each band's build to a shared group as a <strong>condition of passing</strong></li>
+        <li>One <strong>code review swap</strong> per band</li>
+        <li>A <strong>60 minute clinic</strong> each week</li>
+      </ul>
+      <p>That is roughly one facilitator hour per cohort per week, and in our judgement it is the difference between a course people finish and a course people start.</p>
+    </div>
+    <p class="note">Every activity that needs another person also has a written alternative for a learner who genuinely has nobody. Nothing in the course is impossible alone. It is just harder, and slower.</p>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Assessment</span><h2>How a band is passed</h2></div>
+  <div class="col stack">
+    <p>Four <em>kinds</em> of evidence, and all four are needed. There is no half a band. Band 8, the capstone, asks for a fifth: an honest evaluation against criteria the learner wrote before building.</p>
+    <p class="note">The table below is the shape, not the list. Every band ends with its own <strong>Before you move on</strong> panel naming the specific artefacts it wants under each heading, and those are what you collect: the calibration walk in Band 4, the ruler-accuracy table in Band 7, the six PWM pin numbers in Band 2, the resistor values read off the board on a module build. Collect the band's list rather than this table, or you will miss the measurement work that is the whole point of Bands 4 and 7.</p>
+    <p>There is also no failing. The only two results are <strong>passed</strong> and <strong>not yet</strong>, and "not yet" always comes with the one specific thing that would change it.</p>
+  </div>
+  <div class="scroll" style="margin-top:1rem">
+    <table>
+      <thead><tr><th>What they hand in</th><th>Passed when</th><th>Not yet when</th></tr></thead>
+      <tbody>
+        <tr><td>The thing they built</td><td>It does everything on the list in the Make step, and the video shows it working start to finish</td><td>Something on the list is unmet, or the video is too short to show the whole behaviour</td></tr>
+        <tr><td>The build log</td><td>It names at least one real fault and what fixed it, and admits at least one guess they got wrong</td><td>It only describes the finished thing, with no history in it</td></tr>
+        <tr><td>Check yourself</td><td>Five of six correct, <em>including</em> the question marked as the important one</td><td>The marked question is wrong, however good the rest are</td></tr>
+        <tr><td>Explain it out loud</td><td>In 90 seconds they can point at one line of their own code and say why it is there and what would break without it</td><td>They narrate what each line does but cannot say why it is needed</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="col stack" style="margin-top:1.2rem">
+    <div class="callout">
+      <h5>The nine questions that actually decide it</h5>
+      <p>Each band's check has one question marked as the one that matters. Each goes after the exact wrong idea that its band exists to correct. A learner can pass everything else by pattern matching; they cannot pass these.</p>
+      <div class="scroll" style="margin-top:.6rem">
+        <table>
+          <thead><tr><th>Band</th><th>The question</th><th>The wrong idea it catches</th></tr></thead>
+          <tbody>
+            <tr><td>0</td><td>Does <code>loop</code> stop when the light stops changing?</td><td>That a program with no visible effect has stopped running</td></tr>
+            <tr><td>1</td><td>Both LEDs are in backwards. Is that a code problem?</td><td>Reaching for the sketch when the fault is physical</td></tr>
+            <tr><td>2</td><td>Would the same sketch behave the same on pin 7?</td><td>That any pin can fade a light</td></tr>
+            <tr><td>3</td><td>One equals sign instead of two. What happens?</td><td>That <code>=</code> and <code>==</code> are interchangeable</td></tr>
+            <tr><td>4</td><td>An analog pin with nothing wired to it. What does it read?</td><td>That an unconnected pin reads 0</td></tr>
+            <tr><td>5</td><td>A <code>delay</code> hidden inside a function</td><td>That using <code>millis</code> outside makes a sketch non-blocking</td></tr>
+            <tr><td>6</td><td>The knob is turned slowly back down and the arm will not follow it</td><td>That a deadband can compare a difference without <code>abs</code></td></tr>
+            <tr><td>7</td><td>It is pointed out of a window at open sky, so no echo ever comes back. What does the device do?</td><td>That a missing timeout gives a wrong number, rather than silently stopping the whole board</td></tr>
+            <tr><td>8</td><td>A state the device enters, whose branch <code>enterState</code> never mentions</td><td>That having named states is by itself enough</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <h3 style="margin-top:.6rem">Moving faster or slower</h3>
+    <ul class="plain">
+      <li><strong>Already knows it.</strong> A learner may attempt any band's check and Make task cold. Pass both and they are awarded that band and everything below it.</li>
+      <li><strong>Missed a few weeks.</strong> Nothing is lost. Bands are passed on evidence, not attendance, so they resume where they stopped.</li>
+      <li><strong>The kit.</strong> If you run the loan model, Bands 0 to 7 use a loaned kit and completing Band 8 converts it to ownership. That is a completion incentive and an equipment recovery mechanism in one move.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Template</span><h2>The build log</h2></div>
+  <div class="col stack">
+    <p>One entry per band, written <strong>as they go</strong>, not afterwards from memory.</p>
+    <p>The most important part is what went wrong. A log with nothing broken in it is a log from somebody who copied, and it should be marked that way.</p>
+    <div class="card stack-sm">
+      <p><strong>Band and date</strong></p>
+      <p><strong>What I set out to build.</strong> One sentence, in my own words.</p>
+      <p><strong>My guesses, and which ones were wrong.</strong> Copied from the Guess step.</p>
+      <p><strong>What went wrong.</strong> Every fault, including the embarrassing ones.</p>
+      <p><strong>What I tried, in order.</strong> Including the things that did not work.</p>
+      <p><strong>What fixed it, and why that worked.</strong> If I do not know why, say so.</p>
+      <p><strong>What my tester said.</strong> Their words, not my summary.</p>
+      <p><strong>One thing I would do differently.</strong></p>
+      <p><strong>A photo or video.</strong></p>
+    </div>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Diagnosis</span><h2>The faults that account for most of it</h2></div>
+  <div class="col stack">
+    <p>Bands 0 to 2 are almost entirely physical faults, visible in a photograph. From Band 3 the balance shifts and more of them are thinking faults, where the wiring is right and the code compiles and the thing still does the wrong job.</p>
+  </div>
+  <div class="scroll" style="margin-top:1rem">
+    <table>
+      <thead><tr><th>Fault</th><th>What they see</th><th>Where it is covered</th></tr></thead>
+      <tbody>
+        <tr><td>Charge-only USB cable</td><td>No port in the Tools menu; looks exactly like a dead board</td><td>Band 0, Part 11. The most common first-week fault of all.</td></tr>
+        <tr><td>LED in backwards</td><td>Nothing lights, nothing looks wrong</td><td>Band 1, Part 3. Turn it round before anything else.</td></tr>
+        <tr><td>No shared ground</td><td>A servo twitches, buzzes, or does nothing at all</td><td>Band 6, Part 7. One wire from the battery&#8217;s minus to an Arduino GND pin. The commonest fault in Band 6 by a wide margin.</td></tr>
+        <tr><td>LCD contrast wrong</td><td>A completely blank screen that looks dead</td><td>Band 7, Part 6b. Turn the knob or the blue screw end to end before checking anything else. Ask this first, every time.</td></tr>
+        <tr><td>Servo on the 5V pin under load</td><td>Board resets, or the arm moves in jerks</td><td>Band 6, Part 7. It needs its own battery once it has to push something.</td></tr>
+        <tr><td>Both legs in one column</td><td>Nothing lights, nothing looks wrong</td><td>Band 1, Part 11 checklist item 2.</td></tr>
+        <tr><td>Rail never reaches GND</td><td>All lights dead at once, everything else perfect</td><td>Band 1, Part 11 checklist item 5.</td></tr>
+        <tr><td><code>analogWrite</code> on a pin with no <code>~</code></td><td>A fade that snaps instead</td><td>Band 2, Parts 2 and 8.</td></tr>
+        <tr><td>Two button legs from the same side</td><td>The button reads as pressed all the time</td><td>Band 3, Part 2. The diagonal rule fixes it permanently.</td></tr>
+        <tr><td>No debounce, or no edge detection</td><td>One press counts as several, or as thousands</td><td>Band 3, Part 9. Two different faults, two different fixes, easily confused.</td></tr>
+        <tr><td>Whole-number division</td><td>A calculation stubbornly gives 0.00</td><td>Band 4, Part 9.</td></tr>
+        <tr><td>Mixing 0&ndash;255 with 0&ndash;1023</td><td>A lamp that never gets bright</td><td>Band 4, Parts 2 and 6.</td></tr>
+        <tr><td>A <code>delay</code> hidden inside a function</td><td>Timing looks right, the board still misses things</td><td>Band 5, Part 7.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Skill</span><h2>Reading a photograph of a breadboard</h2></div>
+  <div class="col stack">
+    <p>This is the thing a page cannot do and you can. Check these six, <strong>in this order</strong>, before you reply. Resist naming the fault until you have been through all six, because boards often have two.</p>
+    <ol class="num">
+      <li>Does every LED have its long leg on the pin side?</li>
+      <li>Does any component have both legs in the same column of five?</li>
+      <li>Does the &minus; rail actually reach a GND pin?</li>
+      <li>Is anything sitting across the middle channel that should not be, or not across it when it should be?</li>
+      <li>Are any bare legs touching each other?</li>
+      <li>Is every leg pushed fully in, or is one resting on top of a hole?</li>
+    </ol>
+
+    <h3 style="margin-top:.6rem">Ask before you tell</h3>
+    <p>From Band 3 onwards a learner starts being able to find their own faults, and that ability is worth more than any single fixed circuit. Three questions are usually enough:</p>
+    <ul class="plain">
+      <li><em>What did you expect to happen, and what happened instead?</em></li>
+      <li><em>What does the serial monitor say?</em> If the answer is "I did not look", that is the next step, not your diagnosis.</li>
+      <li><em>What was the last thing that worked?</em></li>
+    </ul>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Before you begin</span><h2>Preparing to run it</h2></div>
+  <div class="col stack">
+    <ul class="plain">
+      <li><strong>Work through all nine bands yourself as a learner</strong>, handing in the same evidence you will ask of them. It is the cheapest quality control available and it produces your first set of worked examples. Band 5 especially: the <code>delay</code> lesson is far easier to teach once you have watched it fail on your own bench.</li>
+      <li><strong>Check the kits you actually bought.</strong> Band 3 needs an active buzzer, Band 5 needs a passive one, and Band 5 needs a full-size breadboard or two small ones. Every one of those has a documented fallback, but find out before a cohort starts, not during.</li>
+      <li><strong>Check the four late-band parts before Band 5 ends.</strong> Band 6 needs an SG90 servo and a four-cell AA battery holder; Bands 7 and 8 need an HC-SR04 ultrasonic sensor; Band 7 needs an LCD1602. The servo has no substitute and the band cannot run without it. The screen has two fallbacks: the four-digit TM1637 display project, which is a complete route through the band, or the serial monitor. Either one costs the band&#8217;s best design exercise, the sixteen-character writing, so ask for that on paper either way. <strong>Turn every LCD over and check which kind it is</strong> before Band 7 starts: those with a four-pin board on the back need the LiquidCrystal_I2C library installed, which needs internet once, and those without take twelve more wires. A cohort with a mix of both is normal and the band covers both paths in full.</li>
+      <li><strong>Set up the proof side before the first cohort, not after.</strong> Every band ends with a sixty-second video and a five-line post, and that artefact is both the band's evidence and the learner's portfolio piece. Decide three things now: where posts go, what the tag is, and who reviews a first post before it is public. The <a href="projects/show-your-work.html">Show your work</a> page carries the template and the consent checks. <b>Get the first post out of every learner in week one</b>, on whatever they have built by then, because the first one is the hard one and it gets harder the longer it waits.</li>
+      <li><strong>Do the part identification once, for the whole hub, and label the bags.</strong> Two components in these kits come in two kinds that look alike and behave completely differently: the buzzer (active or passive) and the RGB light (common cathode or common anode, and modules with or without their own resistors). The <a href="projects/which-part.html">Which part have I got?</a> page has two sketches that answer all of it in about twenty-five minutes. Doing this once saves every learner in the cohort a wasted evening, and it is the single highest-value hour of preparation on this list. Write the answers and the date on a slip of paper and put it in each box.</li>
+      <li><strong>Decide which alternative builds you are offering, and buy for those only.</strong> Most bands now have a second route: a keypad lock for Band 3, a rain alarm or a room monitor for Band 4, a stepper dial or a transistor fan for Band 6, a four-digit display for Band 7, and module versions of Bands 1 and 2. None is required. They exist so that six people and two keypads is a timetable rather than a queue, so that a kit without a servo does not close Band 6, and so that somebody working alone can do a band twice by two roads and find out what they actually understood. Each project page lists its own parts.</li>
+      <li><strong>If anybody is building the transistor fan, check there are diodes in the box.</strong> That build switches a motor about a thousand times a second and every switch-off throws a spike at the transistor. There is no visible symptom, so nobody will report it: parts simply wear out. If you have no diodes, direct those learners to the ULN2003 route on the same page, which has the diodes built in. This is the only build in the whole course where a missing part causes silent damage rather than a build that does not work.</li>
+      <li><strong>Budget consumables.</strong> LEDs and servos die, and jumper wires fail more often than anything else in the box, producing faults that look exactly like code bugs. Assume around 15% annual replacement.</li>
+      <li><strong>Test the cable.</strong> Charge-only USB cables cost more first-week hours than any other single thing. Check every cable before it goes in a kit.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Method</span><h2>The pedagogy underneath</h2></div>
+  <div class="col stack">
+    <p>The course is built on the Raspberry Pi Foundation's twelve principles of computing pedagogy. Rather than list them, here is where each one is actually enforced, so you can hold the course to them.</p>
+  </div>
+  <div class="scroll" style="margin-top:1rem">
+    <table>
+      <thead><tr><th>Principle</th><th>The mechanic that delivers it</th></tr></thead>
+      <tbody>
+        <tr><td>Add variety</td><td>Bronze, Silver and Gold tiers; open Make briefs; optional bounty builds using unused kit parts</td></tr>
+        <tr><td>Challenge misconceptions</td><td>The Guess step forces a commitment that can be wrong; each band has a planted bug and a marked check question</td></tr>
+        <tr><td>Create projects</td><td>Every band ends in a named artefact with success criteria and a real user</td></tr>
+        <tr><td>Foster program comprehension</td><td>Trace tables, shuffled-line problems, spot-the-bug and "explain this line" in every band</td></tr>
+        <tr><td>Get hands-on</td><td>A physical build in every band; craft housings in Bands 1, 2 and 5</td></tr>
+        <tr><td>Lead with concepts</td><td>A Words to Know box per section and recall questions at the start of each band</td></tr>
+        <tr><td>Make concrete</td><td>Build briefs set in Aiyinasi: borehole pumps, poultry brooders, water tanks, market stalls, school bells</td></tr>
+        <tr><td>Model everything</td><td>A worked example in every band, including the debugging rather than a clean take</td></tr>
+        <tr><td>Read and explore code first</td><td>Nobody writes code before reading, predicting and explaining working code for the same idea</td></tr>
+        <tr><td>Structure lessons</td><td>The six steps are PRIMM fused with Use&ndash;Modify&ndash;Create, identical in every band</td></tr>
+        <tr><td>Unplug, unpack, repack</td><td>Step 1 unplugs the idea with rope, a door, a torch or a bottle cap; the Make brief repacks it</td></tr>
+        <tr><td>Work together</td><td>Build buddies, cohort posting, code review swaps and the weekly clinic. <strong>This is the one the pages cannot do alone.</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+
+</div>
+<footer class="bihfoot">
+<div class="wrap">
+  <p class="pagenote">The Arduino Ladder &nbsp;&middot;&nbsp; Bozoma Innovation Hub, Aiyinasi, Ellembelle District, Western Region, Ghana.</p>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a class="lockup" href="index.html"><img src="../assets/brand/logo-mark-white.png" alt="" width="42" height="42"><span>The Arduino Ladder<small>Bozoma Innovation Hub</small></span></a>
+      <p>A Bozoma Innovation Hub programme. Free to use, nothing to sign up for, at your own speed.</p>
+    </div>
+    <div><h4>The course</h4><ul>
+      <li><a href="index.html">Course home</a></li>
+      <li><a href="bands/band-0.html">Start with Band 0</a></li>
+      <li><a href="guide.html">Facilitator guide</a></li>
+      <li><a href="downloads/arduino-ladder-sketches.zip">All the sketches (zip)</a></li>
+    </ul></div>
+    <div><h4>Bozoma Innovation Hub</h4><ul>
+      <li>Aiyinasi, Ellembelle District, Western Region, Ghana</li>
+      <li><a href="https://bozomainnovationhub.com">bozomainnovationhub.com</a></li>
+      <li><a href="mailto:info@bozomainnovationhub.com">info@bozomainnovationhub.com</a></li>
+    </ul></div>
+  </div>
+  <div class="foot-bottom"><span>&copy; Bozoma Innovation Hub, Aiyinasi, Ghana</span><span class="tagline">World-class begins at home.</span></div>
+</div>
+</footer>
+</body>
+</html>

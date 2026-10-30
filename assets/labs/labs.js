@@ -207,7 +207,7 @@
     list.forEach(function (it, i) {
       html += '<li' + (it.main ? ' class="ix-main"' : '') + '><a href="' + (it.hash || pill.getAttribute('href')) + '" data-i="' + i + '">' + ico(it.main ? 'cube' : 'grid') + '<span>' + it.title.replace(/</g, '&lt;') + '<small>' + it.sub + '</small></span></a></li>';
     });
-    html += '</ul><ul class="ix-all"><li><a href="' + base + '../../labs.html">' + ico('all') + '<span>Every 3D lab in the course<small>The 3D Workshop: all nine bands</small></span></a></li></ul>';
+    html += '</ul><ul class="ix-all"><li><a href="' + base + '../../arduino/labs.html">' + ico('all') + '<span>Every 3D lab in the course<small>The 3D Workshop: all nine bands</small></span></a></li></ul>';
     menu.innerHTML = html;
     document.body.appendChild(menu);
     function place() {

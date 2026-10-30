@@ -19,13 +19,17 @@ after adding a build, a band page figure or a concept lab.
 import html, io, json, os, re, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-ROOT = os.path.normpath(os.path.join(HERE, ".."))
+ROOT = os.path.normpath(os.path.join(HERE, "..", "arduino"))
 OUT = os.path.join(ROOT, "labs.html")
 COLOURS = ["Black", "Brown", "Red", "Orange", "Yellow", "Green", "Blue", "Violet", "Grey"]
 
 
+SITE = os.path.normpath(os.path.join(ROOT, ".."))   # shared assets/ live at the site root
+
+
 def read(p):
-    return io.open(os.path.join(ROOT, p), encoding="utf-8").read()
+    base = SITE if p.startswith("assets/") else ROOT
+    return io.open(os.path.join(base, p), encoding="utf-8").read()
 
 
 def plain(s):
@@ -123,7 +127,7 @@ def e(s):
 
 
 def thumb(id_):
-    return '<span class="ws-thumb"><img src="assets/labs/thumbs/%s.webp" alt="" loading="lazy" decoding="async" width="400" height="250" onerror="this.remove()"></span>' % id_
+    return '<span class="ws-thumb"><img src="../assets/labs/thumbs/%s.webp" alt="" loading="lazy" decoding="async" width="400" height="250" onerror="this.remove()"></span>' % id_
 
 
 def render(groups):
@@ -171,15 +175,16 @@ TEMPLATE = r"""<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <script src="../assets/theme.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>3D Workshop · Arduino Ladder</title>
   <meta name="description" content="Every 3D lab in the Arduino Ladder: nine concept labs with missions, and every wiring build from the lessons, to turn, zoom and explore full screen. Works offline.">
   <meta name="theme-color" content="#24182E">
-  <link rel="icon" type="image/png" sizes="192x192" href="assets/brand/icon-192.png">
-  <link rel="apple-touch-icon" href="assets/brand/icon-180.png">
-  <link rel="stylesheet" href="assets/course.css">
-  <link rel="stylesheet" href="assets/labs/labs.css">
-  <script defer src="assets/labs/labs.js"></script>
+  <link rel="icon" type="image/png" sizes="192x192" href="../assets/brand/icon-192.png">
+  <link rel="apple-touch-icon" href="../assets/brand/icon-180.png">
+  <link rel="stylesheet" href="../assets/course.css">
+  <link rel="stylesheet" href="../assets/labs/labs.css">
+  <script defer src="../assets/labs/labs.js"></script>
   <!-- Made by tools/labs_page.py: edit that, not this file. -->
   <style>
     body.ws { padding: 0; display: block; min-height: 100vh; }
@@ -284,7 +289,7 @@ TEMPLATE = r"""<!doctype html>
 </head>
 <body class="ws">
 <header class="ws-top">
-  <a class="ws-brand" href="index.html"><img src="assets/brand/logo-mark-white.png" alt="Arduino Ladder home"><span><b>3D Workshop</b><small>The Arduino Ladder · Bozoma Innovation Hub</small></span></a>
+  <a class="ws-brand" href="index.html"><img src="../assets/brand/logo-mark-white.png" alt="Arduino Ladder home"><span><b>3D Workshop</b><small>The Arduino Ladder · Bozoma Innovation Hub</small></span></a>
   <label class="ws-search">@@SEARCH@@<input type="search" id="ws-q" placeholder="Find a lab: button, servo, screen…" aria-label="Find a 3D lab" autocomplete="off"></label>
   <nav class="ws-toplinks" aria-label="Course"><a href="index.html">Course home</a><a href="bands/band-0.html">Start with Band 0</a></nav>
   <div class="ws-vbar">

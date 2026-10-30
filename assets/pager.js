@@ -12,9 +12,12 @@
   var sections = [].slice.call(wrap.querySelectorAll(':scope > section.part[id]'));
   if (sections.length < 3) return;
 
+  // Each course keeps its own progress: <html data-course="esp32" data-band="3">. The Arduino
+  // Ladder has no data-course and keeps its original "ladder-…" names, so nobody loses progress.
   var band = document.documentElement.getAttribute('data-band') || location.pathname;
-  var KEY = 'ladder-read-' + band;
-  var PREF = 'ladder-one-page';
+  var course = document.documentElement.getAttribute('data-course') || 'ladder';
+  var KEY = course + '-read-' + band;
+  var PREF = course + '-one-page';
   function load(k, d) { try { var v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } }
   function save(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
   var state = load(KEY, { read: [], last: null });

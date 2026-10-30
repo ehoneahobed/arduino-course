@@ -617,3 +617,10 @@ html.has-side nav[aria-label="Sections"] .side-head a.side-band::before,html.has
   :root:not([data-theme="light"]).has-side nav[aria-label="Sections"] > a[aria-current="step"]{background:var(--accent-soft); color:var(--ink); border-color:var(--accent)}
 }
 :root[data-theme="dark"].has-side nav[aria-label="Sections"] > a[aria-current="step"]{background:var(--accent-soft); color:var(--ink); border-color:var(--accent)}
+
+/* "← IoT at BIH": the way back from a course to the site home */
+.topbar .hub{order:-1; flex:none; color:rgba(255,255,255,.78); text-decoration:none; font:500 .78rem/1 "Outfit","Rubik",Arial,sans-serif;
+  padding:.4rem .7rem; border-radius:99px; border:1px solid rgba(255,255,255,.22)}
+.topbar .hub:hover,.topbar .hub:focus-visible{color:#fff; border-color:rgba(255,255,255,.5)}
+@media (max-width:640px){.topbar .hub{order:0}}
+@media print{.topbar .hub{display:none}}

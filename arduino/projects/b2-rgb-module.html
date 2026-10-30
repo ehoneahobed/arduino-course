@@ -1,0 +1,584 @@
+<!doctype html>
+<html lang="en" data-band="2">
+<head>
+  <meta charset="utf-8">
+  <script src="../../assets/theme.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mood lamp on an RGB module · Swap · Arduino Ladder</title>
+  <meta name="description" content="The whole colour story with three wires and no resistors, and an honest look at where the resistors went.">
+  <meta name="theme-color" content="#24182E">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../assets/brand/icon-192.png">
+  <link rel="apple-touch-icon" href="../../assets/brand/icon-180.png">
+  <link rel="stylesheet" href="../../assets/course.css">
+  <link rel="stylesheet" href="../../assets/labs/labs.css">
+  <script defer src="../../assets/labs/labs.js"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to the project</a>
+<div class="topbar">
+  <a class="home" href="../index.html"><img src="../../assets/brand/logo-mark-white.png" alt="" width="36" height="36"><span class="lock"><b>Arduino Ladder</b><small>Bozoma Innovation Hub</small></span></a>
+  <a class="hub" href="../../index.html" title="All courses: IoT at Bozoma Innovation Hub">&larr; IoT at BIH</a>
+  <nav class="bandlinks" aria-label="Bands"><a href="../bands/band-0.html">0</a><a href="../bands/band-1.html">1</a><a href="../bands/band-2.html" aria-current="page">2</a><a href="../bands/band-3.html">3</a><a href="../bands/band-4.html">4</a><a href="../bands/band-5.html">5</a><a href="../bands/band-6.html">6</a><a href="../bands/band-7.html">7</a><a href="../bands/band-8.html">8</a></nav>
+  <a class="bih" href="https://bozomainnovationhub.com"><span class="long">bozomainnovationhub.com</span><span class="short">BIH website</span></a>
+</div>
+<div class="wrap" id="main">
+<header style="padding:2.6rem 0 1rem">
+  <p class="eyebrow">Band 2 &nbsp;·&nbsp; Mood Lamp</p>
+  <h1 style="margin:.7rem 0 .5rem"><span class="ptype swap">Swap</span> &nbsp;Mood lamp on an RGB module</h1>
+  <p class="col sub" style="font-size:1.06em">The whole colour story with three wires and no resistors, and an honest look at where the resistors went.</p>
+  <dl class="projmeta">
+    <div><dt>Time</dt><dd>85 min</dd></div>
+    <div><dt>You need</dt><dd>RGB LED module, 5 jumper wires (plus three 220&#8486; resistors if your module's back is bare)</dd></div>
+    <div><dt>At once</dt><dd>One per RGB module</dd></div>
+    <div><dt>Before this</dt><dd>Run <code>id_02_which_rgb.ino</code> first if you are not sure which RGB part you have. If you have a loose four-legged LED, build the core version first.</dd></div>
+  </dl>
+</header>
+
+<section class="sketchbox">
+  <h2>Sketches for this project</h2>
+  <ul><li><a href="../sketches/id_02_which_rgb.ino">id_02_which_rgb.ino</a></li><li><a href="../sketches/b2_05_rgb_module.ino">b2_05_rgb_module.ino</a></li></ul>
+  <p>Every file opens with a plain-English header saying what it does and how to wire it, hole by hole.</p>
+</section>
+<section class="part">
+  <div class="parthead"><span class="tag">Why</span><h2>Where did the resistors go?</h2></div>
+  <div class="col stack">
+    <p>Band 2's core build uses a loose RGB LED with four legs, and you fit three resistors yourself: one per colour, because an RGB LED is three lights in one case and each needs its own.</p>
+    <p>The module is the same three lights on a small board, and it needs <strong>no resistors at all</strong>.</p>
+    <p>That is either a convenience or a lie, depending on whether you go and look. This build makes you go and look.</p>
+
+    <div class="which">
+      <h4>Which should you build?</h4>
+      <div class="opts">
+        <div class="opt">
+          <b>You have a loose four-legged RGB LED</b>
+          <p>Build Band 2's core with that first. Wire the three resistors, get one backwards, fix it. Then come here afterwards if you want the comparison; it takes twenty minutes.</p>
+          <p class="go">&#8594; Core first, this second.</p>
+        </div>
+        <div class="opt">
+          <b>You only have the module</b>
+          <p>Then this is your Band 2, and it teaches the same things. What you would have missed is <em>why</em> the resistors are there, so the Look closer section makes you find them on the board and read their values instead of fitting them.</p>
+          <p class="go">&#8594; This page, and do the Look closer properly.</p>
+        </div>
+      </div>
+      <p style="margin-top:.7rem">Not sure which you have? Run <code>id_02_which_rgb.ino</code> first. It also tells you which way round yours is wired, which you need either way.</p>
+    </div>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Build</span><h2>Three colour wires, five in all</h2><span class="mins">20 min</span></div>
+    <figure class="wiring" data-build="b2rgbmod">
+      <p class="view3d" hidden><button type="button" class="view3d-btn" data-build="b2rgbmod" aria-pressed="false" hidden>View in 3D</button></p>
+      <svg viewBox="0 -64 593.2 834" role="img" aria-label="RGB module" style="width:593.2px; max-width:100%; min-width:560px">
+<defs><circle id="bh" r="3.6" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/><rect id="sk" x="-6.5" y="-6.5" width="13" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1" opacity=".5"/></defs>
+<rect x="100" y="18" width="390" height="376" rx="7" fill="none" stroke="currentColor" stroke-width="1.3" opacity=".55"/>
+<rect x="100" y="200" width="390" height="26" fill="currentColor" opacity=".07"/>
+<line x1="108" y1="34" x2="482" y2="34" stroke="#C8452F" stroke-width="1.2" opacity=".45"/>
+<text x="87" y="38" font-size="12" fill="#C8452F" text-anchor="middle" font-family="Archivo,Arial,sans-serif">+</text>
+<use href="#bh" x="126" y="34"/>
+<use href="#bh" x="152" y="34"/>
+<use href="#bh" x="178" y="34"/>
+<use href="#bh" x="204" y="34"/>
+<use href="#bh" x="230" y="34"/>
+<use href="#bh" x="256" y="34"/>
+<use href="#bh" x="282" y="34"/>
+<use href="#bh" x="308" y="34"/>
+<use href="#bh" x="334" y="34"/>
+<use href="#bh" x="360" y="34"/>
+<use href="#bh" x="386" y="34"/>
+<use href="#bh" x="412" y="34"/>
+<use href="#bh" x="438" y="34"/>
+<use href="#bh" x="464" y="34"/>
+<line x1="108" y1="54" x2="482" y2="54" stroke="#3D6FA8" stroke-width="1.2" opacity=".45"/>
+<text x="87" y="58" font-size="12" fill="#3D6FA8" text-anchor="middle" font-family="Archivo,Arial,sans-serif">−</text>
+<use href="#bh" x="126" y="54"/>
+<use href="#bh" x="152" y="54"/>
+<use href="#bh" x="178" y="54"/>
+<use href="#bh" x="204" y="54"/>
+<use href="#bh" x="230" y="54"/>
+<use href="#bh" x="256" y="54"/>
+<use href="#bh" x="282" y="54"/>
+<use href="#bh" x="308" y="54"/>
+<use href="#bh" x="334" y="54"/>
+<use href="#bh" x="360" y="54"/>
+<use href="#bh" x="386" y="54"/>
+<use href="#bh" x="412" y="54"/>
+<use href="#bh" x="438" y="54"/>
+<use href="#bh" x="464" y="54"/>
+<line x1="108" y1="354" x2="482" y2="354" stroke="#3D6FA8" stroke-width="1.2" opacity=".45"/>
+<text x="87" y="358" font-size="12" fill="#3D6FA8" text-anchor="middle" font-family="Archivo,Arial,sans-serif">−</text>
+<use href="#bh" x="126" y="354"/>
+<use href="#bh" x="152" y="354"/>
+<use href="#bh" x="178" y="354"/>
+<use href="#bh" x="204" y="354"/>
+<use href="#bh" x="230" y="354"/>
+<use href="#bh" x="256" y="354"/>
+<use href="#bh" x="282" y="354"/>
+<use href="#bh" x="308" y="354"/>
+<use href="#bh" x="334" y="354"/>
+<use href="#bh" x="360" y="354"/>
+<use href="#bh" x="386" y="354"/>
+<use href="#bh" x="412" y="354"/>
+<use href="#bh" x="438" y="354"/>
+<use href="#bh" x="464" y="354"/>
+<line x1="108" y1="374" x2="482" y2="374" stroke="#C8452F" stroke-width="1.2" opacity=".45"/>
+<text x="87" y="378" font-size="12" fill="#C8452F" text-anchor="middle" font-family="Archivo,Arial,sans-serif">+</text>
+<use href="#bh" x="126" y="374"/>
+<use href="#bh" x="152" y="374"/>
+<use href="#bh" x="178" y="374"/>
+<use href="#bh" x="204" y="374"/>
+<use href="#bh" x="230" y="374"/>
+<use href="#bh" x="256" y="374"/>
+<use href="#bh" x="282" y="374"/>
+<use href="#bh" x="308" y="374"/>
+<use href="#bh" x="334" y="374"/>
+<use href="#bh" x="360" y="374"/>
+<use href="#bh" x="386" y="374"/>
+<use href="#bh" x="412" y="374"/>
+<use href="#bh" x="438" y="374"/>
+<use href="#bh" x="464" y="374"/>
+<text x="87" y="100" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">j</text>
+<use href="#bh" x="126" y="96"/>
+<use href="#bh" x="152" y="96"/>
+<use href="#bh" x="178" y="96"/>
+<use href="#bh" x="204" y="96"/>
+<use href="#bh" x="230" y="96"/>
+<use href="#bh" x="256" y="96"/>
+<use href="#bh" x="282" y="96"/>
+<use href="#bh" x="308" y="96"/>
+<use href="#bh" x="334" y="96"/>
+<use href="#bh" x="360" y="96"/>
+<use href="#bh" x="386" y="96"/>
+<use href="#bh" x="412" y="96"/>
+<use href="#bh" x="438" y="96"/>
+<use href="#bh" x="464" y="96"/>
+<text x="87" y="122" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">i</text>
+<use href="#bh" x="126" y="118"/>
+<use href="#bh" x="152" y="118"/>
+<use href="#bh" x="178" y="118"/>
+<use href="#bh" x="204" y="118"/>
+<use href="#bh" x="230" y="118"/>
+<use href="#bh" x="256" y="118"/>
+<use href="#bh" x="282" y="118"/>
+<use href="#bh" x="308" y="118"/>
+<use href="#bh" x="334" y="118"/>
+<use href="#bh" x="360" y="118"/>
+<use href="#bh" x="386" y="118"/>
+<use href="#bh" x="412" y="118"/>
+<use href="#bh" x="438" y="118"/>
+<use href="#bh" x="464" y="118"/>
+<text x="87" y="144" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">h</text>
+<use href="#bh" x="126" y="140"/>
+<use href="#bh" x="152" y="140"/>
+<use href="#bh" x="178" y="140"/>
+<use href="#bh" x="204" y="140"/>
+<use href="#bh" x="230" y="140"/>
+<use href="#bh" x="256" y="140"/>
+<use href="#bh" x="282" y="140"/>
+<use href="#bh" x="308" y="140"/>
+<use href="#bh" x="334" y="140"/>
+<use href="#bh" x="360" y="140"/>
+<use href="#bh" x="386" y="140"/>
+<use href="#bh" x="412" y="140"/>
+<use href="#bh" x="438" y="140"/>
+<use href="#bh" x="464" y="140"/>
+<text x="87" y="166" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">g</text>
+<use href="#bh" x="126" y="162"/>
+<use href="#bh" x="152" y="162"/>
+<use href="#bh" x="178" y="162"/>
+<use href="#bh" x="204" y="162"/>
+<use href="#bh" x="230" y="162"/>
+<use href="#bh" x="256" y="162"/>
+<use href="#bh" x="282" y="162"/>
+<use href="#bh" x="308" y="162"/>
+<use href="#bh" x="334" y="162"/>
+<use href="#bh" x="360" y="162"/>
+<use href="#bh" x="386" y="162"/>
+<use href="#bh" x="412" y="162"/>
+<use href="#bh" x="438" y="162"/>
+<use href="#bh" x="464" y="162"/>
+<text x="87" y="188" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">f</text>
+<use href="#bh" x="126" y="184"/>
+<use href="#bh" x="152" y="184"/>
+<use href="#bh" x="178" y="184"/>
+<use href="#bh" x="204" y="184"/>
+<use href="#bh" x="230" y="184"/>
+<use href="#bh" x="256" y="184"/>
+<use href="#bh" x="282" y="184"/>
+<use href="#bh" x="308" y="184"/>
+<use href="#bh" x="334" y="184"/>
+<use href="#bh" x="360" y="184"/>
+<use href="#bh" x="386" y="184"/>
+<use href="#bh" x="412" y="184"/>
+<use href="#bh" x="438" y="184"/>
+<use href="#bh" x="464" y="184"/>
+<text x="87" y="238" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">e</text>
+<use href="#bh" x="126" y="234"/>
+<use href="#bh" x="152" y="234"/>
+<use href="#bh" x="178" y="234"/>
+<use href="#bh" x="204" y="234"/>
+<use href="#bh" x="230" y="234"/>
+<use href="#bh" x="256" y="234"/>
+<use href="#bh" x="282" y="234"/>
+<use href="#bh" x="308" y="234"/>
+<use href="#bh" x="334" y="234"/>
+<use href="#bh" x="360" y="234"/>
+<use href="#bh" x="386" y="234"/>
+<use href="#bh" x="412" y="234"/>
+<use href="#bh" x="438" y="234"/>
+<use href="#bh" x="464" y="234"/>
+<text x="87" y="260" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">d</text>
+<use href="#bh" x="126" y="256"/>
+<use href="#bh" x="152" y="256"/>
+<use href="#bh" x="178" y="256"/>
+<use href="#bh" x="204" y="256"/>
+<use href="#bh" x="230" y="256"/>
+<use href="#bh" x="256" y="256"/>
+<use href="#bh" x="282" y="256"/>
+<use href="#bh" x="308" y="256"/>
+<use href="#bh" x="334" y="256"/>
+<use href="#bh" x="360" y="256"/>
+<use href="#bh" x="386" y="256"/>
+<use href="#bh" x="412" y="256"/>
+<use href="#bh" x="438" y="256"/>
+<use href="#bh" x="464" y="256"/>
+<text x="87" y="282" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">c</text>
+<use href="#bh" x="126" y="278"/>
+<use href="#bh" x="152" y="278"/>
+<use href="#bh" x="178" y="278"/>
+<use href="#bh" x="204" y="278"/>
+<use href="#bh" x="230" y="278"/>
+<use href="#bh" x="256" y="278"/>
+<use href="#bh" x="282" y="278"/>
+<use href="#bh" x="308" y="278"/>
+<use href="#bh" x="334" y="278"/>
+<use href="#bh" x="360" y="278"/>
+<use href="#bh" x="386" y="278"/>
+<use href="#bh" x="412" y="278"/>
+<use href="#bh" x="438" y="278"/>
+<use href="#bh" x="464" y="278"/>
+<text x="87" y="304" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">b</text>
+<use href="#bh" x="126" y="300"/>
+<use href="#bh" x="152" y="300"/>
+<use href="#bh" x="178" y="300"/>
+<use href="#bh" x="204" y="300"/>
+<use href="#bh" x="230" y="300"/>
+<use href="#bh" x="256" y="300"/>
+<use href="#bh" x="282" y="300"/>
+<use href="#bh" x="308" y="300"/>
+<use href="#bh" x="334" y="300"/>
+<use href="#bh" x="360" y="300"/>
+<use href="#bh" x="386" y="300"/>
+<use href="#bh" x="412" y="300"/>
+<use href="#bh" x="438" y="300"/>
+<use href="#bh" x="464" y="300"/>
+<text x="87" y="326" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">a</text>
+<use href="#bh" x="126" y="322"/>
+<use href="#bh" x="152" y="322"/>
+<use href="#bh" x="178" y="322"/>
+<use href="#bh" x="204" y="322"/>
+<use href="#bh" x="230" y="322"/>
+<use href="#bh" x="256" y="322"/>
+<use href="#bh" x="282" y="322"/>
+<use href="#bh" x="308" y="322"/>
+<use href="#bh" x="334" y="322"/>
+<use href="#bh" x="360" y="322"/>
+<use href="#bh" x="386" y="322"/>
+<use href="#bh" x="412" y="322"/>
+<use href="#bh" x="438" y="322"/>
+<use href="#bh" x="464" y="322"/>
+<text x="126" y="12" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">1</text>
+<text x="230" y="12" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">5</text>
+<text x="360" y="12" font-size="10" fill="currentColor" opacity=".5" text-anchor="middle" font-family="IBM Plex Mono,monospace">10</text>
+<rect x="100" y="606" width="463.2" height="118" rx="8" fill="currentColor" opacity=".05"/>
+<rect x="100" y="606" width="463.2" height="118" rx="8" fill="none" stroke="currentColor" stroke-width="1.3" opacity=".6"/>
+<rect x="88" y="622" width="34" height="22" rx="3" fill="none" stroke="currentColor" stroke-width="1" opacity=".5"/>
+<text x="105" y="636" font-size="8.5" fill="currentColor" opacity=".55" text-anchor="middle" font-family="IBM Plex Mono,monospace">USB</text>
+<text x="331.6" y="669" font-size="11" fill="currentColor" opacity=".55" text-anchor="middle" letter-spacing="1.6" font-family="Archivo,Arial,sans-serif">ARDUINO UNO</text>
+<use href="#sk" x="136" y="621"/>
+<use href="#sk" x="158" y="621"/>
+<use href="#sk" x="180" y="621"/>
+<use href="#sk" x="202" y="621"/>
+<use href="#sk" x="224" y="621"/>
+<use href="#sk" x="246" y="621"/>
+<use href="#sk" x="268" y="621"/>
+<rect x="261.5" y="614.5" width="13" height="13" rx="2" fill="#2E7D46" opacity=".18"/>
+<rect x="261.5" y="614.5" width="13" height="13" rx="2" fill="none" stroke="#2E7D46" stroke-width="1.6"/>
+<use href="#sk" x="290" y="621"/>
+<rect x="283.5" y="614.5" width="13" height="13" rx="2" fill="#2E7D46" opacity=".18"/>
+<rect x="283.5" y="614.5" width="13" height="13" rx="2" fill="none" stroke="#2E7D46" stroke-width="1.6"/>
+<use href="#sk" x="312" y="621"/>
+<rect x="305.5" y="614.5" width="13" height="13" rx="2" fill="#2E7D46" opacity=".18"/>
+<rect x="305.5" y="614.5" width="13" height="13" rx="2" fill="none" stroke="#2E7D46" stroke-width="1.6"/>
+<use href="#sk" x="334" y="621"/>
+<use href="#sk" x="378" y="621"/>
+<use href="#sk" x="400" y="621"/>
+<use href="#sk" x="422" y="621"/>
+<use href="#sk" x="444" y="621"/>
+<use href="#sk" x="466" y="621"/>
+<use href="#sk" x="488" y="621"/>
+<use href="#sk" x="510" y="621"/>
+<use href="#sk" x="532" y="621"/>
+<use href="#sk" x="136" y="709"/>
+<use href="#sk" x="158" y="709"/>
+<use href="#sk" x="180" y="709"/>
+<use href="#sk" x="202" y="709"/>
+<use href="#sk" x="224" y="709"/>
+<rect x="217.5" y="702.5" width="13" height="13" rx="2" fill="#2E7D46" opacity=".18"/>
+<rect x="217.5" y="702.5" width="13" height="13" rx="2" fill="none" stroke="#2E7D46" stroke-width="1.6"/>
+<use href="#sk" x="246" y="709"/>
+<use href="#sk" x="268" y="709"/>
+<use href="#sk" x="312" y="709"/>
+<use href="#sk" x="334" y="709"/>
+<use href="#sk" x="356" y="709"/>
+<use href="#sk" x="378" y="709"/>
+<use href="#sk" x="400" y="709"/>
+<use href="#sk" x="422" y="709"/>
+<rect x="106" y="443" width="214" height="34" rx="5" fill="currentColor" opacity=".12" stroke="currentColor" stroke-width="1.2"/>
+<text x="213" y="438" font-size="10" text-anchor="middle" font-weight="400" font-family="Archivo,Arial,sans-serif" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">RGB module</text>
+<text x="213" y="438" font-size="10" text-anchor="middle" font-weight="400" font-family="Archivo,Arial,sans-serif" fill="currentColor" opacity=".92">RGB module</text>
+<circle cx="312" cy="621" r="2.6" fill="#2E7D46"/>
+<path d="M 130 477 L 130 565 Q 130 572 137 572 L 305 572 Q 312 572 312 579 L 312 621" fill="none" stroke="#2E7D46" stroke-width="1.9" opacity=".92"/>
+<text x="130" y="465" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">R</text>
+<text x="130" y="465" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="#2E7D46" opacity=".95">R</text>
+<circle cx="290" cy="621" r="2.6" fill="#2E7D46"/>
+<path d="M 190 477 L 190 557 Q 190 564 197 564 L 283 564 Q 290 564 290 571 L 290 621" fill="none" stroke="#2E7D46" stroke-width="1.9" opacity=".92"/>
+<text x="190" y="465" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">G</text>
+<text x="190" y="465" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="#2E7D46" opacity=".95">G</text>
+<circle cx="268" cy="621" r="2.6" fill="#2E7D46"/>
+<path d="M 250 477 L 250 549 Q 250 556 257 556 L 261 556 Q 268 556 268 563 L 268 621" fill="none" stroke="#2E7D46" stroke-width="1.9" opacity=".92"/>
+<text x="250" y="465" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">B</text>
+<text x="250" y="465" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="#2E7D46" opacity=".95">B</text>
+<path d="M 310 443 L 310 433 Q 310 426 303 426 L 59 426 Q 52 426 52 419 L 52 61 Q 52 54 59 54 L 178 54" fill="none" stroke="#3D6FA8" stroke-width="1.9" opacity=".92"/>
+<text x="310" y="465" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">GND</text>
+<text x="310" y="465" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="#3D6FA8" opacity=".95">GND</text>
+<path d="M 224 709 L 224 747 Q 224 756 215 756 L 25 756 Q 16 756 16 747 L 16 63 Q 16 54 25 54 L 152 54" fill="none" stroke="#3D6FA8" stroke-width="2.1" opacity=".95"/>
+<circle cx="224" cy="709" r="2.8" fill="#3D6FA8"/>
+<circle cx="152" cy="54" r="2.8" fill="#3D6FA8"/>
+<text x="136" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">SCL</text>
+<text x="136" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">SCL</text>
+<text x="158" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">SDA</text>
+<text x="158" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">SDA</text>
+<text x="180" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">AREF</text>
+<text x="180" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">AREF</text>
+<text x="202" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">GND</text>
+<text x="202" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">GND</text>
+<text x="224" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">13</text>
+<text x="224" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">13</text>
+<text x="246" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">12</text>
+<text x="246" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">12</text>
+<text x="268" y="637" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">11</text>
+<text x="268" y="637" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="#2E7D46" opacity=".95">11</text>
+<text x="290" y="637" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">10</text>
+<text x="290" y="637" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="#2E7D46" opacity=".95">10</text>
+<text x="312" y="637" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">9</text>
+<text x="312" y="637" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="#2E7D46" opacity=".95">9</text>
+<text x="334" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">8</text>
+<text x="334" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">8</text>
+<text x="378" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">7</text>
+<text x="378" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">7</text>
+<text x="400" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">6</text>
+<text x="400" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">6</text>
+<text x="422" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">5</text>
+<text x="422" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">5</text>
+<text x="444" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">4</text>
+<text x="444" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">4</text>
+<text x="466" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">3</text>
+<text x="466" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">3</text>
+<text x="488" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">2</text>
+<text x="488" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">2</text>
+<text x="510" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">1</text>
+<text x="510" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">1</text>
+<text x="532" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">0</text>
+<text x="532" y="637" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">0</text>
+<text x="136" y="697" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">IOR</text>
+<text x="136" y="697" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">IOR</text>
+<text x="158" y="697" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">RST</text>
+<text x="158" y="697" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">RST</text>
+<text x="180" y="697" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">3V3</text>
+<text x="180" y="697" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">3V3</text>
+<text x="202" y="697" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">5V</text>
+<text x="202" y="697" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">5V</text>
+<text x="224" y="697" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">GND</text>
+<text x="224" y="697" font-size="8.5" text-anchor="middle" font-weight="700" font-family="IBM Plex Mono,monospace" fill="#2E7D46" opacity=".95">GND</text>
+<text x="246" y="697" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">GND</text>
+<text x="246" y="697" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">GND</text>
+<text x="268" y="697" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">VIN</text>
+<text x="268" y="697" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">VIN</text>
+<text x="312" y="697" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">A0</text>
+<text x="312" y="697" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">A0</text>
+<text x="334" y="697" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">A1</text>
+<text x="334" y="697" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">A1</text>
+<text x="356" y="697" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">A2</text>
+<text x="356" y="697" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">A2</text>
+<text x="378" y="697" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">A3</text>
+<text x="378" y="697" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">A3</text>
+<text x="400" y="697" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">A4</text>
+<text x="400" y="697" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">A4</text>
+<text x="422" y="697" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="none" stroke="var(--surface,#F8F9F7)" stroke-width="3.2" stroke-linejoin="round">A5</text>
+<text x="422" y="697" font-size="8.5" text-anchor="middle" font-weight="400" font-family="IBM Plex Mono,monospace" fill="currentColor" opacity=".4">A5</text>
+</svg>
+      <figcaption>Nothing of this module goes in the breadboard. The board is here for one thing only: the &#8722; rail the module's fourth pin returns to.</figcaption>
+    </figure>
+  <div class="col stack">
+    <div class="ifnot" style="margin-bottom:.4rem"><b>Before you start</b>USB unplugged. Clear the board.</div>
+    <div class="words" style="margin-bottom:.6rem"><b>Which rail pair</b>Your board has two + rails and two &#8722; rails, one pair along each long edge, and on most boards <b>the two pairs are not joined to each other</b>. On this page, &#8220;the rail&#8221; always means the pair along the <b>top</b> edge, nearest row <code>j</code>, the same pair Band 2 uses. Put every rail wire on that pair and it works; split them across both and nothing lights, with nothing visibly wrong.</div>
+
+    <div class="which">
+      <h4>Turn the module over before you wire anything</h4>
+      <p>Two kinds of RGB module are sold in the same kits and they look identical from the front. This takes ten seconds and it decides whether the next step damages your parts.</p>
+      <div class="opts">
+        <div class="opt">
+          <b>Three tiny black rectangles on the back, with numbers on them</b>
+          <p>The resistors are fitted. This is the common kind and the rest of this page assumes it.</p>
+          <p class="go">&#8594; Wire the three colour pins straight to the Arduino. Nothing of your own.</p>
+        </div>
+        <div class="opt">
+          <b>A bare back, nothing but solder</b>
+          <p>This module has <strong>no resistors</strong>. Wired straight to a pin and asked for 255, it would pull roughly five times what a pin is rated for, and it would damage the light and the pin together.</p>
+          <p class="go">&#8594; Put a <b>220 ohm resistor in each of the three colour wires</b>, exactly as the loose LED needs. Then everything else on this page works unchanged.</p>
+        </div>
+      </div>
+      <p style="margin-top:.7rem">If you cannot tell, <strong>fit the three resistors anyway</strong>. On a module that already has them the light is simply a little dimmer and nothing is harmed. When you are unsure, be wrong in the direction that costs you brightness rather than the direction that costs you the part.</p>
+    </div>
+
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Module pin</th><th>Arduino pin</th><th>Why this one</th></tr></thead>
+        <tbody>
+          <tr><td><code>R</code></td><td class="n">9</td><td rowspan="3">All three <strong>must</strong> have a <code>~</code> next to them. Without one you get off and full on and nothing between, which is Band 2's whole subject.</td></tr>
+          <tr><td><code>G</code></td><td class="n">10</td></tr>
+          <tr><td><code>B</code></td><td class="n">11</td></tr>
+          <tr><td><code>-</code> or <code>GND</code></td><td>the &#8722; rail</td><td>If your fourth pin is marked <code>+</code> or <code>VCC</code>, it goes to <strong>5V</strong> instead and yours is the backwards kind.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Then one wire from the &#8722; rail to a GND pin. Five wires in all. <strong>The core build also takes five wires</strong>, so the module saves you no wiring at all: what it saves is the three resistors and the three careful placements that go with them. Worth noticing, because &#8220;a module is simpler&#8221; turns out to mean something narrower than it sounds.</p>
+
+    <div class="steps">
+      <div class="step"><div class="body">
+        <p><strong>Upload <code>b2_05_rgb_module.ino</code></strong> and watch for a full cycle, which takes about twenty seconds.</p>
+        <div class="see"><b>You should see</b>A sunrise: black, then a dim red glow, then red over the lagoon, then orange, then full daylight held for a few seconds, then evening and back to night. Every change smooth, with no jumps.</div>
+        <div class="ifnot"><b>If it lights but runs backwards, bright when it should be dark</b>You have the <b>common-anode</b> kind, and its fourth pin is already on 5V, which is where it has to be. That is the only reason it lights at all: with the shared pin on the &#8722; rail a common-anode part cannot light in any state, because the shared leg has to sit <em>above</em> the three colour legs for anything to flow.<br><br>So the wiring is already right and moving it cannot help. What is left is the numbers, and they really are upside down: 5V on the shared leg means <code>255</code> puts five volts on both ends of the light and gives you nothing, while <code>0</code> gives you full brightness. Change the three lines inside <code>showColour</code>:<br><br><code>analogWrite(redPin, 255 - r);</code> and the same for green and blue.<br><br>Subtracting from 255 undoes exactly what the hardware did, and every number on every page then means what it says again. Band 2 Part 12 tells you the same two-part story: rewiring the shared leg to 5V is what makes it light, and it leaves 0 bright and 255 off.</div>
+        <div class="ifnot"><b>If the colours are wrong but the fading is smooth</b>Your module's pins are in a different order. Swap the wires at the Arduino end until red is red, then write down which pin is which.</div>
+        <div class="ifnot"><b>If it snaps between colours instead of fading</b>One of your three wires is on a pin without a <code>~</code>. Check the printing on the board.</div>
+        <div class="ifnot"><b>If nothing lights at all</b>Check the fourth pin. If it is marked <code>VCC</code> and you have it on the &#8722; rail, the module simply has no power, and that looks exactly like a dead part.</div>
+      </div></div>
+      <div class="step"><div class="body">
+        <p><strong>Make a diffuser</strong>, exactly as the core build asks: a ping pong ball, a sachet-water bottle, or folded white paper over the light.</p>
+        <div class="see"><b>You should see</b>A soft glow of one colour instead of a hard bright dot with coloured edges. This matters more than it sounds; an undiffused RGB LED does not look like a colour, it looks like three lights.</div>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Look closer</span><h2>Find the resistors</h2><span class="mins">25 min</span></div>
+  <div class="col stack">
+    <p>Turn the module over, or look closely at the front near the light.</p>
+    <div class="see"><b>You should see</b>Three small black rectangles, one per colour, with tiny numbers printed on them: often <code>101</code>, <code>151</code>, <code>221</code> or similar. They may be different values from each other.</div>
+    <div class="ifnot"><b>If your module was the bare kind</b>Then the three resistors you can read are the ones <em>you</em> fitted, all 220 ohm, and the questions below still work. Answer question 1 with &#8220;there were none, and I had to supply them&#8221;, and then answer the more interesting version: why would anybody sell a module without them, and who ends up paying for that decision?</div>
+
+    <div class="callout">
+      <h5>Reading them</h5>
+      <p>At this size they use three digits instead of colour stripes. The first two are the number and the third says how many zeros to add.</p>
+      <ul class="plain">
+        <li><code>101</code> is 10 with one zero, so <strong>100 ohms</strong>. Stop at this one if you find it. With five volts on the pin and about two across a red light, 100 ohms lets through roughly 30 thousandths of an amp, and an Arduino pin is rated for 20. On this module all three colours run at once during the sunrise. It works, and it is over the line, and it is the same thing Band 1's traffic module page flags. Note it in your log and do not be surprised if the board runs warm.</li>
+        <li><code>151</code> is 15 with one zero, so <strong>150 ohms</strong></li>
+        <li><code>221</code> is 22 with one zero, so <strong>220 ohms</strong>, the same value you would have used</li>
+      </ul>
+      <p><strong>Write down all three of yours.</strong> If they differ from each other, that is deliberate: red, green and blue LEDs do not need the same resistance to look equally bright, and whoever designed the board made a decision about it that you never got to make.</p>
+    </div>
+
+    <div class="callout">
+      <h5>Questions for your log</h5>
+      <ol class="num">
+        <li>Your module needed no resistors. Where are they?</li>
+        <li>If the three values on your board differ, why might that be?</li>
+        <li>Comment out everything inside <code>loop</code> and put six lines there instead: <code>showColour(255,0,0);</code> then <code>delay(2000);</code>, and the same for green and blue. Upload and watch all three. Do they look equally bright to you? <em>(If yours is the common-anode kind, use 0 where this says 255 and 255 where it says 0.)</em> Put <code>loop</code> back afterwards.</li>
+        <li>Name one thing you can do with the loose RGB LED that you cannot do with this module.</li>
+      </ol>
+      <details><summary>Something to check yourself against</summary><div class="inner">
+        <p><strong>1.</strong> On the module, soldered on, near the light. Turn it over and find them. They did not disappear and they were not made unnecessary: somebody fitted them for you, chose their values without asking you, and put the cost in the price of the board. That is what a module is. Every module you ever meet is a set of decisions somebody made on your behalf, and the useful habit is to go and find out what those decisions were.</p>
+        <p><strong>2.</strong> A red LED lights at a lower voltage than a blue one, so with the same resistor the red would be much brighter. Different resistors even them out. That is a real design decision made on your behalf.</p>
+        <p><strong>3.</strong> Probably not exactly, and blue often looks weakest. Your eye is not equally sensitive to the three colours either, so even perfectly matched LEDs would not look matched. This is why the white in your sunrise may look slightly pink or slightly blue, and why the core build's Part 12 mentions it.</p>
+        <p><strong>4.</strong> Choose the resistor. Put the three colours in different places on the board. Use a different LED. Replace one that burns out. <strong>The module traded your choices for your time</strong>, and that is a good trade when you already know what you gave up.</p>
+      </div></details>
+    </div>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Change it</span><h2>Make it yours</h2><span class="mins">40 min</span></div>
+  <div class="col stack">
+    <p>The band's Make task is a colour story of your own, 45 to 90 seconds long, on a real place or a real thing. That does not change here. These are the smaller steps towards it.</p>
+    <dl class="tier">
+      <dt>Bronze</dt><dd>Make the six <strong>fades</strong> take exactly twice as long, without touching <code>stepDelay</code>. Leave the two <code>delay</code> calls that hold full day and full night alone; those are not fades. Then say what the two different ways of slowing a fade are, and what each one costs you.</dd>
+      <dt>Silver</dt><dd>Add a fourth colour to the story and a fifth fade, so the sequence tells a longer version of the same place. <em>(If you have already done Band 4, do this instead: add a knob that sets the overall brightness without changing the colours, so the same story runs in a dark room. Multiply, do not add, and watch for whole-number division. You will need a potentiometer, which is not in this project's parts list.)</em></dd>
+      <dt>Gold</dt><dd>Write your story so that each fade's length is part of the description rather than fixed: give <code>fadeTo</code> a seventh value, how long that fade should take, and work the step delay out from it. Then a slow dawn and a sudden dusk are one line each.</dd>
+    </dl>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Done</span><h2>You still owe Band 2 the same evidence</h2></div>
+  <div class="col stack">
+    <p>To claim Band 2 you still need:</p>
+    <ul class="plain">
+      <li>A video of your whole colour story, 45 to 90 seconds, not a short clip, with the diffuser on</li>
+      <li>Both testers' answers to what they thought it was showing</li>
+      <li><strong>Your completed table from Part 8a</strong></li>
+      <li><strong>The six PWM pin numbers</strong>, written down</li>
+      <li>Your sentence about what you saw when you waved your hand</li>
+      <li><strong>Your three resistor values off the module</strong>, and your answer to question 4</li>
+      <li>Your build log</li>
+      <li>Five or six correct answers in Part 11, the Check yourself questions, <strong>including question 6</strong></li>
+    </ul>
+    <p class="note">Band 2 Part 7 says an RGB light needs three resistors and not one, and getting that wrong is one of the commonest mistakes in the band. You did not fit any. Answer it from what you found on the back of the board, and you will have understood it better than somebody who fitted three without ever looking at them.</p>
+  </div>
+</section>
+
+<section class="ship">
+  <h2>Ship it</h2>
+  <p><b>One video under sixty seconds, and one post of five lines.</b> You built something
+  different from the person next to you, so your video is the one nobody else in the room can
+  post. Say in the post which build you chose <em>and why</em> &#8212; that choice is itself
+  worth a line.</p>
+  <p><b>The four shots:</b> three seconds of the thing still, fifteen of you doing something to
+  it, fifteen of it responding all the way to the end, and ten of your measurement or the thing
+  that went wrong first.</p>
+  <p><a href="show-your-work.html">Show your work</a> has the template and the three checks to
+  make before anything goes public. Tag it <code>#BozomaBuilds</code>.</p>
+</section>
+
+<nav class="pager" aria-label="Back">
+  <a href="../bands/band-2.html">Back to Band 2</a>
+</nav>
+
+
+</div>
+<footer class="bihfoot">
+<div class="wrap">
+  <p class="pagenote">Bozoma Innovation Hub &nbsp;·&nbsp; Aiyinasi, Ellembelle District. Swap project. Every sketch used here was compiled and tested before it reached you.</p>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a class="lockup" href="../index.html"><img src="../../assets/brand/logo-mark-white.png" alt="" width="42" height="42"><span>The Arduino Ladder<small>Bozoma Innovation Hub</small></span></a>
+      <p>A Bozoma Innovation Hub programme. Free to use, nothing to sign up for, at your own speed.</p>
+    </div>
+    <div><h4>The course</h4><ul>
+      <li><a href="../index.html">Course home</a></li>
+      <li><a href="../bands/band-0.html">Start with Band 0</a></li>
+      <li><a href="../guide.html">Facilitator guide</a></li>
+      <li><a href="../downloads/arduino-ladder-sketches.zip">All the sketches (zip)</a></li>
+    </ul></div>
+    <div><h4>Bozoma Innovation Hub</h4><ul>
+      <li>Aiyinasi, Ellembelle District, Western Region, Ghana</li>
+      <li><a href="https://bozomainnovationhub.com">bozomainnovationhub.com</a></li>
+      <li><a href="mailto:info@bozomainnovationhub.com">info@bozomainnovationhub.com</a></li>
+    </ul></div>
+  </div>
+  <div class="foot-bottom"><span>&copy; Bozoma Innovation Hub, Aiyinasi, Ghana</span><span class="tagline">World-class begins at home.</span></div>
+</div>
+</footer>
+</body>
+</html>

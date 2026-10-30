@@ -1,12 +1,26 @@
+# IoT at Bozoma Innovation Hub
+
+Free, self-paced courses in electronics, the Internet of Things and coding, built by
+[Bozoma Innovation Hub](https://bozomainnovationhub.com) in Aiyinasi, Ghana, for people who have
+never done any of it before. The site home (`index.html`) lists the courses and a learning path.
+
+| Course | Folder | Status |
+|---|---|---|
+| The Arduino Ladder | `arduino/` | Open |
+| Wi-Fi and the Internet of Things (ESP32) | `esp32/` | Planned |
+| Raspberry Pi | `raspberry-pi/` | Planned |
+| Code for makers (Python, MicroPython) | `code/` | Planned |
+
+To add one, see [ADDING-A-COURSE.md](ADDING-A-COURSE.md). Everything below is about the first course.
+
+**Live site:** https://arduino-course-psi.vercel.app (moving to iot.bozomainnovationhub.com)
+
 # The Arduino Ladder
 
-A free, project-based Arduino course for complete beginners, built by
-[Bozoma Innovation Hub](https://bozomainnovationhub.com) in Aiyinasi, Ghana.
-
-Nine bands. Nine things you build. Written for someone who has never touched
-electronics or programming, working at their own speed, with nobody to ask.
-
-**Live site:** _add your URL here once you have deployed it_
+A free, project-based Arduino course for complete beginners. Nine bands. Nine things you build.
+Written for someone who has never touched electronics or programming, working at their own speed,
+with nobody to ask. It lives in `arduino/`; its old addresses (`/bands/…`, `/projects/…`, `/guide`,
+`/labs`) redirect there permanently (`vercel.json`).
 
 ---
 
@@ -32,12 +46,15 @@ The band names come from the resistor colour code: black is 0, brown is 1,
 red is 2, and so on. Learners decode their own band name in Band 1.
 
 ```
-index.html          the course home page
-guide.html          the facilitator guide
-bands/              the nine lesson pages
-sketches/           all 41 Arduino sketches, plus a README
-downloads/          a zip of every sketch
-assets/course.css   one stylesheet for the whole site
+index.html                  the site home (IoT at BIH)
+arduino/index.html          the course home page
+arduino/guide.html          the facilitator guide
+arduino/labs.html           the 3D Workshop
+arduino/bands/              the nine lesson pages
+arduino/projects/           swaps, bench pages, practice, ideas
+arduino/sketches/           all 41 Arduino sketches, plus a README
+arduino/downloads/          a zip of every sketch
+assets/                     shared by every course: course.css, theme.js, pager.js, labs/, brand/, fonts/
 ```
 
 ## How it is built
@@ -120,13 +137,13 @@ in the project settings. Neither needs any change to the site itself.
 
 Everything is a plain text file, so any editor will do.
 
-- **Fix a typo in a lesson:** open the band page in `bands/` and edit the text.
+- **Fix a typo in a lesson:** open the band page in `arduino/bands/` and edit the text.
   The lesson content is ordinary HTML with no templating.
 - **Change a colour or the type:** everything is in `assets/course.css`, at the
   top, as CSS custom properties. The light palette is on `:root` and the dark
   one is redefined below it.
 - **Change a sketch:** edit the `.ino` file in `sketches/`, then rebuild the zip
-  with `cd sketches && zip -r ../downloads/arduino-ladder-sketches.zip .`
+  with `cd arduino/sketches && zip -r ../downloads/arduino-ladder-sketches.zip .`
 
 If you change a lesson, please also check its **Check yourself** answer key still
 agrees with it. Several of those answers depend on exact numbers in the sketches.

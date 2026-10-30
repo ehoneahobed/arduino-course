@@ -1,0 +1,36 @@
+/* The site home: "IoT at Bozoma Innovation Hub". Uses the tokens in course.css. */
+.hublinks{display:flex; gap:.2rem; flex-wrap:wrap}
+.hublinks a{color:#fff; text-decoration:none; font-size:.86rem; padding:.35rem .75rem; border-radius:99px; border:1px solid transparent; font-family:"Outfit","Rubik",Arial,sans-serif}
+.hublinks a:hover,.hublinks a:focus-visible{border-color:rgba(255,255,255,.35); background:rgba(255,255,255,.08)}
+.startbtn.ghost{background:transparent; color:#fff; border:1.5px solid rgba(255,255,255,.55); box-shadow:none}
+.startbtn.ghost:hover,.startbtn.ghost:focus-visible{background:rgba(255,255,255,.12)}
+
+.courses{display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,215px),1fr)); gap:1.1rem; margin-top:1.4rem}
+.course{position:relative; display:flex; flex-direction:column; gap:.55rem; padding:1.3rem 1.3rem 1.2rem; border-radius:16px;
+  background:var(--surface); border:1px solid var(--line); box-shadow:var(--shadow); color:var(--ink); text-decoration:none; overflow:hidden}
+.course::before{content:""; position:absolute; inset:0 0 auto 0; height:5px; background:var(--cc)}
+.course h3{font-size:1.2rem; margin:.2rem 0 0}
+.course p{color:var(--ink-2); font-size:.95rem; line-height:1.55}
+.course.open:hover,.course.open:focus-visible{border-color:var(--cc); transform:translateY(-2px); transition:transform .15s}
+.course.planned{opacity:.78}
+.c-status{align-self:flex-start; font:600 .68rem/1 "Outfit","Rubik",Arial,sans-serif; letter-spacing:.1em; text-transform:uppercase;
+  padding:.35rem .6rem; border-radius:99px; background:var(--surface-2); color:var(--muted)}
+.course.open .c-status{background:var(--good-soft); color:var(--good)}
+.c-board{position:absolute; top:1rem; right:1rem; display:grid; place-items:center; min-width:3.2rem; height:2.2rem; padding:0 .5rem;
+  border-radius:8px; background:var(--cc); color:#fff; font:700 .85rem/1 "IBM Plex Mono",ui-monospace,monospace; letter-spacing:.04em}
+.c-facts{list-style:none; margin:.2rem 0 0; padding:0; display:flex; flex-wrap:wrap; gap:.35rem}
+.c-facts li{font-size:.76rem; padding:.2rem .55rem; border-radius:99px; border:1px solid var(--line); color:var(--muted)}
+.c-go{margin-top:auto; padding-top:.5rem; font-weight:600; color:var(--cc); font-family:"Outfit","Rubik",Arial,sans-serif}
+
+.path{list-style:none; margin:1.4rem 0 0; padding:0; display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr)); gap:1rem; counter-reset:none}
+.path li{position:relative; display:flex; flex-direction:column; gap:.3rem; padding:1.1rem 1.2rem; border-radius:14px; background:var(--surface); border:1px solid var(--line)}
+.path li.soon{border-style:dashed; background:transparent}
+.path li b{font-family:"Outfit","Rubik",Arial,sans-serif; font-size:1.05rem}
+.path li small{color:var(--muted); font-size:.88rem; line-height:1.5}
+.p-n{display:grid; place-items:center; width:2rem; height:2rem; border-radius:50%; background:var(--plum,#24182E); color:#FFBE00; font-weight:700; font-family:"Outfit",sans-serif}
+.path li.soon .p-n{background:var(--surface-2); color:var(--muted)}
+
+.features{display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr)); gap:1rem; margin-top:1.2rem}
+.features .card h3{font-size:1.05rem; margin-bottom:.4rem}
+.features .card p{color:var(--ink-2); font-size:.95rem; line-height:1.55}
+@media (max-width:640px){.hublinks{display:none}}

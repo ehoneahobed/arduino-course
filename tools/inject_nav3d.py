@@ -25,7 +25,7 @@ Running it twice changes nothing the second time.
 import io, os, re, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-ROOT = os.path.join(HERE, "..")
+ROOT = os.path.join(HERE, "..", "arduino")
 PILL = '  <a class="nav-3d" href="#try-3d">3D lab</a>\n'
 PILL_RE = re.compile(r'[ \t]*<a class="nav-3d"[^>]*>.*?</a>\n')
 NAV_RE = re.compile(r'(<nav aria-label="Sections">\n)')
