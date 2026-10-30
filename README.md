@@ -13,7 +13,7 @@ never done any of it before. The site home (`index.html`) lists the courses and 
 
 To add one, see [ADDING-A-COURSE.md](ADDING-A-COURSE.md). Everything below is about the first course.
 
-**Live site:** https://arduino-course-psi.vercel.app (moving to iot.bozomainnovationhub.com)
+**Live site:** https://iot.bozomainnovationhub.com (the old https://arduino-course-psi.vercel.app address still works)
 
 # The Arduino Ladder
 
