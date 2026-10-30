@@ -222,6 +222,89 @@ in the panel. The chip runs at its real speed (16 million cycles a second) in
 frame-sized slices, and pauses when the lab is off screen or the tab is
 hidden; on a slow computer the panel says how much slower than real it is.
 
+The board has three states: **Run** (plugged in and running), **Pause**
+(frozen where it is, still powered) and **Stop** (unplugged: the clock stops,
+every output goes off, the screens go blank, the servo holds where it is, and
+the next Run starts from the beginning). **Reset** starts the sketch again
+while it stays plugged in. The parts that answer the chip in time with it (the
+HC-SR04's echo, the DHT11, the TM1637's bus, the keypad, the screen on six
+pins) are in `assets/labs/src/devices.js`, shared by the page and the test
+below.
+
+## Editing a sketch: the course's Arduino C++ interpreter
+
+The Code tab of every build is an editor (`assets/labs/src/editor.js`: a
+textarea over a highlighted copy, with line numbers; Tab and Shift+Tab indent,
+Enter keeps the indent, Esc then Tab leaves the box). **Verify** checks the
+sketch, **Upload and run** checks it and runs it, **Back to the course's
+sketch** puts the original back. A learner's version is saved per sketch in
+localStorage (`ard-sketch-edit:<sketch>`); the board runs the course's
+compiled sketch until they upload.
+
+arduino-cli cannot run in a browser, so an edited sketch is run by an
+interpreter written for this course rather than by an existing one (JSCPP and
+similar C++ interpreters in JavaScript are large, run `int` as 32 bits, cannot
+pause for `delay()` without freezing the page, and word their errors
+differently from the Arduino IDE). It has three parts:
+
+- `cpp-parse.js`: lexer, preprocessor (`#include`, `#define`, `#ifdef`) and
+  parser for the C++ that sketches use.
+- `cpp-compile.js`: checks the sketch as avr-gcc would (types, scopes,
+  arguments, `setup` and `loop`, the libraries' members) with the same wording
+  and a plain-English note, then writes it out as JavaScript generators. Numbers
+  behave as on the ATmega328P: `int` 16 bits and wrapping, `long` 32, `float` and
+  `double` both 32-bit floats, integer division and `%` as C, `char` signed,
+  Arduino's `abs`/`min`/`max`/`constrain` as the macros they are. It also
+  keeps a model of the chip's clock cycles for each operation (a divide costs
+  hundreds), so loops that poll `millis()` take as long as on the chip.
+- `vboard.js`: a virtual Uno with the same outside as `uno.js` (pin modes and
+  levels, PWM share and frequency, pulse lengths, edge callbacks, clock events,
+  serial, ADC, I2C), so the 3D parts, the inputs and `devices.js` work on it
+  unchanged. The Arduino core and the libraries (Servo, LiquidCrystal,
+  LiquidCrystal_I2C with Wire, Keypad, SimpleDHT, Stepper, TM1637Display) are
+  written in JavaScript after the real ones, including their timing (the
+  screens' start-up waits, the keypad's debounce, the DHT11's pulse timing, the
+  TM1637's bit-banged bus, `pulseIn` losing a few microseconds to the timer
+  interrupt, `random()` as avr-libc's).
+
+It supports what the course's sketches use and what a learner is likely to
+add: all the integer types, `float`, `bool`, `char`, `byte`, `String`, `const`,
+`static` locals, `#define`, `enum`, arrays (also 2D) and `char` arrays, pointers
+to them and `&x` for library calls, functions with default values, every
+statement and operator, casts. Not supported (with a clear message): `struct`
+and classes of your own, references (`&` parameters), `long long`, interrupts
+(`attachInterrupt`), `sprintf`, EEPROM, libraries the course does not use.
+
+Time is virtual: the program runs in slices until it reaches the time the page
+asked for, then yields, so `delay()`, busy loops and a loop that never pauses
+cannot freeze the page. A loop that goes round for 2 seconds without touching
+anything the board can see gets a note ("It may never end. A real board would
+be stuck here too."); calls nested more than 180 deep stop the sketch with a
+message; reading or writing outside an array gives a note with the line. While
+an edited sketch runs, the line it is waiting on (a `delay`) is marked.
+
+### The fidelity test: `interp_check.mjs`
+
+    node tools/interp_check.mjs              every course sketch
+    node tools/interp_check.mjs b3 b7_05     only sketches whose names start so
+    node tools/interp_check.mjs -v b4_06     more detail on differences
+    node tools/interp_check.mjs --dump=b2_01_fade_given,9,0,200   one pin, window by window
+
+It runs every sketch in `arduino/sketches/` two ways in Node, with no browser:
+the compiled machine code on the emulated chip (avr8js) and the source on the
+interpreter, with the same scripted inputs (button presses at given times, knob
+and sensor values, keypad keys, distances; `analogRead` noise from the same
+seeded random numbers). Every 5 ms of virtual time it compares each pin's mode,
+share of time high (20 ms averages, for PWM), frequency (tones), servo pulse
+length, the serial text and when each line came (within 40 ms), the 16x2
+screen's text and the TM1637's digits. Measured numbers may differ by a count
+or two (a time read with `millis()`, an echo timed with `pulseIn`). The buggy
+sketches must misbehave the same way (b3_03's light must flicker as much both
+ways while the button is held), and b0_03 must fail to compile with the
+compiler's own message. The scenarios are in the `SC` table at the top. It
+needs esbuild (as `build_labs.mjs` does). Last run: 54 of 54 match, in about
+100 seconds.
+
 ## Full screen, the "3D lab" pill and the 3D Workshop: `inject_nav3d.py`, `labs_page.py`, `lab_thumbs.mjs`
 
 Every lab and build viewer has a **Full screen** button (and the `F` key). It
@@ -237,7 +320,7 @@ with `ui.group(title, { tab: 'code' })`, or holding a `codeView(…, { tab: true
 a lab's bench strip also moves there in full screen), **Missions** and **Help**.
 `codeView()` in `runtime.js` is the code box: Arduino C++ highlighting, line
 numbers, the running line, header buttons (`code.action('▶ Run', fn)`) and
-Copy. Callout cards get a line icon picked from their title.
+Copy. The builds' Code tab uses the editor in `editor.js` instead (see above). Callout cards get a line icon picked from their title.
 
     python3 tools/inject_nav3d.py           a "3D lab" pill first in each band's section bar
     python3 tools/inject_nav3d.py --check   report only

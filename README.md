@@ -107,6 +107,22 @@ the RGB light, buzzer, servo, the 16x2 screen and the serial monitor, with butto
 the panel. A sketch that does not compile shows the compiler's real error. Which sketches go with which build:
 `assets/labs/src/sketches.json`. Details in `tools/README.md`.
 
+The board has three states, shown by a coloured dot beside the buttons: **Run** plugs it in and starts the
+sketch, **Pause** freezes it where it is, **Stop** unplugs it (every output off, the screen blank, the servo
+left where it stopped) so the next Run starts from the beginning, and **Reset** starts the sketch again while it
+stays plugged in.
+
+Learners can also **change the code and upload it**. The Code tab is an editor (line numbers, colours, Tab to
+indent) with **Verify**, **Upload and run** and **Back to the course's sketch**; each learner's version of each
+sketch is kept in the browser (localStorage). The real compiler cannot run in a page, so an edited sketch is
+checked and run by the course's own **Arduino C++ interpreter** (`assets/labs/src/cpp-parse.js`,
+`cpp-compile.js`, `vboard.js`), on the same virtual board and parts. It gives compiler-style errors with line
+numbers ("expected ';' before '}' token", "'digitalwrite' was not declared in this scope; did you mean
+'digitalWrite'?"), runs `int` as 16 bits and `float` as the chip does, and never freezes the page. The panel
+always says which is on the board: the course's sketch (compiled for the real chip) or your edited sketch (run by
+the interpreter). `node tools/interp_check.mjs` runs every course sketch both ways and compares them; all 54
+match.
+
 Each band also has a **concept lab** ("Try it in 3D") placed where its big idea is taught: the Uno tour and
 upload journey (Band 0), current in a loop and resistor colours (1), PWM and colour mixing (2), floating pins
 and the lock's array (3), the light-sensor divider and calibration (4), functions and `millis` vs `delay` (5),

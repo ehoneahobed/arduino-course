@@ -16,9 +16,20 @@
 //   - the 16x2 screen from its pins (HD44780, 4-bit) or over I2C (backpack)
 //   - the serial monitor from the chip's USART
 // Which sketches go with which build: sketches.json.
+//
+// The Code tab holds an editor. A learner's edited sketch cannot go through
+// the real compiler in the browser, so it is checked and run by the course's
+// own Arduino C++ interpreter (cpp-parse.js, cpp-compile.js, vboard.js) on
+// a virtual board with the same outside as the emulated chip: the same parts,
+// wiring and inputs work for both. tools/interp_check.mjs checks that every
+// course sketch behaves the same both ways.
 import { Uno, HZ, PinState, pinNumber, pinLabel, decodeProgram } from './uno.js';
 import { HD44780, Backpack } from './hd44780.js';
-import { codeView, siteUrl, icon, label, setLabel, THREE } from './runtime.js';
+import { siteUrl, icon, label, setLabel, THREE } from './runtime.js';
+import { compileSketch } from './cpp-compile.js';
+import { VBoard } from './vboard.js';
+import { codeEditor } from './editor.js';
+import { wireSonar, wireLcd, dhtStart, dhtWatch as dhtWatch1, tmMake, tmWatch as tmWatch1, tmText, padResolve as padResolve1 } from './devices.js';
 import * as P from './parts.js';
 import MAP from './sketches.json';
 
@@ -136,6 +147,31 @@ const CSS = `
 .sim-screen { font: 600 13px/1.35 var(--lab-mono); background: #8cc44c; color: #1f3a12; border-radius: 6px; padding: 6px 9px; white-space: pre; display: inline-block; letter-spacing: 0.04em; }
 .sim-screen.off { background: #5d6b49; }
 .sim-7seg { font: 700 22px/1 var(--lab-mono); background: #111; color: #ff4b3a; border-radius: 6px; padding: 6px 10px; letter-spacing: 0.18em; display: inline-block; }
+.sim-power { display: inline-flex; align-items: center; gap: 7px; font-size: 12.5px; color: var(--lab-muted); margin-left: auto; font-variant-numeric: tabular-nums; min-width: 0; }
+.sim-power i { flex: none; width: 9px; height: 9px; border-radius: 50%; background: var(--lab-line); box-shadow: 0 0 0 2px var(--lab-paper), 0 0 0 3px var(--lab-line); }
+.sim-power[data-s="run"] { color: var(--lab-good); }
+.sim-power[data-s="run"] i { background: var(--lab-good); box-shadow: 0 0 0 2px var(--lab-paper), 0 0 0 3px var(--lab-good); }
+.sim-power[data-s="pause"] { color: var(--lab-gold-ink); }
+.sim-power[data-s="pause"] i { background: var(--lab-gold); box-shadow: 0 0 0 2px var(--lab-paper), 0 0 0 3px var(--lab-gold); }
+.sim-power b { font-weight: 600; }
+.sim-which { margin: 0; font-size: 12.5px; line-height: 1.45; color: var(--lab-muted); }
+.sim-which b { color: var(--lab-text); font-weight: 600; }
+.sim-which .lab-link-btn, .ed-msg .lab-link-btn { font: inherit; color: var(--lab-accent); background: none; border: 0; padding: 0; text-decoration: underline; text-underline-offset: 2px; cursor: pointer; }
+.sim-note { border: 1.5px solid var(--lab-gold); border-radius: 10px; padding: 7px 10px; background: rgba(255, 190, 0, 0.1); font-size: 13px; line-height: 1.45; }
+.sim-note button { margin-left: 4px; }
+.ed-bar { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; margin-top: 8px; }
+.ed-bar .lab-btn { display: inline-flex; align-items: center; gap: 6px; }
+.ed-bar .lab-btn .lab-ico { width: 15px; height: 15px; }
+.ed-msg { margin-top: 8px; font-size: 13px; line-height: 1.45; }
+.ed-msg:empty { display: none; }
+.ed-msg .ok { color: var(--lab-good); font-weight: 600; }
+.ed-msg ul { margin: 6px 0 0; padding: 0; list-style: none; display: grid; gap: 6px; }
+.ed-msg li { border: 1.5px solid var(--lab-accent); border-radius: 10px; padding: 7px 10px; background: rgba(202, 31, 63, 0.06); }
+.ed-msg li.warn { border-color: var(--lab-gold); background: rgba(255, 190, 0, 0.1); }
+.ed-msg code { font: 12px/1.45 var(--lab-mono); color: var(--lab-ink); white-space: pre-wrap; word-break: break-word; display: block; }
+.ed-msg small { display: block; margin-top: 3px; color: var(--lab-text); }
+.ed-hint { margin: 6px 0 0; font-size: 12px; color: var(--lab-muted); }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 `;
 let cssDone = false;
 function addCss() {
@@ -166,14 +202,17 @@ export function attachSim(stage, ui, host, W) {
     ? `<label>Sketch <select aria-label="Which sketch to run">${list.map((n) => `<option value="${n}">${n}.ino</option>`).join('')}</select></label>`
     : `<span class="sim-file">${list[0]}.ino</span>`}</div>
   <div class="sim-err" hidden role="alert"></div>
-  <div class="sim-bar">
+  <div class="sim-note" hidden role="status"></div>
+  <div class="sim-bar" role="group" aria-label="The board">
     <button type="button" class="lab-btn primary sim-run" disabled>${icon('play')}<span>Run</span></button>
-    <button type="button" class="lab-btn sim-reset" disabled>Reset</button>
-    <span class="sim-state" role="status">Loading the sketch…</span>
+    <button type="button" class="lab-btn sim-stop" disabled aria-label="Stop: unplug the board">${icon('stop')}<span>Stop</span></button>
+    <button type="button" class="lab-btn sim-reset" disabled aria-label="Reset: start the sketch again, still plugged in">Reset</button>
+    <span class="sim-power" data-s="off"><i aria-hidden="true"></i><span class="sim-state">Loading the sketch…</span></span>
+    <span class="sr-only sim-said" aria-live="polite"></span>
   </div>
   <div class="sim-ins"></div>
   <p class="sim-about" hidden></p>
-  <p class="sim-real">The real sketch, compiled for the Uno’s chip, running at the chip’s own speed. Read it in the <b>Code</b> tab.</p>
+  <p class="sim-which"></p>
   <div class="sim-mon" hidden>
     <h5>Serial monitor <span>9600 baud</span></h5>
     <pre class="sim-log" role="log" aria-live="off" aria-label="Serial monitor: what the sketch prints" tabindex="0"></pre>
@@ -186,15 +225,38 @@ export function attachSim(stage, ui, host, W) {
   const about = $('.sim-about');
   const errBox = $('.sim-err');
   const runBtn = $('.sim-run');
+  const stopBtn = $('.sim-stop');
   const resetBtn = $('.sim-reset');
   const stateEl = $('.sim-state');
+  const powerEl = $('.sim-power');
+  const saidEl = $('.sim-said');
+  const noteBox = $('.sim-note');
+  const whichEl = $('.sim-which');
   const insEl = $('.sim-ins');
   const logEl = $('.sim-log');
   const sendForm = $('.sim-send');
 
-  // the sketch in the Code tab
+  // the sketch in the Code tab: an editor, and the buttons to check and upload it
   const codeGroup = ui.group('The sketch', { tab: 'code' });
-  const code = codeView(codeGroup, list[0] + '.ino', [{ n: 1, t: '// loading…' }], null, { label: 'Sketch' });
+  const whichCode = document.createElement('p');
+  whichCode.className = 'sim-which';
+  whichCode.style.margin = '0 0 8px';
+  codeGroup.appendChild(whichCode);
+  const code = codeEditor(codeGroup, { file: list[0] + '.ino', text: '// loading…', label: 'The sketch. You can change it, then press Upload and run.', onInput: (t) => edited(t) });
+  const edBar = document.createElement('div');
+  edBar.className = 'ed-bar';
+  edBar.innerHTML = `<button type="button" class="lab-btn ed-verify">${icon('check')}<span>Verify</span></button><button type="button" class="lab-btn primary ed-upload">${icon('play')}<span>Upload and run</span></button><button type="button" class="lab-btn ed-back" disabled>Back to the course’s sketch</button>`;
+  codeGroup.appendChild(edBar);
+  const edMsg = document.createElement('div');
+  edMsg.className = 'ed-msg';
+  edMsg.setAttribute('role', 'status');
+  edMsg.id = 'edmsg-' + Math.random().toString(36).slice(2, 8);
+  codeGroup.appendChild(edMsg);
+  code.describedBy(edMsg.id);
+  const edHint = document.createElement('p');
+  edHint.className = 'ed-hint';
+  edHint.textContent = 'Tab indents. To leave the box with the keyboard, press Esc, then Tab. Your changes stay on this computer.';
+  codeGroup.appendChild(edHint);
   const built = document.createElement('p');
   built.className = 'sim-real';
   built.style.margin = '6px 0 0';
@@ -440,20 +502,7 @@ export function attachSim(stage, ui, host, W) {
   // ---- keypad: a pressed key joins a row pin to a column pin ----
   const KEYS = ['123A', '456B', '789C', '*0#D'];
   function padResolve(k) {
-    const rows = k.pins.slice(0, 4).map(pinOfNode), cols = k.pins.slice(4, 8).map(pinOfNode);
-    const drv = (p) => (p >= 0 && OUT(uno.mode(p)) ? uno.level[p] : -1);
-    // rows and columns both: low if a pressed key joins it to a pin driven low
-    const all = [...rows.map((p, r) => ({ p, r })), ...cols.map((p, c) => ({ p, c }))];
-    for (const x of all) {
-      if (x.p < 0 || OUT(uno.mode(x.p))) continue;
-      let v = uno.mode(x.p) === PinState.InputPullUp ? 1 : floatV[x.p] > 2.5 ? 1 : 0;
-      for (const key of k.down) {
-        const other = x.r !== undefined ? (key.r === x.r ? cols[key.c] : -1) : key.c === x.c ? rows[key.r] : -1;
-        const d = other >= 0 ? drv(other) : -1;
-        if (d >= 0) { v = d; break; }
-      }
-      if (uno.readInput(x.p) !== v) uno.setInput(x.p, v);
-    }
+    padResolve1(uno, k.pins.slice(0, 4).map(pinOfNode), k.pins.slice(4, 8).map(pinOfNode), k.down, floatV);
   }
   for (const k of pads) { k.down = new Set(); k.pins.forEach((n) => { const p = pinOfNode(n); if (p >= 0) owned.add(p); }); }
 
@@ -466,19 +515,7 @@ export function attachSim(stage, ui, host, W) {
       const trig = pinOfNode(s.trig), echo = pinOfNode(s.echo);
       if (trig < 0 || echo < 0) continue;
       owned.add(echo);
-      let rise = 0;
-      s.busy = false;
-      uno.setInput(echo, 0);
-      uno.edge[trig] = (v, now) => {
-        if (v) { rise = now; return; }
-        if (s.busy || now - rise < 8 * 16) return; // a trigger needs 10 microseconds high
-        s.busy = true;
-        const us = s.cm > 400 ? 38000 : s.cm * 58.3;
-        uno.cpu.addClockEvent(() => {
-          uno.setInput(echo, 1);
-          uno.cpu.addClockEvent(() => { uno.setInput(echo, 0); s.busy = false; s.pings = (s.pings || 0) + 1; }, Math.round(us * 16));
-        }, 450 * 16);
-      };
+      wireSonar(uno, s, trig, echo);
     }
     lcdChips.length = 0;
     let backpack = null;
@@ -494,7 +531,7 @@ export function attachSim(stage, ui, host, W) {
       } else {
         const rs = pinOfNode(L.rs), e = pinOfNode(L.e), d = L.d.map(pinOfNode);
         if (rs < 0 || e < 0 || d.some((x) => x < 0)) continue;
-        uno.edge[e] = (v) => { if (!v) chip.nibble(uno.level[rs], uno.level[d[0]] | (uno.level[d[1]] << 1) | (uno.level[d[2]] << 2) | (uno.level[d[3]] << 3)); };
+        wireLcd(uno, chip, rs, e, d);
       }
     }
     // a sketch that talks to an I2C screen the drawing leaves out (Part 8 reuses Part 6's screen)
@@ -510,10 +547,7 @@ export function attachSim(stage, ui, host, W) {
       const pin = t ? pinsOf(t.node).find((p) => p < 14) : -1;
       if (pin < 0) continue;
       owned.add(pin);
-      D.pin = pin;
-      D.lowSince = -1;
-      D.busy = false;
-      uno.setInput(pin, 1);
+      dhtStart(uno, D, pin);
     }
     // TM1637 four-digit display, for the sketch that uses one (not drawn in the build)
     tm = null;
@@ -521,59 +555,12 @@ export function attachSim(stage, ui, host, W) {
     if (tmm) {
       const val = (id) => +(/^\d+$/.test(id) ? id : (new RegExp(`(?:const\\s+)?int\\s+${id}\\s*=\\s*(\\d+)`).exec(rec.source)?.[1] ?? -1));
       const clk = val(tmm[1]), dio = val(tmm[2]);
-      if (clk >= 0 && dio >= 0) { tm = { clk, dio, bits: 0, n: 0, bytes: [], seg: [0, 0, 0, 0], on: false, last: [1, 1], cmd: -1 }; owned.add(clk); owned.add(dio); }
+      if (clk >= 0 && dio >= 0) { tm = tmMake(clk, dio); owned.add(clk); owned.add(dio); }
     }
   }
   let tm = null;
-  function dhtWatch() {
-    for (const D of dhts) {
-      if (D.pin === undefined || D.busy) continue;
-      const m = uno.mode(D.pin);
-      const now = uno.cpu.cycles;
-      if (m === PinState.Low) { if (D.lowSince < 0) D.lowSince = now; continue; }
-      // the start signal: held low for a millisecond or more, then let go (perhaps high for a moment first)
-      if (D.lowSince >= 0) { D.armed = now - D.lowSince > 0.001 * HZ ? now : -1; D.lowSince = -1; }
-      if (!OUT(m) && D.armed >= 0 && now - D.armed < 0.0005 * HZ) {
-        D.armed = -1;
-        D.busy = true;
-        const h = Math.round(D.hum), tt = Math.round(D.temp);
-        const bytes = [h, 0, tt, 0, (h + tt) & 0xff];
-        // [microseconds, then the level]: wait, low 80, high 80, then each bit
-        // (low 50, high 27 for a 0 or 70 for a 1), a last low 50, and let go
-        let at = 0;
-        const steps = [[12, 0], [80, 1], [80, 0]];
-        for (const b of bytes) for (let k = 7; k >= 0; k--) steps.push([50, 1], [(b >> k) & 1 ? 70 : 27, 0]);
-        steps.push([50, 1]);
-        for (const [us, lv] of steps) {
-          at += us;
-          uno.cpu.addClockEvent(() => uno.setInput(D.pin, lv), Math.round(at * 16));
-        }
-        uno.cpu.addClockEvent(() => { D.busy = false; D.reads = (D.reads || 0) + 1; }, Math.round((at + 10) * 16));
-      }
-    }
-  }
-  // TM1637: two wires, the board pulls them low or lets them float high
-  const SEG = { 0x3f: '0', 0x06: '1', 0x5b: '2', 0x4f: '3', 0x66: '4', 0x6d: '5', 0x7d: '6', 0x07: '7', 0x7f: '8', 0x6f: '9', 0x77: 'A', 0x7c: 'b', 0x39: 'C', 0x5e: 'd', 0x79: 'E', 0x71: 'F', 0x40: '-', 0x00: ' ', 0x76: 'H', 0x38: 'L', 0x73: 'P', 0x3e: 'U', 0x54: 'n', 0x5c: 'o', 0x50: 'r', 0x78: 't', 0x6e: 'y', 0x08: '_', 0x63: '°' };
-  function tmWatch() {
-    if (!tm) return;
-    const bus = (p) => (uno.mode(p) === PinState.Low ? 0 : 1);
-    const c = bus(tm.clk), d = bus(tm.dio);
-    const [pc, pd] = tm.last;
-    if (c && pc && pd && !d) { tm.bits = 0; tm.n = 0; tm.bytes = []; } // start
-    else if (c && pc && !pd && d) { tmCommand(tm.bytes); tm.bytes = []; } // stop
-    else if (c && !pc) {
-      if (tm.n < 8) { tm.bits |= d << tm.n; tm.n++; } else { tm.bytes.push(tm.bits); tm.bits = 0; tm.n = 0; } // the 9th clock is the ack
-    }
-    tm.last = [c, d];
-    if (uno.readInput(tm.dio) !== 1 && uno.mode(tm.dio) !== PinState.Low) uno.setInput(tm.dio, 1);
-    if (uno.readInput(tm.clk) !== 1 && uno.mode(tm.clk) !== PinState.Low) uno.setInput(tm.clk, 1);
-  }
-  function tmCommand(b) {
-    if (!b.length) return;
-    const c = b[0];
-    if ((c & 0xc0) === 0xc0) { let a = c & 3; for (const x of b.slice(1)) { if (a < 4) tm.seg[a] = x; a++; } tm.dirty = true; }
-    else if ((c & 0xc0) === 0x80) { tm.on = !!(c & 8); tm.dirty = true; }
-  }
+  function dhtWatch() { for (const D of dhts) dhtWatch1(uno, D); }
+  function tmWatch() { if (tm) tmWatch1(uno, tm); }
 
   // ---- inputs in the panel ----
   insEl.innerHTML = '';
@@ -733,83 +720,154 @@ export function attachSim(stage, ui, host, W) {
     inp.value = '';
   });
 
-  // ---- choosing, loading and resetting ----
+  // ---- the program on the board, and the board's three states ----
+  // Unplugged (Stop): nothing runs, every output is off, the next Run starts
+  // from the beginning. Running. Paused: frozen where it is, still powered.
+  // Reset starts the sketch again while it stays plugged in.
   const unoLeds = W.uno.leds;
   function powerLeds(on) {
     unoLeds.ON.set(on, 1);
     if (!on) { unoLeds.L.set(false); unoLeds.TX.set(false); unoLeds.RX.set(false); }
     stage.invalidate();
   }
-  function setState(text, on = false) {
+  function setState(text, s = powered ? (running ? 'run' : 'pause') : 'off') {
     stateEl.textContent = text;
-    stateEl.classList.toggle('on', on);
+    powerEl.dataset.s = s;
   }
+  let said = '';
+  function say(t) { if (t !== said) { said = t; saidEl.textContent = t; } }
+  const clockOf = () => { const t = uno ? uno.seconds : 0; return `${Math.floor(t / 60)}:${String(Math.floor(t % 60)).padStart(2, '0')}`; };
   function showRun() {
-    runBtn.innerHTML = running ? `${icon('pause')}<span>Pause</span>` : `${icon('play')}<span>${uno && uno.cpu.cycles > 0 ? 'Carry on' : 'Run'}</span>`;
-    runBtn.setAttribute('aria-label', running ? 'Pause the sketch' : 'Run the sketch');
+    runBtn.innerHTML = running ? `${icon('pause')}<span>Pause</span>` : `${icon('play')}<span>${powered && uno && uno.cpu.cycles > 0 ? 'Carry on' : 'Run'}</span>`;
+    runBtn.setAttribute('aria-label', running ? 'Pause: freeze the sketch where it is' : powered ? 'Carry on: run from where it paused' : 'Run: plug the board in and start the sketch');
+    runBtn.disabled = !rec?.ok;
+    stopBtn.disabled = !powered;
+    resetBtn.disabled = !powered || !rec?.ok;
   }
   let current = list[0];
   let token = 0;
+  let courseRec = null; // the course's compiled sketch
+  let mode = 'course'; // what is on the board: 'course' (compiled) or 'edited' (interpreted)
+  let uploaded = null; // the text last uploaded
+  const keyOf = (n) => `ard-sketch-edit:${n}`;
+  const loadEdit = (n) => { try { return localStorage.getItem(keyOf(n)); } catch { return null; } };
+  const saveEdit = (n, t) => { try { if (t === null) localStorage.removeItem(keyOf(n)); else localStorage.setItem(keyOf(n), t); } catch {} };
+  const edVerify = edBar.querySelector('.ed-verify'), edUpload = edBar.querySelector('.ed-upload'), edBack = edBar.querySelector('.ed-back');
+  function showWhich() {
+    const what = mode === 'edited' ? '<b>Your edited sketch</b> (run by the course’s interpreter)' : courseRec && !courseRec.ok ? '<b>nothing</b>: the course’s sketch does not compile' : '<b>The course’s sketch</b> (compiled for the real chip)';
+    whichEl.innerHTML = `On the board: ${what}. ${mode === 'edited' ? '<button type="button" class="lab-link-btn" data-act="back">Back to the course’s sketch</button>' : 'Change it in the <button type="button" class="lab-link-btn" data-act="code">Code</button> tab.'}`;
+    const changed = courseRec && code.value !== (mode === 'edited' ? uploaded : courseRec.source);
+    whichCode.innerHTML = `On the board: ${what}.${changed ? ' The text below has changes that are not uploaded yet.' : ''}`;
+    edBack.disabled = !courseRec || (mode === 'course' && code.value === courseRec.source);
+  }
+  whichEl.addEventListener('click', (e) => {
+    const b = e.target.closest('[data-act]');
+    if (!b) return;
+    if (b.dataset.act === 'code') { ui.tab('code'); code.textarea.focus(); } else backToCourse();
+  });
+  function edited(t) {
+    if (!courseRec) return;
+    saveEdit(current, t === courseRec.source ? null : t);
+    showWhich();
+  }
+  const monitorFor = (src) => { $('.sim-mon').hidden = !/\bSerial\s*\.\s*(begin|print|write)/.test(src); };
+  function note(html) { noteBox.hidden = !html; noteBox.innerHTML = html || ''; }
+
   function choose(name) {
     current = name;
     const my = ++token;
-    stop();
+    halt();
+    powered = false;
+    powerLeds(false);
     uno = null;
     rec = null;
-    runBtn.disabled = true;
-    resetBtn.disabled = true;
+    courseRec = null;
+    mode = 'course';
     errBox.hidden = true;
     about.hidden = true;
-    setState('Loading the sketch…');
+    note('');
+    edMsg.innerHTML = '';
+    showRun();
+    setState('Loading the sketch…', 'off');
     loadSketch(name).then((r) => {
       if (my !== token) return;
+      courseRec = r;
       rec = r;
-      const lines = r.source.replace(/\n$/, '').split('\n').map((t, i) => ({ n: i + 1, t }));
-      code.set(lines, name + '.ino');
-      // the serial monitor only for sketches that print
-      $('.sim-mon').hidden = !/\bSerial\s*\.\s*(begin|print|write)/.test(r.source);
-      code.clear('err');
+      const saved = loadEdit(name);
+      code.set(saved ?? r.source, name + '.ino');
+      if (saved !== null && saved !== r.source) note('Your own version of this sketch, from last time, is in the <b>Code</b> tab. The board runs the course’s sketch until you press <b>Upload and run</b> there.');
+      monitorFor(r.source);
       built.textContent = r.ok
-        ? `This is the sketch the virtual Arduino runs: compiled for the Uno (${r.compiler}) into ${r.flash} bytes of program and ${r.ram} bytes of memory.`
-        : `This sketch does not compile (${r.compiler}), so there is nothing to run.`;
+        ? `The course’s sketch is compiled for the Uno (${r.compiler}) into ${r.flash} bytes of program and ${r.ram} bytes of memory, and runs instruction by instruction on an emulated chip.`
+        : `The course’s sketch does not compile (${r.compiler}), so there is nothing to run. Fix it here and press Upload and run.`;
       const w = whatItDoes(r.source);
       about.hidden = !w;
       about.innerHTML = w ? `<b>What it does:</b> ${esc(w)}` : '';
+      showWhich();
       if (!r.ok) {
         const m = /\.ino:(\d+):\d+: error: ([^\n]*)/.exec(r.error);
         errBox.hidden = false;
         errBox.innerHTML = `<b>This sketch does not compile, on purpose.</b> The Arduino software stops before uploading anything, so the board would not change. This is what the compiler really said:<pre>${esc(r.error)}</pre>${m ? `<small>Line ${m[1]} is marked in the Code tab. The fault is usually at the end of the line before it.</small>` : ''}`;
-        if (m) code.mark(+m[1], 'err');
-        setState('Not compiled');
-        powerLeds(false);
+        if (m && code.value === r.source) code.mark(+m[1], 'err');
+        setState('Not compiled', 'off');
+        showRun();
         return;
       }
       reset(false);
-      runBtn.disabled = false;
-      resetBtn.disabled = false;
-      setState(`Ready · ${r.flash} bytes of program`);
+      setState('Unplugged', 'off');
     }, () => {
       if (my !== token) return;
-      setState('The sketch could not load');
+      setState('The sketch could not load', 'off');
     });
   }
-  function reset(note = true) {
+  function makeBoard() {
+    if (rec.interp) return new VBoard(rec.js, { onError: runtimeError, onWarn: runtimeWarn });
+    return new Uno(decodeProgram(rec.program));
+  }
+  // a fresh board with the program on it: plugged in or not, as it was
+  function reset(noteIt = true) {
     if (!rec?.ok) return;
     const wasRunning = running;
-    stop();
-    uno = new Uno(decodeProgram(rec.program));
+    halt();
+    uno = makeBoard();
     uno.usart.onByteTransmit = (b) => { pendingText += String.fromCharCode(b); txFlash = 3; };
     uno.onChange = onPins;
     wireDevices();
     S = uno.sample();
     resolveInputs();
     analogInputs();
-    for (const L of lcdChips) { if (L.screen) L.screen.userData.show(L.screen.userData.idle, { light: true, ink: 0.0 }); }
+    lastRunLine = 0;
+    code.clear('run');
+    if (rec.interp && !errBox.dataset.keep) errBox.hidden = true;
+    for (const L of lcdChips) { if (L.screen) L.screen.userData.show(L.screen.userData.idle, { light: powered, ink: 0.0 }); }
     paintOutputs(0);
-    if (note) sysLine('reset');
+    if (!powered) unpowered();
+    if (noteIt && powered) sysLine('reset');
     if (wasRunning) start();
     showRun();
-    powerLeds(powered); // the board is "plugged in" from the first Run
+    powerLeds(powered);
+    if (!running) setState(powered ? `Paused · ${clockOf()}` : 'Unplugged');
+  }
+  // what an unplugged board shows: lights dark, sound off, screens blank, the servo holding where it is
+  function unpowered() {
+    for (const L of lcdChips) if (L.screen) L.screen.userData.show(L.screen.userData.idle, { light: false, ink: 0 });
+    screenRow.hidden = true;
+    for (const F of fans) F.speed = 0;
+    for (const B of buzzers) B.tag.visible = false;
+    tone(0);
+    stage.invalidate();
+  }
+  // Stop: unplug the board. The next Run starts the sketch from the beginning.
+  function unplug() {
+    const was = powered;
+    halt();
+    powered = false;
+    reset(false);
+    powerLeds(false);
+    if (was) sysLine('unplugged');
+    setState('Unplugged', 'off');
+    say('Stopped. The board is unplugged.');
+    showRun();
   }
   let powered = false;
   function onPins() {
@@ -818,6 +876,82 @@ export function attachSim(stage, ui, host, W) {
     if (tm) tmWatch();
   }
 
+  // ---- the editor: check, upload, go back ----
+  function showCompile(c, uploading) {
+    code.clear('err');
+    const items = [...c.errors.map((e) => ({ ...e, warn: false })), ...(c.ok ? c.warnings.slice(0, 3).map((w) => ({ ...w, warn: true })) : [])];
+    const list = items.length
+      ? `<ul>${items.map((e) => `<li class="${e.warn ? 'warn' : ''}"><code>${esc(e.text)}</code>${e.note ? `<small>${esc(e.note)}</small>` : ''}${e.line ? `<button type="button" class="lab-link-btn" data-line="${e.line}">Show line ${e.line}</button>` : ''}</li>`).join('')}</ul>`
+      : '';
+    if (c.ok) edMsg.innerHTML = `<p class="ok">${uploading ? 'Done compiling. Uploaded: your sketch is running.' : 'Done compiling: no errors.'}</p>${items.length ? `<p>${items.length === 1 ? 'A warning' : 'Warnings'} (the sketch still runs):</p>` : ''}${list}`;
+    else {
+      edMsg.innerHTML = `<p><b>The sketch does not compile.</b> Nothing was uploaded${mode === 'edited' || courseRec?.ok ? ': the board keeps what it had' : ''}. ${c.errors[0].line ? `Line ${c.errors[0].line} is marked.` : ''}</p>${list}`;
+      if (c.errors[0].line) code.mark(c.errors[0].line, 'err');
+    }
+  }
+  edMsg.addEventListener('click', (e) => { const b = e.target.closest('[data-line]'); if (b) code.goto(+b.dataset.line); });
+  function verify() { const c = compileSketch(code.value, current); showCompile(c, false); return c; }
+  edVerify.addEventListener('click', verify);
+  edUpload.addEventListener('click', () => {
+    if (!courseRec) return;
+    const c = compileSketch(code.value, current);
+    showCompile(c, c.ok);
+    if (!c.ok) return;
+    uploaded = code.value;
+    saveEdit(current, uploaded === courseRec.source ? null : uploaded);
+    rec = { ok: true, interp: true, js: c.js, source: uploaded, name: current };
+    mode = 'edited';
+    errBox.hidden = true;
+    note('');
+    monitorFor(uploaded);
+    built.textContent = 'Your edited sketch is run by the course’s interpreter: a program in this page that reads Arduino C++ and does what the Uno’s chip would, at the same speed. It is checked against every course sketch, but it is not the real compiler, so a few rare things a real compiler allows are not supported.';
+    // uploading resets the board and starts the new sketch, as on a real Uno
+    powered = true;
+    reset(false);
+    sysLine('uploaded your sketch');
+    start();
+    showWhich();
+    say('Uploaded. Your sketch is running.');
+  });
+  function backToCourse() {
+    if (!courseRec) return;
+    code.set(courseRec.source, current + '.ino');
+    saveEdit(current, null);
+    edMsg.innerHTML = '';
+    note('');
+    if (mode === 'edited') {
+      mode = 'course';
+      rec = courseRec;
+      uploaded = null;
+      monitorFor(rec.source);
+      if (rec.ok) {
+        const was = powered;
+        reset(false);
+        if (was) { sysLine('back to the course’s sketch'); start(); }
+        built.textContent = `The course’s sketch is compiled for the Uno (${rec.compiler}) into ${rec.flash} bytes of program and ${rec.ram} bytes of memory, and runs instruction by instruction on an emulated chip.`;
+      } else { halt(); powered = false; uno = null; powerLeds(false); choose(current); return; }
+    } else if (!courseRec.ok) {
+      const m = /\.ino:(\d+):\d+:/.exec(courseRec.error);
+      if (m) code.mark(+m[1], 'err');
+    }
+    showWhich();
+  }
+  edBack.addEventListener('click', backToCourse);
+
+  // ---- what the interpreter reports while it runs ----
+  let lastRunLine = 0;
+  function runtimeError(e) {
+    errBox.hidden = false;
+    errBox.innerHTML = `<b>Your sketch stopped${e.line ? ` on line ${e.line}` : ''}.</b> ${esc(e.msg)} <small>Press Reset or Run to start it again.</small>`;
+    if (e.line) code.mark(e.line, 'err');
+    sysLine('the sketch stopped');
+  }
+  function runtimeWarn(w) {
+    note(`${w.line ? `<b>Line ${w.line}:</b> ` : ''}${esc(w.msg)}${w.line ? ` <button type="button" class="lab-link-btn" data-line="${w.line}">Show it</button>` : ''}`);
+    if (w.line && w.kind === 'stuck') code.mark(w.line, 'run');
+  }
+  noteBox.addEventListener('click', (e) => { const b = e.target.closest('[data-line]'); if (b) { ui.tab('code'); code.goto(+b.dataset.line); } });
+
   // ---- the clock: real time, in frame-sized slices ----
   let raf = 0;
   let last = 0;
@@ -825,25 +959,40 @@ export function attachSim(stage, ui, host, W) {
   let visible = true;
   const low = stage.lowPower;
   function start() {
-    if (!uno || running) return;
+    if (!uno || running || !rec?.ok) return;
+    if (uno.halted) reset(false);
     running = true;
-    if (!powered) { powered = true; powerLeds(true); }
+    if (!powered) {
+      powered = true;
+      powerLeds(true);
+      for (const L of lcdChips) { if (L.screen) L.screen.userData.show(L.screen.userData.idle, { light: true, ink: 0.0 }); }
+      sysLine('plugged in');
+    }
     last = performance.now();
     raf = requestAnimationFrame(frame);
     showRun();
+    setState(`Running · ${clockOf()}`, 'run');
+    say('Running.');
   }
-  function stop() {
+  // the clock stops; outputs stay as they are (Pause)
+  function halt() {
     running = false;
     cancelAnimationFrame(raf);
     tone(0);
     showRun();
+  }
+  function pause() {
+    if (!running) return;
+    halt();
+    setState(`Paused · ${clockOf()}`, 'pause');
+    say('Paused.');
   }
   function frame(now) {
     if (!running) return;
     raf = requestAnimationFrame(frame);
     let dt = now - last;
     last = now;
-    if (!onScreen(now) || document.hidden) { setState('Paused while out of sight'); tone(0); return; }
+    if (!onScreen(now) || document.hidden) { setState('Paused while out of sight', 'pause'); tone(0); return; }
     dt = Math.min(dt, 250); // a slow frame is caught up; a long stall is not
     const want = Math.round(dt * (HZ / 1000));
     const c0 = uno.cpu.cycles;
@@ -854,11 +1003,12 @@ export function attachSim(stage, ui, host, W) {
     speed = speed * 0.9 + 0.1 * (done / Math.max(1, want));
     paintOutputs(dt);
     flushLog();
-    const t = uno.seconds;
-    const clock = `${Math.floor(t / 60)}:${String(Math.floor(t % 60)).padStart(2, '0')}`;
-    setState(speed < 0.85 ? `Running · ${clock} · ${Math.round(speed * 100)}% of real speed on this computer` : `Running · ${clock}`, true);
+    if (rec.interp && uno.line && uno.line !== lastRunLine && now - (frame.lineAt || 0) > 200) { lastRunLine = uno.line; frame.lineAt = now; code.mark(uno.line, 'run'); }
+    const clock = clockOf();
+    setState(speed < 0.85 ? `Running · ${clock} · ${Math.round(speed * 100)}% of real speed on this computer` : `Running · ${clock}`, 'run');
   }
-  runBtn.addEventListener('click', () => (running ? (stop(), setState('Paused')) : start()));
+  runBtn.addEventListener('click', () => (running ? pause() : start()));
+  stopBtn.addEventListener('click', unplug);
   resetBtn.addEventListener('click', () => reset(true));
   sel?.addEventListener('change', () => choose(sel.value));
 
@@ -996,7 +1146,7 @@ export function attachSim(stage, ui, host, W) {
     if (tm?.dirty) {
       tm.dirty = false;
       screenRow.hidden = false;
-      const txt = tm.on ? tm.seg.map((s) => SEG[s & 0x7f] ?? '?').join('') : '    ';
+      const txt = tmText(tm);
       screenRow.innerHTML = `<span>The TM1637 display (not drawn in this build) shows</span><span class="sim-7seg" aria-label="${esc(txt.trim() || 'nothing')}">${esc(txt)}</span>`;
     }
     // On a slow (software-drawn) computer, redraw at most about eight times a
@@ -1015,7 +1165,11 @@ export function attachSim(stage, ui, host, W) {
   return {
     get uno() { return uno; },
     get running() { return running; },
-    choose, start, stop, reset: () => reset(true),
+    get powered() { return powered; },
+    get mode() { return mode; },
+    editor: code,
+    choose, start, stop: pause, pause, unplug, reset: () => reset(true),
+    upload: () => edUpload.click(), verify, back: backToCourse,
     log: () => logText + pendingText,
     sketch: () => current,
     inputs: { switches: C.switches, pots, ldrs, sonars, dhts, sources, pads },
