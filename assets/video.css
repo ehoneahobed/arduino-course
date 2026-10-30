@@ -24,3 +24,6 @@ figure.video.v-playing{grid-column:1 / -1}
 figure.video figcaption{font-size:.95rem}
 /* one video per row, each the full width of the reading column */
 .videos{grid-template-columns:1fr}
+/* the video library: a grid of cards; the one playing widens to the full row */
+.videos.lib{grid-template-columns:repeat(auto-fill,minmax(min(100%,270px),1fr)); max-width:none}
+.videos.lib figure.video figcaption{font-size:.88rem}
