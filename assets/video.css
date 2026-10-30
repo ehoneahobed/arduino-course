@@ -1,0 +1,16 @@
+/* Optional video boxes (assets/video.js) */
+.videos{display:grid; grid-template-columns:repeat(auto-fill,minmax(min(100%,250px),1fr)); gap:1rem; margin:1.6rem 0 .4rem; max-width:var(--wide)}
+.videos > p{grid-column:1 / -1; margin:0; font-size:.78rem; color:var(--muted); font-family:"Outfit","Rubik",Arial,sans-serif; letter-spacing:.08em; text-transform:uppercase}
+figure.video{margin:0; display:flex; flex-direction:column; gap:.45rem}
+figure.video .v-link,figure.video iframe{position:relative; display:block; aspect-ratio:16/9; width:100%; border-radius:10px; overflow:hidden;
+  background:var(--surface-2); border:1px solid var(--line-soft)}
+figure.video img{display:block; width:100%; height:100%; object-fit:cover}
+figure.video iframe{border:0}
+.v-play{position:absolute; inset:0; margin:auto; width:3.2rem; height:3.2rem; border-radius:50%; background:rgba(36,24,46,.82); box-shadow:0 0 0 2px rgba(255,255,255,.6)}
+.v-play::after{content:""; position:absolute; left:55%; top:50%; transform:translate(-50%,-50%); border-style:solid; border-width:.55rem 0 .55rem .9rem; border-color:transparent transparent transparent #fff}
+figure.video .v-link:hover .v-play,figure.video .v-link:focus-visible .v-play{background:var(--red,#CA1F3F)}
+figure.video figcaption{font-size:.9rem; line-height:1.45; color:var(--ink)}
+figure.video figcaption span{display:block; font-size:.78rem; color:var(--muted); margin-top:.15rem}
+figure.video.v-offline .v-link img{visibility:hidden}
+figure.video.v-offline .v-link::before{content:"This video needs the internet"; position:absolute; left:0; right:0; bottom:.6rem; text-align:center; font-size:.8rem; color:var(--muted)}
+@media print{.videos{display:none}}

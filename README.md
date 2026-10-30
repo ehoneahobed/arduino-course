@@ -82,6 +82,14 @@ On wide screens the section list is a sidebar with the band's progress at the to
 "Sections" bar at the top opens it as a drawer. Every page has a light / dark switch in the top bar
 (`assets/theme.js`, saved in the browser; with no choice saved the page follows the device setting).
 
+## Videos
+
+Band pages carry optional videos from Science Buddies' free "How to Use an Arduino" series
+(https://www.youtube.com/playlist?list=PLlBVuTSjOrclb0iCMSRpS_H1lSrlSVeEm), each placed in the
+section that teaches the same thing. A box is a thumbnail link (works without JavaScript); with
+`assets/video.js` it plays in place in YouTube's privacy-enhanced player, only when clicked, and says
+"needs the internet" when offline. Every box reminds learners that the page wins if the two differ.
+
 ## The 3D labs
 
 Every wiring diagram has a **View in 3D** button. The 3D build is generated from the same hole data as the
