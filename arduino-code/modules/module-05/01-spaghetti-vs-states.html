@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en" data-course="arduino-code" data-band="5">
+<head>
+  <meta charset="utf-8">
+  <script src="../../../assets/theme.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href="https://iot.bozomainnovationhub.com/arduino-code/modules/module-05/01-spaghetti-vs-states">
+  <title>Spaghetti vs states · Module 5 · Arduino Coding</title>
+  <meta name="description" content="Spot tangled if/flag mode logic; refactor to named states; draw the diagram first.">
+  <meta name="theme-color" content="#24182E">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../../assets/brand/icon-192.png">
+  <link rel="apple-touch-icon" href="../../../assets/brand/icon-180.png">
+  <!-- app + link previews (tools/inject_head.py) -->
+  <link rel="manifest" href="../../../manifest.webmanifest">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="IoT at Bozoma Innovation Hub">
+  <meta property="og:title" content="Spaghetti vs states · Module 5 · Arduino Coding">
+  <meta property="og:description" content="Spot tangled if/flag mode logic; refactor to named states; draw the diagram first.">
+  <meta property="og:url" content="https://iot.bozomainnovationhub.com/arduino-code/modules/module-05/01-spaghetti-vs-states">
+  <meta property="og:image" content="https://iot.bozomainnovationhub.com/assets/og/arduino-code-modules-module-05-01-spaghetti-vs-states.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Spaghetti vs states · Module 5 · Arduino Coding">
+  <meta property="og:locale" content="en_GB">
+  <meta name="twitter:card" content="summary_large_image">
+  <script defer src="../../../assets/app.js"></script>
+  <!-- /app + link previews -->
+  <link rel="stylesheet" href="../../../assets/course.css">
+  <link rel="stylesheet" href="../../../assets/progress.css">
+  <script defer src="../../../assets/pager.js"></script>
+  <script defer src="../../../assets/check.js" data-profile="../../profile.html"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to the lesson</a>
+<div class="topbar">
+  <a class="home" href="../../home.html"><img src="../../../assets/brand/logo-mark-white.png" alt="" width="36" height="36"><span class="lock"><b>Arduino Coding</b><small>Bozoma Innovation Hub</small></span></a>
+  <a class="hub" href="../../../index.html" title="All courses: IoT at Bozoma Innovation Hub">&larr; IoT at BIH</a>
+  <nav class="bandlinks" aria-label="Modules"><a href="../module-00/home.html">0</a><a href="../module-01/home.html">1</a><a href="../module-02/home.html">2</a><a href="../module-03/home.html">3</a><a href="../module-04/home.html">4</a><a href="home.html" aria-current="page">5</a><a href="../list.html">⋯</a></nav>
+  <a class="bih" href="https://bozomainnovationhub.com"><span class="long">bozomainnovationhub.com</span><span class="short">BIH website</span></a>
+</div>
+<div class="wrap" id="main">
+
+<nav aria-label="Sections">
+  <a href="#outcomes">Outcomes</a>
+  <a href="#concepts">Concepts</a>
+  <a href="#diagram">Diagram</a>
+  <a href="#lab">Lab</a>
+  <a href="#patterns">Patterns</a>
+  <a href="#check">Check yourself</a>
+  <a href="#mistakes">Mistakes</a>
+</nav>
+<header style="padding:3rem 0 1rem">
+  <p class="eyebrow">Arduino Coding &nbsp;·&nbsp; Module 5 &nbsp;·&nbsp; Lesson 5.1 &nbsp;·&nbsp; <span class="tag">TC</span></p>
+  <h1 style="margin:.8rem 0">Spaghetti vs states</h1>
+  <p class="col sub" style="font-size:1.1em">A <strong>state</strong> is the named situation the device is in right now. One <code>currentState</code> beats a pile of contradicting <code>bool</code> flags. Draw the diagram before you refactor.</p>
+  <p class="col note" style="margin-top:.8rem">About 40 minutes. Paper / header diagram required.</p>
+</header>
+<section class="part" id="outcomes">
+  <div class="parthead"><span class="tag">Start here</span><h2>Learning outcomes</h2></div>
+  <div class="col stack"><ol class="num">
+    <li>Spot spaghetti mode logic — tangled <code>if</code> / flag chains that forget transitions or leave outputs stuck.</li>
+    <li>Refactor a messy multi-mode sketch into named states with one clear current-state variable.</li>
+    <li>Draw a state diagram first (circles = states, arrows = transitions) before changing code.</li>
+  </ol></div>
+</section>
+<section class="part" id="concepts">
+  <div class="parthead"><span class="tag">Concept</span><h2>Flags fight; one state does not</h2></div>
+  <div class="col stack">
+    <div class="callout" style="--bc:var(--accent)"><h5>Concept</h5>
+    <p>Spaghetti tracks modes with scattered booleans (<code>running</code>, <code>alarm</code>, <code>paused</code>) that can all be true at once. Named states make mutually exclusive modes explicit.</p></div>
+<pre><code>// Painful — flags can disagree
+bool running = false; bool alarm = false; bool paused = false;
+
+// Better — exactly one mode
+enum Mode { IDLE, RUN, PAUSE, ALARM };  // full enum in 5.2
+Mode mode = IDLE;
+</code></pre>
+  </div>
+</section>
+<section class="part" id="diagram">
+  <div class="parthead"><span class="tag">Part</span><h2>Diagram before code</h2></div>
+  <div class="col stack">
+<pre><code>        start                 timeout
+  IDLE --------► RUN --------------------► ALARM
+   ▲              │                           │
+   │              │ cancel                    │ ack
+   └──────────── PAUSE ◄──────────────────────┘
+</code></pre>
+    <div class="scroll"><table><thead><tr><th>Rule</th><th>Why</th></tr></thead><tbody>
+      <tr><td>Every circle has a name</td><td>Matches code identifiers</td></tr>
+      <tr><td>Every arrow has a trigger</td><td>Button edge, timer done, sensor</td></tr>
+      <tr><td>Note outputs <strong>in</strong> each state</td><td>LED? blink? buzzer?</td></tr>
+    </tbody></table></div>
+  </div>
+</section>
+<section class="part" id="lab">
+  <div class="parthead"><span class="tag">Lab</span><h2>See the mess, then name states</h2><span class="mins">18 min</span></div>
+  <div class="col stack">
+    <p>Circuit <code>M5-L01-Spaghetti</code>: LED→9, button→2 (<code>INPUT_PULLUP</code>). Run the messy starter; mash the button. Draw <code>IDLE</code> / <code>RUN</code> / <code>ALARM</code>. Refactor to one state variable; print the name on change.</p>
+    <div class="sketchbox" style="--bc:var(--accent)"><h2>Named-state shape</h2>
+<pre><code>if (state == ST_IDLE) {
+  if (pressed) enterState(ST_RUN);
+} else if (state == ST_RUN) {
+  // blink with millis; timeout → ALARM; press → ALARM
+} else if (state == ST_ALARM) {
+  if (pressed) enterState(ST_IDLE);
+}
+</code></pre></div>
+    <p class="note">Gate A still applies — no interactive <code>delay</code> for “debounce.”</p>
+  </div>
+</section>
+<section class="part" id="patterns">
+  <div class="parthead"><span class="tag">Patterns</span><h2>Diagram before code</h2></div>
+  <div class="col stack"><div class="callout"><h5>Pattern</h5>
+  <p>If you cannot draw it, you do not understand the appliance yet. Prefer <strong>one</strong> state variable over overlapping booleans for mutually exclusive modes.</p></div></div>
+</section>
+<section class="part" id="check">
+  <div class="parthead"><span class="tag">Check</span><h2>Check yourself</h2></div>
+  <div class="col stack"><ol class="num" data-check>
+    <li data-kind="open" data-see="#concepts">What goes wrong when several bools all mean “what mode am I in?”
+      <details><summary>Model answer</summary><p>Flags can contradict or leave stale true values — undefined combined behavior.</p></details></li>
+    <li data-kind="open" data-see="#diagram">What should you draw before refactoring spaghetti?
+      <details><summary>Model answer</summary><p>A state diagram — states plus labeled transitions.</p></details></li>
+    <li data-kind="open" data-see="#lab">Can the device be in RUN and ALARM at once with one state variable?
+      <details><summary>Model answer</summary><p>No — one variable holds exactly one value.</p></details></li>
+    <li data-kind="choice" data-choices="True|False" data-correct="1" data-see="#lab" data-hint="Gate A still applies." data-why-0="FSM does not waive Gate A." data-why-1="Correct — use millis.">Module 5 allows long delay() because FSM is different.</li>
+  </ol></div>
+</section>
+<section class="part" id="mistakes">
+  <div class="parthead"><span class="tag">Watch outs</span><h2>Common mistakes</h2></div>
+  <div class="col stack">
+    <div class="scroll"><table><thead><tr><th>Mistake</th><th>Fix</th></tr></thead><tbody>
+      <tr><td>Coding before diagram</td><td>Draw arrows first</td></tr>
+      <tr><td>Keeping old flags beside new state</td><td>Delete redundant booleans</td></tr>
+      <tr><td>Using delay to fix button spam</td><td>Edge + debounce (5.4); Gate A</td></tr>
+    </tbody></table></div>
+  </div>
+</section>
+
+<nav class="pager" aria-label="Lessons">
+<a href="home.html"><span class="dir">Previous</span><span class="name">Module 5</span></a>
+<a class="next" href="02-enum-and-switch-fsm.html"><span class="dir">Next</span><span class="name">5.2 enum + switch &rarr;</span></a>
+</nav>
+</div>
+<footer class="bihfoot"><div class="wrap">
+  <p class="pagenote">Lesson 5.1 &nbsp;&middot;&nbsp; Module 5 &nbsp;&middot;&nbsp; Arduino Coding.</p>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a class="lockup" href="../../home.html"><img src="../../../assets/brand/logo-mark-white.png" alt="" width="42" height="42"><span>Arduino Coding<small>Bozoma Innovation Hub</small></span></a>
+      <p>A Bozoma Innovation Hub programme.</p>
+    </div>
+    <div><h4>The course</h4><ul>
+      <li><a href="../../home.html">Course home</a></li>
+      <li><a href="home.html">Module 5</a></li>
+      <li><a href="../list.html">All modules</a></li>
+    </ul></div>
+    <div><h4>Bozoma Innovation Hub</h4><ul>
+      <li><a href="https://bozomainnovationhub.com">bozomainnovationhub.com</a></li>
+    </ul></div>
+  </div>
+  <div class="foot-bottom"><span>&copy; Bozoma Innovation Hub, Aiyinasi, Ghana</span><span class="tagline">World-class begins at home.</span></div>
+</div></footer>
+</body>
+</html>

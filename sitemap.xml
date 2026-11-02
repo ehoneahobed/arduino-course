@@ -42,6 +42,13 @@
   <url><loc>https://iot.bozomainnovationhub.com/arduino-code/modules/module-04/04-servo-positioning</loc><lastmod>2026-11-02</lastmod></url>
   <url><loc>https://iot.bozomainnovationhub.com/arduino-code/modules/module-04/05-structs-for-sensor-packets</loc><lastmod>2026-11-02</lastmod></url>
   <url><loc>https://iot.bozomainnovationhub.com/arduino-code/modules/module-04/06-parking-assist-or-climate-alert</loc><lastmod>2026-11-02</lastmod></url>
+  <url><loc>https://iot.bozomainnovationhub.com/arduino-code/modules/module-05/home</loc><lastmod>2026-11-02</lastmod></url>
+  <url><loc>https://iot.bozomainnovationhub.com/arduino-code/modules/module-05/01-spaghetti-vs-states</loc><lastmod>2026-11-02</lastmod></url>
+  <url><loc>https://iot.bozomainnovationhub.com/arduino-code/modules/module-05/02-enum-and-switch-fsm</loc><lastmod>2026-11-02</lastmod></url>
+  <url><loc>https://iot.bozomainnovationhub.com/arduino-code/modules/module-05/03-entry-exit-actions</loc><lastmod>2026-11-02</lastmod></url>
+  <url><loc>https://iot.bozomainnovationhub.com/arduino-code/modules/module-05/04-events-vs-polling</loc><lastmod>2026-11-02</lastmod></url>
+  <url><loc>https://iot.bozomainnovationhub.com/arduino-code/modules/module-05/05-modular-ino-organization</loc><lastmod>2026-11-02</lastmod></url>
+  <url><loc>https://iot.bozomainnovationhub.com/arduino-code/modules/module-05/06-washing-machine-or-lock-fsm</loc><lastmod>2026-11-02</lastmod></url>
   <url><loc>https://iot.bozomainnovationhub.com/arduino/guide</loc><lastmod>2026-10-30</lastmod></url>
   <url><loc>https://iot.bozomainnovationhub.com/arduino/home</loc><lastmod>2026-10-30</lastmod></url>
   <url><loc>https://iot.bozomainnovationhub.com/arduino/labs</loc><lastmod>2026-10-30</lastmod></url>
