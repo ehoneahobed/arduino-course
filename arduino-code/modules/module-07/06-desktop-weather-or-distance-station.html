@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en" data-course="arduino-code" data-band="7">
+<head>
+  <meta charset="utf-8">
+  <script src="../../../assets/theme.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href="https://iot.bozomainnovationhub.com/arduino-code/modules/module-07/06-desktop-weather-or-distance-station">
+  <title>Build: Desktop weather / distance station · Module 7 · Arduino Coding</title>
+  <meta name="description" content="Module 7 spine: physical DHT or ultrasonic station with display, FSM, Gate A/B/C.">
+  <meta name="theme-color" content="#24182E">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../../assets/brand/icon-192.png">
+  <link rel="apple-touch-icon" href="../../../assets/brand/icon-180.png">
+  <!-- app + link previews (tools/inject_head.py) -->
+  <link rel="manifest" href="../../../manifest.webmanifest">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="IoT at Bozoma Innovation Hub">
+  <meta property="og:title" content="Build: Desktop weather / distance station · Module 7 · Arduino Coding">
+  <meta property="og:description" content="Module 7 spine: physical DHT or ultrasonic station with display, FSM, Gate A/B/C.">
+  <meta property="og:url" content="https://iot.bozomainnovationhub.com/arduino-code/modules/module-07/06-desktop-weather-or-distance-station">
+  <meta property="og:image" content="https://iot.bozomainnovationhub.com/assets/og/arduino-code-modules-module-07-06-desktop-weather-or-distance-station.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Build: Desktop weather / distance station · Module 7 · Arduino Coding">
+  <meta property="og:locale" content="en_GB">
+  <meta name="twitter:card" content="summary_large_image">
+  <script defer src="../../../assets/app.js"></script>
+  <!-- /app + link previews -->
+  <link rel="stylesheet" href="../../../assets/course.css">
+  <link rel="stylesheet" href="../../../assets/progress.css">
+  <script defer src="../../../assets/pager.js"></script>
+  <script defer src="../../../assets/check.js" data-profile="../../profile.html"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to the lesson</a>
+<div class="topbar">
+  <a class="home" href="../../home.html"><img src="../../../assets/brand/logo-mark-white.png" alt="" width="36" height="36"><span class="lock"><b>Arduino Coding</b><small>Bozoma Innovation Hub</small></span></a>
+  <a class="hub" href="../../../index.html" title="All courses: IoT at Bozoma Innovation Hub">&larr; IoT at BIH</a>
+  <nav class="bandlinks" aria-label="Modules"><a href="../module-00/home.html">0</a><a href="../module-01/home.html">1</a><a href="../module-02/home.html">2</a><a href="../module-03/home.html">3</a><a href="../module-04/home.html">4</a><a href="../module-05/home.html">5</a><a href="../module-06/home.html">6</a><a href="home.html" aria-current="page">7</a><a href="../list.html">⋯</a></nav>
+  <a class="bih" href="https://bozomainnovationhub.com"><span class="long">bozomainnovationhub.com</span><span class="short">BIH website</span></a>
+</div>
+<div class="wrap" id="main">
+
+<nav aria-label="Sections">
+  <a href="#outcomes">Outcomes</a>
+  <a href="#brief">Brief</a>
+  <a href="#wire">Wire</a>
+  <a href="#build">Build</a>
+  <a href="#checklist">Checklist</a>
+  <a href="#patterns">Patterns</a>
+  <a href="#check">Check yourself</a>
+  <a href="#mistakes">Mistakes</a>
+</nav>
+<header style="padding:3rem 0 1rem">
+  <p class="eyebrow">Arduino Coding &nbsp;·&nbsp; Module 7 &nbsp;·&nbsp; Lesson 7.6 &nbsp;·&nbsp; <span class="tag">HW</span> · Build</p>
+  <h1 style="margin:.8rem 0">Build: Desktop weather / distance station</h1>
+  <p class="col sub" style="font-size:1.1em">Spine build: a <strong>local</strong> multi-sensor station — weather (DHT + display) <em>or</em> distance (ultrasonic + display) — with non-blocking timing and an FSM. No Wi‑Fi yet.</p>
+  <p class="col note" style="margin-top:.8rem">About 75–90 minutes. Gates A + B + <strong>C</strong>.</p>
+</header>
+<section class="part" id="outcomes">
+  <div class="parthead"><span class="tag">Start here</span><h2>Learning outcomes</h2></div>
+  <div class="col stack"><ol class="num">
+    <li>Build a physical weather-style or distance-style station with millis timing and an FSM.</li>
+    <li>Apply desk wiring, power/GND hygiene, I²C scan address, datasheet pin plan.</li>
+    <li>Meet Gate C (physical upload + real sensor reading); keep Gates A and B.</li>
+  </ol></div>
+</section>
+<section class="part" id="brief">
+  <div class="parthead"><span class="tag">Brief</span><h2>Paths</h2></div>
+  <div class="col stack">
+    <div class="scroll"><table><thead><tr><th>Path</th><th>Sensors</th><th>Core states</th></tr></thead><tbody>
+      <tr><td>W — Weather</td><td>DHT + display</td><td><code>BOOT → RUN → ALERT → HOLD</code></td></tr>
+      <tr><td>D — Distance</td><td>HC-SR04 + display</td><td><code>BOOT → RUN → ALERT → HOLD</code></td></tr>
+    </tbody></table></div>
+    <p><strong>Done:</strong> runs on the desk; mode changes visible; alert clears/holds predictably; I²C address matches your scan; power stays stable.</p>
+  </div>
+</section>
+<section class="part" id="wire">
+  <div class="parthead"><span class="tag">Wire</span><h2>M7-L06-Weather or Distance</h2></div>
+  <div class="col stack">
+    <p><strong>W:</strong> DHT data→4; button→2; alert LED→9; OLED/LCD I²C from scan. <strong>D:</strong> TRIG→7, ECHO→6; same button/LED/display.</p>
+<pre><code>BOOT --ok--> RUN --past threshold--> ALERT
+              ^                         |
+              +-------- button ack -----+
+              +-- long / 2nd btn --> HOLD --btn--> RUN
+</code></pre>
+  </div>
+</section>
+<section class="part" id="build">
+  <div class="parthead"><span class="tag">Build</span><h2>Sample without freezing</h2><span class="mins">35 min</span></div>
+  <div class="col stack">
+    <div class="sketchbox" style="--bc:var(--accent)"><h2>Shape</h2>
+<pre><code>const unsigned long sampleMs = 2000;  // DHT prefers polite rates
+const unsigned long uiMs = 250;
+const float alertTempC = 28.0;   // Path W
+const long  alertCm    = 30;     // Path D — closer → ALERT
+// millis sample + UI; button → HOLD / ack ALERT
+showStatus(stateName(state), value);  // glass or Serial fallback
+</code></pre></div>
+    <p>Header: wiring + datasheet pin plan + ASCII diagram. Prefer glass; document <code>USE_SERIAL_UI</code> only if glass failed.</p>
+  </div>
+</section>
+<section class="part" id="checklist">
+  <div class="parthead"><span class="tag">Deliverable</span><h2>Checklist</h2></div>
+  <div class="col stack"><ul class="plain">
+    <li>Header: wiring, datasheet pin plan, state diagram</li>
+    <li>FSM with BOOT, RUN, ALERT (+ HOLD/ack)</li>
+    <li>Non-blocking sample + UI; display shows state + live value</li>
+    <li>Physical sensor reading demonstrated (Gate C)</li>
+    <li>No interactive <code>delay()</code> on the main path</li>
+  </ul></div>
+</section>
+<section class="part" id="patterns">
+  <div class="parthead"><span class="tag">Patterns</span><h2>Stack</h2></div>
+  <div class="col stack"><div class="callout"><h5>Pattern</h5>
+  <p>Datasheet pins · I²C scan address · common GND · enum FSM · millis sample/UI · debounced button · display wrappers. Local only — networking is Module 8.</p></div></div>
+</section>
+<section class="part" id="check">
+  <div class="parthead"><span class="tag">Check</span><h2>Check yourself</h2></div>
+  <div class="col stack"><ol class="num" data-check>
+    <li data-kind="open" data-see="#brief">Which gates does this spine prove?
+      <details><summary>Model answer</summary><p>A non-blocking, B FSM + diagram, C physical upload + real sensor read.</p></details></li>
+    <li data-kind="open" data-see="#build">Why scan I²C before hard-coding 0x3C?
+      <details><summary>Model answer</summary><p>Address may be 0x3D / backpack 0x27 — scan is truth.</p></details></li>
+    <li data-kind="open" data-see="#checklist">What belongs in the sketch header?
+      <details><summary>Model answer</summary><p>State diagram, wiring, datasheet pin plan, addresses.</p></details></li>
+    <li data-kind="choice" data-choices="True|False" data-correct="1" data-see="#brief" data-hint="Local only." data-why-0="Networking is Module 8." data-why-1="Correct — false.">Module 7’s station must publish MQTT.</li>
+  </ol></div>
+</section>
+<section class="part" id="mistakes">
+  <div class="parthead"><span class="tag">Watch outs</span><h2>Common mistakes</h2></div>
+  <div class="col stack">
+    <div class="scroll"><table><thead><tr><th>Mistake</th><th>Fix</th></tr></thead><tbody>
+      <tr><td>Skipping the physical upload</td><td>Gate C needs the desk</td></tr>
+      <tr><td>Wrong I²C address guess</td><td>Use scanner result</td></tr>
+      <tr><td>Blocking DHT/ultrasonic freezes buttons</td><td>millis intervals; keep polling frequent</td></tr>
+    </tbody></table></div>
+    <div class="callout" style="--bc:var(--copper)"><h5>What’s next</h5><p>Module 7 spine + Gate C complete. <strong>Module 8</strong> layers ESP32 Wi‑Fi / HTTP / MQTT on these hardware habits.</p></div>
+  </div>
+</section>
+
+<nav class="pager" aria-label="Lessons">
+<a href="05-reading-a-datasheet-for-pins.html"><span class="dir">Previous</span><span class="name">7.5 Datasheet</span></a>
+<a class="next" href="home.html"><span class="dir">Next</span><span class="name">Module 7 complete &rarr;</span></a>
+</nav>
+</div>
+<footer class="bihfoot"><div class="wrap">
+  <p class="pagenote">Lesson 7.6 &nbsp;&middot;&nbsp; Module 7 &nbsp;&middot;&nbsp; Arduino Coding.</p>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a class="lockup" href="../../home.html"><img src="../../../assets/brand/logo-mark-white.png" alt="" width="42" height="42"><span>Arduino Coding<small>Bozoma Innovation Hub</small></span></a>
+      <p>A Bozoma Innovation Hub programme.</p>
+    </div>
+    <div><h4>The course</h4><ul>
+      <li><a href="../../home.html">Course home</a></li>
+      <li><a href="home.html">Module 7</a></li>
+      <li><a href="../list.html">All modules</a></li>
+    </ul></div>
+    <div><h4>Bozoma Innovation Hub</h4><ul>
+      <li><a href="https://bozomainnovationhub.com">bozomainnovationhub.com</a></li>
+    </ul></div>
+  </div>
+  <div class="foot-bottom"><span>&copy; Bozoma Innovation Hub, Aiyinasi, Ghana</span><span class="tagline">World-class begins at home.</span></div>
+</div></footer>
+</body>
+</html>

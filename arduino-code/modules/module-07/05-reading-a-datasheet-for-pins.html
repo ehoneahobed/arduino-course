@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en" data-course="arduino-code" data-band="7">
+<head>
+  <meta charset="utf-8">
+  <script src="../../../assets/theme.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href="https://iot.bozomainnovationhub.com/arduino-code/modules/module-07/05-reading-a-datasheet-for-pins">
+  <title>Reading a datasheet for pins · Module 7 · Arduino Coding</title>
+  <meta name="description" content="Hunt Vcc/GND/signals/logic level/pull-ups; translate to wiring plan and const pins.">
+  <meta name="theme-color" content="#24182E">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../../assets/brand/icon-192.png">
+  <link rel="apple-touch-icon" href="../../../assets/brand/icon-180.png">
+  <!-- app + link previews (tools/inject_head.py) -->
+  <link rel="manifest" href="../../../manifest.webmanifest">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="IoT at Bozoma Innovation Hub">
+  <meta property="og:title" content="Reading a datasheet for pins · Module 7 · Arduino Coding">
+  <meta property="og:description" content="Hunt Vcc/GND/signals/logic level/pull-ups; translate to wiring plan and const pins.">
+  <meta property="og:url" content="https://iot.bozomainnovationhub.com/arduino-code/modules/module-07/05-reading-a-datasheet-for-pins">
+  <meta property="og:image" content="https://iot.bozomainnovationhub.com/assets/og/arduino-code-modules-module-07-05-reading-a-datasheet-for-pins.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Reading a datasheet for pins · Module 7 · Arduino Coding">
+  <meta property="og:locale" content="en_GB">
+  <meta name="twitter:card" content="summary_large_image">
+  <script defer src="../../../assets/app.js"></script>
+  <!-- /app + link previews -->
+  <link rel="stylesheet" href="../../../assets/course.css">
+  <link rel="stylesheet" href="../../../assets/progress.css">
+  <script defer src="../../../assets/pager.js"></script>
+  <script defer src="../../../assets/check.js" data-profile="../../profile.html"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to the lesson</a>
+<div class="topbar">
+  <a class="home" href="../../home.html"><img src="../../../assets/brand/logo-mark-white.png" alt="" width="36" height="36"><span class="lock"><b>Arduino Coding</b><small>Bozoma Innovation Hub</small></span></a>
+  <a class="hub" href="../../../index.html" title="All courses: IoT at Bozoma Innovation Hub">&larr; IoT at BIH</a>
+  <nav class="bandlinks" aria-label="Modules"><a href="../module-00/home.html">0</a><a href="../module-01/home.html">1</a><a href="../module-02/home.html">2</a><a href="../module-03/home.html">3</a><a href="../module-04/home.html">4</a><a href="../module-05/home.html">5</a><a href="../module-06/home.html">6</a><a href="home.html" aria-current="page">7</a><a href="../list.html">⋯</a></nav>
+  <a class="bih" href="https://bozomainnovationhub.com"><span class="long">bozomainnovationhub.com</span><span class="short">BIH website</span></a>
+</div>
+<div class="wrap" id="main">
+
+<nav aria-label="Sections">
+  <a href="#outcomes">Outcomes</a>
+  <a href="#concepts">Concepts</a>
+  <a href="#template">Template</a>
+  <a href="#lab">Lab</a>
+  <a href="#patterns">Patterns</a>
+  <a href="#check">Check yourself</a>
+  <a href="#mistakes">Mistakes</a>
+</nav>
+<header style="padding:3rem 0 1rem">
+  <p class="eyebrow">Arduino Coding &nbsp;·&nbsp; Module 7 &nbsp;·&nbsp; Lesson 7.5 &nbsp;·&nbsp; <span class="tag">HW</span></p>
+  <h1 style="margin:.8rem 0">Reading a datasheet for pins</h1>
+  <p class="col sub" style="font-size:1.1em">The datasheet is the manufacturer’s contract. Hunt <strong>Vcc</strong>, <strong>GND</strong>, <strong>signals</strong>, <strong>logic level</strong>, and <strong>pull-ups/address</strong> — then wire from a table, not hope.</p>
+  <p class="col note" style="margin-top:.8rem">About 40 minutes. Module silkscreen may differ from bare-chip PDF.</p>
+</header>
+<section class="part" id="outcomes">
+  <div class="parthead"><span class="tag">Start here</span><h2>Learning outcomes</h2></div>
+  <div class="col stack"><ol class="num">
+    <li>Locate Vcc, GND, signal pins, logic level, and pull-up notes on a sheet or hookup guide.</li>
+    <li>Translate a pin table into a wiring plan and named <code>const int</code> pins before behavior code.</li>
+    <li>Flag absolute maxima and “5&nbsp;V tolerant?” before connecting Uno to a 3.3&nbsp;V device.</li>
+  </ol></div>
+</section>
+<section class="part" id="concepts">
+  <div class="parthead"><span class="tag">Concept</span><h2>Treasure map</h2></div>
+  <div class="col stack">
+    <div class="callout" style="--bc:var(--accent)"><h5>Concept</h5>
+    <p>When blogs disagree, prefer the sheet and verify with a scanner/multimeter. Ask: am I reading the chip PDF or the breakout’s wiki?</p></div>
+    <div class="scroll"><table><thead><tr><th>Hunt</th><th>Why</th></tr></thead><tbody>
+      <tr><td>Pin table / figure</td><td>Names vs module holes</td></tr>
+      <tr><td>Vcc recommended / absolute max</td><td>Which rail; smoke boundary</td></tr>
+      <tr><td>Logic levels</td><td>3.3 vs 5 compatibility</td></tr>
+      <tr><td>I²C address + pull-ups</td><td>Bus devices</td></tr>
+    </tbody></table></div>
+  </div>
+</section>
+<section class="part" id="template">
+  <div class="parthead"><span class="tag">Part</span><h2>Translation template</h2></div>
+  <div class="col stack">
+<pre><code>/*
+ * Device: _______________  Sheet: _______________
+ * Vcc: ____ V (module mark: ____)
+ * GND: GND
+ * Signals: ____ → D__ ; ____ → D__
+ * Logic: 3.3 / 5   Pull-ups: yes/no/unknown
+ * I2C addr (if any): 0x__
+ */
+</code></pre>
+    <p>HC-SR04 example: VCC→5V, TRIG→D7, ECHO→D6 (5&nbsp;V pulse OK on Uno; ESP32 needs care). OLED: verify 3.3-only vs 5&nbsp;V-tolerant.</p>
+  </div>
+</section>
+<section class="part" id="lab">
+  <div class="parthead"><span class="tag">Lab</span><h2>Sheet → hello</h2><span class="mins">18 min</span></div>
+  <div class="col stack">
+    <p>Fill the template <strong>before</strong> wiring. Power off while wiring. Complete sketch prints your plan at boot, then a minimal hello (DHT / ultrasonic cm / OLED). If hello fails, re-check sheet vs silkscreen before changing algorithms.</p>
+  </div>
+</section>
+<section class="part" id="patterns">
+  <div class="parthead"><span class="tag">Patterns</span><h2>Datasheet → table → constants → code</h2></div>
+  <div class="col stack"><div class="callout"><h5>Pattern</h5>
+  <p>Quote the sheet in comments. Never invent pin meaning from hope. Gate C prep for every new sensor.</p></div></div>
+</section>
+<section class="part" id="check">
+  <div class="parthead"><span class="tag">Check</span><h2>Check yourself</h2></div>
+  <div class="col stack"><ol class="num" data-check>
+    <li data-kind="open" data-see="#concepts">Name five treasures you hunt for wiring.
+      <details><summary>Model answer</summary><p>Vcc, GND, signals, logic level, pull-ups/address (and maxima/current as needed).</p></details></li>
+    <li data-kind="open" data-see="#concepts">Why might a DHT22 PDF and a module Amazon image disagree on pull-ups?
+      <details><summary>Model answer</summary><p>The module may include parts the bare chip sheet does not.</p></details></li>
+    <li data-kind="open" data-see="#template">Blog says 5&nbsp;V, sheet says 3.3&nbsp;V max — what do you do?
+      <details><summary>Model answer</summary><p>Believe the sheet / module rating; level-shift or pick another part.</p></details></li>
+    <li data-kind="choice" data-choices="True|False" data-correct="0" data-see="#patterns" data-hint="Plan first." data-why-0="Correct — true." data-why-1="Constants before behavior.">Pin constants should be written before creative behavior code.</li>
+  </ol></div>
+</section>
+<section class="part" id="mistakes">
+  <div class="parthead"><span class="tag">Watch outs</span><h2>Common mistakes</h2></div>
+  <div class="col stack">
+    <div class="scroll"><table><thead><tr><th>Mistake</th><th>Fix</th></tr></thead><tbody>
+      <tr><td>Wiring from a blog photo only</td><td>Fill the template from the sheet</td></tr>
+      <tr><td>Ignoring absolute max Vcc</td><td>Bold it in a comment</td></tr>
+      <tr><td>Changing algorithms before re-checking pins</td><td>Sheet vs silkscreen first</td></tr>
+    </tbody></table></div>
+  </div>
+</section>
+
+<nav class="pager" aria-label="Lessons">
+<a href="04-spi-overview.html"><span class="dir">Previous</span><span class="name">7.4 SPI</span></a>
+<a class="next" href="06-desktop-weather-or-distance-station.html"><span class="dir">Next</span><span class="name">7.6 Build &rarr;</span></a>
+</nav>
+</div>
+<footer class="bihfoot"><div class="wrap">
+  <p class="pagenote">Lesson 7.5 &nbsp;&middot;&nbsp; Module 7 &nbsp;&middot;&nbsp; Arduino Coding.</p>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a class="lockup" href="../../home.html"><img src="../../../assets/brand/logo-mark-white.png" alt="" width="42" height="42"><span>Arduino Coding<small>Bozoma Innovation Hub</small></span></a>
+      <p>A Bozoma Innovation Hub programme.</p>
+    </div>
+    <div><h4>The course</h4><ul>
+      <li><a href="../../home.html">Course home</a></li>
+      <li><a href="home.html">Module 7</a></li>
+      <li><a href="../list.html">All modules</a></li>
+    </ul></div>
+    <div><h4>Bozoma Innovation Hub</h4><ul>
+      <li><a href="https://bozomainnovationhub.com">bozomainnovationhub.com</a></li>
+    </ul></div>
+  </div>
+  <div class="foot-bottom"><span>&copy; Bozoma Innovation Hub, Aiyinasi, Ghana</span><span class="tagline">World-class begins at home.</span></div>
+</div></footer>
+</body>
+</html>

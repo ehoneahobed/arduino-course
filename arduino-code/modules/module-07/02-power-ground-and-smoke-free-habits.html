@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en" data-course="arduino-code" data-band="7">
+<head>
+  <meta charset="utf-8">
+  <script src="../../../assets/theme.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href="https://iot.bozomainnovationhub.com/arduino-code/modules/module-07/02-power-ground-and-smoke-free-habits">
+  <title>Power, ground, and smoke-free habits · Module 7 · Arduino Coding</title>
+  <meta name="description" content="Common GND, 5 V vs 3.3 V, GPIO current limits; never drive motors from a pin.">
+  <meta name="theme-color" content="#24182E">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../../assets/brand/icon-192.png">
+  <link rel="apple-touch-icon" href="../../../assets/brand/icon-180.png">
+  <!-- app + link previews (tools/inject_head.py) -->
+  <link rel="manifest" href="../../../manifest.webmanifest">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="IoT at Bozoma Innovation Hub">
+  <meta property="og:title" content="Power, ground, and smoke-free habits · Module 7 · Arduino Coding">
+  <meta property="og:description" content="Common GND, 5 V vs 3.3 V, GPIO current limits; never drive motors from a pin.">
+  <meta property="og:url" content="https://iot.bozomainnovationhub.com/arduino-code/modules/module-07/02-power-ground-and-smoke-free-habits">
+  <meta property="og:image" content="https://iot.bozomainnovationhub.com/assets/og/arduino-code-modules-module-07-02-power-ground-and-smoke-free-habits.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Power, ground, and smoke-free habits · Module 7 · Arduino Coding">
+  <meta property="og:locale" content="en_GB">
+  <meta name="twitter:card" content="summary_large_image">
+  <script defer src="../../../assets/app.js"></script>
+  <!-- /app + link previews -->
+  <link rel="stylesheet" href="../../../assets/course.css">
+  <link rel="stylesheet" href="../../../assets/progress.css">
+  <script defer src="../../../assets/pager.js"></script>
+  <script defer src="../../../assets/check.js" data-profile="../../profile.html"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to the lesson</a>
+<div class="topbar">
+  <a class="home" href="../../home.html"><img src="../../../assets/brand/logo-mark-white.png" alt="" width="36" height="36"><span class="lock"><b>Arduino Coding</b><small>Bozoma Innovation Hub</small></span></a>
+  <a class="hub" href="../../../index.html" title="All courses: IoT at Bozoma Innovation Hub">&larr; IoT at BIH</a>
+  <nav class="bandlinks" aria-label="Modules"><a href="../module-00/home.html">0</a><a href="../module-01/home.html">1</a><a href="../module-02/home.html">2</a><a href="../module-03/home.html">3</a><a href="../module-04/home.html">4</a><a href="../module-05/home.html">5</a><a href="../module-06/home.html">6</a><a href="home.html" aria-current="page">7</a><a href="../list.html">⋯</a></nav>
+  <a class="bih" href="https://bozomainnovationhub.com"><span class="long">bozomainnovationhub.com</span><span class="short">BIH website</span></a>
+</div>
+<div class="wrap" id="main">
+
+<nav aria-label="Sections">
+  <a href="#outcomes">Outcomes</a>
+  <a href="#concepts">Concepts</a>
+  <a href="#rules">Rules</a>
+  <a href="#lab">Lab</a>
+  <a href="#patterns">Patterns</a>
+  <a href="#check">Check yourself</a>
+  <a href="#mistakes">Mistakes</a>
+</nav>
+<header style="padding:3rem 0 1rem">
+  <p class="eyebrow">Arduino Coding &nbsp;·&nbsp; Module 7 &nbsp;·&nbsp; Lesson 7.2 &nbsp;·&nbsp; <span class="tag">HW</span></p>
+  <h1 style="margin:.8rem 0">Power, ground, and smoke-free habits</h1>
+  <p class="col sub" style="font-size:1.1em">Shared <strong>GND</strong> is non-negotiable. GPIO is a signal pin — not a motor supply. Read <strong>5V / 3.3V</strong> labels before plugging in.</p>
+  <p class="col note" style="margin-top:.8rem">About 40 minutes. Smoke prevention is a desk skill.</p>
+</header>
+<section class="part" id="outcomes">
+  <div class="parthead"><span class="tag">Start here</span><h2>Learning outcomes</h2></div>
+  <div class="col stack"><ol class="num">
+    <li>Explain common ground, 5&nbsp;V vs 3.3&nbsp;V rails, and GPIO current limits.</li>
+    <li>List smoke-free rules: no motors from GPIO; check module voltage; use drivers.</li>
+    <li>Run a short lab that reinforces LED current awareness and shared GND.</li>
+  </ol></div>
+</section>
+<section class="part" id="concepts">
+  <div class="parthead"><span class="tag">Concept</span><h2>Rails and loops</h2></div>
+  <div class="col stack">
+    <div class="callout" style="--bc:var(--accent)"><h5>Concept</h5>
+    <p>Uno GPIO is roughly 20&nbsp;mA absolute-max (design closer to ~10&nbsp;mA). A stalling motor at hundreds of mA will smoke a pin. Logic level ≠ power capability.</p></div>
+<pre><code>[Uno GND] ----+---- [Sensor GND]
+              +---- [Display GND]
+              +---- [External PSU GND]  // motors
+</code></pre>
+    <div class="scroll"><table><thead><tr><th>Load</th><th>GPIO direct?</th></tr></thead><tbody>
+      <tr><td>LED + 220&nbsp;Ω</td><td>Yes</td></tr>
+      <tr><td>SG90 servo stall</td><td>External 5&nbsp;V + common GND; signal only</td></tr>
+      <tr><td>Bare motor / relay coil</td><td><strong>Driver required</strong></td></tr>
+    </tbody></table></div>
+  </div>
+</section>
+<section class="part" id="rules">
+  <div class="parthead"><span class="tag">Part</span><h2>Smoke-free rules</h2></div>
+  <div class="col stack">
+    <ol class="num">
+      <li>Resistor in series with bare LEDs</li>
+      <li>Common GND for every module that shares signals</li>
+      <li>Read Vcc on the module before connecting 5&nbsp;V</li>
+      <li>Never power motors/high loads from a GPIO pin</li>
+      <li>Signal ≠ power — separate wires for heavy current</li>
+      <li>Power off before major rewiring</li>
+      <li>Smell hot / pin dies → stop, unplug, inspect</li>
+    </ol>
+  </div>
+</section>
+<section class="part" id="lab">
+  <div class="parthead"><span class="tag">Lab</span><h2>Power habits</h2><span class="mins">15 min</span></div>
+  <div class="col stack">
+    <p>Project <code>M7-L02-PowerHabits</code>: LED→9 via 220&nbsp;Ω. Starter prints checklist. Complete: Serial confirm (<code>g</code>) after verifying GND continuity to a module rail. Write three rules in the header.</p>
+  </div>
+</section>
+<section class="part" id="patterns">
+  <div class="parthead"><span class="tag">Patterns</span><h2>Budget on paper first</h2></div>
+  <div class="col stack"><div class="callout"><h5>Pattern</h5>
+  <p>List each module’s Vcc and typical current vs USB (~500&nbsp;mA). External supply → common GND. Label before plug.</p></div></div>
+</section>
+<section class="part" id="check">
+  <div class="parthead"><span class="tag">Check</span><h2>Check yourself</h2></div>
+  <div class="col stack"><ol class="num" data-check>
+    <li data-kind="open" data-see="#concepts">What if a sensor shares SDA/SCL but not GND?
+      <details><summary>Model answer</summary><p>Unreliable communication — fix a common GND.</p></details></li>
+    <li data-kind="open" data-see="#concepts">Why is a bare DC motor on pin 3 a bad idea?
+      <details><summary>Model answer</summary><p>Stall current exceeds GPIO limits → heat/damage; use a driver + proper supply.</p></details></li>
+    <li data-kind="open" data-see="#concepts">Name two rails and one caution for each.
+      <details><summary>Model answer</summary><p>Example: 5V — don’t feed 3.3 V-only parts; GND — must be common; 3.3V — limited current.</p></details></li>
+    <li data-kind="choice" data-choices="True|False" data-correct="0" data-see="#rules" data-hint="Onboard driver." data-why-0="Correct — true." data-why-1="Modules usually safer.">A relay module with an onboard transistor is usually safer than a bare coil on GPIO.</li>
+  </ol></div>
+</section>
+<section class="part" id="mistakes">
+  <div class="parthead"><span class="tag">Watch outs</span><h2>Common mistakes</h2></div>
+  <div class="col stack">
+    <div class="scroll"><table><thead><tr><th>Mistake</th><th>Fix</th></tr></thead><tbody>
+      <tr><td>5&nbsp;V into 3.3&nbsp;V-only part</td><td>Read silkscreen / sheet</td></tr>
+      <tr><td>Motor current through Uno</td><td>External PSU + common GND</td></tr>
+      <tr><td>Missing shared GND on I²C</td><td>Tie grounds before debugging code</td></tr>
+    </tbody></table></div>
+  </div>
+</section>
+
+<nav class="pager" aria-label="Lessons">
+<a href="01-from-tinkercad-to-desk.html"><span class="dir">Previous</span><span class="name">7.1 Desk parity</span></a>
+<a class="next" href="03-i2c-scan-and-multiple-devices.html"><span class="dir">Next</span><span class="name">7.3 I²C scan &rarr;</span></a>
+</nav>
+</div>
+<footer class="bihfoot"><div class="wrap">
+  <p class="pagenote">Lesson 7.2 &nbsp;&middot;&nbsp; Module 7 &nbsp;&middot;&nbsp; Arduino Coding.</p>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a class="lockup" href="../../home.html"><img src="../../../assets/brand/logo-mark-white.png" alt="" width="42" height="42"><span>Arduino Coding<small>Bozoma Innovation Hub</small></span></a>
+      <p>A Bozoma Innovation Hub programme.</p>
+    </div>
+    <div><h4>The course</h4><ul>
+      <li><a href="../../home.html">Course home</a></li>
+      <li><a href="home.html">Module 7</a></li>
+      <li><a href="../list.html">All modules</a></li>
+    </ul></div>
+    <div><h4>Bozoma Innovation Hub</h4><ul>
+      <li><a href="https://bozomainnovationhub.com">bozomainnovationhub.com</a></li>
+    </ul></div>
+  </div>
+  <div class="foot-bottom"><span>&copy; Bozoma Innovation Hub, Aiyinasi, Ghana</span><span class="tagline">World-class begins at home.</span></div>
+</div></footer>
+</body>
+</html>
