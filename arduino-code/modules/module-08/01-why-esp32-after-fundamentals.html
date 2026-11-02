@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en" data-course="arduino-code" data-band="8">
+<head>
+  <meta charset="utf-8">
+  <script src="../../../assets/theme.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href="https://iot.bozomainnovationhub.com/arduino-code/modules/module-08/01-why-esp32-after-fundamentals">
+  <title>Why ESP32 after fundamentals · Module 8 · Arduino Coding</title>
+  <meta name="description" content="Uno vs ESP32, install Espressif board package, first Serial banner; Module 8 as IoT bridge.">
+  <meta name="theme-color" content="#24182E">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../../assets/brand/icon-192.png">
+  <link rel="apple-touch-icon" href="../../../assets/brand/icon-180.png">
+  <!-- app + link previews (tools/inject_head.py) -->
+  <link rel="manifest" href="../../../manifest.webmanifest">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="IoT at Bozoma Innovation Hub">
+  <meta property="og:title" content="Why ESP32 after fundamentals · Module 8 · Arduino Coding">
+  <meta property="og:description" content="Uno vs ESP32, install Espressif board package, first Serial banner; Module 8 as IoT bridge.">
+  <meta property="og:url" content="https://iot.bozomainnovationhub.com/arduino-code/modules/module-08/01-why-esp32-after-fundamentals">
+  <meta property="og:image" content="https://iot.bozomainnovationhub.com/assets/og/arduino-code-modules-module-08-01-why-esp32-after-fundamentals.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Why ESP32 after fundamentals · Module 8 · Arduino Coding">
+  <meta property="og:locale" content="en_GB">
+  <meta name="twitter:card" content="summary_large_image">
+  <script defer src="../../../assets/app.js"></script>
+  <!-- /app + link previews -->
+  <link rel="stylesheet" href="../../../assets/course.css">
+  <link rel="stylesheet" href="../../../assets/progress.css">
+  <script defer src="../../../assets/pager.js"></script>
+  <script defer src="../../../assets/check.js" data-profile="../../profile.html"></script>
+
+</head>
+<body>
+<a class="skip" href="#main">Skip to the lesson</a>
+<div class="topbar">
+  <a class="home" href="../../home.html"><img src="../../../assets/brand/logo-mark-white.png" alt="" width="36" height="36"><span class="lock"><b>Arduino Coding</b><small>Bozoma Innovation Hub</small></span></a>
+  <a class="hub" href="../../../index.html" title="All courses: IoT at Bozoma Innovation Hub">&larr; IoT at BIH</a>
+  <nav class="bandlinks" aria-label="Modules"><a href="../module-00/home.html">0</a><a href="../module-01/home.html">1</a><a href="../module-02/home.html">2</a><a href="../module-03/home.html">3</a><a href="../module-04/home.html">4</a><a href="../module-05/home.html">5</a><a href="../module-06/home.html">6</a><a href="../module-07/home.html">7</a><a href="home.html" aria-current="page">8</a><a href="../list.html">⋯</a></nav>
+  <a class="bih" href="https://bozomainnovationhub.com"><span class="long">bozomainnovationhub.com</span><span class="short">BIH website</span></a>
+</div>
+<div class="wrap" id="main">
+
+<nav aria-label="Sections">
+  <a href="#outcomes">Outcomes</a>
+  <a href="#concepts">Concepts</a>
+  <a href="#install">Install</a>
+  <a href="#lab">Lab</a>
+  <a href="#patterns">Patterns</a>
+  <a href="#check">Check yourself</a>
+  <a href="#mistakes">Mistakes</a>
+</nav>
+<header style="padding:3rem 0 1rem">
+  <p class="eyebrow">Arduino Coding &nbsp;·&nbsp; Module 8 &nbsp;·&nbsp; Lesson 8.1 &nbsp;·&nbsp; <span class="tag">ESP · HW</span></p>
+  <h1 style="margin:.8rem 0">Why ESP32 after fundamentals</h1>
+  <p class="col sub" style="font-size:1.1em">You already ship local stations. ESP32 adds radio, RAM, and 3.3&nbsp;V GPIO. Prove blink + Serial on new silicon before joining Wi‑Fi.</p>
+  <p class="col note" style="margin-top:.8rem">About 40 minutes. Desk ESP32 only — Tinkercad is not the path.</p>
+</header>
+
+<section class="part" id="outcomes">
+  <div class="parthead"><span class="tag">Start here</span><h2>Learning outcomes</h2></div>
+  <div class="col stack"><ol class="num">
+    <li>Contrast Uno-class AVR vs ESP32: Wi‑Fi, dual core, <strong>3.3&nbsp;V</strong> logic, pin caveats.</li>
+    <li>Install the Espressif ESP32 board package, select a DevKit, upload blink / Serial banner.</li>
+    <li>Explain why I/O, <code>millis</code>, FSM, and hygiene came before networking — and where future <code>esp32/</code> fits.</li>
+  </ol></div>
+</section>
+<section class="part" id="concepts">
+  <div class="parthead"><span class="tag">Concept</span><h2>Same sketch shape, new silicon</h2></div>
+  <div class="col stack">
+    <div class="callout" style="--bc:var(--accent)"><h5>Concept</h5>
+    <p>Uno is excellent for digital/analog I/O — <strong>no onboard Wi‑Fi</strong>. ESP32 adds radio, more RAM/Flash, often two cores, and <strong>3.3&nbsp;V GPIO</strong>. Module 7 voltage habits still apply. Module 8 is a <strong>bridge</strong> inside Arduino Coding, not the planned sibling <code>esp32/</code> catalogue card.</p></div>
+    <div class="scroll"><table><thead><tr><th></th><th>Uno (AVR)</th><th>ESP32 DevKit</th></tr></thead><tbody>
+      <tr><td>Logic</td><td><strong>5&nbsp;V</strong></td><td><strong>3.3&nbsp;V</strong></td></tr>
+      <tr><td>Wi‑Fi</td><td>No (shields exist)</td><td>Onboard (2.4&nbsp;GHz class)</td></tr>
+      <tr><td>Best here</td><td>Modules 0–7 local labs</td><td>Modules 8–9 networked labs</td></tr>
+    </tbody></table></div>
+  </div>
+</section>
+<section class="part" id="install">
+  <div class="parthead"><span class="tag">Part</span><h2>Board package checklist</h2></div>
+  <div class="col stack">
+    <ol class="num">
+      <li>Arduino IDE → <strong>Boards Manager</strong></li>
+      <li>Search <strong>esp32</strong> → install <strong>esp32 by Espressif Systems</strong></li>
+      <li>Tools → <strong>Board</strong> → your DevKit (e.g. ESP32 Dev Module)</li>
+      <li>Plug USB → Tools → <strong>Port</strong> → new COM/tty</li>
+      <li>Optional: Upload Speed 115200 if long cables fail</li>
+    </ol>
+    <p class="note">Prefer general-purpose GPIOs; avoid strapping pins for casual buttons; onboard LED pin varies — verify your board (often GPIO&nbsp;2).</p>
+  </div>
+</section>
+<section class="part" id="lab">
+  <div class="parthead"><span class="tag">Lab</span><h2>ESP32 hello</h2><span class="mins">20 min</span></div>
+  <div class="col stack">
+    <p>Project <code>M8-L01-Esp32Hello</code>. Install BSP; Board + Port; upload starter → Serial banner; move to complete (non-blocking blink + banner). Comment three Uno-vs-ESP32 wiring differences.</p>
+  </div>
+</section>
+<section class="part" id="patterns">
+  <div class="parthead"><span class="tag">Patterns</span><h2>Fundamentals before RF</h2></div>
+  <div class="col stack"><div class="callout"><h5>Pattern</h5>
+  <p>Prove blink + Serial on the ESP32 before joining Wi‑Fi. Same upload checklist discipline as Lesson 7.1 — new silicon. Assume 3.3&nbsp;V logic unless a sheet says otherwise.</p></div></div>
+</section>
+<section class="part" id="check">
+  <div class="parthead"><span class="tag">Check</span><h2>Check yourself</h2></div>
+  <div class="col stack"><ol class="num" data-check>
+    <li data-kind="open" data-see="#concepts">Name two hardware reasons ESP32 differs from Uno for this course.
+      <details><summary>Model answer</summary><p>Any two: Wi‑Fi, 3.3&nbsp;V logic, dual core / more RAM, different pins.</p></details></li>
+    <li data-kind="open" data-see="#install">What IDE feature installs ESP32 support?
+      <details><summary>Model answer</summary><p>Boards Manager (esp32 by Espressif Systems).</p></details></li>
+    <li data-kind="open" data-see="#concepts">Why did the syllabus put Wi‑Fi after Modules 0–7?
+      <details><summary>Model answer</summary><p>Need I/O, non-blocking, FSM, and hardware hygiene before RF complexity.</p></details></li>
+    <li data-kind="choice" data-choices="True|False" data-correct="1" data-see="#concepts" data-hint="Bridge, not replacement." data-why-0="Module 8 is a bridge; soft-link future esp32/." data-why-1="Correct — false.">Module 8 should replace the planned <code>esp32/</code> catalogue card.</li>
+  </ol></div>
+</section>
+<section class="part" id="mistakes">
+  <div class="parthead"><span class="tag">Watch outs</span><h2>Common mistakes</h2></div>
+  <div class="col stack">
+    <div class="scroll"><table><thead><tr><th>Mistake</th><th>Fix</th></tr></thead><tbody>
+      <tr><td>No BSP installed</td><td>Boards Manager → esp32</td></tr>
+      <tr><td>Wrong Board / Port</td><td>Match DevKit; re-pick Port</td></tr>
+      <tr><td>Charge-only cable</td><td>Data-capable USB</td></tr>
+      <tr><td>5&nbsp;V into GPIO</td><td>Level shift / 3.3&nbsp;V modules</td></tr>
+      <tr><td>Labs in Tinkercad</td><td>Desk ESP32 only</td></tr>
+    </tbody></table></div>
+  </div>
+</section>
+
+<nav class="pager" aria-label="Lessons">
+<a href="home.html"><span class="dir">Previous</span><span class="name">Module 8</span></a>
+<a class="next" href="02-wifi-connect-sketch.html"><span class="dir">Next</span><span class="name">8.2 Wi‑Fi connect &rarr;</span></a>
+</nav>
+</div>
+<footer class="bihfoot"><div class="wrap">
+  <p class="pagenote">Lesson 8.1 &nbsp;&middot;&nbsp; Module 8 &nbsp;&middot;&nbsp; Arduino Coding.</p>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a class="lockup" href="../../home.html"><img src="../../../assets/brand/logo-mark-white.png" alt="" width="42" height="42"><span>Arduino Coding<small>Bozoma Innovation Hub</small></span></a>
+      <p>A Bozoma Innovation Hub programme.</p>
+    </div>
+    <div><h4>The course</h4><ul>
+      <li><a href="../../home.html">Course home</a></li>
+      <li><a href="home.html">Module 8</a></li>
+      <li><a href="../list.html">All modules</a></li>
+    </ul></div>
+    <div><h4>Bozoma Innovation Hub</h4><ul>
+      <li><a href="https://bozomainnovationhub.com">bozomainnovationhub.com</a></li>
+    </ul></div>
+  </div>
+  <div class="foot-bottom"><span>&copy; Bozoma Innovation Hub, Aiyinasi, Ghana</span><span class="tagline">World-class begins at home.</span></div>
+</div></footer>
+</body>
+</html>

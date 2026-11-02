@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en" data-course="arduino-code" data-band="8">
+<head>
+  <meta charset="utf-8">
+  <script src="../../../assets/theme.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href="https://iot.bozomainnovationhub.com/arduino-code/modules/module-08/07-remote-environment-node">
+  <title>Build: Remote environment node · Module 8 · Arduino Coding</title>
+  <meta name="description" content="Spine: sensors + optional OLED + MQTT or HTTP + one networked actuator; Gate D.">
+  <meta name="theme-color" content="#24182E">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../../assets/brand/icon-192.png">
+  <link rel="apple-touch-icon" href="../../../assets/brand/icon-180.png">
+  <!-- app + link previews (tools/inject_head.py) -->
+  <link rel="manifest" href="../../../manifest.webmanifest">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="IoT at Bozoma Innovation Hub">
+  <meta property="og:title" content="Build: Remote environment node · Module 8 · Arduino Coding">
+  <meta property="og:description" content="Spine: sensors + optional OLED + MQTT or HTTP + one networked actuator; Gate D.">
+  <meta property="og:url" content="https://iot.bozomainnovationhub.com/arduino-code/modules/module-08/07-remote-environment-node">
+  <meta property="og:image" content="https://iot.bozomainnovationhub.com/assets/og/arduino-code-modules-module-08-07-remote-environment-node.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Build: Remote environment node · Module 8 · Arduino Coding">
+  <meta property="og:locale" content="en_GB">
+  <meta name="twitter:card" content="summary_large_image">
+  <script defer src="../../../assets/app.js"></script>
+  <!-- /app + link previews -->
+  <link rel="stylesheet" href="../../../assets/course.css">
+  <link rel="stylesheet" href="../../../assets/progress.css">
+  <script defer src="../../../assets/pager.js"></script>
+  <script defer src="../../../assets/check.js" data-profile="../../profile.html"></script>
+
+</head>
+<body>
+<a class="skip" href="#main">Skip to the lesson</a>
+<div class="topbar">
+  <a class="home" href="../../home.html"><img src="../../../assets/brand/logo-mark-white.png" alt="" width="36" height="36"><span class="lock"><b>Arduino Coding</b><small>Bozoma Innovation Hub</small></span></a>
+  <a class="hub" href="../../../index.html" title="All courses: IoT at Bozoma Innovation Hub">&larr; IoT at BIH</a>
+  <nav class="bandlinks" aria-label="Modules"><a href="../module-00/home.html">0</a><a href="../module-01/home.html">1</a><a href="../module-02/home.html">2</a><a href="../module-03/home.html">3</a><a href="../module-04/home.html">4</a><a href="../module-05/home.html">5</a><a href="../module-06/home.html">6</a><a href="../module-07/home.html">7</a><a href="home.html" aria-current="page">8</a><a href="../list.html">⋯</a></nav>
+  <a class="bih" href="https://bozomainnovationhub.com"><span class="long">bozomainnovationhub.com</span><span class="short">BIH website</span></a>
+</div>
+<div class="wrap" id="main">
+
+<nav aria-label="Sections">
+  <a href="#outcomes">Outcomes</a>
+  <a href="#brief">Brief</a>
+  <a href="#build">Build</a>
+  <a href="#checklist">Checklist</a>
+  <a href="#patterns">Patterns</a>
+  <a href="#check">Check yourself</a>
+  <a href="#mistakes">Mistakes</a>
+</nav>
+<header style="padding:3rem 0 1rem">
+  <p class="eyebrow">Arduino Coding &nbsp;·&nbsp; Module 8 &nbsp;·&nbsp; Lesson 8.7 &nbsp;·&nbsp; <span class="tag">ESP · HW · Spine</span></p>
+  <h1 style="margin:.8rem 0">Build: Remote environment node</h1>
+  <p class="col sub" style="font-size:1.1em">Sensor → Wi‑Fi → phone/browser or MQTT broker. Pick Path M or Path H deeply. Local sensing still matters when RF dies.</p>
+  <p class="col note" style="margin-top:.8rem">About 90–120 minutes. ESP32 desk hardware required for Gate D.</p>
+</header>
+
+<section class="part" id="outcomes">
+  <div class="parthead"><span class="tag">Start here</span><h2>Learning outcomes</h2></div>
+  <div class="col stack"><ol class="num">
+    <li>Ship a remote environment node: local sensor(s) + optional OLED + MQTT or HTTP + one networked actuator.</li>
+    <li>Combine Module 8 skills: Wi‑Fi, secrets, HTTP <em>or</em> MQTT, reconnect FSM, rate limits, fail-safe.</li>
+    <li>Meet <strong>Gate D</strong>; keep Gates A–C habits.</li>
+  </ol></div>
+</section>
+<section class="part" id="brief">
+  <div class="parthead"><span class="tag">Brief</span><h2>Path M or Path H</h2></div>
+  <div class="col stack">
+    <div class="scroll"><table><thead><tr><th>Path</th><th>Telemetry</th><th>Actuator</th></tr></thead><tbody>
+      <tr><td><strong>M — MQTT</strong></td><td>Publish JSON to <code>…/telemetry</code></td><td>Subscribe <code>…/cmd/actuator</code></td></tr>
+      <tr><td><strong>H — HTTP</strong></td><td><code>GET /sensors</code> or periodic POST</td><td><code>GET /actuator?state=on</code> (or POST)</td></tr>
+    </tbody></table></div>
+    <p><strong>MVP:</strong> header with wiring + ASCII diagram + SAFE_LEVEL + topic/URL plan; FSM with WIFI_CONNECTING / ONLINE / RECONNECT_WAIT; non-blocking sample + rate-limited publish; one physical sensor; OLED or Serial UI; actuator obeys network ONLINE and goes fail-safe offline; no passwords in committed <code>.ino</code>; no interactive <code>delay</code> on the main path.</p>
+  </div>
+</section>
+<section class="part" id="build">
+  <div class="parthead"><span class="tag">Build</span><h2>Wire &amp; integrate</h2><span class="mins">60+ min</span></div>
+  <div class="col stack">
+    <p>Project <code>M8-L07-EnvNode</code>. Typical map (verify your DevKit): DHT on GPIO&nbsp;4; actuator LED GPIO&nbsp;2 or external + 220&nbsp;Ω; OLED on default I²C (scan address); relay via driver module — never coil direct. Draw states first. JSON shape: <code>{"temp_c":…,"humidity":…,"state":"ONLINE","ts_ms":…}</code>.</p>
+    <div class="callout" style="--bc:var(--copper)"><h5>Honesty</h5>
+    <p><strong>[ESP] [HW]</strong> only for Gate D. Tinkercad is not accepted for the networking proof. Serial-only fake without RF is prep, not credit.</p></div>
+  </div>
+</section>
+<section class="part" id="checklist">
+  <div class="parthead"><span class="tag">Demo</span><h2>Demo checklist</h2></div>
+  <div class="col stack">
+    <ol class="num">
+      <li>Serial boot + IP (or MQTT connected)</li>
+      <li>Telemetry visible remotely</li>
+      <li>Actuator toggles from the network</li>
+      <li>AP off → fail-safe + samples continue</li>
+      <li>AP on → recovers to ONLINE</li>
+    </ol>
+  </div>
+</section>
+<section class="part" id="patterns">
+  <div class="parthead"><span class="tag">Patterns</span><h2>Spine stack</h2></div>
+  <div class="col stack"><div class="callout"><h5>Pattern</h5>
+  <p><code>secrets.h</code> (8.2/8.6) + net FSM (8.5) + HTTP or MQTT (8.3/8.4) + rate limit + fail-safe + optional OLED wrappers. Module 9 polishes capstones; deeper TLS/fleet → future <code>esp32/</code>.</p></div></div>
+</section>
+<section class="part" id="check">
+  <div class="parthead"><span class="tag">Check</span><h2>Check yourself</h2></div>
+  <div class="col stack"><ol class="num" data-check>
+    <li data-kind="open" data-see="#outcomes">Which gate does a reachable telemetry path prove?
+      <details><summary>Model answer</summary><p>Gate D.</p></details></li>
+    <li data-kind="open" data-see="#brief">What must the actuator do when Wi‑Fi drops?
+      <details><summary>Model answer</summary><p>Go to fail-safe (SAFE_LEVEL).</p></details></li>
+    <li data-kind="open" data-see="#build">Why is a Serial-only fake without RF insufficient for this spine?
+      <details><summary>Model answer</summary><p>Gate D needs a device reachable over Wi‑Fi with real telemetry.</p></details></li>
+    <li data-kind="choice" data-choices="True|False" data-correct="1" data-see="#patterns" data-hint="Bridge only." data-why-0="Soft-link deeper IoT to esp32/." data-why-1="Correct — false.">Finishing 8.7 means you should remove the planned <code>esp32/</code> course from the catalogue.</li>
+  </ol></div>
+</section>
+<section class="part" id="mistakes">
+  <div class="parthead"><span class="tag">Watch outs</span><h2>Common mistakes</h2></div>
+  <div class="col stack">
+    <div class="scroll"><table><thead><tr><th>Mistake</th><th>Fix</th></tr></thead><tbody>
+      <tr><td>Passwords in <code>.ino</code></td><td><code>secrets.h</code> + gitignore</td></tr>
+      <tr><td>Blocking reconnect</td><td>Lesson 8.5 FSM</td></tr>
+      <tr><td>5&nbsp;V echo / relay coil on GPIO</td><td>Modules + 3.3&nbsp;V rules</td></tr>
+      <tr><td>Guest AP isolation</td><td>Non-isolated LAN / hotspot</td></tr>
+      <tr><td>No fail-safe</td><td><code>applyFailSafe</code> on state exit</td></tr>
+      <tr><td>Tinkercad “demo”</td><td>Desk ESP32 only</td></tr>
+    </tbody></table></div>
+    <div class="callout" style="--bc:var(--copper)"><h5>What’s next</h5><p>Module 8 spine + Gate D complete. <strong>Module 9</strong> picks a capstone and polishes resilience, structure, and demo.</p></div>
+  </div>
+</section>
+
+<nav class="pager" aria-label="Lessons">
+<a href="06-security-and-ops-basics.html"><span class="dir">Previous</span><span class="name">8.6 Ops basics</span></a>
+<a class="next" href="home.html"><span class="dir">Next</span><span class="name">Module 8 complete &rarr;</span></a>
+</nav>
+</div>
+<footer class="bihfoot"><div class="wrap">
+  <p class="pagenote">Lesson 8.7 &nbsp;&middot;&nbsp; Module 8 &nbsp;&middot;&nbsp; Arduino Coding.</p>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a class="lockup" href="../../home.html"><img src="../../../assets/brand/logo-mark-white.png" alt="" width="42" height="42"><span>Arduino Coding<small>Bozoma Innovation Hub</small></span></a>
+      <p>A Bozoma Innovation Hub programme.</p>
+    </div>
+    <div><h4>The course</h4><ul>
+      <li><a href="../../home.html">Course home</a></li>
+      <li><a href="home.html">Module 8</a></li>
+      <li><a href="../list.html">All modules</a></li>
+    </ul></div>
+    <div><h4>Bozoma Innovation Hub</h4><ul>
+      <li><a href="https://bozomainnovationhub.com">bozomainnovationhub.com</a></li>
+    </ul></div>
+  </div>
+  <div class="foot-bottom"><span>&copy; Bozoma Innovation Hub, Aiyinasi, Ghana</span><span class="tagline">World-class begins at home.</span></div>
+</div></footer>
+</body>
+</html>

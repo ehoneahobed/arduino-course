@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en" data-course="arduino-code" data-band="8">
+<head>
+  <meta charset="utf-8">
+  <script src="../../../assets/theme.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href="https://iot.bozomainnovationhub.com/arduino-code/modules/module-08/04-mqtt-pubsub-pattern">
+  <title>MQTT pub/sub pattern · Module 8 · Arduino Coding</title>
+  <meta name="description" content="Broker, topics, PubSubClient; publish telemetry and subscribe to LED commands.">
+  <meta name="theme-color" content="#24182E">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../../assets/brand/icon-192.png">
+  <link rel="apple-touch-icon" href="../../../assets/brand/icon-180.png">
+  <!-- app + link previews (tools/inject_head.py) -->
+  <link rel="manifest" href="../../../manifest.webmanifest">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="IoT at Bozoma Innovation Hub">
+  <meta property="og:title" content="MQTT pub/sub pattern · Module 8 · Arduino Coding">
+  <meta property="og:description" content="Broker, topics, PubSubClient; publish telemetry and subscribe to LED commands.">
+  <meta property="og:url" content="https://iot.bozomainnovationhub.com/arduino-code/modules/module-08/04-mqtt-pubsub-pattern">
+  <meta property="og:image" content="https://iot.bozomainnovationhub.com/assets/og/arduino-code-modules-module-08-04-mqtt-pubsub-pattern.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="MQTT pub/sub pattern · Module 8 · Arduino Coding">
+  <meta property="og:locale" content="en_GB">
+  <meta name="twitter:card" content="summary_large_image">
+  <script defer src="../../../assets/app.js"></script>
+  <!-- /app + link previews -->
+  <link rel="stylesheet" href="../../../assets/course.css">
+  <link rel="stylesheet" href="../../../assets/progress.css">
+  <script defer src="../../../assets/pager.js"></script>
+  <script defer src="../../../assets/check.js" data-profile="../../profile.html"></script>
+
+</head>
+<body>
+<a class="skip" href="#main">Skip to the lesson</a>
+<div class="topbar">
+  <a class="home" href="../../home.html"><img src="../../../assets/brand/logo-mark-white.png" alt="" width="36" height="36"><span class="lock"><b>Arduino Coding</b><small>Bozoma Innovation Hub</small></span></a>
+  <a class="hub" href="../../../index.html" title="All courses: IoT at Bozoma Innovation Hub">&larr; IoT at BIH</a>
+  <nav class="bandlinks" aria-label="Modules"><a href="../module-00/home.html">0</a><a href="../module-01/home.html">1</a><a href="../module-02/home.html">2</a><a href="../module-03/home.html">3</a><a href="../module-04/home.html">4</a><a href="../module-05/home.html">5</a><a href="../module-06/home.html">6</a><a href="../module-07/home.html">7</a><a href="home.html" aria-current="page">8</a><a href="../list.html">⋯</a></nav>
+  <a class="bih" href="https://bozomainnovationhub.com"><span class="long">bozomainnovationhub.com</span><span class="short">BIH website</span></a>
+</div>
+<div class="wrap" id="main">
+
+<nav aria-label="Sections">
+  <a href="#outcomes">Outcomes</a>
+  <a href="#concepts">Concepts</a>
+  <a href="#topics">Topics</a>
+  <a href="#lab">Lab</a>
+  <a href="#patterns">Patterns</a>
+  <a href="#check">Check yourself</a>
+  <a href="#mistakes">Mistakes</a>
+</nav>
+<header style="padding:3rem 0 1rem">
+  <p class="eyebrow">Arduino Coding &nbsp;·&nbsp; Module 8 &nbsp;·&nbsp; Lesson 8.4 &nbsp;·&nbsp; <span class="tag">ESP · HW</span></p>
+  <h1 style="margin:.8rem 0">MQTT pub/sub pattern</h1>
+  <p class="col sub" style="font-size:1.1em">MQTT is a lightweight publish/subscribe bus. Unique DEVICE_ID topics; call mqtt.loop() often; public plaintext brokers are for learning only.</p>
+  <p class="col note" style="margin-top:.8rem">About 50 minutes. Desk ESP32 + MQTT client (Explorer / mosquitto_sub).</p>
+</header>
+
+<section class="part" id="outcomes">
+  <div class="parthead"><span class="tag">Start here</span><h2>Learning outcomes</h2></div>
+  <div class="col stack"><ol class="num">
+    <li>Explain MQTT: broker, topics, client.</li>
+    <li>Publish telemetry and subscribe to a command topic (LED on/off).</li>
+    <li>Verify with a desktop MQTT client — alternate Gate D path beside HTTP.</li>
+  </ol></div>
+</section>
+<section class="part" id="concepts">
+  <div class="parthead"><span class="tag">Concept</span><h2>Cast of characters</h2></div>
+  <div class="col stack">
+    <div class="callout" style="--bc:var(--accent)"><h5>Concept</h5>
+    <p>Broker relays messages. You publish to a telemetry topic; you subscribe to a command topic. Library Manager → <strong>PubSubClient</strong> (Nick O’Leary) with a <code>WiFiClient</code>. Lab brokers often use port <strong>1883</strong> plaintext.</p></div>
+    <div class="scroll"><table><thead><tr><th>Role</th><th>In this lab</th></tr></thead><tbody>
+      <tr><td>Broker</td><td>e.g. public learning host or local Mosquitto</td></tr>
+      <tr><td>Publisher</td><td>ESP32 → telemetry topic</td></tr>
+      <tr><td>Subscriber</td><td>ESP32 → cmd topic; also your laptop</td></tr>
+    </tbody></table></div>
+  </div>
+</section>
+<section class="part" id="topics">
+  <div class="parthead"><span class="tag">Part</span><h2>Topic plan</h2></div>
+  <div class="col stack">
+    <pre><code>course/m8/student42/telemetry   ← ESP32 publishes JSON
+course/m8/student42/cmd/led     ← you publish "on" / "off"</code></pre>
+    <p>Replace <code>student42</code> with initials + random digits. Colliding topics mean classmates toggle your LED.</p>
+  </div>
+</section>
+<section class="part" id="lab">
+  <div class="parthead"><span class="tag">Lab</span><h2>Publish + command LED</h2><span class="mins">30 min</span></div>
+  <div class="col stack">
+    <p>Project <code>M8-L04-Mqtt</code>. Add <code>MQTT_HOST</code> / <code>DEVICE_ID</code> to <code>secrets.h</code>; install PubSubClient; wire LED. Starter hello → complete telemetry + cmd subscribe. MQTT Explorer: see telemetry; publish <code>on</code>/<code>off</code>.</p>
+  </div>
+</section>
+<section class="part" id="patterns">
+  <div class="parthead"><span class="tag">Patterns</span><h2>Unique IDs, frequent loop</h2></div>
+  <div class="col stack"><div class="callout"><h5>Pattern</h5>
+  <p>Unique <code>DEVICE_ID</code> prefix. Call <code>mqtt.loop()</code> every loop so subscriptions deliver. Strict parse for commands. Harden / private broker for real control (8.6 + future <code>esp32/</code>).</p></div></div>
+</section>
+<section class="part" id="check">
+  <div class="parthead"><span class="tag">Check</span><h2>Check yourself</h2></div>
+  <div class="col stack"><ol class="num" data-check>
+    <li data-kind="open" data-see="#concepts">Who receives a message on a topic you are not subscribed to?
+      <details><summary>Model answer</summary><p>Nobody among your clients — only subscribers to that topic.</p></details></li>
+    <li data-kind="open" data-see="#topics">Why must DEVICE_ID be unique on a public broker?
+      <details><summary>Model answer</summary><p>Avoid colliding with classmates’ topics / commands.</p></details></li>
+    <li data-kind="open" data-see="#patterns">Which call must run frequently so subscriptions deliver?
+      <details><summary>Model answer</summary><p><code>mqtt.loop()</code> (and a connected client).</p></details></li>
+    <li data-kind="choice" data-choices="True|False" data-correct="1" data-see="#patterns" data-hint="Learning only." data-why-0="Not for real locks — harden later." data-why-1="Correct — false.">Public plaintext brokers are fine for home door-lock commands.</li>
+  </ol></div>
+</section>
+<section class="part" id="mistakes">
+  <div class="parthead"><span class="tag">Watch outs</span><h2>Common mistakes</h2></div>
+  <div class="col stack">
+    <div class="scroll"><table><thead><tr><th>Mistake</th><th>Fix</th></tr></thead><tbody>
+      <tr><td>Shared topic <code>test</code></td><td>Unique DEVICE_ID prefix</td></tr>
+      <tr><td>Never calling <code>mqtt.loop()</code></td><td>Call every loop</td></tr>
+      <tr><td>Wrong broker port</td><td>1883 plaintext lab; 8883 TLS</td></tr>
+      <tr><td>Blocking reconnect forever</td><td>Timeout + FSM in 8.5</td></tr>
+      <tr><td>Secrets in payload</td><td>Non-sensitive lab values</td></tr>
+    </tbody></table></div>
+  </div>
+</section>
+
+<nav class="pager" aria-label="Lessons">
+<a href="03-simple-http-server-or-client.html"><span class="dir">Previous</span><span class="name">8.3 HTTP</span></a>
+<a class="next" href="05-non-blocking-networking-and-fsm.html"><span class="dir">Next</span><span class="name">8.5 Net FSM &rarr;</span></a>
+</nav>
+</div>
+<footer class="bihfoot"><div class="wrap">
+  <p class="pagenote">Lesson 8.4 &nbsp;&middot;&nbsp; Module 8 &nbsp;&middot;&nbsp; Arduino Coding.</p>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a class="lockup" href="../../home.html"><img src="../../../assets/brand/logo-mark-white.png" alt="" width="42" height="42"><span>Arduino Coding<small>Bozoma Innovation Hub</small></span></a>
+      <p>A Bozoma Innovation Hub programme.</p>
+    </div>
+    <div><h4>The course</h4><ul>
+      <li><a href="../../home.html">Course home</a></li>
+      <li><a href="home.html">Module 8</a></li>
+      <li><a href="../list.html">All modules</a></li>
+    </ul></div>
+    <div><h4>Bozoma Innovation Hub</h4><ul>
+      <li><a href="https://bozomainnovationhub.com">bozomainnovationhub.com</a></li>
+    </ul></div>
+  </div>
+  <div class="foot-bottom"><span>&copy; Bozoma Innovation Hub, Aiyinasi, Ghana</span><span class="tagline">World-class begins at home.</span></div>
+</div></footer>
+</body>
+</html>
