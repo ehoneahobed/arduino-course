@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en" data-course="arduino-code" data-band="0">
+<head>
+  <meta charset="utf-8">
+  <script src="../../../assets/theme.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href="https://iot.bozomainnovationhub.com/arduino-code/modules/module-00/01-what-is-a-microcontroller">
+  <title>What is a microcontroller? · Module 0 · Arduino Coding</title>
+  <meta name="description" content="Board vs sketch vs upload, Uno pin landmarks, and a Tinkercad pin hunt. Lesson 0.1 of Arduino Coding.">
+  <meta name="theme-color" content="#24182E">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../../assets/brand/icon-192.png">
+  <link rel="apple-touch-icon" href="../../../assets/brand/icon-180.png">
+  <!-- app + link previews (tools/inject_head.py) -->
+  <link rel="manifest" href="../../../manifest.webmanifest">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="IoT at Bozoma Innovation Hub">
+  <meta property="og:title" content="What is a microcontroller? · Module 0 · Arduino Coding">
+  <meta property="og:description" content="Board vs sketch vs upload, Uno pin landmarks, and a Tinkercad pin hunt. Lesson 0.1 of Arduino Coding.">
+  <meta property="og:url" content="https://iot.bozomainnovationhub.com/arduino-code/modules/module-00/01-what-is-a-microcontroller">
+  <meta property="og:image" content="https://iot.bozomainnovationhub.com/assets/og/arduino-code-modules-module-00-01-what-is-a-microcontroller.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="What is a microcontroller? · Module 0 · Arduino Coding">
+  <meta property="og:locale" content="en_GB">
+  <meta name="twitter:card" content="summary_large_image">
+  <script defer src="../../../assets/app.js"></script>
+  <!-- /app + link previews -->
+  <link rel="stylesheet" href="../../../assets/course.css">
+  <link rel="stylesheet" href="../../../assets/progress.css">
+  <script defer src="../../../assets/pager.js"></script>
+  <script defer src="../../../assets/check.js" data-profile="../../profile.html"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to the lesson</a>
+<div class="topbar">
+  <a class="home" href="../../home.html"><img src="../../../assets/brand/logo-mark-white.png" alt="" width="36" height="36"><span class="lock"><b>Arduino Coding</b><small>Bozoma Innovation Hub</small></span></a>
+  <a class="hub" href="../../../index.html" title="All courses: IoT at Bozoma Innovation Hub">&larr; IoT at BIH</a>
+  <nav class="bandlinks" aria-label="Modules"><a href="home.html" aria-current="page">0</a><a href="../list.html">⋯</a></nav>
+  <a class="bih" href="https://bozomainnovationhub.com"><span class="long">bozomainnovationhub.com</span><span class="short">BIH website</span></a>
+</div>
+<div class="wrap" id="main">
+<nav aria-label="Sections">
+  <a href="#outcomes">Outcomes</a>
+  <a href="#concepts">Concepts</a>
+  <a href="#words">Three words</a>
+  <a href="#sense">Sense–decide–act</a>
+  <a href="#pins">Pin layout</a>
+  <a href="#hunt">Pin hunt</a>
+  <a href="#patterns">Patterns</a>
+  <a href="#check">Check yourself</a>
+  <a href="#mistakes">Mistakes</a>
+</nav>
+
+<header style="padding:3rem 0 1rem">
+  <p class="eyebrow">Arduino Coding &nbsp;·&nbsp; Module 0 &nbsp;·&nbsp; Lesson 0.1 &nbsp;·&nbsp; <span class="tag">TC</span></p>
+  <h1 style="margin:.8rem 0">What is a microcontroller?</h1>
+  <p class="col sub" style="font-size:1.1em">Board, sketch, and upload — then a short pin hunt in Tinkercad. No wiring and no coding yet.</p>
+  <p class="col note" style="margin-top:.8rem">About 25 minutes. You do not need a physical board for this lesson.</p>
+</header>
+
+<section class="part" id="outcomes">
+  <div class="parthead"><span class="tag">Start here</span><h2>Learning outcomes</h2></div>
+  <div class="col stack">
+    <p>By the end of this lesson you will be able to:</p>
+    <ol class="num">
+      <li>Explain the difference between a <strong>board</strong>, a <strong>sketch</strong>, and <strong>upload</strong> (or simulate).</li>
+      <li>Point to power, ground, and numbered digital pins on an Arduino Uno diagram and on a Tinkercad Arduino.</li>
+      <li>Describe, in plain language, what a microcontroller does in a simple gadget (sense → decide → act).</li>
+    </ol>
+    <h3 style="margin-top:.5rem">Tools</h3>
+    <ul class="plain">
+      <li><strong>Tinkercad Circuits</strong> — open a blank circuit and drop an Arduino Uno so you can click pins</li>
+      <li>Browser — optional Arduino Uno pinout PDF</li>
+      <li>Real Uno (optional) — same pin hunt on the silk-screen labels</li>
+    </ul>
+    <p class="note">You do <strong>not</strong> need to wire an LED yet. That starts later in Module 0.</p>
+  </div>
+</section>
+
+<section class="part" id="concepts">
+  <div class="parthead"><span class="tag">Concept</span><h2>What a microcontroller is</h2><span class="mins">5 min</span></div>
+  <div class="col stack">
+    <div class="callout" style="--bc:var(--accent)">
+      <h5>Concept</h5>
+      <p>A <strong>microcontroller</strong> is a tiny computer on a chip. It reads inputs (buttons, sensors), runs your program, and drives outputs (LEDs, motors, buzzers). An <strong>Arduino Uno</strong> is a <strong>board</strong>: the chip plus USB, power regulation, and easy pin headers so beginners can plug in wires without soldering.</p>
+    </div>
+    <p>It is <strong>not</strong> a full laptop. No keyboard, no big screen, tiny memory. It is <strong>not</strong> magic. If an LED does not light later, the cause is almost always wiring, pin number, or code — and you will learn to check those in order.</p>
+    <p>Tinkercad’s Arduino is a <strong>model</strong> of a real Uno. For Module 0 that model is excellent; later modules will note where simulation differs from hardware.</p>
+  </div>
+</section>
+
+<section class="part" id="words">
+  <div class="parthead"><span class="tag">Part 1</span><h2>Three words you will use every day</h2><span class="mins">5 min</span></div>
+  <div class="col stack">
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Word</th><th>Everyday meaning</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Board</strong></td><td>The physical (or simulated) Arduino you see: PCB with a USB port and rows of metal pins.</td></tr>
+          <tr><td><strong>Sketch</strong></td><td>Your program — the <code>.ino</code> file with <code>setup()</code> and <code>loop()</code>. Arduino people say “sketch” instead of “app.”</td></tr>
+          <tr><td><strong>Upload</strong></td><td>Copying the compiled sketch into the board’s memory so it runs even after you unplug USB. In Tinkercad you <strong>Start Simulation</strong> instead — same idea, no cable.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ol class="num">
+      <li>You <strong>write</strong> a sketch (instructions).</li>
+      <li>The computer <strong>compiles</strong> it (translates to machine code).</li>
+      <li>You <strong>upload</strong> (or simulate) so the microcontroller <strong>runs</strong> those instructions forever in a loop.</li>
+    </ol>
+  </div>
+</section>
+
+<section class="part" id="sense">
+  <div class="parthead"><span class="tag">Part 2</span><h2>Sense → decide → act</h2><span class="mins">3 min</span></div>
+  <div class="col stack">
+    <p>Almost every project in this course follows the same story:</p>
+    <ol class="num">
+      <li><strong>Sense</strong> — read a pin (button pressed? light dark?).</li>
+      <li><strong>Decide</strong> — run your logic (<code>if</code>, timers, state machines later).</li>
+      <li><strong>Act</strong> — write a pin (LED on, servo move, send a message).</li>
+    </ol>
+    <p>Module 0 mostly does the <strong>act</strong> part: turn an LED on and off. Sensing arrives in Module 1.</p>
+  </div>
+</section>
+
+<section class="part" id="pins">
+  <div class="parthead"><span class="tag">Part 3</span><h2>Meet the Uno pin layout</h2><span class="mins">5 min</span></div>
+  <div class="col stack">
+    <p>On an Arduino Uno (and the Tinkercad copy), find these landmarks:</p>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Label</th><th>What it is</th><th>Why you care</th></tr></thead>
+        <tbody>
+          <tr><td><strong>USB</strong></td><td>Connection to your computer</td><td>Power + upload on real boards</td></tr>
+          <tr><td><strong>5V</strong></td><td>Five-volt power pin</td><td>Feeds many beginner sensors</td></tr>
+          <tr><td><strong>GND</strong></td><td>Ground (0&nbsp;V reference)</td><td>Every circuit needs a shared ground</td></tr>
+          <tr><td><strong>Digital 0–13</strong></td><td>Pins that are HIGH (~5&nbsp;V) or LOW (0&nbsp;V)</td><td>LEDs, buttons, buzzers</td></tr>
+          <tr><td><strong>~</strong> on some pins</td><td>PWM-capable pins</td><td>Dimming LEDs later (Module 3)</td></tr>
+          <tr><td><strong>A0–A5</strong></td><td>Analog input pins</td><td>Knobs and light sensors later</td></tr>
+          <tr><td><strong>Pin 13</strong></td><td>Often tied to an on-board LED</td><td>Built-in blink without external parts</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note"><strong>Pin 13 tip:</strong> On a real Uno, a tiny LED near the board edge often mirrors pin 13. In Tinkercad you usually add an external LED so the blink is obvious.</p>
+    <p>The big rectangular chip in the middle of the Uno is the <strong>ATmega328P</strong> microcontroller. The rest of the board makes it easy to power, program, and wire.</p>
+  </div>
+</section>
+
+<section class="part" id="hunt">
+  <div class="parthead"><span class="tag">Lab</span><h2>Pin hunt in Tinkercad</h2><span class="mins">8 min</span></div>
+  <div class="col stack">
+    <ol class="num">
+      <li>Go to <a href="https://www.tinkercad.com/" rel="noopener">Tinkercad</a> and sign in (free account).</li>
+      <li>Open <strong>Circuits</strong> → <strong>Create new Circuit</strong>.</li>
+      <li>From the components panel, search <strong>Arduino Uno</strong> and drag it onto the workplane.</li>
+      <li>Click the board. Hover or click pins until you can find:
+        <ul class="plain">
+          <li><code>5V</code> and at least one <code>GND</code></li>
+          <li>Digital pins <code>8</code>–<code>13</code></li>
+          <li>Analog pins <code>A0</code> and <code>A1</code></li>
+        </ul>
+      </li>
+      <li>Optional: open the <a href="https://docs.arduino.cc/resources/pinouts/A000066-full-pinout.pdf" rel="noopener">Arduino Uno pinout</a> in another tab and match three pins by name.</li>
+    </ol>
+    <p>You are done when you can say out loud: “Pin 13 is a digital pin; GND is ground; 5V is power.”</p>
+    <div class="sketchbox" style="--bc:var(--accent)">
+      <h2>Starter sketch</h2>
+      <p>No sketch required this lesson. If you open the Code panel early, leave it alone for now.</p>
+<pre><code>// Lesson 0.1 — no code yet.
+// Next up: Lesson 0.2 (IDE) and 0.3 (first circuit).
+</code></pre>
+    </div>
+  </div>
+</section>
+
+<section class="part" id="patterns">
+  <div class="parthead"><span class="tag">Patterns</span><h2>Preview</h2></div>
+  <div class="col stack">
+    <div class="callout">
+      <h5>Pattern (preview)</h5>
+      <p>Later we will name pins with <code>const int ledPin = 13;</code> instead of sprinkling bare <code>13</code>s through the code. Naming is a <strong>pattern</strong> for clarity. You will start using it when Blink arrives later in Module 0.</p>
+    </div>
+  </div>
+</section>
+
+<section class="part" id="check">
+  <div class="parthead"><span class="tag">Check</span><h2>Check yourself</h2></div>
+  <div class="col stack">
+    <ol class="num" data-check>
+      <li data-kind="open" data-see="#words">In one sentence each, what is a <strong>board</strong>, a <strong>sketch</strong>, and <strong>upload</strong>?
+        <details><summary>Model answer</summary><p>Board = the hardware or simulation you see; sketch = your program; upload = put the program on the board (or Start Simulation in Tinkercad).</p></details>
+      </li>
+      <li data-kind="open" data-see="#pins">Why does every LED circuit need a connection to <strong>GND</strong>?
+        <details><summary>Model answer</summary><p>Ground completes the circuit — current needs a return path.</p></details>
+      </li>
+      <li data-kind="choice" data-choices="Same kind of pin|Different roles later|Neither is a pin" data-correct="1" data-see="#pins" data-hint="Both connect to the chip, but they are used differently later." data-why-0="They look similar on the board, but A0 is primarily for analog reading." data-why-1="Correct — both are pins; A0 is mainly analog, 13 is digital I/O." data-why-2="Both are real pins on the Uno.">Is pin <strong>A0</strong> the same kind of pin as digital <strong>13</strong>?</li>
+      <li data-kind="choice" data-choices="True|False" data-correct="0" data-see="#words" data-hint="Think about what Start Simulation stands in for." data-why-0="True for our early labs — simulation is the stand-in for upload." data-why-1="In Module 0, Start Simulation is the learning stand-in for uploading.">True or false: Tinkercad’s “Start Simulation” is the learning stand-in for uploading to a real board in Module 0.</li>
+    </ol>
+  </div>
+</section>
+
+<section class="part" id="mistakes">
+  <div class="parthead"><span class="tag">Watch outs</span><h2>Common mistakes</h2></div>
+  <div class="col stack">
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Mistake</th><th>Fix</th></tr></thead>
+        <tbody>
+          <tr><td>Confusing the USB cable with the program</td><td>The cable only carries power/data; the sketch is the instructions.</td></tr>
+          <tr><td>Looking for “the computer” inside Tinkercad</td><td>The Arduino <em>is</em> the computer for your circuit.</td></tr>
+          <tr><td>Assuming pin numbers are arbitrary forever</td><td>Pin numbers must match your wiring. Change either code or wires — keep them paired.</td></tr>
+          <tr><td>Skipping the pin hunt</td><td>Five minutes now saves confusion when Blink “does nothing” later.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout" style="--bc:var(--copper)">
+      <h5>Stretch (optional)</h5>
+      <p>Sketch on paper a tiny gadget: a plant light that turns on when a room is dark. Label boxes for <strong>Sense</strong>, <strong>Decide</strong>, and <strong>Act</strong>. Keep the sketch; a later module will build something similar.</p>
+    </div>
+  </div>
+</section>
+
+<nav class="pager" aria-label="Lessons">
+<a href="home.html"><span class="dir">Back to</span><span class="name">Module 0</span></a>
+<a class="next" href="../../home.html"><span class="dir">Course</span><span class="name">Arduino Coding home &rarr;</span></a>
+</nav>
+
+</div>
+<footer class="bihfoot">
+<div class="wrap">
+  <p class="pagenote">Lesson 0.1 &nbsp;&middot;&nbsp; Module 0 &nbsp;&middot;&nbsp; Arduino Coding. Sample HTML converted from the draft syllabus.</p>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a class="lockup" href="../../home.html"><img src="../../../assets/brand/logo-mark-white.png" alt="" width="42" height="42"><span>Arduino Coding<small>Bozoma Innovation Hub</small></span></a>
+      <p>A Bozoma Innovation Hub programme.</p>
+    </div>
+    <div><h4>The course</h4><ul>
+      <li><a href="../../home.html">Course home</a></li>
+      <li><a href="home.html">Module 0</a></li>
+      <li><a href="../list.html">All modules</a></li>
+    </ul></div>
+    <div><h4>Bozoma Innovation Hub</h4><ul>
+      <li><a href="https://bozomainnovationhub.com">bozomainnovationhub.com</a></li>
+    </ul></div>
+  </div>
+  <div class="foot-bottom"><span>&copy; Bozoma Innovation Hub, Aiyinasi, Ghana</span><span class="tagline">World-class begins at home.</span></div>
+</div>
+</footer>
+</body>
+</html>

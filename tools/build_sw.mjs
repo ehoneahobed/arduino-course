@@ -37,7 +37,7 @@ for (const rel of walk('')) {
 }
 
 // Saved on the first visit: the pages a learner needs first, and everything every page loads.
-const CORE_RE = /^(|offline|manifest\.webmanifest|arduino\/(home|profile)|arduino\/bands\/band-\d+|assets\/[^/]+\.(css|js)|assets\/labs\/labs\.(css|js)|assets\/fonts\/[^/]+\.woff2|assets\/brand\/(logo-mark-white|logo-mark|icon-192)\.png)$/;
+const CORE_RE = /^(|offline|manifest\.webmanifest|arduino\/(home|profile)|arduino\/bands\/band-\d+|arduino-code\/(home|profile|modules\/list|modules\/module-00\/home|modules\/module-00\/01-what-is-a-microcontroller)|assets\/[^/]+\.(css|js)|assets\/labs\/labs\.(css|js)|assets\/fonts\/[^/]+\.woff2|assets\/brand\/(logo-mark-white|logo-mark|icon-192)\.png)$/;
 const core = Object.keys(files).filter((k) => CORE_RE.test(k));
 
 // vercel.json's redirects, so old addresses still work with no internet.

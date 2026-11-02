@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://iot.bozomainnovationhub.com/</loc><lastmod>2026-10-30</lastmod></url>
+  <url><loc>https://iot.bozomainnovationhub.com/</loc><lastmod>2026-11-02</lastmod></url>
+  <url><loc>https://iot.bozomainnovationhub.com/arduino-code/home</loc><lastmod>2026-11-02</lastmod></url>
+  <url><loc>https://iot.bozomainnovationhub.com/arduino-code/guide</loc><lastmod>2026-11-02</lastmod></url>
+  <url><loc>https://iot.bozomainnovationhub.com/arduino-code/profile</loc><lastmod>2026-11-02</lastmod></url>
+  <url><loc>https://iot.bozomainnovationhub.com/arduino-code/modules/list</loc><lastmod>2026-11-02</lastmod></url>
+  <url><loc>https://iot.bozomainnovationhub.com/arduino-code/modules/module-00/home</loc><lastmod>2026-11-02</lastmod></url>
+  <url><loc>https://iot.bozomainnovationhub.com/arduino-code/modules/module-00/01-what-is-a-microcontroller</loc><lastmod>2026-11-02</lastmod></url>
   <url><loc>https://iot.bozomainnovationhub.com/arduino/guide</loc><lastmod>2026-10-30</lastmod></url>
   <url><loc>https://iot.bozomainnovationhub.com/arduino/home</loc><lastmod>2026-10-30</lastmod></url>
   <url><loc>https://iot.bozomainnovationhub.com/arduino/labs</loc><lastmod>2026-10-30</lastmod></url>

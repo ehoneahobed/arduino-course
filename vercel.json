@@ -9,6 +9,21 @@
       "permanent": false
     },
     {
+      "source": "/arduino-code",
+      "destination": "/arduino-code/home",
+      "permanent": false
+    },
+    {
+      "source": "/arduino-code/modules",
+      "destination": "/arduino-code/modules/list",
+      "permanent": false
+    },
+    {
+      "source": "/arduino-code/modules/module-00",
+      "destination": "/arduino-code/modules/module-00/home",
+      "permanent": false
+    },
+    {
       "source": "/bands/:path*",
       "destination": "/arduino/bands/:path*",
       "permanent": true

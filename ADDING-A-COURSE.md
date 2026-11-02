@@ -1,7 +1,8 @@
 # Adding a course to IoT at Bozoma Innovation Hub
 
-The site is a home for several courses. The Arduino Ladder is the first; ESP32 (Wi-Fi and IoT), Raspberry Pi
-and Code for makers are planned. Every course lives in its own folder and shares the parts in `assets/`.
+The site is a home for several courses. The Arduino Ladder and Arduino Coding are open; ESP32 (Wi-Fi and IoT),
+Raspberry Pi and Code for makers (Python / MicroPython) are planned. Every course lives in its own folder and
+shares the parts in `assets/`.
 
 ```
 index.html          the site home: the course catalogue and the learning path
@@ -14,13 +15,14 @@ assets/             shared by every course
   app.js              the offline app (registers sw.js), "Save the whole course", install hint
   labs/               the 3D engine (three.js runtime, parts, the 3D Workshop thumbnails)
   brand/ fonts/ vendor/
-arduino/            the Arduino Ladder (index, guide, labs.html, bands/, projects/, sketches/, downloads/)
+arduino/            the Arduino Ladder (home, guide, labs.html, bands/, projects/, sketches/, downloads/)
+arduino-code/        Arduino Coding (home, guide, profile, modules/, sketches/) — C++ / Tinkercad track
 tools/              the Arduino Ladder's build and checking scripts
 ```
 
 ## Steps
 
-1. **Make the folder**, named for the board or topic in lower case: `esp32/`, `raspberry-pi/`, `code/`.
+1. **Make the folder**, named for the board or topic in lower case: `esp32/`, `raspberry-pi/`, `code/`, `arduino-code/`.
    Copy `arduino/home.html` and one band page as a starting point. Pages one level down use
    `../assets/…`; pages two levels down use `../../assets/…`.
 2. **Keep the shared page parts.** In every page's `<head>`, straight after `<meta charset>`, load

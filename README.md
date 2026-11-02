@@ -7,11 +7,12 @@ never done any of it before. The site home (`index.html`) lists the courses and 
 | Course | Folder | Status |
 |---|---|---|
 | The Arduino Ladder | `arduino/` | Open |
+| Arduino Coding | `arduino-code/` | Open (scaffold; Module 0 sample lesson) |
 | Wi-Fi and the Internet of Things (ESP32) | `esp32/` | Planned |
 | Raspberry Pi | `raspberry-pi/` | Planned |
 | Code for makers (Python, MicroPython) | `code/` | Planned |
 
-To add one, see [ADDING-A-COURSE.md](ADDING-A-COURSE.md). Everything below is about the first course.
+To add one, see [ADDING-A-COURSE.md](ADDING-A-COURSE.md). Everything below is about the first course (The Arduino Ladder). Arduino Coding lives in `arduino-code/` and shares `assets/`.
 
 **Live site:** https://iot.bozomainnovationhub.com (the old https://arduino-course-psi.vercel.app address still works)
 
