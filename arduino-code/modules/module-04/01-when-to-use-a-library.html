@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en" data-course="arduino-code" data-band="4">
+<head>
+  <meta charset="utf-8">
+  <script src="../../../assets/theme.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href="https://iot.bozomainnovationhub.com/arduino-code/modules/module-04/01-when-to-use-a-library">
+  <title>When to use a library · Module 4 · Arduino Coding</title>
+  <meta name="description" content="When libraries beat bit-banging; #include, attach/write APIs; TC† vs HW Library Manager.">
+  <meta name="theme-color" content="#24182E">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../../assets/brand/icon-192.png">
+  <link rel="apple-touch-icon" href="../../../assets/brand/icon-180.png">
+  <!-- app + link previews (tools/inject_head.py) -->
+  <link rel="manifest" href="../../../manifest.webmanifest">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="IoT at Bozoma Innovation Hub">
+  <meta property="og:title" content="When to use a library · Module 4 · Arduino Coding">
+  <meta property="og:description" content="When libraries beat bit-banging; #include, attach/write APIs; TC† vs HW Library Manager.">
+  <meta property="og:url" content="https://iot.bozomainnovationhub.com/arduino-code/modules/module-04/01-when-to-use-a-library">
+  <meta property="og:image" content="https://iot.bozomainnovationhub.com/assets/og/arduino-code-modules-module-04-01-when-to-use-a-library.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="When to use a library · Module 4 · Arduino Coding">
+  <meta property="og:locale" content="en_GB">
+  <meta name="twitter:card" content="summary_large_image">
+  <script defer src="../../../assets/app.js"></script>
+  <!-- /app + link previews -->
+  <link rel="stylesheet" href="../../../assets/course.css">
+  <link rel="stylesheet" href="../../../assets/progress.css">
+  <script defer src="../../../assets/pager.js"></script>
+  <script defer src="../../../assets/check.js" data-profile="../../profile.html"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to the lesson</a>
+<div class="topbar">
+  <a class="home" href="../../home.html"><img src="../../../assets/brand/logo-mark-white.png" alt="" width="36" height="36"><span class="lock"><b>Arduino Coding</b><small>Bozoma Innovation Hub</small></span></a>
+  <a class="hub" href="../../../index.html" title="All courses: IoT at Bozoma Innovation Hub">&larr; IoT at BIH</a>
+  <nav class="bandlinks" aria-label="Modules"><a href="../module-00/home.html">0</a><a href="../module-01/home.html">1</a><a href="../module-02/home.html">2</a><a href="../module-03/home.html">3</a><a href="home.html" aria-current="page">4</a><a href="../list.html">⋯</a></nav>
+  <a class="bih" href="https://bozomainnovationhub.com"><span class="long">bozomainnovationhub.com</span><span class="short">BIH website</span></a>
+</div>
+<div class="wrap" id="main">
+
+<nav aria-label="Sections">
+  <a href="#outcomes">Outcomes</a>
+  <a href="#concepts">Concepts</a>
+  <a href="#when">When</a>
+  <a href="#api">API</a>
+  <a href="#lab">Lab</a>
+  <a href="#patterns">Patterns</a>
+  <a href="#check">Check yourself</a>
+  <a href="#mistakes">Mistakes</a>
+</nav>
+<header style="padding:3rem 0 1rem">
+  <p class="eyebrow">Arduino Coding &nbsp;·&nbsp; Module 4 &nbsp;·&nbsp; Lesson 4.1 &nbsp;·&nbsp; <span class="tag">TC†</span> / <span class="tag">HW</span></p>
+  <h1 style="margin:.8rem 0">When to use a library</h1>
+  <p class="col sub" style="font-size:1.1em">A library is reusable device code. You <code>#include</code>, create an object, <code>attach</code>/<code>begin</code>, and call a documented API — then ship features instead of reinventing pulse trains.</p>
+  <p class="col note" style="margin-top:.8rem">About 40 minutes. Servo smoke-test; DHT waits for hardware.</p>
+</header>
+<section class="part" id="outcomes">
+  <div class="parthead"><span class="tag">Start here</span><h2>Learning outcomes</h2></div>
+  <div class="col stack"><ol class="num">
+    <li>Explain when a library beats writing low-level timing or protocol code yourself.</li>
+    <li>Include a library and call a documented API (<code>attach</code>, <code>write</code>, …).</li>
+    <li>Contrast <strong>[TC†]</strong> library limits with <strong>[HW]</strong> Library Manager installs.</li>
+  </ol></div>
+</section>
+<section class="part" id="concepts">
+  <div class="parthead"><span class="tag">Concept</span><h2>Ship features, not every microsecond</h2></div>
+  <div class="col stack">
+    <div class="callout" style="--bc:var(--accent)"><h5>Concept</h5>
+    <p>For DHT checksums, I²C displays, and servo pulses, a maintained library is almost always correct at beginner–intermediate level. You trade full control for working devices.</p></div>
+    <div class="callout"><h5>[TC†] honesty</h5>
+    <p>Tinkercad’s catalog is small — <strong>Servo</strong> is the reliable star. DHT / many OLED helpers may be absent. Learn the <code>#include</code> + API habit here; install real libs on hardware for 4.2–4.3.</p></div>
+  </div>
+</section>
+<section class="part" id="when">
+  <div class="parthead"><span class="tag">Part</span><h2>When to reach for a library</h2></div>
+  <div class="col stack">
+    <div class="scroll"><table><thead><tr><th>Situation</th><th>Prefer</th></tr></thead><tbody>
+      <tr><td>Blink, button, <code>millis</code> timer</td><td>Your own code</td></tr>
+      <tr><td>Servo, DHT, OLED, MQTT</td><td><strong>Library</strong></td></tr>
+      <tr><td>Datasheet mentions &lt;50&nbsp;µs, CRC, I²C</td><td>Library first</td></tr>
+    </tbody></table></div>
+  </div>
+</section>
+<section class="part" id="api">
+  <div class="parthead"><span class="tag">Part</span><h2>Anatomy</h2></div>
+  <div class="col stack">
+<pre><code>#include &lt;Servo.h&gt;     // 1. bring API in
+Servo needle;          // 2. object
+void setup() { needle.attach(9); }
+void loop()  { needle.write(90); }
+</code></pre>
+    <p><strong>[HW]</strong>: Sketch → Include Library → Manage Libraries → install → open Examples → change only pins. Prefer Library Manager over random GitHub zips.</p>
+  </div>
+</section>
+<section class="part" id="lab">
+  <div class="parthead"><span class="tag">Lab</span><h2>Servo smoke-test</h2><span class="mins">15 min</span></div>
+  <div class="col stack">
+    <p>Circuit <code>M4-L01-LibraryIntro</code>: Uno + Servo, signal→9, VCC→5V, GND→GND. Confirm you can say: “I included Servo, attached 9, called <code>write</code>.”</p>
+    <div class="sketchbox" style="--bc:var(--accent)"><h2>Complete shape</h2>
+<pre><code>#include &lt;Servo.h&gt;
+Servo demoServo;
+const int servoPin = 9;
+void setup() {
+  demoServo.attach(servoPin);
+  Serial.begin(9600);
+}
+void loop() {
+  demoServo.write(90); delay(800);
+  demoServo.write(0);  delay(800);
+  demoServo.write(180); delay(800);
+}
+</code></pre></div>
+    <p class="note"><code>delay</code> is OK for this one-device smoke-test. Spine builds return to <code>millis</code>.</p>
+  </div>
+</section>
+<section class="part" id="patterns">
+  <div class="parthead"><span class="tag">Patterns</span><h2>Documented API over bit-banging</h2></div>
+  <div class="col stack"><div class="callout"><h5>Pattern</h5>
+  <p>Prefer <code>myServo.write(90)</code> to hand-rolled pulses. Read the Example first. Wrap library calls in thin project helpers (<code>pointNeedle(angle)</code>) so you can swap libraries later.</p></div></div>
+</section>
+<section class="part" id="check">
+  <div class="parthead"><span class="tag">Check</span><h2>Check yourself</h2></div>
+  <div class="col stack"><ol class="num" data-check>
+    <li data-kind="open" data-see="#api">What does <code>#include &lt;Servo.h&gt;</code> do?
+      <details><summary>Model answer</summary><p>Pulls in the library’s declarations so you can use <code>Servo</code> and its methods.</p></details></li>
+    <li data-kind="open" data-see="#concepts">Why prefer a library for DHT-style sensors at first?
+      <details><summary>Model answer</summary><p>Precise timing/checksums — maintained libraries are faster and less error-prone.</p></details></li>
+    <li data-kind="choice" data-choices="True|False" data-correct="1" data-see="#concepts" data-hint="TC catalog is limited." data-why-0="Tinkercad is limited." data-why-1="Correct — false; TC† catalog is small.">Every IDE Library Manager library also exists in Tinkercad.</li>
+    <li data-kind="open" data-see="#api">Where should you look first after installing a library?
+      <details><summary>Model answer</summary><p>The Examples that ship with it (plus README/docs).</p></details></li>
+  </ol></div>
+</section>
+<section class="part" id="mistakes">
+  <div class="parthead"><span class="tag">Watch outs</span><h2>Common mistakes</h2></div>
+  <div class="col stack">
+    <div class="scroll"><table><thead><tr><th>Mistake</th><th>Fix</th></tr></thead><tbody>
+      <tr><td>Forgot <code>#include</code></td><td>Add <code>#include &lt;Servo.h&gt;</code></td></tr>
+      <tr><td>Never <code>attach</code>/<code>begin</code></td><td>Call setup method in <code>setup()</code></td></tr>
+      <tr><td>Assuming TC has DHT</td><td>Use [HW] for DHT; Servo for TC practice</td></tr>
+    </tbody></table></div>
+  </div>
+</section>
+
+<nav class="pager" aria-label="Lessons">
+<a href="home.html"><span class="dir">Previous</span><span class="name">Module 4</span></a>
+<a class="next" href="02-ultrasonic-distance.html"><span class="dir">Next</span><span class="name">4.2 Ultrasonic distance &rarr;</span></a>
+</nav>
+</div>
+<footer class="bihfoot"><div class="wrap">
+  <p class="pagenote">Lesson 4.1 &nbsp;&middot;&nbsp; Module 4 &nbsp;&middot;&nbsp; Arduino Coding.</p>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a class="lockup" href="../../home.html"><img src="../../../assets/brand/logo-mark-white.png" alt="" width="42" height="42"><span>Arduino Coding<small>Bozoma Innovation Hub</small></span></a>
+      <p>A Bozoma Innovation Hub programme.</p>
+    </div>
+    <div><h4>The course</h4><ul>
+      <li><a href="../../home.html">Course home</a></li>
+      <li><a href="home.html">Module 4</a></li>
+      <li><a href="../list.html">All modules</a></li>
+    </ul></div>
+    <div><h4>Bozoma Innovation Hub</h4><ul>
+      <li><a href="https://bozomainnovationhub.com">bozomainnovationhub.com</a></li>
+    </ul></div>
+  </div>
+  <div class="foot-bottom"><span>&copy; Bozoma Innovation Hub, Aiyinasi, Ghana</span><span class="tagline">World-class begins at home.</span></div>
+</div></footer>
+</body>
+</html>

@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en" data-course="arduino-code" data-band="4">
+<head>
+  <meta charset="utf-8">
+  <script src="../../../assets/theme.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href="https://iot.bozomainnovationhub.com/arduino-code/modules/module-04/02-ultrasonic-distance">
+  <title>Ultrasonic distance · Module 4 · Arduino Coding</title>
+  <meta name="description" content="HC-SR04 trigger/echo, pulseIn to cm, validate timeouts before actuators.">
+  <meta name="theme-color" content="#24182E">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../../assets/brand/icon-192.png">
+  <link rel="apple-touch-icon" href="../../../assets/brand/icon-180.png">
+  <!-- app + link previews (tools/inject_head.py) -->
+  <link rel="manifest" href="../../../manifest.webmanifest">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="IoT at Bozoma Innovation Hub">
+  <meta property="og:title" content="Ultrasonic distance · Module 4 · Arduino Coding">
+  <meta property="og:description" content="HC-SR04 trigger/echo, pulseIn to cm, validate timeouts before actuators.">
+  <meta property="og:url" content="https://iot.bozomainnovationhub.com/arduino-code/modules/module-04/02-ultrasonic-distance">
+  <meta property="og:image" content="https://iot.bozomainnovationhub.com/assets/og/arduino-code-modules-module-04-02-ultrasonic-distance.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Ultrasonic distance · Module 4 · Arduino Coding">
+  <meta property="og:locale" content="en_GB">
+  <meta name="twitter:card" content="summary_large_image">
+  <script defer src="../../../assets/app.js"></script>
+  <!-- /app + link previews -->
+  <link rel="stylesheet" href="../../../assets/course.css">
+  <link rel="stylesheet" href="../../../assets/progress.css">
+  <script defer src="../../../assets/pager.js"></script>
+  <script defer src="../../../assets/check.js" data-profile="../../profile.html"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to the lesson</a>
+<div class="topbar">
+  <a class="home" href="../../home.html"><img src="../../../assets/brand/logo-mark-white.png" alt="" width="36" height="36"><span class="lock"><b>Arduino Coding</b><small>Bozoma Innovation Hub</small></span></a>
+  <a class="hub" href="../../../index.html" title="All courses: IoT at Bozoma Innovation Hub">&larr; IoT at BIH</a>
+  <nav class="bandlinks" aria-label="Modules"><a href="../module-00/home.html">0</a><a href="../module-01/home.html">1</a><a href="../module-02/home.html">2</a><a href="../module-03/home.html">3</a><a href="home.html" aria-current="page">4</a><a href="../list.html">⋯</a></nav>
+  <a class="bih" href="https://bozomainnovationhub.com"><span class="long">bozomainnovationhub.com</span><span class="short">BIH website</span></a>
+</div>
+<div class="wrap" id="main">
+
+<nav aria-label="Sections">
+  <a href="#outcomes">Outcomes</a>
+  <a href="#concepts">Concepts</a>
+  <a href="#convert">Convert</a>
+  <a href="#lab">Lab</a>
+  <a href="#patterns">Patterns</a>
+  <a href="#check">Check yourself</a>
+  <a href="#mistakes">Mistakes</a>
+</nav>
+<header style="padding:3rem 0 1rem">
+  <p class="eyebrow">Arduino Coding &nbsp;·&nbsp; Module 4 &nbsp;·&nbsp; Lesson 4.2 &nbsp;·&nbsp; <span class="tag">TC†</span> → <span class="tag">HW</span></p>
+  <h1 style="margin:.8rem 0">Ultrasonic distance</h1>
+  <p class="col sub" style="font-size:1.1em">Ping TRIG, measure ECHO with <code>pulseIn</code>, convert µs → cm, then <strong>reject</strong> timeouts and absurd values before any alarm.</p>
+  <p class="col note" style="margin-top:.8rem">About 45 minutes. Hardware preferred — sim timing is idealized.</p>
+</header>
+<section class="part" id="outcomes">
+  <div class="parthead"><span class="tag">Start here</span><h2>Learning outcomes</h2></div>
+  <div class="col stack"><ol class="num">
+    <li>Explain HC-SR04-style trigger / echo distance at a practical level.</li>
+    <li>Measure with <code>pulseIn</code>, convert to centimeters, print on Serial.</li>
+    <li>Handle out-of-range / timeout readings so garbage does not drive actuators.</li>
+  </ol></div>
+</section>
+<section class="part" id="concepts">
+  <div class="parthead"><span class="tag">Concept</span><h2>Pulse-echo</h2></div>
+  <div class="col stack">
+    <div class="callout" style="--bc:var(--accent)"><h5>Concept</h5>
+    <p>Distance ≈ (travel time × speed of sound) / 2. Pulse TRIG HIGH ~10&nbsp;µs, then <code>pulseIn(ECHO, HIGH)</code> for echo width in microseconds. Bad readings (no echo, soft targets) are the real lesson.</p></div>
+    <div class="scroll"><table><thead><tr><th>Pin</th><th>Role</th></tr></thead><tbody>
+      <tr><td>TRIG</td><td>Output — start a ping</td></tr>
+      <tr><td>ECHO</td><td>Input — pulse width ∝ distance</td></tr>
+      <tr><td>VCC / GND</td><td>5&nbsp;V and ground (classic HC-SR04)</td></tr>
+    </tbody></table></div>
+  </div>
+</section>
+<section class="part" id="convert">
+  <div class="parthead"><span class="tag">Part</span><h2>µs → cm and timeouts</h2></div>
+  <div class="col stack">
+<pre><code>unsigned long us = pulseIn(echoPin, HIGH, 30000UL); // 30 ms timeout
+if (us == 0) return -1;           // invalid
+float cm = us / 58.0;             // approx at room temp
+if (cm &lt;= 0 || cm &gt; maxCm) return -1;
+</code></pre>
+    <p><code>pulseIn</code> blocks until the pulse ends or timeout — keep timeouts bounded. Pace pings (~5–20&nbsp;Hz); do not hammer every microsecond.</p>
+  </div>
+</section>
+<section class="part" id="lab">
+  <div class="parthead"><span class="tag">Lab</span><h2>Read and validate</h2><span class="mins">18 min</span></div>
+  <div class="col stack">
+    <p>Circuit <code>M4-L02-Ultrasonic</code>: TRIG→7, ECHO→6. Open Serial. Prefer <strong>[HW]</strong>; in <strong>[TC†]</strong> move the distance control if present.</p>
+    <div class="sketchbox" style="--bc:var(--accent)"><h2>Complete shape</h2>
+<pre><code>float readDistanceCm() {
+  digitalWrite(trigPin, LOW);  delayMicroseconds(2);
+  digitalWrite(trigPin, HIGH); delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+  unsigned long us = pulseIn(echoPin, HIGH, 30000UL);
+  if (us == 0) return -1.0;
+  float cm = us / 58.0;
+  if (cm &lt;= 0 || cm &gt; maxCm) return -1.0;
+  return cm;
+}
+</code></pre></div>
+    <p>Print <code>OK</code> + cm, or <code>OUT</code> when invalid. Sentinel <code>-1</code> beats pretending “0&nbsp;cm”.</p>
+  </div>
+</section>
+<section class="part" id="patterns">
+  <div class="parthead"><span class="tag">Patterns</span><h2>Measure → convert → validate</h2></div>
+  <div class="col stack"><div class="callout"><h5>Pattern</h5>
+  <p>Never feed raw <code>pulseIn</code> into an alarm. Wrap ranging in <code>float readDistanceCm()</code> that returns a value or <code>-1</code>. Code validation even if the sim looks perfect.</p></div></div>
+</section>
+<section class="part" id="check">
+  <div class="parthead"><span class="tag">Check</span><h2>Check yourself</h2></div>
+  <div class="col stack"><ol class="num" data-check>
+    <li data-kind="open" data-see="#concepts">Why divide by roughly two (or use <code>/ 58</code>)?
+      <details><summary>Model answer</summary><p>Sound travels to the target and back — you want one-way distance.</p></details></li>
+    <li data-kind="open" data-see="#convert">What does <code>pulseIn</code> returning 0 usually mean with a timeout?
+      <details><summary>Model answer</summary><p>Timeout / no echo — treat as invalid.</p></details></li>
+    <li data-kind="open" data-see="#lab">Why return <code>-1</code> instead of 0&nbsp;cm for errors?
+      <details><summary>Model answer</summary><p>0&nbsp;cm could mean “touching”; a sentinel is clearer.</p></details></li>
+    <li data-kind="choice" data-choices="True|False" data-correct="1" data-see="#lab" data-hint="Retune on hardware." data-why-0="TC† is idealized." data-why-1="Correct — retune on [HW].">Tinkercad alone is enough to trust parking thresholds forever.</li>
+  </ol></div>
+</section>
+<section class="part" id="mistakes">
+  <div class="parthead"><span class="tag">Watch outs</span><h2>Common mistakes</h2></div>
+  <div class="col stack">
+    <div class="scroll"><table><thead><tr><th>Mistake</th><th>Fix</th></tr></thead><tbody>
+      <tr><td>TRIG/ECHO swapped</td><td>TRIG out, ECHO in</td></tr>
+      <tr><td>No timeout on <code>pulseIn</code></td><td>Pass timeout argument</td></tr>
+      <tr><td>Acting on every raw spike</td><td>Validate range; later average / hysteresis</td></tr>
+    </tbody></table></div>
+  </div>
+</section>
+
+<nav class="pager" aria-label="Lessons">
+<a href="01-when-to-use-a-library.html"><span class="dir">Previous</span><span class="name">4.1 Libraries</span></a>
+<a class="next" href="03-temperature-sensor.html"><span class="dir">Next</span><span class="name">4.3 Temperature sensor &rarr;</span></a>
+</nav>
+</div>
+<footer class="bihfoot"><div class="wrap">
+  <p class="pagenote">Lesson 4.2 &nbsp;&middot;&nbsp; Module 4 &nbsp;&middot;&nbsp; Arduino Coding.</p>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a class="lockup" href="../../home.html"><img src="../../../assets/brand/logo-mark-white.png" alt="" width="42" height="42"><span>Arduino Coding<small>Bozoma Innovation Hub</small></span></a>
+      <p>A Bozoma Innovation Hub programme.</p>
+    </div>
+    <div><h4>The course</h4><ul>
+      <li><a href="../../home.html">Course home</a></li>
+      <li><a href="home.html">Module 4</a></li>
+      <li><a href="../list.html">All modules</a></li>
+    </ul></div>
+    <div><h4>Bozoma Innovation Hub</h4><ul>
+      <li><a href="https://bozomainnovationhub.com">bozomainnovationhub.com</a></li>
+    </ul></div>
+  </div>
+  <div class="foot-bottom"><span>&copy; Bozoma Innovation Hub, Aiyinasi, Ghana</span><span class="tagline">World-class begins at home.</span></div>
+</div></footer>
+</body>
+</html>
