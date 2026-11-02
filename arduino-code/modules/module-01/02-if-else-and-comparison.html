@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en" data-course="arduino-code" data-band="1">
+<head>
+  <meta charset="utf-8">
+  <script src="../../../assets/theme.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href="https://iot.bozomainnovationhub.com/arduino-code/modules/module-01/02-if-else-and-comparison">
+  <title>if / else and comparison · Module 1 · Arduino Coding</title>
+  <meta name="description" content="Branch with if / else if / else and readable comparisons to drive different LEDs.">
+  <meta name="theme-color" content="#24182E">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../../assets/brand/icon-192.png">
+  <link rel="apple-touch-icon" href="../../../assets/brand/icon-180.png">
+  <!-- app + link previews (tools/inject_head.py) -->
+  <link rel="manifest" href="../../../manifest.webmanifest">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="IoT at Bozoma Innovation Hub">
+  <meta property="og:title" content="if / else and comparison · Module 1 · Arduino Coding">
+  <meta property="og:description" content="Branch with if / else if / else and readable comparisons to drive different LEDs.">
+  <meta property="og:url" content="https://iot.bozomainnovationhub.com/arduino-code/modules/module-01/02-if-else-and-comparison">
+  <meta property="og:image" content="https://iot.bozomainnovationhub.com/assets/og/arduino-code-modules-module-01-02-if-else-and-comparison.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="if / else and comparison · Module 1 · Arduino Coding">
+  <meta property="og:locale" content="en_GB">
+  <meta name="twitter:card" content="summary_large_image">
+  <script defer src="../../../assets/app.js"></script>
+  <!-- /app + link previews -->
+  <link rel="stylesheet" href="../../../assets/course.css">
+  <link rel="stylesheet" href="../../../assets/progress.css">
+  <script defer src="../../../assets/pager.js"></script>
+  <script defer src="../../../assets/check.js" data-profile="../../profile.html"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to the lesson</a>
+<div class="topbar">
+  <a class="home" href="../../home.html"><img src="../../../assets/brand/logo-mark-white.png" alt="" width="36" height="36"><span class="lock"><b>Arduino Coding</b><small>Bozoma Innovation Hub</small></span></a>
+  <a class="hub" href="../../../index.html" title="All courses: IoT at Bozoma Innovation Hub">&larr; IoT at BIH</a>
+  <nav class="bandlinks" aria-label="Modules"><a href="../module-00/home.html">0</a><a href="home.html" aria-current="page">1</a><a href="../list.html">⋯</a></nav>
+  <a class="bih" href="https://bozomainnovationhub.com"><span class="long">bozomainnovationhub.com</span><span class="short">BIH website</span></a>
+</div>
+<div class="wrap" id="main">
+<nav aria-label="Sections">
+  <a href="#outcomes">Outcomes</a>
+  <a href="#concepts">Concepts</a>
+  <a href="#ops">Operators</a>
+  <a href="#lab">Lab</a>
+  <a href="#patterns">Patterns</a>
+  <a href="#check">Check yourself</a>
+  <a href="#mistakes">Mistakes</a>
+</nav>
+
+<header style="padding:3rem 0 1rem">
+  <p class="eyebrow">Arduino Coding &nbsp;·&nbsp; Module 1 &nbsp;·&nbsp; Lesson 1.2 &nbsp;·&nbsp; <span class="tag">TC</span></p>
+  <h1 style="margin:.8rem 0">if / else and comparison</h1>
+
+  <p class="col sub" style="font-size:1.1em">Make decisions with <code>if</code>, <code>else if</code>, and <code>else</code> — and write comparisons that say what you mean.</p>
+  <p class="col note" style="margin-top:.8rem">About 35 minutes. Reuse the three-LED circuit from Lesson 1.1.</p>
+</header>
+
+<section class="part" id="outcomes">
+  <div class="parthead"><span class="tag">Start here</span><h2>Learning outcomes</h2></div>
+  <div class="col stack">
+    <ol class="num">
+      <li>Branch behavior with <code>if</code>, <code>else if</code>, and <code>else</code>.</li>
+      <li>Write readable boolean expressions using <code>==</code>, <code>!=</code>, <code>&lt;</code>, <code>&gt;</code>, <code>&amp;&amp;</code>, and <code>||</code>.</li>
+      <li>Drive different LEDs based on a simple mode or counter condition.</li>
+    </ol>
+  </div>
+</section>
+
+<section class="part" id="concepts">
+  <div class="parthead"><span class="tag">Concept</span><h2>Programs make decisions</h2></div>
+  <div class="col stack">
+    <div class="callout" style="--bc:var(--accent)"><h5>Concept</h5><p>An <code>if</code> checks a condition; <code>else</code> covers otherwise. This is the <strong>Decide</strong> step in sense → decide → act.</p></div>
+<pre><code>if (mode == 0) {
+  digitalWrite(redPin, HIGH);
+} else if (mode == 1) {
+  digitalWrite(yellowPin, HIGH);
+} else {
+  digitalWrite(greenPin, HIGH);
+}
+</code></pre>
+    <p><strong>Critical:</strong> <code>==</code> compares; a single <code>=</code> assigns. <code>if (mode = 1)</code> is a legendary bug.</p>
+  </div>
+</section>
+
+<section class="part" id="ops">
+  <div class="parthead"><span class="tag">Part</span><h2>Comparisons and logic</h2></div>
+  <div class="col stack">
+    <div class="scroll"><table><thead><tr><th>Op</th><th>Meaning</th></tr></thead><tbody>
+      <tr><td><code>==</code> <code>!=</code></td><td>equal / not equal</td></tr>
+      <tr><td><code>&lt;</code> <code>&lt;=</code> <code>&gt;</code> <code>&gt;=</code></td><td>ordering</td></tr>
+      <tr><td><code>&amp;&amp;</code> <code>||</code> <code>!</code></td><td>AND / OR / NOT</td></tr>
+    </tbody></table></div>
+  </div>
+</section>
+
+<section class="part" id="lab">
+  <div class="parthead"><span class="tag">Lab</span><h2>Mode counter</h2><span class="mins">15 min</span></div>
+  <div class="col stack">
+    <p>Duplicate as <code>M1-L02-IfElse</code>. Cycle <code>mode</code> 0→1→2→0 with only one LED on at a time. Turn all LOW before the <code>if</code> chain.</p>
+    <div class="sketchbox" style="--bc:var(--accent)">
+      <h2>Complete shape</h2>
+<pre><code>int mode = 0;
+void loop() {
+  digitalWrite(redPin, LOW);
+  digitalWrite(yellowPin, LOW);
+  digitalWrite(greenPin, LOW);
+  if (mode == 0) digitalWrite(redPin, HIGH);
+  else if (mode == 1) digitalWrite(yellowPin, HIGH);
+  else digitalWrite(greenPin, HIGH);
+  delay(800);
+  mode = mode + 1;
+  if (mode &gt; 2) mode = 0;
+}
+</code></pre>
+    </div>
+  </div>
+</section>
+
+<section class="part" id="patterns">
+  <div class="parthead"><span class="tag">Patterns</span><h2>Clear conditions</h2></div>
+  <div class="col stack">
+    <div class="callout"><h5>Pattern</h5><p><strong>Clear conditions over clever ones.</strong> Keep modes tiny. Spaghetti <code>if</code> chains become state machines in Module 5.</p></div>
+  </div>
+</section>
+
+<section class="part" id="check">
+  <div class="parthead"><span class="tag">Check</span><h2>Check yourself</h2></div>
+  <div class="col stack">
+    <ol class="num" data-check>
+      <li data-kind="open" data-see="#concepts">What is the difference between <code>=</code> and <code>==</code>?
+        <details><summary>Model answer</summary><p><code>=</code> assigns; <code>==</code> compares.</p></details></li>
+      <li data-kind="open" data-see="#concepts">When does the <code>else</code> block run?
+        <details><summary>Model answer</summary><p>When every preceding <code>if</code> / <code>else if</code> condition was false.</p></details></li>
+      <li data-kind="open" data-see="#ops">What does <code>(mode == 0) || (mode == 2)</code> mean?
+        <details><summary>Model answer</summary><p>Mode is 0 <strong>or</strong> mode is 2.</p></details></li>
+      <li data-kind="open" data-see="#lab">Why turn all LEDs <code>LOW</code> before the <code>if</code> chain?
+        <details><summary>Model answer</summary><p>So a previous mode’s LED does not stay lit — known-off baseline.</p></details></li>
+    </ol>
+  </div>
+</section>
+
+<section class="part" id="mistakes">
+  <div class="parthead"><span class="tag">Watch outs</span><h2>Common mistakes</h2></div>
+  <div class="col stack">
+    <div class="scroll"><table><thead><tr><th>Mistake</th><th>Fix</th></tr></thead><tbody>
+      <tr><td><code>if (mode = 1)</code></td><td>Use <code>==</code></td></tr>
+      <tr><td>Missing braces</td><td>Always use <code>{ }</code> as a beginner</td></tr>
+      <tr><td>Forgetting to wrap <code>mode</code></td><td><code>if (mode &gt; 2) mode = 0;</code></td></tr>
+    </tbody></table></div>
+    <div class="callout" style="--bc:var(--copper)"><h5>Stretch</h5><p>Add mode 3: all three LEDs HIGH, then wrap after 3.</p></div>
+  </div>
+</section>
+
+<nav class="pager" aria-label="Lessons">
+<a href="01-multiple-leds-and-variables.html"><span class="dir">Previous</span><span class="name">1.1 Multiple LEDs</span></a>
+<a class="next" href="03-reading-a-button.html"><span class="dir">Next</span><span class="name">1.3 Reading a button &rarr;</span></a>
+</nav>
+
+</div>
+<footer class="bihfoot">
+<div class="wrap">
+  <p class="pagenote">Lesson 1.2 &nbsp;&middot;&nbsp; Module 1 &nbsp;&middot;&nbsp; Arduino Coding.</p>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a class="lockup" href="../../home.html"><img src="../../../assets/brand/logo-mark-white.png" alt="" width="42" height="42"><span>Arduino Coding<small>Bozoma Innovation Hub</small></span></a>
+      <p>A Bozoma Innovation Hub programme.</p>
+    </div>
+    <div><h4>The course</h4><ul>
+      <li><a href="../../home.html">Course home</a></li>
+      <li><a href="home.html">Module 1</a></li>
+      <li><a href="../list.html">All modules</a></li>
+    </ul></div>
+    <div><h4>Bozoma Innovation Hub</h4><ul>
+      <li><a href="https://bozomainnovationhub.com">bozomainnovationhub.com</a></li>
+    </ul></div>
+  </div>
+  <div class="foot-bottom"><span>&copy; Bozoma Innovation Hub, Aiyinasi, Ghana</span><span class="tagline">World-class begins at home.</span></div>
+</div>
+</footer>
+</body>
+</html>

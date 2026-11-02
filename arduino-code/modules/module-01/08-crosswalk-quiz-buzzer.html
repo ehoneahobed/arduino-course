@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en" data-course="arduino-code" data-band="1">
+<head>
+  <meta charset="utf-8">
+  <script src="../../../assets/theme.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href="https://iot.bozomainnovationhub.com/arduino-code/modules/module-01/08-crosswalk-quiz-buzzer">
+  <title>Build: Crosswalk / quiz buzzer · Module 1 · Arduino Coding</title>
+  <meta name="description" content="Module 1 spine: combine LEDs, debounced buttons, and helpers into a crosswalk or quiz buzzer.">
+  <meta name="theme-color" content="#24182E">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../../assets/brand/icon-192.png">
+  <link rel="apple-touch-icon" href="../../../assets/brand/icon-180.png">
+  <!-- app + link previews (tools/inject_head.py) -->
+  <link rel="manifest" href="../../../manifest.webmanifest">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="IoT at Bozoma Innovation Hub">
+  <meta property="og:title" content="Build: Crosswalk / quiz buzzer · Module 1 · Arduino Coding">
+  <meta property="og:description" content="Module 1 spine: combine LEDs, debounced buttons, and helpers into a crosswalk or quiz buzzer.">
+  <meta property="og:url" content="https://iot.bozomainnovationhub.com/arduino-code/modules/module-01/08-crosswalk-quiz-buzzer">
+  <meta property="og:image" content="https://iot.bozomainnovationhub.com/assets/og/arduino-code-modules-module-01-08-crosswalk-quiz-buzzer.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Build: Crosswalk / quiz buzzer · Module 1 · Arduino Coding">
+  <meta property="og:locale" content="en_GB">
+  <meta name="twitter:card" content="summary_large_image">
+  <script defer src="../../../assets/app.js"></script>
+  <!-- /app + link previews -->
+  <link rel="stylesheet" href="../../../assets/course.css">
+  <link rel="stylesheet" href="../../../assets/progress.css">
+  <script defer src="../../../assets/pager.js"></script>
+  <script defer src="../../../assets/check.js" data-profile="../../profile.html"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to the lesson</a>
+<div class="topbar">
+  <a class="home" href="../../home.html"><img src="../../../assets/brand/logo-mark-white.png" alt="" width="36" height="36"><span class="lock"><b>Arduino Coding</b><small>Bozoma Innovation Hub</small></span></a>
+  <a class="hub" href="../../../index.html" title="All courses: IoT at Bozoma Innovation Hub">&larr; IoT at BIH</a>
+  <nav class="bandlinks" aria-label="Modules"><a href="../module-00/home.html">0</a><a href="home.html" aria-current="page">1</a><a href="../list.html">⋯</a></nav>
+  <a class="bih" href="https://bozomainnovationhub.com"><span class="long">bozomainnovationhub.com</span><span class="short">BIH website</span></a>
+</div>
+<div class="wrap" id="main">
+<nav aria-label="Sections">
+  <a href="#outcomes">Outcomes</a>
+  <a href="#brief">Brief</a>
+  <a href="#wire">Wire</a>
+  <a href="#build">Build</a>
+  <a href="#checklist">Checklist</a>
+  <a href="#patterns">Patterns</a>
+  <a href="#check">Check yourself</a>
+  <a href="#mistakes">Mistakes</a>
+</nav>
+
+<header style="padding:3rem 0 1rem">
+  <p class="eyebrow">Arduino Coding &nbsp;·&nbsp; Module 1 &nbsp;·&nbsp; Lesson 1.8 &nbsp;·&nbsp; <span class="tag">TC</span> · Build</p>
+  <h1 style="margin:.8rem 0">Build: Crosswalk / quiz buzzer</h1>
+
+  <p class="col sub" style="font-size:1.1em">Module 1 project spine: combine multiple LEDs, debounced buttons, and helpers into a crosswalk signal or two-player quiz buzzer.</p>
+  <p class="col note" style="margin-top:.8rem">About 55 minutes. Pick Option A or B (or both).</p>
+</header>
+
+<section class="part" id="outcomes">
+  <div class="parthead"><span class="tag">Start here</span><h2>Learning outcomes</h2></div>
+  <div class="col stack">
+    <ol class="num">
+      <li>Combine multiple LEDs, 1–2 debounced buttons, and helpers into one appliance.</li>
+      <li>Implement a <strong>crosswalk</strong> or <strong>quiz buzzer</strong>.</li>
+      <li>Document wiring, polarity, and behavior in the sketch header.</li>
+    </ol>
+  </div>
+</section>
+
+<section class="part" id="brief">
+  <div class="parthead"><span class="tag">Brief</span><h2>Choose a path</h2></div>
+  <div class="col stack">
+    <div class="callout" style="--bc:var(--accent)"><h5>Done looks like</h5><p>A human can use the gadget without Serial; code uses named pins, debounce, and helpers; header lists wiring.</p></div>
+    <h3>Option A — Pedestrian crosswalk</h3>
+    <ol class="num">
+      <li>Idle: car green + ped don’t-walk (red).</li>
+      <li>Debounced walk button → car yellow → car red + ped walk → idle.</li>
+      <li>Extra presses during the sequence may be ignored.</li>
+    </ol>
+    <h3>Option B — Two-player quiz buzzer</h3>
+    <ol class="num">
+      <li>First debounced press locks out the other; winner LED on.</li>
+      <li>Reset button (or similar) clears for the next question.</li>
+    </ol>
+  </div>
+</section>
+
+<section class="part" id="wire">
+  <div class="parthead"><span class="tag">Wire</span><h2>Suggested pins</h2></div>
+  <div class="col stack">
+    <p><strong>Crosswalk:</strong> car 8/9/10, ped 6/7, walk button 2 (<code>INPUT_PULLUP</code>). Name <code>M1-L08-Crosswalk</code>.</p>
+    <p><strong>Quiz:</strong> P1/P2 LEDs 8/9, buttons 2/3, reset 4. Name <code>M1-L08-QuizBuzzer</code>.</p>
+    <p>Write the story on paper first: idle → event → sequence → return.</p>
+  </div>
+</section>
+
+<section class="part" id="build">
+  <div class="parthead"><span class="tag">Build</span><h2>Crosswalk complete shape</h2><span class="mins">25 min</span></div>
+  <div class="col stack">
+    <div class="sketchbox" style="--bc:var(--accent)">
+      <h2>Option A — helpers + debounced edge</h2>
+<pre><code>void showIdle() {
+  allCarOff(); allPedOff();
+  digitalWrite(carGreenPin, HIGH);
+  digitalWrite(pedRedPin, HIGH);
+}
+void runWalkSequence() {
+  allCarOff(); digitalWrite(carYellowPin, HIGH); delay(600);
+  allCarOff(); digitalWrite(carRedPin, HIGH);
+  allPedOff(); digitalWrite(pedGreenPin, HIGH); delay(3500);
+  allPedOff(); digitalWrite(pedRedPin, HIGH); delay(500);
+}
+// loop: on debounced walk press → runWalkSequence(); showIdle();
+</code></pre>
+    </div>
+    <p class="note">Quiz option: separate <code>lastReading</code> per button; <code>lockWinner</code> + <code>clearBoard</code>. Keep debounce even if Tinkercad looks clean.</p>
+    <p><strong>Your turn:</strong> personalize the header — not Ada’s example name.</p>
+  </div>
+</section>
+
+<section class="part" id="checklist">
+  <div class="parthead"><span class="tag">Deliverable</span><h2>Checklist</h2></div>
+  <div class="col stack">
+    <ul class="plain">
+      <li>Clear interactive behavior in sim or on hardware</li>
+      <li>All pins use <code>const int</code> names</li>
+      <li>Button edges used as events are debounced</li>
+      <li>At least two helpers</li>
+      <li>Header: name, option A/B, pin map, resistor, pull-up polarity</li>
+      <li>Mash-testing does not multi-trigger wildly</li>
+    </ul>
+  </div>
+</section>
+
+<section class="part" id="patterns">
+  <div class="parthead"><span class="tag">Patterns</span><h2>Integrate Module 1</h2></div>
+  <div class="col stack">
+    <div class="callout"><h5>Pattern</h5><p>Named pins · debounce on every event edge · one-job helpers · header docs. <code>delay</code> in sequences is still OK — Module 2 makes timing non-blocking.</p></div>
+  </div>
+</section>
+
+<section class="part" id="check">
+  <div class="parthead"><span class="tag">Check</span><h2>Check yourself</h2></div>
+  <div class="col stack">
+    <ol class="num" data-check>
+      <li data-kind="open" data-see="#patterns">Which Module 1 patterns did you use on purpose?
+        <details><summary>Model answer</summary><p>Named pins, debounce, helpers / branching (and loops if used).</p></details></li>
+      <li data-kind="open" data-see="#brief">What happens if you skip debounce on walk / quiz buttons?
+        <details><summary>Model answer</summary><p>Double starts, unfair quiz lockouts, flaky counts.</p></details></li>
+      <li data-kind="open" data-see="#build">Why are helpers valuable once sequences grow past ~15 lines?
+        <details><summary>Model answer</summary><p>Readable <code>loop</code>, reuse, easier debugging.</p></details></li>
+      <li data-kind="open" data-see="#patterns">What will Module 2 improve about long <code>delay</code> in sequences?
+        <details><summary>Model answer</summary><p>Non-blocking timing so inputs can be monitored during animations.</p></details></li>
+    </ol>
+  </div>
+</section>
+
+<section class="part" id="mistakes">
+  <div class="parthead"><span class="tag">Watch outs</span><h2>Common mistakes</h2></div>
+  <div class="col stack">
+    <div class="scroll"><table><thead><tr><th>Mistake</th><th>Fix</th></tr></thead><tbody>
+      <tr><td>No idle on sim start</td><td>Call <code>showIdle()</code> / <code>clearBoard()</code> from <code>setup</code></td></tr>
+      <tr><td>Shared <code>lastReading</code> for two buttons</td><td>One last-state variable <strong>per</strong> button</td></tr>
+      <tr><td>Quiz never resets</td><td>Add reset button or document how to clear</td></tr>
+    </tbody></table></div>
+    <div class="callout" style="--bc:var(--copper)"><h5>What’s next</h5><p>Module 1 spine complete. <strong>Module 2</strong> replaces blocking <code>delay()</code> with <code>millis()</code> so blinkers and buttons coexist.</p></div>
+  </div>
+</section>
+
+<nav class="pager" aria-label="Lessons">
+<a href="07-functions-that-do-one-job.html"><span class="dir">Previous</span><span class="name">1.7 Functions</span></a>
+<a class="next" href="home.html"><span class="dir">Next</span><span class="name">Module 1 complete &rarr;</span></a>
+</nav>
+
+</div>
+<footer class="bihfoot">
+<div class="wrap">
+  <p class="pagenote">Lesson 1.8 &nbsp;&middot;&nbsp; Module 1 &nbsp;&middot;&nbsp; Arduino Coding.</p>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a class="lockup" href="../../home.html"><img src="../../../assets/brand/logo-mark-white.png" alt="" width="42" height="42"><span>Arduino Coding<small>Bozoma Innovation Hub</small></span></a>
+      <p>A Bozoma Innovation Hub programme.</p>
+    </div>
+    <div><h4>The course</h4><ul>
+      <li><a href="../../home.html">Course home</a></li>
+      <li><a href="home.html">Module 1</a></li>
+      <li><a href="../list.html">All modules</a></li>
+    </ul></div>
+    <div><h4>Bozoma Innovation Hub</h4><ul>
+      <li><a href="https://bozomainnovationhub.com">bozomainnovationhub.com</a></li>
+    </ul></div>
+  </div>
+  <div class="foot-bottom"><span>&copy; Bozoma Innovation Hub, Aiyinasi, Ghana</span><span class="tagline">World-class begins at home.</span></div>
+</div>
+</footer>
+</body>
+</html>

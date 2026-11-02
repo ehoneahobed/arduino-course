@@ -37,7 +37,7 @@ for (const rel of walk('')) {
 }
 
 // Saved on the first visit: the pages a learner needs first, and everything every page loads.
-const CORE_RE = /^(|offline|manifest\.webmanifest|arduino\/(home|profile)|arduino\/bands\/band-\d+|arduino-code\/(home|profile|modules\/list|modules\/module-00\/(home|01-what-is-a-microcontroller|02-arduino-ide-tour|03-tinkercad-lab-setup|04-anatomy-of-a-sketch|05-digital-write-and-blink|06-custom-blink-signature))|assets\/[^/]+\.(css|js)|assets\/labs\/labs\.(css|js)|assets\/fonts\/[^/]+\.woff2|assets\/brand\/(logo-mark-white|logo-mark|icon-192)\.png)$/;
+const CORE_RE = /^(|offline|manifest\.webmanifest|arduino\/(home|profile)|arduino\/bands\/band-\d+|arduino-code\/(home|profile|modules\/list|modules\/module-00\/(home|01-what-is-a-microcontroller|02-arduino-ide-tour|03-tinkercad-lab-setup|04-anatomy-of-a-sketch|05-digital-write-and-blink|06-custom-blink-signature)|modules\/module-01\/(home|01-multiple-leds-and-variables|02-if-else-and-comparison|03-reading-a-button|04-contact-bounce|05-simple-software-debounce|06-for-and-while-loops|07-functions-that-do-one-job|08-crosswalk-quiz-buzzer))|assets\/[^/]+\.(css|js)|assets\/labs\/labs\.(css|js)|assets\/fonts\/[^/]+\.woff2|assets\/brand\/(logo-mark-white|logo-mark|icon-192)\.png)$/;
 const core = Object.keys(files).filter((k) => CORE_RE.test(k));
 
 // vercel.json's redirects, so old addresses still work with no internet.

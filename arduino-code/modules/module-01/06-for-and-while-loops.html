@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en" data-course="arduino-code" data-band="1">
+<head>
+  <meta charset="utf-8">
+  <script src="../../../assets/theme.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href="https://iot.bozomainnovationhub.com/arduino-code/modules/module-01/06-for-and-while-loops">
+  <title>Loops: for and while · Module 1 · Arduino Coding</title>
+  <meta name="description" content="LED chaser with for; wait-for-button with while; know that both can block.">
+  <meta name="theme-color" content="#24182E">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../../assets/brand/icon-192.png">
+  <link rel="apple-touch-icon" href="../../../assets/brand/icon-180.png">
+  <!-- app + link previews (tools/inject_head.py) -->
+  <link rel="manifest" href="../../../manifest.webmanifest">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="IoT at Bozoma Innovation Hub">
+  <meta property="og:title" content="Loops: for and while · Module 1 · Arduino Coding">
+  <meta property="og:description" content="LED chaser with for; wait-for-button with while; know that both can block.">
+  <meta property="og:url" content="https://iot.bozomainnovationhub.com/arduino-code/modules/module-01/06-for-and-while-loops">
+  <meta property="og:image" content="https://iot.bozomainnovationhub.com/assets/og/arduino-code-modules-module-01-06-for-and-while-loops.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Loops: for and while · Module 1 · Arduino Coding">
+  <meta property="og:locale" content="en_GB">
+  <meta name="twitter:card" content="summary_large_image">
+  <script defer src="../../../assets/app.js"></script>
+  <!-- /app + link previews -->
+  <link rel="stylesheet" href="../../../assets/course.css">
+  <link rel="stylesheet" href="../../../assets/progress.css">
+  <script defer src="../../../assets/pager.js"></script>
+  <script defer src="../../../assets/check.js" data-profile="../../profile.html"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to the lesson</a>
+<div class="topbar">
+  <a class="home" href="../../home.html"><img src="../../../assets/brand/logo-mark-white.png" alt="" width="36" height="36"><span class="lock"><b>Arduino Coding</b><small>Bozoma Innovation Hub</small></span></a>
+  <a class="hub" href="../../../index.html" title="All courses: IoT at Bozoma Innovation Hub">&larr; IoT at BIH</a>
+  <nav class="bandlinks" aria-label="Modules"><a href="../module-00/home.html">0</a><a href="home.html" aria-current="page">1</a><a href="../list.html">⋯</a></nav>
+  <a class="bih" href="https://bozomainnovationhub.com"><span class="long">bozomainnovationhub.com</span><span class="short">BIH website</span></a>
+</div>
+<div class="wrap" id="main">
+<nav aria-label="Sections">
+  <a href="#outcomes">Outcomes</a>
+  <a href="#concepts">Concepts</a>
+  <a href="#for">for</a>
+  <a href="#while">while</a>
+  <a href="#lab">Lab</a>
+  <a href="#patterns">Patterns</a>
+  <a href="#check">Check yourself</a>
+  <a href="#mistakes">Mistakes</a>
+</nav>
+
+<header style="padding:3rem 0 1rem">
+  <p class="eyebrow">Arduino Coding &nbsp;·&nbsp; Module 1 &nbsp;·&nbsp; Lesson 1.6 &nbsp;·&nbsp; <span class="tag">TC</span></p>
+  <h1 style="margin:.8rem 0">Loops: for and while</h1>
+
+  <p class="col sub" style="font-size:1.1em">Use <code>for</code> for counted LED chasers and <code>while</code> to wait until a button — and know both can block.</p>
+  <p class="col note" style="margin-top:.8rem">About 40 minutes. LEDs on 8/9/10 + button on 2.</p>
+</header>
+
+<section class="part" id="outcomes">
+  <div class="parthead"><span class="tag">Start here</span><h2>Learning outcomes</h2></div>
+  <div class="col stack">
+    <ol class="num">
+      <li>Use a <code>for</code> loop to sequence an LED chaser without copy-paste.</li>
+      <li>Use a <code>while</code> loop to wait until a button is pressed (and know it blocks).</li>
+      <li>Choose <code>for</code> vs <code>while</code> for counted repetition vs “until condition.”</li>
+    </ol>
+  </div>
+</section>
+
+<section class="part" id="concepts">
+  <div class="parthead"><span class="tag">Concept</span><h2>Extra loops inside loop()</h2></div>
+  <div class="col stack">
+    <div class="callout" style="--bc:var(--accent)"><h5>Concept</h5><p>Arduino already has outer <code>loop()</code>. Inside it, <code>for</code> and <code>while</code> add repetition and waiting — and with <code>delay</code> they <strong>block</strong>.</p></div>
+  </div>
+</section>
+
+<section class="part" id="for">
+  <div class="parthead"><span class="tag">Part</span><h2>for — counted repetition</h2></div>
+  <div class="col stack">
+<pre><code>const int ledPins[3] = {8, 9, 10};
+for (int i = 0; i &lt; 3; i++) {
+  digitalWrite(ledPins[i], HIGH);
+  delay(200);
+  digitalWrite(ledPins[i], LOW);
+}
+</code></pre>
+  </div>
+</section>
+
+<section class="part" id="while">
+  <div class="parthead"><span class="tag">Part</span><h2>while — until condition</h2></div>
+  <div class="col stack">
+<pre><code>while (digitalRead(buttonPin) == HIGH) {
+  // wait while NOT pressed (PULLUP)
+}
+</code></pre>
+    <p class="note">During that <code>while</code>, nothing else runs. Module 2 teaches non-blocking waits.</p>
+  </div>
+</section>
+
+<section class="part" id="lab">
+  <div class="parthead"><span class="tag">Lab</span><h2>Chase, then wait</h2><span class="mins">15 min</span></div>
+  <div class="col stack">
+    <p>Circuit <code>M1-L06-Loops</code>: chase red → yellow → green, then wait for press/release before the next pass.</p>
+    <div class="sketchbox" style="--bc:var(--accent)">
+      <h2>Complete shape</h2>
+<pre><code>void chaseForward() {
+  for (int i = 0; i &lt; 3; i++) {
+    digitalWrite(ledPins[i], HIGH); delay(stepMs);
+    digitalWrite(ledPins[i], LOW);
+  }
+}
+void waitForPressAndRelease() {
+  while (digitalRead(buttonPin) == HIGH) {}
+  delay(40);
+  while (digitalRead(buttonPin) == LOW) {}
+  delay(40);
+}
+void loop() {
+  chaseForward();
+  waitForPressAndRelease();
+}
+</code></pre>
+    </div>
+  </div>
+</section>
+
+<section class="part" id="patterns">
+  <div class="parthead"><span class="tag">Patterns</span><h2>for vs while</h2></div>
+  <div class="col stack">
+    <div class="callout"><h5>Pattern</h5><p><code>for</code> for counted sequences; <code>while</code> for “until.” Blocking waits are OK for demos — keep the spine responsive with short sequences and debounced edges.</p></div>
+  </div>
+</section>
+
+<section class="part" id="check">
+  <div class="parthead"><span class="tag">Check</span><h2>Check yourself</h2></div>
+  <div class="col stack">
+    <ol class="num" data-check>
+      <li data-kind="number" data-correct="3" data-see="#for" data-hint="i = 0, 1, 2">How many times does <code>for (int i = 0; i &lt; 3; i++)</code> run its body?</li>
+      <li data-kind="open" data-see="#concepts">Difference between Arduino’s <code>loop()</code> and a <code>while</code> inside it?
+        <details><summary>Model answer</summary><p><code>loop()</code> is the framework’s forever cycle; <code>while</code> is your own extra repeating block.</p></details></li>
+      <li data-kind="open" data-see="#while">Why can a <code>while</code> waiting for a button freeze other LEDs?
+        <details><summary>Model answer</summary><p>Execution is stuck in that <code>while</code> — nothing else runs.</p></details></li>
+      <li data-kind="open" data-see="#for">When is <code>for</code> a better fit than <code>while</code>?
+        <details><summary>Model answer</summary><p>When you know how many repetitions you want (counted sequence).</p></details></li>
+    </ol>
+  </div>
+</section>
+
+<section class="part" id="mistakes">
+  <div class="parthead"><span class="tag">Watch outs</span><h2>Common mistakes</h2></div>
+  <div class="col stack">
+    <div class="scroll"><table><thead><tr><th>Mistake</th><th>Fix</th></tr></thead><tbody>
+      <tr><td><code>i &lt;= 3</code> on a 3-LED array</td><td>Use <code>i &lt; 3</code></td></tr>
+      <tr><td>Wrong polarity in <code>while</code></td><td>PULLUP: wait HIGH for “not pressed”</td></tr>
+      <tr><td>Infinite <code>while (true)</code></td><td>Exit conditions; prefer short waits</td></tr>
+    </tbody></table></div>
+    <div class="callout" style="--bc:var(--copper)"><h5>Stretch</h5><p>Reverse chaser (<code>i</code> from 2 down to 0) after forward, then wait for the button.</p></div>
+  </div>
+</section>
+
+<nav class="pager" aria-label="Lessons">
+<a href="05-simple-software-debounce.html"><span class="dir">Previous</span><span class="name">1.5 Debounce</span></a>
+<a class="next" href="07-functions-that-do-one-job.html"><span class="dir">Next</span><span class="name">1.7 Functions &rarr;</span></a>
+</nav>
+
+</div>
+<footer class="bihfoot">
+<div class="wrap">
+  <p class="pagenote">Lesson 1.6 &nbsp;&middot;&nbsp; Module 1 &nbsp;&middot;&nbsp; Arduino Coding.</p>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a class="lockup" href="../../home.html"><img src="../../../assets/brand/logo-mark-white.png" alt="" width="42" height="42"><span>Arduino Coding<small>Bozoma Innovation Hub</small></span></a>
+      <p>A Bozoma Innovation Hub programme.</p>
+    </div>
+    <div><h4>The course</h4><ul>
+      <li><a href="../../home.html">Course home</a></li>
+      <li><a href="home.html">Module 1</a></li>
+      <li><a href="../list.html">All modules</a></li>
+    </ul></div>
+    <div><h4>Bozoma Innovation Hub</h4><ul>
+      <li><a href="https://bozomainnovationhub.com">bozomainnovationhub.com</a></li>
+    </ul></div>
+  </div>
+  <div class="foot-bottom"><span>&copy; Bozoma Innovation Hub, Aiyinasi, Ghana</span><span class="tagline">World-class begins at home.</span></div>
+</div>
+</footer>
+</body>
+</html>
