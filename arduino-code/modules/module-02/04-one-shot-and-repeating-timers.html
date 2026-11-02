@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en" data-course="arduino-code" data-band="2">
+<head>
+  <meta charset="utf-8">
+  <script src="../../../assets/theme.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href="https://iot.bozomainnovationhub.com/arduino-code/modules/module-02/04-one-shot-and-repeating-timers">
+  <title>One-shot and repeating timers · Module 2 · Arduino Coding</title>
+  <meta name="description" content="Arm a 200 ms beep on press while a heartbeat blink keeps running — no delay().">
+  <meta name="theme-color" content="#24182E">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../../assets/brand/icon-192.png">
+  <link rel="apple-touch-icon" href="../../../assets/brand/icon-180.png">
+  <!-- app + link previews (tools/inject_head.py) -->
+  <link rel="manifest" href="../../../manifest.webmanifest">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="IoT at Bozoma Innovation Hub">
+  <meta property="og:title" content="One-shot and repeating timers · Module 2 · Arduino Coding">
+  <meta property="og:description" content="Arm a 200 ms beep on press while a heartbeat blink keeps running — no delay().">
+  <meta property="og:url" content="https://iot.bozomainnovationhub.com/arduino-code/modules/module-02/04-one-shot-and-repeating-timers">
+  <meta property="og:image" content="https://iot.bozomainnovationhub.com/assets/og/arduino-code-modules-module-02-04-one-shot-and-repeating-timers.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="One-shot and repeating timers · Module 2 · Arduino Coding">
+  <meta property="og:locale" content="en_GB">
+  <meta name="twitter:card" content="summary_large_image">
+  <script defer src="../../../assets/app.js"></script>
+  <!-- /app + link previews -->
+  <link rel="stylesheet" href="../../../assets/course.css">
+  <link rel="stylesheet" href="../../../assets/progress.css">
+  <script defer src="../../../assets/pager.js"></script>
+  <script defer src="../../../assets/check.js" data-profile="../../profile.html"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to the lesson</a>
+<div class="topbar">
+  <a class="home" href="../../home.html"><img src="../../../assets/brand/logo-mark-white.png" alt="" width="36" height="36"><span class="lock"><b>Arduino Coding</b><small>Bozoma Innovation Hub</small></span></a>
+  <a class="hub" href="../../../index.html" title="All courses: IoT at Bozoma Innovation Hub">&larr; IoT at BIH</a>
+  <nav class="bandlinks" aria-label="Modules"><a href="../module-00/home.html">0</a><a href="../module-01/home.html">1</a><a href="home.html" aria-current="page">2</a><a href="../list.html">⋯</a></nav>
+  <a class="bih" href="https://bozomainnovationhub.com"><span class="long">bozomainnovationhub.com</span><span class="short">BIH website</span></a>
+</div>
+<div class="wrap" id="main">
+<nav aria-label="Sections">
+  <a href="#outcomes">Outcomes</a>
+  <a href="#concepts">Concepts</a>
+  <a href="#pattern">One-shot</a>
+  <a href="#lab">Lab</a>
+  <a href="#patterns">Patterns</a>
+  <a href="#check">Check yourself</a>
+  <a href="#mistakes">Mistakes</a>
+</nav>
+<header style="padding:3rem 0 1rem">
+  <p class="eyebrow">Arduino Coding &nbsp;·&nbsp; Module 2 &nbsp;·&nbsp; Lesson 2.4 &nbsp;·&nbsp; <span class="tag">TC</span></p>
+  <h1 style="margin:.8rem 0">One-shot and repeating timers</h1>
+
+  <p class="col sub" style="font-size:1.1em">Fire a ~200&nbsp;ms beep (or LED pulse) once after a press, while a repeating heartbeat never stalls.</p>
+  <p class="col note" style="margin-top:.8rem">About 40 minutes.</p>
+</header>
+<section class="part" id="outcomes">
+  <div class="parthead"><span class="tag">Start here</span><h2>Learning outcomes</h2></div>
+  <div class="col stack"><ol class="num">
+    <li>Distinguish repeating vs one-shot timers.</li>
+    <li>Trigger a ~200&nbsp;ms pulse after a press without <code>delay()</code>.</li>
+    <li>Arm / disarm with a boolean flag and a timestamp.</li>
+  </ol></div>
+</section>
+<section class="part" id="concepts">
+  <div class="parthead"><span class="tag">Concept</span><h2>Not every timer repeats forever</h2></div>
+  <div class="col stack">
+    <div class="callout" style="--bc:var(--accent)"><h5>Concept</h5>
+    <p>A <strong>one-shot</strong> runs for a fixed duration after an event, then turns off. Same <code>millis()</code> — you just clear a flag when done.</p></div>
+    <div class="scroll"><table><thead><tr><th>Kind</th><th>Stops when</th><th>Example</th></tr></thead><tbody>
+      <tr><td>Repeating</td><td>You disable it</td><td>Status blink</td></tr>
+      <tr><td>One-shot</td><td>After <code>duration</code> ms</td><td>Buzzer chirp</td></tr>
+    </tbody></table></div>
+  </div>
+</section>
+<section class="part" id="pattern">
+  <div class="parthead"><span class="tag">Pattern</span><h2>Arm and expire</h2></div>
+  <div class="col stack">
+<pre><code>// On press edge (if !beepActive):
+beepActive = true; beepStartedAt = millis();
+digitalWrite(buzzerPin, HIGH);
+
+// Every loop:
+if (beepActive &amp;&amp; (millis() - beepStartedAt &gt;= beepMs)) {
+  beepActive = false;
+  digitalWrite(buzzerPin, LOW);
+}
+</code></pre>
+    <p>Ignore-while-active is the simpler retrigger policy for this lesson.</p>
+  </div>
+</section>
+<section class="part" id="lab">
+  <div class="parthead"><span class="tag">Lab</span><h2>Heartbeat + chirp</h2><span class="mins">18 min</span></div>
+  <div class="col stack">
+    <p>Circuit <code>M2-L04-OneShot</code>: blink 13, buzzer/LED 11, button 2. Short pulse per press; heartbeat never stalls.</p>
+  </div>
+</section>
+<section class="part" id="patterns">
+  <div class="parthead"><span class="tag">Patterns</span><h2>Both in one loop</h2></div>
+  <div class="col stack"><div class="callout"><h5>Pattern</h5>
+  <p>Repeating heartbeat + one-shot beep coexist. Both use timestamps; neither sleeps.</p></div></div>
+</section>
+<section class="part" id="check">
+  <div class="parthead"><span class="tag">Check</span><h2>Check yourself</h2></div>
+  <div class="col stack"><ol class="num" data-check>
+    <li data-kind="open" data-see="#pattern">What two pieces of data does a one-shot need besides duration?
+      <details><summary>Model answer</summary><p>A flag (<code>beepActive</code>) and a start timestamp (<code>beepStartedAt</code>).</p></details></li>
+    <li data-kind="open" data-see="#concepts">How does a one-shot differ from a repeating heartbeat?
+      <details><summary>Model answer</summary><p>Repeating keeps scheduling forever; one-shot runs once then clears until re-armed.</p></details></li>
+    <li data-kind="open" data-see="#pattern">Why check <code>!beepActive</code> before arming again?
+      <details><summary>Model answer</summary><p>Ignore-while-active — avoids restarting/overlapping chirps.</p></details></li>
+    <li data-kind="choice" data-choices="True|False" data-correct="1" data-see="#lab" data-hint="Gate A." data-why-0="It would freeze the heartbeat." data-why-1="Correct — false for interactive paths."><code>delay(200)</code> after buzzer HIGH is acceptable in Module 2.</li>
+  </ol></div>
+</section>
+<section class="part" id="mistakes">
+  <div class="parthead"><span class="tag">Watch outs</span><h2>Common mistakes</h2></div>
+  <div class="col stack">
+    <div class="scroll"><table><thead><tr><th>Mistake</th><th>Fix</th></tr></thead><tbody>
+      <tr><td>Never clearing <code>beepActive</code></td><td>Expire with millis check</td></tr>
+      <tr><td>Arming on level while held</td><td>Use edge HIGH→LOW</td></tr>
+      <tr><td>Using <code>delay</code> for the beep</td><td>One-shot pattern</td></tr>
+    </tbody></table></div>
+    <div class="callout" style="--bc:var(--copper)"><h5>Stretch</h5><p>Retrigger: each press restarts <code>beepStartedAt</code>. Or arm a second 500&nbsp;ms LED one-shot on the same press.</p></div>
+  </div>
+</section>
+
+<nav class="pager" aria-label="Lessons">
+<a href="03-several-timers-at-once.html"><span class="dir">Previous</span><span class="name">2.3 Several timers</span></a>
+<a class="next" href="05-non-blocking-debounce.html"><span class="dir">Next</span><span class="name">2.5 Non-blocking debounce &rarr;</span></a>
+</nav>
+</div>
+<footer class="bihfoot"><div class="wrap">
+  <p class="pagenote">Lesson 2.4 &nbsp;&middot;&nbsp; Module 2 &nbsp;&middot;&nbsp; Arduino Coding.</p>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a class="lockup" href="../../home.html"><img src="../../../assets/brand/logo-mark-white.png" alt="" width="42" height="42"><span>Arduino Coding<small>Bozoma Innovation Hub</small></span></a>
+      <p>A Bozoma Innovation Hub programme.</p>
+    </div>
+    <div><h4>The course</h4><ul>
+      <li><a href="../../home.html">Course home</a></li>
+      <li><a href="home.html">Module 2</a></li>
+      <li><a href="../list.html">All modules</a></li>
+    </ul></div>
+    <div><h4>Bozoma Innovation Hub</h4><ul>
+      <li><a href="https://bozomainnovationhub.com">bozomainnovationhub.com</a></li>
+    </ul></div>
+  </div>
+  <div class="foot-bottom"><span>&copy; Bozoma Innovation Hub, Aiyinasi, Ghana</span><span class="tagline">World-class begins at home.</span></div>
+</div></footer>
+</body>
+</html>

@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en" data-course="arduino-code" data-band="2">
+<head>
+  <meta charset="utf-8">
+  <script src="../../../assets/theme.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href="https://iot.bozomainnovationhub.com/arduino-code/modules/module-02/01-why-delay-blocks">
+  <title>Why delay() blocks the world · Module 2 · Arduino Coding</title>
+  <meta name="description" content="Demonstrate how delay() freezes buttons and set the Module 2 non-blocking goal.">
+  <meta name="theme-color" content="#24182E">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../../assets/brand/icon-192.png">
+  <link rel="apple-touch-icon" href="../../../assets/brand/icon-180.png">
+  <!-- app + link previews (tools/inject_head.py) -->
+  <link rel="manifest" href="../../../manifest.webmanifest">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="IoT at Bozoma Innovation Hub">
+  <meta property="og:title" content="Why delay() blocks the world · Module 2 · Arduino Coding">
+  <meta property="og:description" content="Demonstrate how delay() freezes buttons and set the Module 2 non-blocking goal.">
+  <meta property="og:url" content="https://iot.bozomainnovationhub.com/arduino-code/modules/module-02/01-why-delay-blocks">
+  <meta property="og:image" content="https://iot.bozomainnovationhub.com/assets/og/arduino-code-modules-module-02-01-why-delay-blocks.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Why delay() blocks the world · Module 2 · Arduino Coding">
+  <meta property="og:locale" content="en_GB">
+  <meta name="twitter:card" content="summary_large_image">
+  <script defer src="../../../assets/app.js"></script>
+  <!-- /app + link previews -->
+  <link rel="stylesheet" href="../../../assets/course.css">
+  <link rel="stylesheet" href="../../../assets/progress.css">
+  <script defer src="../../../assets/pager.js"></script>
+  <script defer src="../../../assets/check.js" data-profile="../../profile.html"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to the lesson</a>
+<div class="topbar">
+  <a class="home" href="../../home.html"><img src="../../../assets/brand/logo-mark-white.png" alt="" width="36" height="36"><span class="lock"><b>Arduino Coding</b><small>Bozoma Innovation Hub</small></span></a>
+  <a class="hub" href="../../../index.html" title="All courses: IoT at Bozoma Innovation Hub">&larr; IoT at BIH</a>
+  <nav class="bandlinks" aria-label="Modules"><a href="../module-00/home.html">0</a><a href="../module-01/home.html">1</a><a href="home.html" aria-current="page">2</a><a href="../list.html">⋯</a></nav>
+  <a class="bih" href="https://bozomainnovationhub.com"><span class="long">bozomainnovationhub.com</span><span class="short">BIH website</span></a>
+</div>
+<div class="wrap" id="main">
+<nav aria-label="Sections">
+  <a href="#outcomes">Outcomes</a>
+  <a href="#concepts">Concepts</a>
+  <a href="#lab">Lab</a>
+  <a href="#model">Mental model</a>
+  <a href="#patterns">Patterns</a>
+  <a href="#check">Check yourself</a>
+  <a href="#mistakes">Mistakes</a>
+</nav>
+<header style="padding:3rem 0 1rem">
+  <p class="eyebrow">Arduino Coding &nbsp;·&nbsp; Module 2 &nbsp;·&nbsp; Lesson 2.1 &nbsp;·&nbsp; <span class="tag">TC</span></p>
+  <h1 style="margin:.8rem 0">Why delay() blocks the world</h1>
+
+  <p class="col sub" style="font-size:1.1em">Prove that a long <code>delay()</code> freezes buttons — and set the Module 2 goal: keep <code>loop</code> free to check inputs every pass.</p>
+  <p class="col note" style="margin-top:.8rem">About 30 minutes.</p>
+</header>
+<section class="part" id="outcomes">
+  <div class="parthead"><span class="tag">Start here</span><h2>Learning outcomes</h2></div>
+  <div class="col stack"><ol class="num">
+    <li>Explain why a long <code>delay()</code> makes buttons feel <strong>frozen</strong>.</li>
+    <li>Demonstrate a blink-with-<code>delay</code> sketch that ignores a button during the wait.</li>
+    <li>State the Module 2 design goal: non-blocking timing so inputs stay live.</li>
+  </ol></div>
+</section>
+<section class="part" id="concepts">
+  <div class="parthead"><span class="tag">Concept</span><h2>Blocking vs cooperative</h2></div>
+  <div class="col stack">
+    <div class="callout" style="--bc:var(--accent)"><h5>Concept</h5>
+    <p><code>delay(ms)</code> tells the Arduino: <strong>stop everything and wait</strong>. During that wait, <code>loop</code> does not run — so <code>digitalRead</code> does not either. Interactive gadgets need the opposite: check time, do a tiny bit of work, come back soon.</p></div>
+<pre><code>loop starts → LED on → delay(2000) ← asleep → LED off → delay(2000) ← asleep
+(button presses during delay are missed or laggy)
+</code></pre>
+  </div>
+</section>
+<section class="part" id="lab">
+  <div class="parthead"><span class="tag">Lab</span><h2>Prove the freeze</h2><span class="mins">12 min</span></div>
+  <div class="col stack">
+    <p>Circuit <code>M2-L01-DelayBlocks</code>:</p>
+<pre><code>Pin 13 → 220 Ω → blink LED → GND
+Pin 8  → 220 Ω → ack LED → GND
+Pin 2  → button → GND (INPUT_PULLUP)
+</code></pre>
+    <p>Press during the 2&nbsp;s waits. The ack LED often only reacts after a delay finishes.</p>
+    <div class="sketchbox" style="--bc:var(--accent)"><h2>Complete (blocking demo)</h2>
+<pre><code>void loop() {
+  digitalWrite(blinkPin, HIGH); delay(2000);
+  digitalWrite(blinkPin, LOW);  delay(2000);
+  // Sampled only ~every 4 seconds
+  digitalWrite(ackPin, digitalRead(buttonPin) == LOW ? HIGH : LOW);
+}
+</code></pre></div>
+  </div>
+</section>
+<section class="part" id="model">
+  <div class="parthead"><span class="tag">Part</span><h2>Cooperative loop</h2></div>
+  <div class="col stack">
+    <ol class="num">
+      <li>Glance at the clock.</li>
+      <li>Glance at the button.</li>
+      <li>Update any LED that is <em>due</em>.</li>
+      <li>Repeat — no multi-second sleep.</li>
+    </ol>
+    <p class="note">Short <code>delay(10)</code> after <code>Serial.begin</code> in setup is fine. Long UI delays on interactive paths are not — Gate A after this module.</p>
+  </div>
+</section>
+<section class="part" id="patterns">
+  <div class="parthead"><span class="tag">Patterns</span><h2>No long delay on interactive paths</h2></div>
+  <div class="col stack"><div class="callout"><h5>Pattern (awareness)</h5>
+  <p>Module 1 tolerated blocking sequences. Module 2 replaces them. Waiting will be remembered with a <strong>timestamp</strong>, not sleep.</p></div></div>
+</section>
+<section class="part" id="check">
+  <div class="parthead"><span class="tag">Check</span><h2>Check yourself</h2></div>
+  <div class="col stack"><ol class="num" data-check>
+    <li data-kind="open" data-see="#concepts">What does <code>delay(2000)</code> prevent <code>loop</code> from doing?
+      <details><summary>Model answer</summary><p>Running any other code — including reading buttons and updating other LEDs.</p></details></li>
+    <li data-kind="open" data-see="#lab">Why does a short button tap get missed in the complete sketch?
+      <details><summary>Model answer</summary><p>The pin is only checked once per ~4&nbsp;s cycle; a quick press happens while the board is asleep.</p></details></li>
+    <li data-kind="choice" data-choices="True|False" data-correct="1" data-see="#concepts" data-hint="Once delay starts…" data-why-0="The board still sleeps during delay." data-why-1="Correct — false; delay still ignores the button.">Putting <code>digitalRead</code> before a delay keeps the button responsive during the delay.</li>
+    <li data-kind="open" data-see="#model">What will Module 2 use instead of sleeping?
+      <details><summary>Model answer</summary><p><code>millis()</code> timestamps and interval checks (non-blocking timing).</p></details></li>
+  </ol></div>
+</section>
+<section class="part" id="mistakes">
+  <div class="parthead"><span class="tag">Watch outs</span><h2>Common mistakes</h2></div>
+  <div class="col stack">
+    <div class="scroll"><table><thead><tr><th>Mistake</th><th>Fix</th></tr></thead><tbody>
+      <tr><td>Blaming button wiring</td><td>Timing is blocking — wiring is fine</td></tr>
+      <tr><td><code>delay(10)</code> slices as “solved”</td><td>Learn <code>millis</code> in 2.2</td></tr>
+      <tr><td>Holding 4+ seconds “to make it work”</td><td>Proves sampling is too rare</td></tr>
+    </tbody></table></div>
+    <div class="callout" style="--bc:var(--copper)"><h5>Stretch</h5><p>Change delays to 200&nbsp;ms. Easier to catch — but still fails doing two independent jobs at once.</p></div>
+  </div>
+</section>
+
+<nav class="pager" aria-label="Lessons">
+<a href="home.html"><span class="dir">Previous</span><span class="name">Module 2</span></a>
+<a class="next" href="02-millis-heartbeat.html"><span class="dir">Next</span><span class="name">2.2 millis heartbeat &rarr;</span></a>
+</nav>
+</div>
+<footer class="bihfoot"><div class="wrap">
+  <p class="pagenote">Lesson 2.1 &nbsp;&middot;&nbsp; Module 2 &nbsp;&middot;&nbsp; Arduino Coding.</p>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a class="lockup" href="../../home.html"><img src="../../../assets/brand/logo-mark-white.png" alt="" width="42" height="42"><span>Arduino Coding<small>Bozoma Innovation Hub</small></span></a>
+      <p>A Bozoma Innovation Hub programme.</p>
+    </div>
+    <div><h4>The course</h4><ul>
+      <li><a href="../../home.html">Course home</a></li>
+      <li><a href="home.html">Module 2</a></li>
+      <li><a href="../list.html">All modules</a></li>
+    </ul></div>
+    <div><h4>Bozoma Innovation Hub</h4><ul>
+      <li><a href="https://bozomainnovationhub.com">bozomainnovationhub.com</a></li>
+    </ul></div>
+  </div>
+  <div class="foot-bottom"><span>&copy; Bozoma Innovation Hub, Aiyinasi, Ghana</span><span class="tagline">World-class begins at home.</span></div>
+</div></footer>
+</body>
+</html>
