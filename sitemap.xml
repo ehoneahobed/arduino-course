@@ -49,6 +49,13 @@
   <url><loc>https://iot.bozomainnovationhub.com/arduino-code/modules/module-05/04-events-vs-polling</loc><lastmod>2026-11-02</lastmod></url>
   <url><loc>https://iot.bozomainnovationhub.com/arduino-code/modules/module-05/05-modular-ino-organization</loc><lastmod>2026-11-02</lastmod></url>
   <url><loc>https://iot.bozomainnovationhub.com/arduino-code/modules/module-05/06-washing-machine-or-lock-fsm</loc><lastmod>2026-11-02</lastmod></url>
+  <url><loc>https://iot.bozomainnovationhub.com/arduino-code/modules/module-06/home</loc><lastmod>2026-11-02</lastmod></url>
+  <url><loc>https://iot.bozomainnovationhub.com/arduino-code/modules/module-06/01-polling-limits</loc><lastmod>2026-11-02</lastmod></url>
+  <url><loc>https://iot.bozomainnovationhub.com/arduino-code/modules/module-06/02-external-interrupts</loc><lastmod>2026-11-02</lastmod></url>
+  <url><loc>https://iot.bozomainnovationhub.com/arduino-code/modules/module-06/03-volatile-and-shared-data</loc><lastmod>2026-11-02</lastmod></url>
+  <url><loc>https://iot.bozomainnovationhub.com/arduino-code/modules/module-06/04-software-vs-hardware-debounce</loc><lastmod>2026-11-02</lastmod></url>
+  <url><loc>https://iot.bozomainnovationhub.com/arduino-code/modules/module-06/05-i2c-display-hello-world</loc><lastmod>2026-11-02</lastmod></url>
+  <url><loc>https://iot.bozomainnovationhub.com/arduino-code/modules/module-06/06-lap-counter-or-reaction-timer</loc><lastmod>2026-11-02</lastmod></url>
   <url><loc>https://iot.bozomainnovationhub.com/arduino/guide</loc><lastmod>2026-10-30</lastmod></url>
   <url><loc>https://iot.bozomainnovationhub.com/arduino/home</loc><lastmod>2026-10-30</lastmod></url>
   <url><loc>https://iot.bozomainnovationhub.com/arduino/labs</loc><lastmod>2026-10-30</lastmod></url>

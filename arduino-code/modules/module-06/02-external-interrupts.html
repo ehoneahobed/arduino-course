@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en" data-course="arduino-code" data-band="6">
+<head>
+  <meta charset="utf-8">
+  <script src="../../../assets/theme.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href="https://iot.bozomainnovationhub.com/arduino-code/modules/module-06/02-external-interrupts">
+  <title>Pattern: external interrupts · Module 6 · Arduino Coding</title>
+  <meta name="description" content="attachInterrupt on Uno pins 2/3; tiny ISR; FALLING for pull-up buttons; print from loop.">
+  <meta name="theme-color" content="#24182E">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../../assets/brand/icon-192.png">
+  <link rel="apple-touch-icon" href="../../../assets/brand/icon-180.png">
+  <!-- app + link previews (tools/inject_head.py) -->
+  <link rel="manifest" href="../../../manifest.webmanifest">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="IoT at Bozoma Innovation Hub">
+  <meta property="og:title" content="Pattern: external interrupts · Module 6 · Arduino Coding">
+  <meta property="og:description" content="attachInterrupt on Uno pins 2/3; tiny ISR; FALLING for pull-up buttons; print from loop.">
+  <meta property="og:url" content="https://iot.bozomainnovationhub.com/arduino-code/modules/module-06/02-external-interrupts">
+  <meta property="og:image" content="https://iot.bozomainnovationhub.com/assets/og/arduino-code-modules-module-06-02-external-interrupts.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Pattern: external interrupts · Module 6 · Arduino Coding">
+  <meta property="og:locale" content="en_GB">
+  <meta name="twitter:card" content="summary_large_image">
+  <script defer src="../../../assets/app.js"></script>
+  <!-- /app + link previews -->
+  <link rel="stylesheet" href="../../../assets/course.css">
+  <link rel="stylesheet" href="../../../assets/progress.css">
+  <script defer src="../../../assets/pager.js"></script>
+  <script defer src="../../../assets/check.js" data-profile="../../profile.html"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to the lesson</a>
+<div class="topbar">
+  <a class="home" href="../../home.html"><img src="../../../assets/brand/logo-mark-white.png" alt="" width="36" height="36"><span class="lock"><b>Arduino Coding</b><small>Bozoma Innovation Hub</small></span></a>
+  <a class="hub" href="../../../index.html" title="All courses: IoT at Bozoma Innovation Hub">&larr; IoT at BIH</a>
+  <nav class="bandlinks" aria-label="Modules"><a href="../module-00/home.html">0</a><a href="../module-01/home.html">1</a><a href="../module-02/home.html">2</a><a href="../module-03/home.html">3</a><a href="../module-04/home.html">4</a><a href="../module-05/home.html">5</a><a href="home.html" aria-current="page">6</a><a href="../list.html">⋯</a></nav>
+  <a class="bih" href="https://bozomainnovationhub.com"><span class="long">bozomainnovationhub.com</span><span class="short">BIH website</span></a>
+</div>
+<div class="wrap" id="main">
+
+<nav aria-label="Sections">
+  <a href="#outcomes">Outcomes</a>
+  <a href="#concepts">Concepts</a>
+  <a href="#isr">ISR</a>
+  <a href="#lab">Lab</a>
+  <a href="#patterns">Patterns</a>
+  <a href="#check">Check yourself</a>
+  <a href="#mistakes">Mistakes</a>
+</nav>
+<header style="padding:3rem 0 1rem">
+  <p class="eyebrow">Arduino Coding &nbsp;·&nbsp; Module 6 &nbsp;·&nbsp; Lesson 6.2 &nbsp;·&nbsp; <span class="tag">HW</span> preferred · <span class="tag">TC†</span></p>
+  <h1 style="margin:.8rem 0">Pattern: external interrupts</h1>
+  <p class="col sub" style="font-size:1.1em">Hardware pauses normal code on a chosen edge, runs a short <strong>ISR</strong>, then resumes. On classic Uno, only pins <strong>2</strong> and <strong>3</strong>.</p>
+  <p class="col note" style="margin-top:.8rem">About 45 minutes. Expect bounce multi-counts until 6.4.</p>
+</header>
+<section class="part" id="outcomes">
+  <div class="parthead"><span class="tag">Start here</span><h2>Learning outcomes</h2></div>
+  <div class="col stack"><ol class="num">
+    <li>Use <code>attachInterrupt</code> on an interrupt-capable pin for an edge-triggered counter.</li>
+    <li>Keep the ISR tiny — flag or increment; no Serial, no <code>delay</code>, no heavy work.</li>
+    <li>State Uno pin rules and choose <code>FALLING</code> / <code>RISING</code> / <code>CHANGE</code> for pull-up wiring.</li>
+  </ol></div>
+</section>
+<section class="part" id="concepts">
+  <div class="parthead"><span class="tag">Concept</span><h2>INT0 / INT1</h2></div>
+  <div class="col stack">
+    <div class="callout" style="--bc:var(--accent)"><h5>Concept</h5>
+    <p>With button to GND and pull-up, a press is usually <code>FALLING</code>. Always use <code>digitalPinToInterrupt(pin)</code> — do not hardcode interrupt numbers.</p></div>
+<pre><code>attachInterrupt(digitalPinToInterrupt(btnPin), onBtn, FALLING);
+</code></pre>
+  </div>
+</section>
+<section class="part" id="isr">
+  <div class="parthead"><span class="tag">Part</span><h2>Tiny ISR + flag</h2></div>
+  <div class="col stack">
+<pre><code>volatile bool btnEvent = false;
+void onBtn() { btnEvent = true; }   // OK — short
+// Serial / delay / display.update  — BAD
+
+void loop() {
+  if (btnEvent) {
+    btnEvent = false;
+    // handle: count++, FSM, Serial...
+  }
+}
+</code></pre>
+    <p>Counters in the ISR are fine for tallies; flags are better when <code>loop</code> must react once with heavier logic. Bounce may inflate counts today — expected.</p>
+  </div>
+</section>
+<section class="part" id="lab">
+  <div class="parthead"><span class="tag">Lab</span><h2>attachInterrupt counter</h2><span class="mins">18 min</span></div>
+  <div class="col stack">
+    <p>Project <code>M6-L02-AttachInterrupt</code>: button→2 to GND. Print counts from <code>loop</code> only. Success: you can point to <code>attachInterrupt</code> + tiny ISR + <code>loop</code> printing the shared count.</p>
+  </div>
+</section>
+<section class="part" id="patterns">
+  <div class="parthead"><span class="tag">Patterns</span><h2>External interrupt counter</h2></div>
+  <div class="col stack"><div class="callout"><h5>Pattern</h5>
+  <p><code>INPUT_PULLUP</code> → <code>attachInterrupt(..., FALLING)</code> → ISR bumps <code>volatile</code> data → <code>loop</code> does Serial/LEDs/FSM. Never Serial-from-ISR.</p></div></div>
+</section>
+<section class="part" id="check">
+  <div class="parthead"><span class="tag">Check</span><h2>Check yourself</h2></div>
+  <div class="col stack"><ol class="num" data-check>
+    <li data-kind="open" data-see="#concepts">Which Uno pins support classic attachInterrupt?
+      <details><summary>Model answer</summary><p>2 and 3 (INT0 / INT1).</p></details></li>
+    <li data-kind="open" data-see="#concepts">Why prefer digitalPinToInterrupt(pin)?
+      <details><summary>Model answer</summary><p>Portable and readable — maps pin → interrupt across boards.</p></details></li>
+    <li data-kind="open" data-see="#isr">List two things that must not appear inside an ISR.
+      <details><summary>Model answer</summary><p>Serial.print, delay, slow display/I²C, long loops.</p></details></li>
+    <li data-kind="choice" data-choices="FALLING|RISING|CHANGE" data-correct="0" data-see="#concepts" data-hint="Press to GND." data-why-0="Correct — HIGH→LOW." data-why-1="That is release for pull-up." data-why-2="Both edges.">For INPUT_PULLUP + button to GND, which edge matches “press started”?</li>
+  </ol></div>
+</section>
+<section class="part" id="mistakes">
+  <div class="parthead"><span class="tag">Watch outs</span><h2>Common mistakes</h2></div>
+  <div class="col stack">
+    <div class="scroll"><table><thead><tr><th>Mistake</th><th>Fix</th></tr></thead><tbody>
+      <tr><td>Serial inside ISR</td><td>Print from loop</td></tr>
+      <tr><td>Wrong pin (not 2/3 on Uno)</td><td>Use INT-capable pins</td></tr>
+      <tr><td>Shock at multi-count per click</td><td>Bounce — harden in 6.4</td></tr>
+    </tbody></table></div>
+  </div>
+</section>
+
+<nav class="pager" aria-label="Lessons">
+<a href="01-polling-limits.html"><span class="dir">Previous</span><span class="name">6.1 Polling limits</span></a>
+<a class="next" href="03-volatile-and-shared-data.html"><span class="dir">Next</span><span class="name">6.3 volatile &rarr;</span></a>
+</nav>
+</div>
+<footer class="bihfoot"><div class="wrap">
+  <p class="pagenote">Lesson 6.2 &nbsp;&middot;&nbsp; Module 6 &nbsp;&middot;&nbsp; Arduino Coding.</p>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a class="lockup" href="../../home.html"><img src="../../../assets/brand/logo-mark-white.png" alt="" width="42" height="42"><span>Arduino Coding<small>Bozoma Innovation Hub</small></span></a>
+      <p>A Bozoma Innovation Hub programme.</p>
+    </div>
+    <div><h4>The course</h4><ul>
+      <li><a href="../../home.html">Course home</a></li>
+      <li><a href="home.html">Module 6</a></li>
+      <li><a href="../list.html">All modules</a></li>
+    </ul></div>
+    <div><h4>Bozoma Innovation Hub</h4><ul>
+      <li><a href="https://bozomainnovationhub.com">bozomainnovationhub.com</a></li>
+    </ul></div>
+  </div>
+  <div class="foot-bottom"><span>&copy; Bozoma Innovation Hub, Aiyinasi, Ghana</span><span class="tagline">World-class begins at home.</span></div>
+</div></footer>
+</body>
+</html>
