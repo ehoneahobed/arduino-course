@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en" data-course="arduino-code">
+<head>
+  <meta charset="utf-8">
+  <script src="../../assets/theme.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href="https://iot.bozomainnovationhub.com/arduino-code/guides/debugging-playbook">
+  <title>Debugging playbook · Arduino Coding</title>
+  <meta name="description" content="Ordered steps when something should work: sim → wiring → pins → Verify → Serial → logic.">
+  <meta name="theme-color" content="#24182E">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../assets/brand/icon-192.png">
+  <link rel="apple-touch-icon" href="../../assets/brand/icon-180.png">
+  <!-- app + link previews (tools/inject_head.py) -->
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="IoT at Bozoma Innovation Hub">
+  <meta property="og:title" content="Debugging playbook · Arduino Coding">
+  <meta property="og:description" content="Ordered steps when something should work: sim → wiring → pins → Verify → Serial → logic.">
+  <meta property="og:url" content="https://iot.bozomainnovationhub.com/arduino-code/guides/debugging-playbook">
+  <meta property="og:image" content="https://iot.bozomainnovationhub.com/assets/og/arduino-code-guides-debugging-playbook.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Debugging playbook · Arduino Coding">
+  <meta property="og:locale" content="en_GB">
+  <meta name="twitter:card" content="summary_large_image">
+  <script defer src="../../assets/app.js"></script>
+  <!-- /app + link previews -->
+  <link rel="stylesheet" href="../../assets/course.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the guide</a>
+<div class="topbar">
+  <a class="home" href="../home.html"><img src="../../assets/brand/logo-mark-white.png" alt="" width="36" height="36"><span class="lock"><b>Arduino Coding</b><small>Bozoma Innovation Hub</small></span></a>
+  <a class="hub" href="../../index.html" title="All courses: IoT at Bozoma Innovation Hub">&larr; IoT at BIH</a>
+  <nav class="bandlinks" aria-label="Modules"><a href="../modules/module-00/home.html">0</a><a href="../modules/module-01/home.html">1</a><a href="../modules/module-02/home.html">2</a><a href="../modules/module-03/home.html">3</a><a href="../modules/module-04/home.html">4</a><a href="../modules/module-05/home.html">5</a><a href="../modules/module-06/home.html">6</a><a href="../modules/module-07/home.html">7</a><a href="../modules/module-08/home.html">8</a><a href="../modules/module-09/home.html">9</a><a href="../modules/list.html">⋯</a></nav>
+  <a class="bih" href="https://bozomainnovationhub.com"><span class="long">bozomainnovationhub.com</span><span class="short">BIH website</span></a>
+</div>
+<div class="wrap" id="main">
+<nav aria-label="Sections">
+  <a href="#0-mindset-10-seconds">Mindset (10 seconds)</a>
+  <a href="#1-master-order-always">Master order (always)</a>
+  <a href="#2-fast-path-by-milestone">Fast path by milestone</a>
+  <a href="#3-one-change-experiments">One-change experiments</a>
+  <a href="#4-when-to-open-which-guide">When to open which guide</a>
+  <a href="#5-asking-a-human-last-resort">Asking a human (last resort)</a>
+  <a href="#related">Related</a>
+</nav>
+<header style="padding:3.2rem 0 1rem">
+  <p class="eyebrow">Arduino Coding &nbsp;&middot;&nbsp; Guides</p>
+  <h1 style="margin:.8rem 0">Debugging playbook</h1>
+  <p class="col sub" style="font-size:1.12em">Ordered steps when something should work: sim → wiring → pins → Verify → Serial → logic.</p>
+</header>
+<p><strong>How to use this page:</strong> Run the steps <strong>in order</strong>. Change <strong>one</strong> thing, re-test, then continue.   <strong>Companion:</strong> Symptom tables live in the <a href="troubleshooting-faq.html">Troubleshooting FAQ</a>. This playbook is the <strong>procedure</strong>; the FAQ is the <strong>encyclopedia</strong>.</p>
+<p>You do not need to memorize electronics. You <em>do</em> need a calm order so you stop rewriting the whole sketch for a backwards LED.</p>
+<section class="part" id="0-mindset-10-seconds"><div class="parthead"><span class="tag">Guide</span><h2>0. Mindset (10 seconds)</h2></div><div class="col stack">
+<ol class="num"><li><strong>The last change is guilty first</strong> — wire <em>or</em> code, not both at once.  </li><li><strong>Prove a simpler circuit</strong> — steady LED on pin 13 before bounce, PWM, or libraries.  </li><li><strong>Prefer evidence</strong> — Serial prints beat guessing (<code>digitalRead</code>, <code>analogRead</code>, mode names).</li></ol>
+</div></section>
+<section class="part" id="1-master-order-always"><div class="parthead"><span class="tag">Guide</span><h2>1. Master order (always)</h2></div><div class="col stack">
+<div class="scroll"><table><thead><tr><th>Step</th><th>Ask</th><th>If no / fail</th></tr></thead><tbody><tr><td><strong>1. Running?</strong></td><td>Tinkercad: <strong>Start Simulation</strong> (not paused)? Hardware: <strong>Upload</strong> succeeded (not only Verify)?</td><td>Start sim / fix Upload (cable, port, board)</td></tr><tr><td><strong>2. Path complete?</strong></td><td>Pin → resistor → LED anode → cathode → <strong>GND</strong>? Resistor <strong>220 Ω</strong> (not 220 kΩ)? Breadboard row/rail correct?</td><td>See <a href="breadboard-basics.html">breadboard basics</a> + <a href="electricity-primer.html">electricity primer</a></td></tr><tr><td><strong>3. Pins match?</strong></td><td>Wire pin = <code>pinMode</code> pin = <code>digitalWrite</code> / <code>digitalRead</code> / <code>analogRead</code> pin? Named <code>const int</code>?</td><td>Fix one constant; re-wire if needed</td></tr><tr><td><strong>4. Compile clean?</strong></td><td>Verify OK? Read the <strong>first</strong> red error only.</td><td>Fix spelling, <code>;</code>, braces, <code>#include</code> — ignore cascading noise</td></tr><tr><td><strong>5. Serial sane?</strong></td><td><code>Serial.begin(n)</code> matches Monitor baud? Monitor open? Sim running / board uploaded?</td><td><a href="how-to-serial-monitor.html">Serial how-to</a></td></tr><tr><td><strong>6. Logic?</strong></td><td>Pull-up button: pressed = <strong>LOW</strong>? Stuck in <code>delay</code>? Threshold chatty? Wrong <code>if</code> polarity?</td><td>Print the raw value; then fix the condition</td></tr></tbody></table></div>
+<p>Do <strong>not</strong> jump to step 6 while step 2 is wrong.</p>
+</div></section>
+<section class="part" id="2-fast-path-by-milestone"><div class="parthead"><span class="tag">Guide</span><h2>2. Fast path by milestone</h2></div><div class="col stack">
+<h3 id="module-0-first-light">Module 0 — first light</h3>
+<ol class="num"><li>Sim running.  </li><li>Polarity + resistor + GND.  </li><li><code>pinMode</code> + <code>digitalWrite(HIGH)</code> smoke-test (Lesson 0.3 starter).  </li><li>Only then add Blink timing.</li></ol>
+<h3 id="module-1-buttons-multi-led">Module 1 — buttons & multi-LED</h3>
+<ol class="num"><li>Each LED path + <strong>shared GND rail</strong>.  </li><li><code>INPUT_PULLUP</code> + button to <strong>GND</strong>.  </li><li><code>Serial.println(digitalRead(buttonPin))</code> while pressing.  </li><li>Then edges / debounce — not before the raw reading makes sense.</li></ol>
+<h3 id="module-2-timing">Module 2 — timing</h3>
+<ol class="num"><li>Can you still read the button with <strong>no</strong> long <code>delay</code> on the blink path?  </li><li>Print <code>millis()</code> or a mode name to prove <code>loop</code> is alive.  </li><li>One timer first; add the second timer only after the first is stable.</li></ol>
+<h3 id="module-3-analog">Module 3 — analog</h3>
+<ol class="num"><li>Serial stream of <code>analogRead</code> <strong>before</strong> lamp logic (Lesson 3.2 habit).  </li><li>Pot ends on <strong>5V</strong> and <strong>GND</strong>, wiper on <strong>A0</strong> (or your named Ax).  </li><li>PWM only on <strong><code>~</code></strong> pins; map 0–1023 → 0–255 before <code>analogWrite</code>.  </li><li>Chatter at a threshold → hysteresis (two thresholds), not a faster <code>loop</code>.</li></ol>
+<h3 id="hardware-upload-module-6-7">Hardware Upload (Module 6–7)</h3>
+<p>After the sim playbook:</p>
+<ol class="num"><li><strong>Data</strong> USB cable; correct <strong>Board</strong> + <strong>Port</strong>.  </li><li>Drivers / permissions (CH340, <code>dialout</code>, Gatekeeper) — see FAQ + Lesson 7.1.  </li><li>Re-check physical polarity and rail jumpers — desk boards do not auto-fix seating.</li></ol>
+</div></section>
+<section class="part" id="3-one-change-experiments"><div class="parthead"><span class="tag">Guide</span><h2>3. One-change experiments</h2></div><div class="col stack">
+<div class="scroll"><table><thead><tr><th>Goal</th><th>Smallest experiment</th></tr></thead><tbody><tr><td>Prove the LED path</td><td>Force <code>digitalWrite(ledPin, HIGH);</code> empty <code>loop</code></td></tr><tr><td>Prove the button</td><td>Print raw <code>digitalRead</code> only — no LED logic</td></tr><tr><td>Prove the pot</td><td>Print <code>analogRead</code> only — no thresholds</td></tr><tr><td>Prove non-blocking</td><td>Blink with <code>millis</code> <strong>and</strong> print a counter every loop batch</td></tr><tr><td>Prove Upload</td><td>Stock Blink on pin 13 before your big sketch</td></tr></tbody></table></div>
+<p>If the tiny experiment fails, <strong>do not</strong> debug the big sketch yet.</p>
+</div></section>
+<section class="part" id="4-when-to-open-which-guide"><div class="parthead"><span class="tag">Guide</span><h2>4. When to open which guide</h2></div><div class="col stack">
+<div class="scroll"><table><thead><tr><th>Stuck on…</th><th>Open</th></tr></thead><tbody><tr><td>Dark LED / polarity / resistor</td><td><a href="electricity-primer.html">Electricity primer</a></td></tr><tr><td>Rows vs rails</td><td><a href="breadboard-basics.html">Breadboard basics</a></td></tr><tr><td>Baud / Monitor / flood</td><td><a href="how-to-serial-monitor.html">Serial how-to</a></td></tr><tr><td>Tinkercad UI</td><td><a href="how-to-tinkercad.html">How to Tinkercad</a></td></tr><tr><td>Named symptom (inverted button, freeze, …)</td><td><a href="troubleshooting-faq.html">Troubleshooting FAQ</a></td></tr><tr><td>Word you forgot</td><td><a href="glossary.html">Glossary</a></td></tr></tbody></table></div>
+</div></section>
+<section class="part" id="5-asking-a-human-last-resort"><div class="parthead"><span class="tag">Guide</span><h2>5. Asking a human (last resort)</h2></div><div class="col stack">
+<p>Send <strong>four</strong> things:</p>
+<ol class="num"><li>Which lesson / circuit name.  </li><li>Which playbook step failed (1–6).  </li><li>Pin map (e.g. <code>ledPin=9</code>, <code>buttonPin=2</code>, pot on <code>A0</code>).  </li><li>A few Serial lines or the <strong>first</strong> Verify error.</li></ol>
+<p>That beats “my LED doesn’t work” and gets you unstuck faster.</p>
+</div></section>
+<section class="part" id="related"><div class="parthead"><span class="tag">Guide</span><h2>Related</h2></div><div class="col stack">
+<ul class="plain"><li><a href="troubleshooting-faq.html">Troubleshooting FAQ</a> — symptom → fix tables  </li><li><a href="getting-started.html">Getting started</a> — TC vs IDE vs kit  </li><li><a href="how-to-practice-with-tinkercad.html">Practice with Tinkercad</a> — what sim can and cannot prove  </li></ul>
+</div></section>
+<section class="part">
+  <div class="parthead"><span class="tag">More</span><h2>Related</h2></div>
+  <div class="col stack">
+    <p><a href="home.html">All guides</a> · <a href="getting-started.html">Getting started</a> · <a href="debugging-playbook.html">Debugging playbook</a> · <a href="troubleshooting-faq.html">Troubleshooting</a> · <a href="../modules/module-00/home.html">Module 0</a></p>
+  </div>
+</section>
+
+</div>
+<footer class="bihfoot"><div class="wrap">
+  <p class="pagenote">Guides &nbsp;&middot;&nbsp; Arduino Coding</p>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a class="lockup" href="../home.html"><img src="../../assets/brand/logo-mark-white.png" alt="" width="42" height="42"><span>Arduino Coding<small>Bozoma Innovation Hub</small></span></a>
+      <p>A Bozoma Innovation Hub programme.</p>
+    </div>
+    <div><h4>The course</h4><ul>
+      <li><a href="../home.html">Course home</a></li>
+      <li><a href="home.html">Guides index</a></li>
+      <li><a href="getting-started.html">Getting started</a></li>
+      <li><a href="debugging-playbook.html">Debugging playbook</a></li>
+      <li><a href="../modules/module-00/home.html">Module 0</a></li>
+    </ul></div>
+    <div><h4>Bozoma Innovation Hub</h4><ul>
+      <li><a href="https://bozomainnovationhub.com">bozomainnovationhub.com</a></li>
+    </ul></div>
+  </div>
+  <div class="foot-bottom"><span>&copy; Bozoma Innovation Hub, Aiyinasi, Ghana</span><span class="tagline">World-class begins at home.</span></div>
+</div></footer>
+</body>
+</html>

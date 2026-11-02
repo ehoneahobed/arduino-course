@@ -61,7 +61,7 @@
 <p><strong>Blocking</strong>   Code that stops everything else until it finishes — classic example: <code>delay(1000)</code> freezes the whole <code>loop</code> for one second.   <em>Introduced in:</em> Module 2 · Lesson 2.1</p>
 <p><strong>Board</strong>   The physical (or simulated) microcontroller circuit — e.g. Arduino Uno — with pins you can wire to.   <em>Introduced in:</em> Module 0 · Lesson 0.1</p>
 <p><strong>Bounce (contact bounce)</strong>   A mechanical button does not switch cleanly once; it chatters HIGH/LOW for a few milliseconds. Your sketch can see many “presses.”   <em>Introduced in:</em> Module 1 · Lesson 1.4</p>
-<p><strong>Breadboard</strong>   A plastic board with hidden metal strips so you can plug wires and parts without soldering. Rows share connections; edge rails are for power/GND.   <em>Introduced in:</em> <a href="getting-started.html">Getting started</a> §7; used Module 0 · 0.3</p>
+<p><strong>Breadboard</strong>   A plastic board with hidden metal strips so you can plug wires and parts without soldering. Rows share connections; edge rails are for power/GND.   <em>Introduced in:</em> <a href="breadboard-basics.html">Breadboard basics</a>; <a href="getting-started.html">Getting started</a> §7; used Module 0 · 0.3</p>
 <p><strong>BSP (Board Support Package)</strong>   Extra software you install in the IDE so it knows a board family (for example ESP32).   <em>Introduced in:</em> Module 8 · Lesson 8.1</p>
 </div></section>
 <section class="part" id="c-d"><div class="parthead"><span class="tag">Guide</span><h2>C–D</h2></div><div class="col stack">
@@ -87,7 +87,7 @@
 <p><strong>I²C (I2C)</strong>   A two-wire communication style (clock + data) used by many displays and sensors. Devices share the bus and have addresses.   <em>Introduced in:</em> Module 6–7 (display / scan lessons)</p>
 <p><strong>INPUT_PULLUP</strong>   <code>pinMode</code> mode that enables an internal resistor pulling the pin toward HIGH when nothing presses it to GND. With a button to GND, <strong>pressed reads LOW</strong>.   <em>Introduced in:</em> Module 1 · Lesson 1.3</p>
 <p><strong>ISR (Interrupt Service Routine)</strong>   A short function that runs when a hardware interrupt fires (e.g. pin change). Advanced — keep ISRs tiny; Module 6 rules apply.   <em>Introduced in:</em> Module 6 · Lesson 6.2</p>
-<p><strong>Library</strong>   Reusable code someone else wrote that you <code>#include</code> (e.g. Servo). Installed via Library Manager on the IDE; support varies in Tinkercad.   <em>Introduced in:</em> Module 4 · Lesson 4.1</p>
+<p><strong>Library</strong>   Reusable code someone else wrote that you <code>#include</code> (e.g. Servo) — a ready-made toolbox for a device or pattern. Installed via Library Manager on the IDE; support varies in Tinkercad.   <em>Introduced in:</em> Module 4 · Lesson 4.1 (plain-language intro in that lesson)</p>
 <p><strong>Level</strong>   The current HIGH or LOW value — “is the button held?” — vs an <strong>edge</strong> (“did it just change?”).   <em>Introduced in:</em> Module 1 · Lesson 1.3–1.4</p>
 </div></section>
 <section class="part" id="m-p"><div class="parthead"><span class="tag">Guide</span><h2>M–P</h2></div><div class="col stack">
@@ -125,7 +125,7 @@
 <section class="part">
   <div class="parthead"><span class="tag">More</span><h2>Related</h2></div>
   <div class="col stack">
-    <p><a href="home.html">All guides</a> · <a href="getting-started.html">Getting started</a> · <a href="../modules/module-00/home.html">Module 0</a> · <a href="troubleshooting-faq.html">Troubleshooting</a></p>
+    <p><a href="home.html">All guides</a> · <a href="getting-started.html">Getting started</a> · <a href="debugging-playbook.html">Debugging playbook</a> · <a href="troubleshooting-faq.html">Troubleshooting</a> · <a href="../modules/module-00/home.html">Module 0</a></p>
   </div>
 </section>
 
@@ -141,6 +141,7 @@
       <li><a href="../home.html">Course home</a></li>
       <li><a href="home.html">Guides index</a></li>
       <li><a href="getting-started.html">Getting started</a></li>
+      <li><a href="debugging-playbook.html">Debugging playbook</a></li>
       <li><a href="../modules/module-00/home.html">Module 0</a></li>
     </ul></div>
     <div><h4>Bozoma Innovation Hub</h4><ul>

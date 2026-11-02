@@ -55,6 +55,13 @@
   <p class="col sub" style="font-size:1.1em">Turn a lamp on when a reading crosses a setpoint — then add <strong>hysteresis</strong> so noise near the edge does not chatter.</p>
   <p class="col note" style="margin-top:.8rem">About 40 minutes.</p>
 </header>
+<section class="part" id="hyst">
+  <div class="parthead"><span class="tag">Concept</span><h2>Hysteresis / deadband</h2></div>
+  <div class="col stack">
+    <p class="note">Near a single threshold, tiny wiggles chatter the lamp. Use dual thresholds + remembered state: stay ON until raw rises past <code>offAbove</code>. See <a href="../../guides/glossary.html">glossary</a> (hysteresis) and watch <code>raw</code> + state on the <a href="../../guides/how-to-serial-monitor.html">Serial Monitor</a>.</p>
+  </div>
+</section>
+
 <section class="part" id="outcomes">
   <div class="parthead"><span class="tag">Start here</span><h2>Learning outcomes</h2></div>
   <div class="col stack"><ol class="num">

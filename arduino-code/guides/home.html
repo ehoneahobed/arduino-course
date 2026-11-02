@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="canonical" href="https://iot.bozomainnovationhub.com/arduino-code/guides/home">
   <title>Course guides · Arduino Coding</title>
-  <meta name="description" content="Setup, vocabulary, Tinkercad, Serial, and troubleshooting for absolute beginners.">
+  <meta name="description" content="Setup, vocabulary, breadboard, Tinkercad, Serial, debugging, and troubleshooting for absolute beginners.">
   <meta name="theme-color" content="#24182E">
   <link rel="icon" type="image/png" sizes="192x192" href="../../assets/brand/icon-192.png">
   <link rel="apple-touch-icon" href="../../assets/brand/icon-180.png">
@@ -15,7 +15,7 @@
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="IoT at Bozoma Innovation Hub">
   <meta property="og:title" content="Course guides · Arduino Coding">
-  <meta property="og:description" content="Setup, vocabulary, Tinkercad, Serial, and troubleshooting for absolute beginners.">
+  <meta property="og:description" content="Setup, vocabulary, breadboard, Tinkercad, Serial, debugging, and troubleshooting for absolute beginners.">
   <meta property="og:url" content="https://iot.bozomainnovationhub.com/arduino-code/guides/home">
   <meta property="og:image" content="https://iot.bozomainnovationhub.com/assets/og/arduino-code-guides-home.jpg">
   <meta property="og:image:width" content="1200">
@@ -40,7 +40,7 @@
 <header style="padding:3.2rem 0 1rem">
   <p class="eyebrow">Arduino Coding &nbsp;&middot;&nbsp; Guides</p>
   <h1 style="margin:.8rem 0">Course guides</h1>
-  <p class="col sub" style="font-size:1.12em">Setup, vocabulary, Tinkercad, Serial, and troubleshooting for absolute beginners.</p>
+  <p class="col sub" style="font-size:1.12em">Setup, vocabulary, breadboard, Tinkercad, Serial, debugging, and troubleshooting for absolute beginners.</p>
 </header>
 
 <section class="part" id="start">
@@ -58,9 +58,11 @@
 <tr><td><a href="getting-started.html">Getting started</a></td><td>Where to begin, accounts, Tinkercad vs IDE vs hardware, kit timeline.</td></tr>
 <tr><td><a href="glossary.html">Glossary</a></td><td>Plain-language terms: pin, sketch, GND, PWM, debounce, FSM, Serial, and more.</td></tr>
 <tr><td><a href="electricity-primer.html">Electricity primer</a></td><td>Voltage, current, ground, LED polarity, resistor role — no engineering degree.</td></tr>
+<tr><td><a href="breadboard-basics.html">Breadboard basics</a></td><td>Rows vs rails, shared GND, mental model for Module 0–1 wiring.</td></tr>
 <tr><td><a href="how-to-tinkercad.html">How to Tinkercad</a></td><td>Click-by-click Circuits setup and screenshot checklist.</td></tr>
 <tr><td><a href="how-to-serial-monitor.html">How to Serial Monitor</a></td><td>What Serial is, baud matching, IDE and Tinkercad.</td></tr>
-<tr><td><a href="troubleshooting-faq.html">Troubleshooting FAQ</a></td><td>Ordered playbook: dark LED, Verify errors, board not found, button stuck.</td></tr>
+<tr><td><a href="debugging-playbook.html">Debugging playbook</a></td><td>Ordered steps when something should work: sim → wiring → pins → Verify → Serial → logic.</td></tr>
+<tr><td><a href="troubleshooting-faq.html">Troubleshooting FAQ</a></td><td>Symptom tables: dark LED, Verify errors, board not found, button stuck.</td></tr>
 <tr><td><a href="how-to-practice-with-tinkercad.html">Practice with Tinkercad</a></td><td>Study habits, saving circuits, what simulation can and cannot prove.</td></tr>
     </tbody>
   </table></div>
@@ -71,8 +73,9 @@
     <ol class="num">
       <li><a href="getting-started.html">Getting started</a></li>
       <li><a href="electricity-primer.html">Electricity primer</a> (short)</li>
+      <li><a href="breadboard-basics.html">Breadboard basics</a> before multi-LED wiring</li>
       <li><a href="how-to-tinkercad.html">How to Tinkercad</a> while doing Lesson 0.3</li>
-      <li>Keep <a href="glossary.html">Glossary</a> and <a href="troubleshooting-faq.html">Troubleshooting FAQ</a> bookmarked</li>
+      <li>Keep <a href="glossary.html">Glossary</a>, <a href="debugging-playbook.html">Debugging playbook</a>, and <a href="troubleshooting-faq.html">Troubleshooting FAQ</a> bookmarked</li>
       <li><a href="how-to-serial-monitor.html">Serial Monitor</a> before Module 1 buttons get serious (required by Module 3)</li>
     </ol>
     <p class="note">Module lessons live under <a href="../modules/list.html">Modules</a>.</p>
@@ -91,6 +94,7 @@
       <li><a href="../home.html">Course home</a></li>
       <li><a href="home.html">Guides index</a></li>
       <li><a href="getting-started.html">Getting started</a></li>
+      <li><a href="debugging-playbook.html">Debugging playbook</a></li>
       <li><a href="../modules/module-00/home.html">Module 0</a></li>
     </ul></div>
     <div><h4>Bozoma Innovation Hub</h4><ul>

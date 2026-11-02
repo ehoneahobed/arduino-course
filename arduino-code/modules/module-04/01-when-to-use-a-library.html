@@ -56,6 +56,15 @@
   <p class="col sub" style="font-size:1.1em">A library is reusable device code. You <code>#include</code>, create an object, <code>attach</code>/<code>begin</code>, and call a documented API — then ship features instead of reinventing pulse trains.</p>
   <p class="col note" style="margin-top:.8rem">About 40 minutes. Servo smoke-test; DHT waits for hardware.</p>
 </header>
+<section class="part" id="plain">
+  <div class="parthead"><span class="tag">Plain language</span><h2>What is a library? What is #include?</h2></div>
+  <div class="col stack">
+    <div class="callout" style="--bc:var(--accent)"><h5>Toolbox, not magic</h5>
+    <p>A <strong>library</strong> is a ready-made toolbox of code for a device or pattern (servo pulses, sensor checksums). <code>#include &lt;Servo.h&gt;</code> opens that toolbox so you can call its API. Prefer documented API over bit-banging. Short defs: <a href="../../guides/glossary.html">glossary</a> (library / <code>#include</code> / API).</p></div>
+    <p class="note"><strong>[TC†]</strong> Tinkercad supports a small set of libraries (Servo is the reliable star here). DHT / many OLED helpers may be absent — use Serial mocks or hardware for those paths.</p>
+  </div>
+</section>
+
 <section class="part" id="outcomes">
   <div class="parthead"><span class="tag">Start here</span><h2>Learning outcomes</h2></div>
   <div class="col stack"><ol class="num">

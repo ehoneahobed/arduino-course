@@ -55,6 +55,13 @@
   <p class="col sub" style="font-size:1.1em">Schedule an LED toggle with <code>previousMillis</code> and <code>interval</code> — zero <code>delay()</code> in <code>loop</code>.</p>
   <p class="col note" style="margin-top:.8rem">About 40 minutes. Tinkercad timing is approximate <strong>[TC†]</strong>.</p>
 </header>
+<section class="part" id="hint">
+  <div class="parthead"><span class="tag">Hint</span><h2>When the blink “won’t change”</h2></div>
+  <div class="col stack">
+    <p class="note">If timing feels stuck, confirm you are not still using <code>delay</code> on the main path, then walk the <a href="../../guides/debugging-playbook.html">Debugging playbook</a>. Print <code>millis()</code> with the <a href="../../guides/how-to-serial-monitor.html">Serial Monitor</a> to see the heartbeat advance.</p>
+  </div>
+</section>
+
 <section class="part" id="outcomes">
   <div class="parthead"><span class="tag">Start here</span><h2>Learning outcomes</h2></div>
   <div class="col stack"><ol class="num">

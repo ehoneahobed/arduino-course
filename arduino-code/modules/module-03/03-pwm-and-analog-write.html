@@ -55,6 +55,13 @@
   <p class="col sub" style="font-size:1.1em">PWM duty cycle makes LEDs look dimmer or brighter. Map a pot reading to <code>analogWrite</code> on a <strong>~</strong> pin.</p>
   <p class="col note" style="margin-top:.8rem">About 40 minutes.</p>
 </header>
+<section class="part" id="picture">
+  <div class="parthead"><span class="tag">Picture</span><h2>Duty cycle is not steady volts</h2></div>
+  <div class="col stack">
+    <p>At duty 64 (~25%), the pin is mostly LOW with <strong>short HIGH pulses</strong> — not a steady 1.25&nbsp;V. Your eye averages the blink into “dim.” Terms: <a href="../../guides/glossary.html">glossary</a> (PWM / duty). Map 0…1023 → 0…255 before <code>analogWrite</code> — different scales.</p>
+  </div>
+</section>
+
 <section class="part" id="outcomes">
   <div class="parthead"><span class="tag">Start here</span><h2>Learning outcomes</h2></div>
   <div class="col stack"><ol class="num">
