@@ -2,7 +2,7 @@
    Brand tokens match bozomainnovationhub.com: plum #24182E, red #CA1F3F, gold #FFBE00
    (gold text #8A5C00). Outfit for headings and UI, Rubik for reading, IBM Plex Mono for code.
    All fonts live in assets/fonts so the site works offline from a USB stick.
-   The band colours (--b0 to --b8) are the resistor colour code and are taught: do not change them. */
+   The band colours (--b0 to --b9) are the resistor colour code and are taught: do not change them. */
 
 @font-face{font-family:"Rubik"; font-style:normal; font-weight:300 900; font-display:swap; src:url(fonts/rubik.woff2) format("woff2")}
 @font-face{font-family:"Rubik"; font-style:italic; font-weight:300 900; font-display:swap; src:url(fonts/rubik-italic.woff2) format("woff2")}
@@ -29,7 +29,7 @@
   --code-bg:#F6F3F8; --code-ink:#24182E;
   --b0:#2B2F31; --b1:#6B4526; --b2:#9E3325;
   --b3:#8C5417; --b4:#6E5D00; --b5:#2A6E3D;
-  --b6:#1F5A8C; --b7:#5E3E8C; --b8:#454B4F;
+  --b6:#1F5A8C; --b7:#5E3E8C; --b8:#454B4F; --b9:#C8C4BC;
   --bc:#CA1F3F;
   --shadow:0 1px 2px rgba(36,24,46,.05), 0 10px 28px -18px rgba(36,24,46,.28);
   --measure:66ch; --wide:1000px;
@@ -45,7 +45,7 @@
     --code-bg:#0F0B13; --code-ink:#EDE6F2;
     --b0:#9AA3A6; --b1:#B98452; --b2:#E2705F;
     --b3:#E0A054; --b4:#D6C24A; --b5:#5FB878;
-    --b6:#7FB3E0; --b7:#B096DE; --b8:#A9B1B5;
+    --b6:#7FB3E0; --b7:#B096DE; --b8:#A9B1B5; --b9:#E8E4DC;
     --bc:#FF6F87;
     --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 28px -18px rgba(0,0,0,.8);
     color-scheme:dark;
@@ -60,7 +60,7 @@
   --code-bg:#0F0B13; --code-ink:#EDE6F2;
   --b0:#9AA3A6; --b1:#B98452; --b2:#E2705F;
   --b3:#E0A054; --b4:#D6C24A; --b5:#5FB878;
-  --b6:#7FB3E0; --b7:#B096DE; --b8:#A9B1B5;
+  --b6:#7FB3E0; --b7:#B096DE; --b8:#A9B1B5; --b9:#E8E4DC;
   --bc:#FF6F87;
   --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 28px -18px rgba(0,0,0,.8);
   color-scheme:dark;
@@ -230,6 +230,7 @@ figure.wiring figcaption{
 [data-band="6"],:root[data-band="6"]{--bc:var(--b6)}
 [data-band="7"],:root[data-band="7"]{--bc:var(--b7)}
 [data-band="8"],:root[data-band="8"]{--bc:var(--b8)}
+[data-band="9"],:root[data-band="9"]{--bc:var(--b9)}
 
 .skip{position:absolute; left:-9999px; top:.5rem; background:var(--gold); color:var(--plum); font-family:var(--display); font-weight:600;
       padding:.55rem 1rem; border-radius:99px; z-index:60; text-decoration:none}
@@ -259,6 +260,7 @@ figure.wiring figcaption{
 .bandlinks a:nth-child(2){--dot:var(--b1)} .bandlinks a:nth-child(3){--dot:var(--b2)} .bandlinks a:nth-child(4){--dot:var(--b3)}
 .bandlinks a:nth-child(5){--dot:var(--b4)} .bandlinks a:nth-child(6){--dot:var(--b5)} .bandlinks a:nth-child(7){--dot:var(--b6)}
 .bandlinks a:nth-child(8){--dot:var(--b7)} .bandlinks a:nth-child(9){--dot:var(--b8)}
+.bandlinks a:nth-child(10){--dot:var(--b9)}
 .bandlinks a:hover,.bandlinks a:focus-visible{color:#fff; background:rgba(255,255,255,.1); border-color:rgba(255,255,255,.36)}
 .bandlinks a[aria-current="page"]{color:var(--plum); background:#fff; border-color:#fff; font-weight:600}
 .bandlinks a[aria-current="page"]::before{box-shadow:0 0 0 1px rgba(36,24,46,.35)}
@@ -469,11 +471,11 @@ figure.wiring figcaption{
     --copper:#6E4A00; --copper-soft:#fff; --good:#0F5A47; --good-soft:#fff;
     --code-bg:#F6F3F8; --code-ink:#111;
     --b0:#2B2F31; --b1:#6B4526; --b2:#9E3325; --b3:#8C5417; --b4:#6E5D00;
-    --b5:#2A6E3D; --b6:#1F5A8C; --b7:#5E3E8C; --b8:#454B4F;
+    --b5:#2A6E3D; --b6:#1F5A8C; --b7:#5E3E8C; --b8:#454B4F; --b9:#C8C4BC;
     --danger:#B3122F; --danger-soft:#fff;
     --bc:#A8172F; --shadow:none; color-scheme:light;
   }
-  :root[data-band="0"]{--bc:var(--b0)} :root[data-band="1"]{--bc:var(--b1)} :root[data-band="2"]{--bc:var(--b2)} :root[data-band="3"]{--bc:var(--b3)} :root[data-band="4"]{--bc:var(--b4)} :root[data-band="5"]{--bc:var(--b5)} :root[data-band="6"]{--bc:var(--b6)} :root[data-band="7"]{--bc:var(--b7)} :root[data-band="8"]{--bc:var(--b8)}
+  :root[data-band="0"]{--bc:var(--b0)} :root[data-band="1"]{--bc:var(--b1)} :root[data-band="2"]{--bc:var(--b2)} :root[data-band="3"]{--bc:var(--b3)} :root[data-band="4"]{--bc:var(--b4)} :root[data-band="5"]{--bc:var(--b5)} :root[data-band="6"]{--bc:var(--b6)} :root[data-band="7"]{--bc:var(--b7)} :root[data-band="8"]{--bc:var(--b8)} :root[data-band="9"]{--bc:var(--b9)}
   @page{margin:16mm 14mm}
   body{display:block; min-height:0; padding:0; font-size:10.5pt; line-height:1.5; background:#fff}
   .skip,nav[aria-label="Sections"],.bandlinks,.topbar .bih,.pager,.foot-grid,.hero .stripes,.hero .stripes-label{display:none !important}

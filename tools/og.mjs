@@ -36,15 +36,16 @@ const b64 = (file, type) => `data:${type};base64,` + readFileSync(join(ROOT, fil
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
 const unesc = (s) => String(s).replace(/&quot;/g, '"').replace(/&#39;|&rsquo;/g, '’').replace(/&times;/g, '×').replace(/&amp;/g, '&');
 
-// The resistor colour code, as the course teaches it (assets/course.css --b0 ... --b8):
+// The resistor colour code, as the course teaches it (assets/course.css --b0 ... --b9):
 // deep colours for a stripe on a resistor body, light ones for text on plum.
 const BANDS = [
   ['Black', '#2B2F31', '#9AA3A6'], ['Brown', '#6B4526', '#B98452'], ['Red', '#9E3325', '#E2705F'],
   ['Orange', '#8C5417', '#E0A054'], ['Yellow', '#6E5D00', '#D6C24A'], ['Green', '#2A6E3D', '#5FB878'],
   ['Blue', '#1F5A8C', '#7FB3E0'], ['Violet', '#5E3E8C', '#B096DE'], ['Grey', '#454B4F', '#A9B1B5'],
+  ['White', '#C8C4BC', '#E8E4DC'],
 ];
 // A real resistor's stripes are brighter than the course's text colours.
-const STRIPE = ['#1c1c1c', '#7a4a22', '#d0312d', '#f08a1c', '#f5d327', '#2f9e44', '#1f6fd1', '#8b4fc9', '#8d9396'];
+const STRIPE = ['#1c1c1c', '#7a4a22', '#d0312d', '#f08a1c', '#f5d327', '#2f9e44', '#1f6fd1', '#8b4fc9', '#8d9396', '#f2f0ea'];
 
 // The same page list and naming rule as tools/inject_head.py.
 function pages(dir = '') {
