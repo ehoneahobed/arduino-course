@@ -32,7 +32,7 @@
 <div class="topbar">
   <a class="home" href="../../home.html"><img src="../../../assets/brand/logo-mark-white.png" alt="" width="36" height="36"><span class="lock"><b>Arduino Coding</b><small>Bozoma Innovation Hub</small></span></a>
   <a class="hub" href="../../../index.html" title="All courses: IoT at Bozoma Innovation Hub">&larr; IoT at BIH</a>
-  <nav class="bandlinks" aria-label="Modules"><a href="home.html" aria-current="page">0</a><a href="../list.html">⋯</a></nav>
+  <nav class="bandlinks" aria-label="Modules"><a href="home.html" aria-current="page">0</a><a href="../module-01/home.html">1</a><a href="../module-02/home.html">2</a><a href="../module-03/home.html">3</a><a href="../module-04/home.html">4</a><a href="../module-05/home.html">5</a><a href="../module-06/home.html">6</a><a href="../module-07/home.html">7</a><a href="../module-08/home.html">8</a><a href="../module-09/home.html">9</a><a href="../list.html">⋯</a></nav>
   <a class="bih" href="https://bozomainnovationhub.com"><span class="long">bozomainnovationhub.com</span><span class="short">BIH website</span></a>
 </div>
 <div class="wrap" id="main">
@@ -40,15 +40,67 @@
 <header style="padding:3.2rem 0 1rem">
   <p class="eyebrow">Arduino Coding &nbsp;&middot;&nbsp; Module 0</p>
   <h1 style="margin:.8rem 0">Setup &amp; First Light</h1>
-  <p class="col sub" style="font-size:1.12em">Install tools, blink an LED, and understand sketch structure (<code>setup</code> / <code>loop</code>). Practice path: <strong>Tinkercad</strong> primary · hardware optional.</p>
-  <p class="col note" style="margin-top:.8rem">About 3–3.5 hours at a beginner pace. Project spine ends with a custom blink signature. <strong>New here?</strong> Read <a href="../../guides/getting-started.html">Getting started</a> first. <strong>Stuck?</strong> Run the <a href="../../guides/debugging-playbook.html">Debugging playbook</a> (sim → wiring → pins → Verify → Serial → logic) before rewriting a sketch.</p>
+  <p class="col sub" style="font-size:1.12em">Get an LED blinking in Tinkercad and learn how a sketch is built — <code>setup</code> and <code>loop</code>. Hardware is optional here.</p>
+  <p class="col note" style="margin-top:.8rem">About 3–3.5 hours. You do not need to finish in one sitting.</p>
+  <p style="margin-top:1.4rem"><a class="startbtn" href="01-what-is-a-microcontroller.html">Start lesson 0.1 &rarr;</a></p>
 </header>
 
 <section class="part">
   <div class="parthead"><span class="tag">Path</span><h2>Recommended first success</h2></div>
   <div class="col stack">
-    <p><strong>Do not let IDE install block first light.</strong> Suggested order: <strong>0.1</strong> → <strong>0.3</strong> → <strong>0.4</strong> → <strong>0.5</strong> → <strong>0.6</strong>. Lesson <strong>0.2</strong> (IDE tour) is parallel / optional for Module 0 — finish in Tinkercad only if you need to.</p>
-    <p class="note">Companions: <a href="../../guides/home.html">Guides index</a> · <a href="../../guides/how-to-tinkercad.html">How to Tinkercad</a> · <a href="../../guides/electricity-primer.html">Electricity primer</a> · <a href="../../guides/breadboard-basics.html">Breadboard basics</a> · <a href="../../guides/debugging-playbook.html">Debugging playbook</a> · <a href="../../guides/troubleshooting-faq.html">Troubleshooting</a></p>
+    <p>Do not let IDE install block your first glowing LED. Follow this order in Tinkercad; treat the IDE tour as optional until you are ready.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="body">
+          <p><strong><a href="01-what-is-a-microcontroller.html">0.1 · What is a microcontroller?</a></strong></p>
+          <p class="note">Vocabulary and the sense → decide → act loop.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="body">
+          <p><strong><a href="03-tinkercad-lab-setup.html">0.3 · Tinkercad Circuits lab setup</a></strong></p>
+          <p class="note">Your first circuit in the browser — first real win.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="body">
+          <p><strong><a href="04-anatomy-of-a-sketch.html">0.4 · Anatomy of a sketch</a></strong></p>
+          <p class="note"><code>setup</code> / <code>loop</code>, braces, and comments.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="body">
+          <p><strong><a href="05-digital-write-and-blink.html">0.5 · Digital write &amp; Blink</a></strong></p>
+          <p class="note">Controlled blinking on a named pin.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="body">
+          <p><strong><a href="06-custom-blink-signature.html">0.6 · Custom blink signature</a></strong></p>
+          <p class="note">Module 0 project spine — a pattern that is yours.</p>
+        </div>
+      </div>
+    </div>
+    <div class="callout" style="--bc:var(--copper)">
+      <h5>Parallel when ready</h5>
+      <p><a href="02-arduino-ide-tour.html"><strong>0.2 · Arduino IDE tour</strong></a> — install when your machine allows. Not a blocker for 0.3–0.6.</p>
+    </div>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Guides</span><h2>Companions for this module</h2></div>
+  <div class="col stack">
+    <p>Keep these open when you get stuck. They are not homework — open the one that matches the moment.</p>
+    <ul class="plain">
+      <li><a href="../../guides/getting-started.html">Getting started</a> — day-one path if you have not read it yet</li>
+      <li><a href="../../guides/how-to-tinkercad.html">How to Tinkercad</a> — first circuit or UI confusion</li>
+      <li><a href="../../guides/electricity-primer.html">Electricity primer</a> — why resistor / GND before you wire</li>
+      <li><a href="../../guides/breadboard-basics.html">Breadboard basics</a> — rows, rails, shared GND</li>
+      <li><a href="../../guides/debugging-playbook.html">Debugging playbook</a> — ordered checklist when a lab fails</li>
+      <li><a href="../../guides/troubleshooting-faq.html">Troubleshooting FAQ</a> — named symptom → fix</li>
+      <li><a href="../../guides/home.html">All guides</a> — full glue-doc index</li>
+    </ul>
   </div>
 </section>
 
@@ -67,13 +119,37 @@
       </tbody>
     </table>
   </div>
-  <p style="margin-top:1.2rem"><a class="startbtn" href="01-what-is-a-microcontroller.html">Start Lesson 0.1 &rarr;</a></p>
+  <p style="margin-top:1.2rem"><a class="startbtn" href="01-what-is-a-microcontroller.html">Start lesson 0.1 &rarr;</a></p>
 </section>
 
 </div>
 <footer class="bihfoot">
 <div class="wrap">
   <p class="pagenote">Module 0 &nbsp;&middot;&nbsp; Arduino Coding</p>
+  <div class="foot-grid">
+    <div>
+      <h4>This module</h4>
+      <ul>
+        <li><a href="01-what-is-a-microcontroller.html">Start lesson 0.1</a></li>
+        <li><a href="../list.html">All modules</a></li>
+        <li><a href="../../home.html">Course home</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Guides</h4>
+      <ul>
+        <li><a href="../../guides/getting-started.html">Getting started</a></li>
+        <li><a href="../../guides/debugging-playbook.html">Debugging playbook</a></li>
+        <li><a href="../../guides/home.html">Guides index</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Bozoma Innovation Hub</h4>
+      <ul>
+        <li><a href="https://bozomainnovationhub.com">bozomainnovationhub.com</a></li>
+      </ul>
+    </div>
+  </div>
   <div class="foot-bottom"><span>&copy; Bozoma Innovation Hub, Aiyinasi, Ghana</span><span class="tagline">World-class begins at home.</span></div>
 </div>
 </footer>
