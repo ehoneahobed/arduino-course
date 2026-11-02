@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en" data-course="arduino-code" data-band="3">
+<head>
+  <meta charset="utf-8">
+  <script src="../../../assets/theme.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href="https://iot.bozomainnovationhub.com/arduino-code/modules/module-03/02-analog-read-and-serial">
+  <title>analogRead &amp; Serial.print · Module 3 · Arduino Coding</title>
+  <meta name="description" content="Stream ADC values to Serial; scale with map() into percent or duty ranges.">
+  <meta name="theme-color" content="#24182E">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../../assets/brand/icon-192.png">
+  <link rel="apple-touch-icon" href="../../../assets/brand/icon-180.png">
+  <!-- app + link previews (tools/inject_head.py) -->
+  <link rel="manifest" href="../../../manifest.webmanifest">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="IoT at Bozoma Innovation Hub">
+  <meta property="og:title" content="analogRead &amp; Serial.print · Module 3 · Arduino Coding">
+  <meta property="og:description" content="Stream ADC values to Serial; scale with map() into percent or duty ranges.">
+  <meta property="og:url" content="https://iot.bozomainnovationhub.com/arduino-code/modules/module-03/02-analog-read-and-serial">
+  <meta property="og:image" content="https://iot.bozomainnovationhub.com/assets/og/arduino-code-modules-module-03-02-analog-read-and-serial.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="analogRead &amp; Serial.print · Module 3 · Arduino Coding">
+  <meta property="og:locale" content="en_GB">
+  <meta name="twitter:card" content="summary_large_image">
+  <script defer src="../../../assets/app.js"></script>
+  <!-- /app + link previews -->
+  <link rel="stylesheet" href="../../../assets/course.css">
+  <link rel="stylesheet" href="../../../assets/progress.css">
+  <script defer src="../../../assets/pager.js"></script>
+  <script defer src="../../../assets/check.js" data-profile="../../profile.html"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to the lesson</a>
+<div class="topbar">
+  <a class="home" href="../../home.html"><img src="../../../assets/brand/logo-mark-white.png" alt="" width="36" height="36"><span class="lock"><b>Arduino Coding</b><small>Bozoma Innovation Hub</small></span></a>
+  <a class="hub" href="../../../index.html" title="All courses: IoT at Bozoma Innovation Hub">&larr; IoT at BIH</a>
+  <nav class="bandlinks" aria-label="Modules"><a href="../module-00/home.html">0</a><a href="../module-01/home.html">1</a><a href="../module-02/home.html">2</a><a href="home.html" aria-current="page">3</a><a href="../list.html">⋯</a></nav>
+  <a class="bih" href="https://bozomainnovationhub.com"><span class="long">bozomainnovationhub.com</span><span class="short">BIH website</span></a>
+</div>
+<div class="wrap" id="main">
+<nav aria-label="Sections">
+  <a href="#outcomes">Outcomes</a>
+  <a href="#concepts">Concepts</a>
+  <a href="#scale">Scale</a>
+  <a href="#serial">Serial</a>
+  <a href="#lab">Lab</a>
+  <a href="#patterns">Patterns</a>
+  <a href="#check">Check yourself</a>
+  <a href="#mistakes">Mistakes</a>
+</nav>
+<header style="padding:3rem 0 1rem">
+  <p class="eyebrow">Arduino Coding &nbsp;·&nbsp; Module 3 &nbsp;·&nbsp; Lesson 3.2 &nbsp;·&nbsp; <span class="tag">TC</span></p>
+  <h1 style="margin:.8rem 0">analogRead &amp; Serial.print</h1>
+
+  <p class="col sub" style="font-size:1.1em">Call <code>analogRead</code>, print labeled Serial lines, and scale 0–1023 with <code>map()</code> before you trust any actuator.</p>
+  <p class="col note" style="margin-top:.8rem">About 40 minutes. Serial Monitor required.</p>
+</header>
+<section class="part" id="outcomes">
+  <div class="parthead"><span class="tag">Start here</span><h2>Learning outcomes</h2></div>
+  <div class="col stack"><ol class="num">
+    <li>Stream <code>analogRead</code> values to the Serial Monitor clearly.</li>
+    <li>Scale raw 0–1023 with division or <code>map()</code> (e.g. 0–100 or 0–255).</li>
+    <li>Use Serial as the primary sensor debug tool.</li>
+  </ol></div>
+</section>
+<section class="part" id="concepts">
+  <div class="parthead"><span class="tag">Concept</span><h2>One sample, many uses</h2></div>
+  <div class="col stack">
+    <div class="callout" style="--bc:var(--accent)"><h5>Concept</h5>
+    <p><code>analogRead(pin)</code> returns an <code>int</code>. Store it, then print, map, and decide with the <strong>same</strong> sample so debug matches behavior.</p></div>
+<pre><code>int raw = analogRead(potPin);   // 0..1023 typical on Uno
+</code></pre>
+  </div>
+</section>
+<section class="part" id="scale">
+  <div class="parthead"><span class="tag">Part</span><h2>map() scaling</h2></div>
+  <div class="col stack">
+<pre><code>int percent = map(raw, 0, 1023, 0, 100);
+int duty    = map(raw, 0, 1023, 0, 255);  // ready for PWM
+</code></pre>
+    <p>Integer math truncates. Real pots may not hit exact 0 or 1023 — normal.</p>
+  </div>
+</section>
+<section class="part" id="serial">
+  <div class="parthead"><span class="tag">Part</span><h2>Readable Serial</h2></div>
+  <div class="col stack">
+<pre><code>Serial.print("raw=");
+Serial.print(raw);
+Serial.print("  pct=");
+Serial.println(percent);
+</code></pre>
+    <p>Pace prints (~100&nbsp;ms) with a short delay <em>or</em> a millis print timer so you do not flood the Monitor.</p>
+  </div>
+</section>
+<section class="part" id="lab">
+  <div class="parthead"><span class="tag">Lab</span><h2>Stream and scale</h2><span class="mins">15 min</span></div>
+  <div class="col stack">
+    <p>Circuit <code>M3-L02-AnalogSerial</code>: pot on A0. Open Serial at 9600. Turn the knob — <code>raw</code> ~0–1023, <code>pct</code> ~0–100. Then map to 0–255 as <code>duty</code>.</p>
+    <div class="sketchbox" style="--bc:var(--accent)"><h2>Complete shape</h2>
+<pre><code>void loop() {
+  int raw = analogRead(potPin);
+  int pct = map(raw, 0, 1023, 0, 100);
+  Serial.print("raw="); Serial.print(raw);
+  Serial.print("  pct="); Serial.println(pct);
+  delay(100);  // or millis print timer
+}
+</code></pre></div>
+  </div>
+</section>
+<section class="part" id="patterns">
+  <div class="parthead"><span class="tag">Patterns</span><h2>Serial stream first</h2></div>
+  <div class="col stack"><div class="callout"><h5>Pattern</h5>
+  <p>Print the sensor before fancy outputs. Label columns. Prefer a millis print timer when the sketch must stay interactive.</p></div></div>
+</section>
+<section class="part" id="check">
+  <div class="parthead"><span class="tag">Check</span><h2>Check yourself</h2></div>
+  <div class="col stack"><ol class="num" data-check>
+    <li data-kind="open" data-see="#concepts">Why store <code>analogRead</code> in a variable before printing and mapping?
+      <details><summary>Model answer</summary><p>So print, map, and decide use the same sample.</p></details></li>
+    <li data-kind="open" data-see="#scale">What does <code>map(raw, 0, 1023, 0, 255)</code> produce?
+      <details><summary>Model answer</summary><p>A linearly scaled value in roughly 0–255 (PWM-ready).</p></details></li>
+    <li data-kind="open" data-see="#serial">Why pace Serial prints?
+      <details><summary>Model answer</summary><p>Flooding makes the Monitor unreadable and can slow the sim.</p></details></li>
+    <li data-kind="choice" data-choices="True|False" data-correct="0" data-see="#lab" data-hint="Normal for pots." data-why-0="Correct — true; endpoints often miss." data-why-1="Real pots often miss exact ends.">True or false: a pot may never hit exact 0 or 1023.</li>
+  </ol></div>
+</section>
+<section class="part" id="mistakes">
+  <div class="parthead"><span class="tag">Watch outs</span><h2>Common mistakes</h2></div>
+  <div class="col stack">
+    <div class="scroll"><table><thead><tr><th>Mistake</th><th>Fix</th></tr></thead><tbody>
+      <tr><td>Wrong baud / Monitor closed</td><td>Match 9600; open Monitor</td></tr>
+      <tr><td>Printing every loop with no pace</td><td>Throttle prints</td></tr>
+      <tr><td>Mapping before confirming raw moves</td><td>Verify raw first</td></tr>
+    </tbody></table></div>
+  </div>
+</section>
+
+<nav class="pager" aria-label="Lessons">
+<a href="01-analog-vs-digital-pins.html"><span class="dir">Previous</span><span class="name">3.1 Analog vs digital</span></a>
+<a class="next" href="03-pwm-and-analog-write.html"><span class="dir">Next</span><span class="name">3.3 PWM & analogWrite &rarr;</span></a>
+</nav>
+</div>
+<footer class="bihfoot"><div class="wrap">
+  <p class="pagenote">Lesson 3.2 &nbsp;&middot;&nbsp; Module 3 &nbsp;&middot;&nbsp; Arduino Coding.</p>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a class="lockup" href="../../home.html"><img src="../../../assets/brand/logo-mark-white.png" alt="" width="42" height="42"><span>Arduino Coding<small>Bozoma Innovation Hub</small></span></a>
+      <p>A Bozoma Innovation Hub programme.</p>
+    </div>
+    <div><h4>The course</h4><ul>
+      <li><a href="../../home.html">Course home</a></li>
+      <li><a href="home.html">Module 3</a></li>
+      <li><a href="../list.html">All modules</a></li>
+    </ul></div>
+    <div><h4>Bozoma Innovation Hub</h4><ul>
+      <li><a href="https://bozomainnovationhub.com">bozomainnovationhub.com</a></li>
+    </ul></div>
+  </div>
+  <div class="foot-bottom"><span>&copy; Bozoma Innovation Hub, Aiyinasi, Ghana</span><span class="tagline">World-class begins at home.</span></div>
+</div></footer>
+</body>
+</html>

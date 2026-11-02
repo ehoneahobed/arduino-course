@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en" data-course="arduino-code" data-band="3">
+<head>
+  <meta charset="utf-8">
+  <script src="../../../assets/theme.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href="https://iot.bozomainnovationhub.com/arduino-code/modules/module-03/03-pwm-and-analog-write">
+  <title>PWM &amp; analogWrite · Module 3 · Arduino Coding</title>
+  <meta name="description" content="Duty cycle on ~ pins; map a pot to LED brightness with analogWrite 0–255.">
+  <meta name="theme-color" content="#24182E">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../../assets/brand/icon-192.png">
+  <link rel="apple-touch-icon" href="../../../assets/brand/icon-180.png">
+  <!-- app + link previews (tools/inject_head.py) -->
+  <link rel="manifest" href="../../../manifest.webmanifest">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="IoT at Bozoma Innovation Hub">
+  <meta property="og:title" content="PWM &amp; analogWrite · Module 3 · Arduino Coding">
+  <meta property="og:description" content="Duty cycle on ~ pins; map a pot to LED brightness with analogWrite 0–255.">
+  <meta property="og:url" content="https://iot.bozomainnovationhub.com/arduino-code/modules/module-03/03-pwm-and-analog-write">
+  <meta property="og:image" content="https://iot.bozomainnovationhub.com/assets/og/arduino-code-modules-module-03-03-pwm-and-analog-write.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="PWM &amp; analogWrite · Module 3 · Arduino Coding">
+  <meta property="og:locale" content="en_GB">
+  <meta name="twitter:card" content="summary_large_image">
+  <script defer src="../../../assets/app.js"></script>
+  <!-- /app + link previews -->
+  <link rel="stylesheet" href="../../../assets/course.css">
+  <link rel="stylesheet" href="../../../assets/progress.css">
+  <script defer src="../../../assets/pager.js"></script>
+  <script defer src="../../../assets/check.js" data-profile="../../profile.html"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to the lesson</a>
+<div class="topbar">
+  <a class="home" href="../../home.html"><img src="../../../assets/brand/logo-mark-white.png" alt="" width="36" height="36"><span class="lock"><b>Arduino Coding</b><small>Bozoma Innovation Hub</small></span></a>
+  <a class="hub" href="../../../index.html" title="All courses: IoT at Bozoma Innovation Hub">&larr; IoT at BIH</a>
+  <nav class="bandlinks" aria-label="Modules"><a href="../module-00/home.html">0</a><a href="../module-01/home.html">1</a><a href="../module-02/home.html">2</a><a href="home.html" aria-current="page">3</a><a href="../list.html">⋯</a></nav>
+  <a class="bih" href="https://bozomainnovationhub.com"><span class="long">bozomainnovationhub.com</span><span class="short">BIH website</span></a>
+</div>
+<div class="wrap" id="main">
+<nav aria-label="Sections">
+  <a href="#outcomes">Outcomes</a>
+  <a href="#concepts">Concepts</a>
+  <a href="#pins">PWM pins</a>
+  <a href="#lab">Lab</a>
+  <a href="#patterns">Patterns</a>
+  <a href="#check">Check yourself</a>
+  <a href="#mistakes">Mistakes</a>
+</nav>
+<header style="padding:3rem 0 1rem">
+  <p class="eyebrow">Arduino Coding &nbsp;·&nbsp; Module 3 &nbsp;·&nbsp; Lesson 3.3 &nbsp;·&nbsp; <span class="tag">TC</span></p>
+  <h1 style="margin:.8rem 0">PWM &amp; analogWrite</h1>
+
+  <p class="col sub" style="font-size:1.1em">PWM duty cycle makes LEDs look dimmer or brighter. Map a pot reading to <code>analogWrite</code> on a <strong>~</strong> pin.</p>
+  <p class="col note" style="margin-top:.8rem">About 40 minutes.</p>
+</header>
+<section class="part" id="outcomes">
+  <div class="parthead"><span class="tag">Start here</span><h2>Learning outcomes</h2></div>
+  <div class="col stack"><ol class="num">
+    <li>Explain PWM as rapid on/off whose duty cycle changes perceived brightness.</li>
+    <li>Use <code>analogWrite(pin, 0…255)</code> on a PWM-capable pin.</li>
+    <li>Map pot → ADC → <code>map</code> → <code>analogWrite</code>.</li>
+  </ol></div>
+</section>
+<section class="part" id="concepts">
+  <div class="parthead"><span class="tag">Concept</span><h2>Duty cycle, not true analog voltage</h2></div>
+  <div class="col stack">
+    <div class="callout" style="--bc:var(--accent)"><h5>Concept</h5>
+    <p><code>analogWrite</code> uses PWM: the pin flips HIGH/LOW fast. 0 = off, 255 ≈ full on, 128 ≈ half — your eye averages the pulses.</p></div>
+<pre><code>duty 0:    ____________
+duty 128:  ----________
+duty 255:  ------------
+</code></pre>
+  </div>
+</section>
+<section class="part" id="pins">
+  <div class="parthead"><span class="tag">Part</span><h2>Which pins?</h2></div>
+  <div class="col stack">
+    <p>Uno PWM pins: <strong>3, 5, 6, 9, 10, 11</strong> (marked <strong>~</strong>). Not A0 — that is an ADC input.</p>
+<pre><code>analogWrite(ledPin, 0);    // off
+analogWrite(ledPin, 255);  // full
+analogWrite(ledPin, 64);   // dim
+</code></pre>
+  </div>
+</section>
+<section class="part" id="lab">
+  <div class="parthead"><span class="tag">Lab</span><h2>Dim with a knob</h2><span class="mins">15 min</span></div>
+  <div class="col stack">
+    <p>Circuit <code>M3-L03-PwmDim</code>: pot on A0; LED on pin <strong>9 (~)</strong> via 220&nbsp;Ω.</p>
+    <div class="sketchbox" style="--bc:var(--accent)"><h2>Complete shape</h2>
+<pre><code>void loop() {
+  int raw = analogRead(potPin);
+  int duty = map(raw, 0, 1023, 0, 255);
+  analogWrite(ledPin, duty);
+}
+</code></pre></div>
+    <p class="note">Fan-speed metaphor: same pattern as “how hard am I driving the load.” Real motors need drivers later.</p>
+  </div>
+</section>
+<section class="part" id="patterns">
+  <div class="parthead"><span class="tag">Patterns</span><h2>Map then write</h2></div>
+  <div class="col stack"><div class="callout"><h5>Pattern</h5>
+  <p><code>raw = analogRead</code> → <code>duty = map(…, 0, 255)</code> → <code>analogWrite(pwmPin, duty)</code>. Named <code>const int</code> for the PWM pin.</p></div></div>
+</section>
+<section class="part" id="check">
+  <div class="parthead"><span class="tag">Check</span><h2>Check yourself</h2></div>
+  <div class="col stack"><ol class="num" data-check>
+    <li data-kind="open" data-see="#concepts">What does duty cycle mean for an LED?
+      <details><summary>Model answer</summary><p>Fraction of time the pin is HIGH; higher duty → brighter average.</p></details></li>
+    <li data-kind="choice" data-choices="A0|Pin 9 (~)|Any pin equally" data-correct="1" data-see="#pins" data-hint="Silkscreen tilde." data-why-0="A0 is ADC input." data-why-1="Correct — PWM pin." data-why-2="Only ~ pins for analogWrite.">Best pin for dimming an LED with <code>analogWrite</code>?</li>
+    <li data-kind="open" data-see="#lab">What range does <code>analogWrite</code> expect?
+      <details><summary>Model answer</summary><p>0–255 duty.</p></details></li>
+    <li data-kind="choice" data-choices="True|False" data-correct="1" data-see="#pins" data-hint="Wrong idea for dimming." data-why-0="A0 is for reading." data-why-1="Correct — false."><code>analogWrite(A0, 128)</code> is the right way to dim from a pot pin.</li>
+  </ol></div>
+</section>
+<section class="part" id="mistakes">
+  <div class="parthead"><span class="tag">Watch outs</span><h2>Common mistakes</h2></div>
+  <div class="col stack">
+    <div class="scroll"><table><thead><tr><th>Mistake</th><th>Fix</th></tr></thead><tbody>
+      <tr><td>LED on a non-PWM pin</td><td>Move to a ~ pin</td></tr>
+      <tr><td>Passing 0–1023 to <code>analogWrite</code></td><td><code>map</code> to 0–255 first</td></tr>
+      <tr><td>No series resistor</td><td>Always use ~220&nbsp;Ω</td></tr>
+    </tbody></table></div>
+  </div>
+</section>
+
+<nav class="pager" aria-label="Lessons">
+<a href="02-analog-read-and-serial.html"><span class="dir">Previous</span><span class="name">3.2 analogRead & Serial</span></a>
+<a class="next" href="04-threshold-logic.html"><span class="dir">Next</span><span class="name">3.4 Threshold logic &rarr;</span></a>
+</nav>
+</div>
+<footer class="bihfoot"><div class="wrap">
+  <p class="pagenote">Lesson 3.3 &nbsp;&middot;&nbsp; Module 3 &nbsp;&middot;&nbsp; Arduino Coding.</p>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a class="lockup" href="../../home.html"><img src="../../../assets/brand/logo-mark-white.png" alt="" width="42" height="42"><span>Arduino Coding<small>Bozoma Innovation Hub</small></span></a>
+      <p>A Bozoma Innovation Hub programme.</p>
+    </div>
+    <div><h4>The course</h4><ul>
+      <li><a href="../../home.html">Course home</a></li>
+      <li><a href="home.html">Module 3</a></li>
+      <li><a href="../list.html">All modules</a></li>
+    </ul></div>
+    <div><h4>Bozoma Innovation Hub</h4><ul>
+      <li><a href="https://bozomainnovationhub.com">bozomainnovationhub.com</a></li>
+    </ul></div>
+  </div>
+  <div class="foot-bottom"><span>&copy; Bozoma Innovation Hub, Aiyinasi, Ghana</span><span class="tagline">World-class begins at home.</span></div>
+</div></footer>
+</body>
+</html>

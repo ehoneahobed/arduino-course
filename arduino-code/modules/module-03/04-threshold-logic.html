@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en" data-course="arduino-code" data-band="3">
+<head>
+  <meta charset="utf-8">
+  <script src="../../../assets/theme.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href="https://iot.bozomainnovationhub.com/arduino-code/modules/module-03/04-threshold-logic">
+  <title>Threshold logic · Module 3 · Arduino Coding</title>
+  <meta name="description" content="On/off from analog setpoints; add hysteresis so the output does not chatter.">
+  <meta name="theme-color" content="#24182E">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../../assets/brand/icon-192.png">
+  <link rel="apple-touch-icon" href="../../../assets/brand/icon-180.png">
+  <!-- app + link previews (tools/inject_head.py) -->
+  <link rel="manifest" href="../../../manifest.webmanifest">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="IoT at Bozoma Innovation Hub">
+  <meta property="og:title" content="Threshold logic · Module 3 · Arduino Coding">
+  <meta property="og:description" content="On/off from analog setpoints; add hysteresis so the output does not chatter.">
+  <meta property="og:url" content="https://iot.bozomainnovationhub.com/arduino-code/modules/module-03/04-threshold-logic">
+  <meta property="og:image" content="https://iot.bozomainnovationhub.com/assets/og/arduino-code-modules-module-03-04-threshold-logic.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Threshold logic · Module 3 · Arduino Coding">
+  <meta property="og:locale" content="en_GB">
+  <meta name="twitter:card" content="summary_large_image">
+  <script defer src="../../../assets/app.js"></script>
+  <!-- /app + link previews -->
+  <link rel="stylesheet" href="../../../assets/course.css">
+  <link rel="stylesheet" href="../../../assets/progress.css">
+  <script defer src="../../../assets/pager.js"></script>
+  <script defer src="../../../assets/check.js" data-profile="../../profile.html"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to the lesson</a>
+<div class="topbar">
+  <a class="home" href="../../home.html"><img src="../../../assets/brand/logo-mark-white.png" alt="" width="36" height="36"><span class="lock"><b>Arduino Coding</b><small>Bozoma Innovation Hub</small></span></a>
+  <a class="hub" href="../../../index.html" title="All courses: IoT at Bozoma Innovation Hub">&larr; IoT at BIH</a>
+  <nav class="bandlinks" aria-label="Modules"><a href="../module-00/home.html">0</a><a href="../module-01/home.html">1</a><a href="../module-02/home.html">2</a><a href="home.html" aria-current="page">3</a><a href="../list.html">⋯</a></nav>
+  <a class="bih" href="https://bozomainnovationhub.com"><span class="long">bozomainnovationhub.com</span><span class="short">BIH website</span></a>
+</div>
+<div class="wrap" id="main">
+<nav aria-label="Sections">
+  <a href="#outcomes">Outcomes</a>
+  <a href="#concepts">Concepts</a>
+  <a href="#hysteresis">Hysteresis</a>
+  <a href="#lab">Lab</a>
+  <a href="#patterns">Patterns</a>
+  <a href="#check">Check yourself</a>
+  <a href="#mistakes">Mistakes</a>
+</nav>
+<header style="padding:3rem 0 1rem">
+  <p class="eyebrow">Arduino Coding &nbsp;·&nbsp; Module 3 &nbsp;·&nbsp; Lesson 3.4 &nbsp;·&nbsp; <span class="tag">TC</span></p>
+  <h1 style="margin:.8rem 0">Threshold logic</h1>
+
+  <p class="col sub" style="font-size:1.1em">Turn a lamp on when a reading crosses a setpoint — then add <strong>hysteresis</strong> so noise near the edge does not chatter.</p>
+  <p class="col note" style="margin-top:.8rem">About 40 minutes.</p>
+</header>
+<section class="part" id="outcomes">
+  <div class="parthead"><span class="tag">Start here</span><h2>Learning outcomes</h2></div>
+  <div class="col stack"><ol class="num">
+    <li>Switch a load on/off when an analog reading crosses a threshold.</li>
+    <li>Explain why a single threshold chatters near the edge.</li>
+    <li>Add hysteresis (separate on and off thresholds).</li>
+  </ol></div>
+</section>
+<section class="part" id="concepts">
+  <div class="parthead"><span class="tag">Concept</span><h2>Cutoff vs deadband</h2></div>
+  <div class="col stack">
+    <div class="callout" style="--bc:var(--accent)"><h5>Concept</h5>
+    <p>A threshold is a cutoff. Near it, tiny wiggles flip the decision every loop — <strong>chatter</strong>. Hysteresis uses two lines and a remembered state.</p></div>
+<pre><code>// Chatty:
+bool lampOn = (raw &lt; threshold);
+</code></pre>
+  </div>
+</section>
+<section class="part" id="hysteresis">
+  <div class="parthead"><span class="tag">Part</span><h2>Two thresholds</h2></div>
+  <div class="col stack">
+<pre><code>raw high (bright) ── offAbove=550 ··· turn OFF when rising past
+                         (deadband)
+                   ── onBelow=450  ··· turn ON when falling past
+raw low (dark)
+</code></pre>
+<pre><code>if (!lampOn &amp;&amp; raw &lt; onBelow)  lampOn = true;
+if (lampOn  &amp;&amp; raw &gt; offAbove) lampOn = false;
+</code></pre>
+    <p>Between the lines: keep the previous state.</p>
+  </div>
+</section>
+<section class="part" id="lab">
+  <div class="parthead"><span class="tag">Lab</span><h2>Chatter then fix</h2><span class="mins">15 min</span></div>
+  <div class="col stack">
+    <p>Circuit <code>M3-L04-Threshold</code>: pot on A0 (LDR stand-in); LED on 13. Run single-threshold first — rock the slider near mid. Then switch to hysteresis. Serial-print <code>raw</code> and <code>lampOn</code>.</p>
+  </div>
+</section>
+<section class="part" id="patterns">
+  <div class="parthead"><span class="tag">Patterns</span><h2>Remembered state</h2></div>
+  <div class="col stack"><div class="callout"><h5>Pattern</h5>
+  <p>Keep <code>bool lampOn</code>. Do not assign <code>lampOn = (value &lt; threshold)</code> on noisy signals.</p></div></div>
+</section>
+<section class="part" id="check">
+  <div class="parthead"><span class="tag">Check</span><h2>Check yourself</h2></div>
+  <div class="col stack"><ol class="num" data-check>
+    <li data-kind="open" data-see="#concepts">Why does a single threshold chatter?
+      <details><summary>Model answer</summary><p>Noise near the edge flips the comparison every loop.</p></details></li>
+    <li data-kind="open" data-see="#hysteresis">In the night-light example, when does the lamp turn on vs off?
+      <details><summary>Model answer</summary><p>On when falling below <code>onBelow</code>; off when rising above <code>offAbove</code>.</p></details></li>
+    <li data-kind="choice" data-choices="True|False" data-correct="0" data-see="#hysteresis" data-hint="Deadband." data-why-0="Correct — keep previous state." data-why-1="That is the point of hysteresis.">Between the two thresholds you keep the previous state.</li>
+    <li data-kind="open" data-see="#lab">Why use Serial while tuning thresholds?
+      <details><summary>Model answer</summary><p>So you measure dark/bright numbers instead of guessing.</p></details></li>
+  </ol></div>
+</section>
+<section class="part" id="mistakes">
+  <div class="parthead"><span class="tag">Watch outs</span><h2>Common mistakes</h2></div>
+  <div class="col stack">
+    <div class="scroll"><table><thead><tr><th>Mistake</th><th>Fix</th></tr></thead><tbody>
+      <tr><td><code>onBelow</code> &gt; <code>offAbove</code> for this polarity</td><td>Keep onBelow &lt; offAbove</td></tr>
+      <tr><td>No remembered state</td><td>Use <code>bool lampOn</code></td></tr>
+      <tr><td>Guessing thresholds blind</td><td>Measure with Serial first</td></tr>
+    </tbody></table></div>
+  </div>
+</section>
+
+<nav class="pager" aria-label="Lessons">
+<a href="03-pwm-and-analog-write.html"><span class="dir">Previous</span><span class="name">3.3 PWM & analogWrite</span></a>
+<a class="next" href="05-arrays-for-samples.html"><span class="dir">Next</span><span class="name">3.5 Arrays for samples &rarr;</span></a>
+</nav>
+</div>
+<footer class="bihfoot"><div class="wrap">
+  <p class="pagenote">Lesson 3.4 &nbsp;&middot;&nbsp; Module 3 &nbsp;&middot;&nbsp; Arduino Coding.</p>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a class="lockup" href="../../home.html"><img src="../../../assets/brand/logo-mark-white.png" alt="" width="42" height="42"><span>Arduino Coding<small>Bozoma Innovation Hub</small></span></a>
+      <p>A Bozoma Innovation Hub programme.</p>
+    </div>
+    <div><h4>The course</h4><ul>
+      <li><a href="../../home.html">Course home</a></li>
+      <li><a href="home.html">Module 3</a></li>
+      <li><a href="../list.html">All modules</a></li>
+    </ul></div>
+    <div><h4>Bozoma Innovation Hub</h4><ul>
+      <li><a href="https://bozomainnovationhub.com">bozomainnovationhub.com</a></li>
+    </ul></div>
+  </div>
+  <div class="foot-bottom"><span>&copy; Bozoma Innovation Hub, Aiyinasi, Ghana</span><span class="tagline">World-class begins at home.</span></div>
+</div></footer>
+</body>
+</html>

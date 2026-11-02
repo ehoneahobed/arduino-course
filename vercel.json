@@ -34,6 +34,11 @@
       "permanent": false
     },
     {
+      "source": "/arduino-code/modules/module-03",
+      "destination": "/arduino-code/modules/module-03/home",
+      "permanent": false
+    },
+    {
       "source": "/bands/:path*",
       "destination": "/arduino/bands/:path*",
       "permanent": true
