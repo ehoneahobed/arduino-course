@@ -49,7 +49,11 @@
   // so every section starts at the top of the screen like a new page.
   var header = wrap.querySelector(':scope > header');
   var h1 = header && header.querySelector('h1');
-  var bandName = 'Band ' + (document.documentElement.getAttribute('data-band') || '') + (h1 ? ' · ' + h1.textContent.trim() : '');
+  // Ladder / module pages have data-band; guide pages do not — use the page title alone.
+  var bandAttr = document.documentElement.getAttribute('data-band');
+  var bandName = (bandAttr !== null && bandAttr !== '')
+    ? ('Band ' + bandAttr + (h1 ? ' · ' + h1.textContent.trim() : ''))
+    : (h1 ? h1.textContent.trim() : 'Sections');
   var head = document.createElement('div');
   head.className = 'pg-head';
   wrap.insertBefore(head, intro[0] || sections[0]);
