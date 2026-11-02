@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en" data-course="arduino-code">
+<head>
+  <meta charset="utf-8">
+  <script src="../../assets/theme.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href="https://iot.bozomainnovationhub.com/arduino-code/guides/how-to-serial-monitor">
+  <title>How to Serial Monitor · Arduino Coding</title>
+  <meta name="description" content="What Serial is, baud matching, IDE and Tinkercad.">
+  <meta name="theme-color" content="#24182E">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../assets/brand/icon-192.png">
+  <link rel="apple-touch-icon" href="../../assets/brand/icon-180.png">
+  <!-- app + link previews (tools/inject_head.py) -->
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="IoT at Bozoma Innovation Hub">
+  <meta property="og:title" content="How to Serial Monitor · Arduino Coding">
+  <meta property="og:description" content="What Serial is, baud matching, IDE and Tinkercad.">
+  <meta property="og:url" content="https://iot.bozomainnovationhub.com/arduino-code/guides/how-to-serial-monitor">
+  <meta property="og:image" content="https://iot.bozomainnovationhub.com/assets/og/arduino-code-guides-how-to-serial-monitor.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="How to Serial Monitor · Arduino Coding">
+  <meta property="og:locale" content="en_GB">
+  <meta name="twitter:card" content="summary_large_image">
+  <script defer src="../../assets/app.js"></script>
+  <!-- /app + link previews -->
+  <link rel="stylesheet" href="../../assets/course.css">
+  <link rel="stylesheet" href="../../assets/progress.css">
+  <script defer src="../../assets/pager.js"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to the guide</a>
+<div class="topbar">
+  <a class="home" href="../home.html"><img src="../../assets/brand/logo-mark-white.png" alt="" width="36" height="36"><span class="lock"><b>Arduino Coding</b><small>Bozoma Innovation Hub</small></span></a>
+  <a class="hub" href="../../index.html" title="All courses: IoT at Bozoma Innovation Hub">&larr; IoT at BIH</a>
+  <nav class="bandlinks" aria-label="Modules"><a href="../modules/module-00/home.html">0</a><a href="../modules/module-01/home.html">1</a><a href="../modules/module-02/home.html">2</a><a href="../modules/module-03/home.html">3</a><a href="../modules/module-04/home.html">4</a><a href="../modules/module-05/home.html">5</a><a href="../modules/module-06/home.html">6</a><a href="../modules/module-07/home.html">7</a><a href="../modules/module-08/home.html">8</a><a href="../modules/module-09/home.html">9</a><a href="../modules/list.html">⋯</a></nav>
+  <a class="bih" href="https://bozomainnovationhub.com"><span class="long">bozomainnovationhub.com</span><span class="short">BIH website</span></a>
+</div>
+<div class="wrap" id="main">
+<nav aria-label="Sections">
+  <a href="#1-the-two-lines-of-code-you-will-see-constantly">The two lines of code you will see constantly</a>
+  <a href="#2-baud-rate-the-matching-rule">Baud rate — the matching rule</a>
+  <a href="#3-open-serial-monitor-in-arduino-ide-2-x">Open Serial Monitor in Arduino IDE 2.x</a>
+  <a href="#4-open-serial-monitor-in-tinkercad-circuits">Open Serial Monitor in Tinkercad Circuits</a>
+  <a href="#5-first-practice-sketch-either-ide-or-tinkercad">First practice sketch (either IDE or Tinkercad)</a>
+  <a href="#6-flooding-vs-paced-prints">Flooding vs paced prints</a>
+  <a href="#7-debug-order-serial-before-actuators">Debug order: Serial before actuators</a>
+  <a href="#8-common-serial-failures">Common Serial failures</a>
+  <a href="#9-when-lessons-expect-this-skill">When lessons expect this skill</a>
+  <a href="#related-guides">Related guides</a>
+</nav>
+<header style="padding:3.2rem 0 1rem">
+  <p class="eyebrow">Arduino Coding &nbsp;&middot;&nbsp; Guides</p>
+  <h1 style="margin:.8rem 0">How to Serial Monitor</h1>
+  <p class="col sub" style="font-size:1.12em">What Serial is, baud matching, IDE and Tinkercad.</p>
+</header>
+<p><strong>What Serial is:</strong> a text chat between your sketch and you. The board (or simulator) <strong>prints</strong> lines; you <strong>read</strong> them to see what the code thinks is happening — button values, sensor numbers, which mode you are in.</p>
+<p>You will need this skill by <strong>Module 1</strong> (buttons) and it is <strong>required</strong> for <strong>Module 3</strong> analog work. Learn it here before you need it under pressure.</p>
+<section class="part" id="1-the-two-lines-of-code-you-will-see-constantly"><div class="parthead"><span class="tag">Guide</span><h2>1. The two lines of code you will see constantly</h2></div><div class="col stack">
+<p>Inside <code>setup()</code>:</p>
+<pre><code>Serial.begin(9600);   // start Serial at 9600 baud</code></pre>
+<p>Anywhere you want a message (often inside <code>loop()</code>, with care — see §6):</p>
+<pre><code>Serial.println(&quot;Hello&quot;);     // text + new line
+Serial.println(sensorValue); // print a number</code></pre>
+<div class="scroll"><table><thead><tr><th>Piece</th><th>Meaning</th></tr></thead><tbody><tr><td><code>Serial</code></td><td>The Serial object built into Arduino</td></tr><tr><td><code>begin(9600)</code></td><td>Open the channel at <strong>9600</strong> baud</td></tr><tr><td><code>println</code></td><td>Print, then move to the next line</td></tr></tbody></table></div>
+<p>Until <code>Serial.begin</code> runs, prints may be missing or weird — always begin in <code>setup()</code>.</p>
+</div></section>
+<section class="part" id="2-baud-rate-the-matching-rule"><div class="parthead"><span class="tag">Guide</span><h2>2. Baud rate — the matching rule</h2></div><div class="col stack">
+<p><strong>Baud</strong> = speed of the text link. Common course values: <strong>9600</strong> (default habit) or sometimes <strong>115200</strong> (faster; used in some advanced sketches).</p>
+<p><strong>Rule:</strong> the number in <code>Serial.begin(...)</code> must match the baud dropdown in the Serial Monitor.</p>
+<div class="scroll"><table><thead><tr><th>Sketch</th><th>Monitor setting</th><th>Result</th></tr></thead><tbody><tr><td><code>Serial.begin(9600)</code></td><td>9600</td><td>Readable text</td></tr><tr><td><code>Serial.begin(9600)</code></td><td>115200</td><td><strong>Garbage</strong> characters</td></tr><tr><td><code>Serial.begin(115200)</code></td><td>9600</td><td><strong>Garbage</strong> characters</td></tr></tbody></table></div>
+<p>Garbage looks like random symbols — almost always baud mismatch, not a broken board.</p>
+</div></section>
+<section class="part" id="3-open-serial-monitor-in-arduino-ide-2-x"><div class="parthead"><span class="tag">Guide</span><h2>3. Open Serial Monitor in Arduino IDE 2.x</h2></div><div class="col stack">
+<ol class="num"><li>Plug in the board only if you are using hardware (not needed for Verify-only practice).</li><li>Select the correct <strong>Board</strong> and <strong>Port</strong> (hardware).</li><li><strong>Upload</strong> your sketch (Serial output comes from the program running on the board).</li><li>Open <strong>Serial Monitor</strong>:</li></ol>
+<p>   - Toolbar icon that looks like a magnifying glass / monitor, <strong>or</strong>    - Menu <strong>Tools → Serial Monitor</strong></p>
+<ol class="num"><li>At the bottom of the Monitor, set <strong>baud</strong> to match <code>Serial.begin</code>.</li><li>Optional: set line ending to <strong>Both NL & CR</strong> or <strong>Newline</strong> if a lesson sends commands <em>to</em> the board; for beginner <code>println</code> debugging, viewing output matters most.</li></ol>
+<p><strong>Clear:</strong> use the clear / trash control if the window is cluttered.   <strong>Autoscroll:</strong> leave on so new lines stay visible.</p>
+<p><strong>Web Editor:</strong> look for the Serial Monitor panel after Upload — same baud-matching rule.</p>
+</div></section>
+<section class="part" id="4-open-serial-monitor-in-tinkercad-circuits"><div class="parthead"><span class="tag">Guide</span><h2>4. Open Serial Monitor in Tinkercad Circuits</h2></div><div class="col stack">
+<ol class="num"><li>Open your circuit’s <strong>Code</strong> panel (<strong>Text</strong> mode).</li><li>Confirm the sketch calls <code>Serial.begin(9600)</code> (or whatever the lesson uses).</li><li>Click <strong>Start Simulation</strong>.</li><li>Find <strong>Serial Monitor</strong> in the simulation / code UI (often a tab or pane below the code).</li><li>Watch lines appear as <code>loop</code> runs.</li></ol>
+<p>If nothing prints:</p>
+<ul class="plain"><li>Is simulation <strong>running</strong> (not paused)?</li><li>Did you call <code>Serial.begin</code> in <code>setup</code>?</li><li>Are you looking at the Serial pane, not only the 3D circuit view?</li></ul>
+<p>Tinkercad does not use a separate USB port — the Monitor is built into the sim UI.</p>
+</div></section>
+<section class="part" id="5-first-practice-sketch-either-ide-or-tinkercad"><div class="parthead"><span class="tag">Guide</span><h2>5. First practice sketch (either IDE or Tinkercad)</h2></div><div class="col stack">
+<pre><code>void setup() {
+  Serial.begin(9600);
+  Serial.println(&quot;setup done&quot;);
+}
+
+void loop() {
+  Serial.println(&quot;loop tick&quot;);
+  delay(1000);  // temporary — Module 2 teaches better timing
+}</code></pre>
+<p><strong>Success:</strong> you see <code>setup done</code> once, then <code>loop tick</code> about once per second.   <strong>Garbage:</strong> fix baud.   <strong>Nothing:</strong> simulation not started / Monitor not open / Upload failed on hardware.</p>
+</div></section>
+<section class="part" id="6-flooding-vs-paced-prints"><div class="parthead"><span class="tag">Guide</span><h2>6. Flooding vs paced prints</h2></div><div class="col stack">
+<div class="scroll"><table><thead><tr><th>Habit</th><th>What you see</th><th>Fix</th></tr></thead><tbody><tr><td><code>Serial.println</code> every <code>loop</code> with no delay</td><td>Thousands of lines; UI freezes; hard to read</td><td>Print every 200 ms+ or use a <code>millis</code> timer</td></tr><tr><td><code>delay(200)</code> only to slow prints</td><td>Easy early on; blocks other work</td><td>OK for Module 3 sensor <em>measurement</em> labs; prefer millis pacing when Gate A (no blocking) matters</td></tr><tr><td>Printing inside tight debounce experiments</td><td>Can change timing feel</td><td>Print on <strong>change</strong> or at a slow rate</td></tr></tbody></table></div>
+<p><strong>Beginner pattern (blocking, honest for early analog labs):</strong></p>
+<pre><code>int value = analogRead(A0);
+Serial.println(value);
+delay(200);</code></pre>
+<p><strong>Module 2+ pattern (non-blocking idea):</strong> remember last print time with <code>millis()</code> and print only when enough time passed — lessons show the full form.</p>
+</div></section>
+<section class="part" id="7-debug-order-serial-before-actuators"><div class="parthead"><span class="tag">Guide</span><h2>7. Debug order: Serial before actuators</h2></div><div class="col stack">
+<p>When a button, mode, or sensor “does nothing”:</p>
+<ol class="num"><li>Print the <strong>raw reading</strong> (<code>digitalRead</code>, <code>analogRead</code>, mode variable).</li><li>Confirm the number matches your mental model (pull-up pressed = LOW, etc.).</li><li><em>Then</em> drive LEDs or buzzers from that logic.</li></ol>
+<p>Guessing by watching only the LED wastes time. Serial tells you what the sketch believes.</p>
+</div></section>
+<section class="part" id="8-common-serial-failures"><div class="parthead"><span class="tag">Guide</span><h2>8. Common Serial failures</h2></div><div class="col stack">
+<div class="scroll"><table><thead><tr><th>Symptom</th><th>Likely cause</th></tr></thead><tbody><tr><td>Weird symbols</td><td>Baud mismatch</td></tr><tr><td>Blank Monitor</td><td>Monitor closed; wrong port; sketch never Uploaded; sim paused; forgot <code>Serial.begin</code></td></tr><tr><td>One message then silence</td><td>Print only in <code>setup</code>; <code>loop</code> never prints; board reset loop</td></tr><tr><td>Flood / frozen window</td><td>Printing every loop without pacing</td></tr><tr><td>Works in TC, not IDE</td><td>Port/board wrong; cable charge-only; need Upload not only Verify</td></tr></tbody></table></div>
+<p>More cases: <a href="troubleshooting-faq.html">troubleshooting FAQ</a>.</p>
+</div></section>
+<section class="part" id="9-when-lessons-expect-this-skill"><div class="parthead"><span class="tag">Guide</span><h2>9. When lessons expect this skill</h2></div><div class="col stack">
+<div class="scroll"><table><thead><tr><th>Stage</th><th>Expectation</th></tr></thead><tbody><tr><td>Module 0.2</td><td>Find the Monitor button (teaser)</td></tr><tr><td>Module 1.2–1.5</td><td>Optional → increasingly useful for modes / bounce</td></tr><tr><td>Module 3.2+</td><td><strong>Required</strong> — measure before you automate</td></tr><tr><td>Module 7+</td><td>Baud mismatch listed as a classic Upload-adjacent failure</td></tr></tbody></table></div>
+</div></section>
+<section class="part" id="related-guides"><div class="parthead"><span class="tag">Guide</span><h2>Related guides</h2></div><div class="col stack">
+<ul class="plain"><li><a href="getting-started.html">Getting started</a>  </li><li><a href="how-to-tinkercad.html">How to Tinkercad</a> §9  </li><li><a href="glossary.html">Glossary</a> — baud, Serial  </li><li><a href="troubleshooting-faq.html">Troubleshooting FAQ</a>  </li></ul>
+</div></section>
+<section class="part">
+  <div class="parthead"><span class="tag">More</span><h2>Related</h2></div>
+  <div class="col stack">
+    <p><a href="home.html">All guides</a> · <a href="getting-started.html">Getting started</a> · <a href="debugging-playbook.html">Debugging playbook</a> · <a href="troubleshooting-faq.html">Troubleshooting</a> · <a href="../modules/module-00/home.html">Module 0</a></p>
+  </div>
+</section>
+
+</div>
+<footer class="bihfoot"><div class="wrap">
+  <p class="pagenote">Guides &nbsp;&middot;&nbsp; Arduino Coding</p>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a class="lockup" href="../home.html"><img src="../../assets/brand/logo-mark-white.png" alt="" width="42" height="42"><span>Arduino Coding<small>Bozoma Innovation Hub</small></span></a>
+      <p>A Bozoma Innovation Hub programme.</p>
+    </div>
+    <div><h4>The course</h4><ul>
+      <li><a href="../home.html">Course home</a></li>
+      <li><a href="home.html">Guides index</a></li>
+      <li><a href="getting-started.html">Getting started</a></li>
+      <li><a href="debugging-playbook.html">Debugging playbook</a></li>
+      <li><a href="../modules/module-00/home.html">Module 0</a></li>
+    </ul></div>
+    <div><h4>Bozoma Innovation Hub</h4><ul>
+      <li><a href="https://bozomainnovationhub.com">bozomainnovationhub.com</a></li>
+    </ul></div>
+  </div>
+  <div class="foot-bottom"><span>&copy; Bozoma Innovation Hub, Aiyinasi, Ghana</span><span class="tagline">World-class begins at home.</span></div>
+</div></footer>
+</body>
+</html>

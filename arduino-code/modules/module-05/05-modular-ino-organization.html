@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en" data-course="arduino-code" data-band="5">
+<head>
+  <meta charset="utf-8">
+  <script src="../../../assets/theme.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href="https://iot.bozomainnovationhub.com/arduino-code/modules/module-05/05-modular-ino-organization">
+  <title>Modular .ino organization · Module 5 · Arduino Coding</title>
+  <meta name="description" content="Sectioned sketches, Gate B diagram in header, thin loop; optional IDE tabs.">
+  <meta name="theme-color" content="#24182E">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../../assets/brand/icon-192.png">
+  <link rel="apple-touch-icon" href="../../../assets/brand/icon-180.png">
+  <!-- app + link previews (tools/inject_head.py) -->
+  <link rel="manifest" href="../../../manifest.webmanifest">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="IoT at Bozoma Innovation Hub">
+  <meta property="og:title" content="Modular .ino organization · Module 5 · Arduino Coding">
+  <meta property="og:description" content="Sectioned sketches, Gate B diagram in header, thin loop; optional IDE tabs.">
+  <meta property="og:url" content="https://iot.bozomainnovationhub.com/arduino-code/modules/module-05/05-modular-ino-organization">
+  <meta property="og:image" content="https://iot.bozomainnovationhub.com/assets/og/arduino-code-modules-module-05-05-modular-ino-organization.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Modular .ino organization · Module 5 · Arduino Coding">
+  <meta property="og:locale" content="en_GB">
+  <meta name="twitter:card" content="summary_large_image">
+  <script defer src="../../../assets/app.js"></script>
+  <!-- /app + link previews -->
+  <link rel="stylesheet" href="../../../assets/course.css">
+  <link rel="stylesheet" href="../../../assets/progress.css">
+  <script defer src="../../../assets/pager.js"></script>
+  <script defer src="../../../assets/check.js" data-profile="../../profile.html"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to the lesson</a>
+<div class="topbar">
+  <a class="home" href="../../home.html"><img src="../../../assets/brand/logo-mark-white.png" alt="" width="36" height="36"><span class="lock"><b>Arduino Coding</b><small>Bozoma Innovation Hub</small></span></a>
+  <a class="hub" href="../../../index.html" title="All courses: IoT at Bozoma Innovation Hub">&larr; IoT at BIH</a>
+  <nav class="bandlinks" aria-label="Modules"><a href="../module-00/home.html">0</a><a href="../module-01/home.html">1</a><a href="../module-02/home.html">2</a><a href="../module-03/home.html">3</a><a href="../module-04/home.html">4</a><a href="home.html" aria-current="page">5</a><a href="../list.html">⋯</a></nav>
+  <a class="bih" href="https://bozomainnovationhub.com"><span class="long">bozomainnovationhub.com</span><span class="short">BIH website</span></a>
+</div>
+<div class="wrap" id="main">
+
+<nav aria-label="Sections">
+  <a href="#outcomes">Outcomes</a>
+  <a href="#concepts">Concepts</a>
+  <a href="#structure">Structure</a>
+  <a href="#lab">Lab</a>
+  <a href="#patterns">Patterns</a>
+  <a href="#check">Check yourself</a>
+  <a href="#mistakes">Mistakes</a>
+</nav>
+<header style="padding:3rem 0 1rem">
+  <p class="eyebrow">Arduino Coding &nbsp;·&nbsp; Module 5 &nbsp;·&nbsp; Lesson 5.5 &nbsp;·&nbsp; <span class="tag">TC</span></p>
+  <h1 style="margin:.8rem 0">Modular .ino organization</h1>
+  <p class="col sub" style="font-size:1.1em">A sketch that works can still be unreadable. Put diagram, pins, events, and FSM in predictable places. <code>loop</code> only orchestrates.</p>
+  <p class="col note" style="margin-top:.8rem">About 40 minutes. Tinkercad uses section banners; desktop IDE may use tabs.</p>
+</header>
+<section class="part" id="outcomes">
+  <div class="parthead"><span class="tag">Start here</span><h2>Learning outcomes</h2></div>
+  <div class="col stack"><ol class="num">
+    <li>Organize a multi-state sketch into clear sections (pins, types, events, FSM, outputs).</li>
+    <li>Document the state diagram in comments so Gate B reviewers can find it.</li>
+    <li>Optionally split helpers into Arduino IDE tabs without breaking Compile.</li>
+  </ol></div>
+</section>
+<section class="part" id="concepts">
+  <div class="parthead"><span class="tag">Concept</span><h2>Header = contract</h2></div>
+  <div class="col stack">
+    <div class="callout" style="--bc:var(--accent)"><h5>Concept</h5>
+    <p>If the diagram is missing from the sketch, it is not Gate-B ready. Full <code>.h</code>/<code>.cpp</code> waits for Module 9 — today is structure discipline.</p></div>
+<pre><code>/*
+ * State diagram:
+ *   IDLE --START--> RUN --TIMEOUT--> DONE --ACK--> IDLE
+ *                    |
+ *                    +--CANCEL--> IDLE
+ * Wiring: Start D2, Cancel D3; LED D9
+ */
+</code></pre>
+  </div>
+</section>
+<section class="part" id="structure">
+  <div class="parthead"><span class="tag">Part</span><h2>Thin loop + sections</h2></div>
+  <div class="col stack">
+<pre><code>void loop() {
+  unsigned long now = millis();
+  Event ev = collectEvents(now);
+  handleFsm(ev, now);
+}
+</code></pre>
+    <p>Suggested order: header → pins → enums → constants → <code>setup</code>/<code>loop</code> → enter/exit → events → outputs. Optional IDE tabs: main + <code>fsm.ino</code> + <code>events.ino</code> (keep enums in the main/early tab).</p>
+  </div>
+</section>
+<section class="part" id="lab">
+  <div class="parthead"><span class="tag">Lab</span><h2>Refactor 5.4</h2><span class="mins">15 min</span></div>
+  <div class="col stack">
+    <p>Take Lesson 5.4 complete (or starter). Add full diagram + wiring header; <code>// =====</code> banners; make <code>loop</code> ≤ ~15 lines via <code>handleFsm</code>. Success: find “CANCEL in RUN” in under 30 seconds.</p>
+  </div>
+</section>
+<section class="part" id="patterns">
+  <div class="parthead"><span class="tag">Patterns</span><h2>Sectioned .ino (+ optional tabs)</h2></div>
+  <div class="col stack"><div class="callout"><h5>Pattern</h5>
+  <p>Always section a single file. Add tabs when long. <code>loop</code>: <code>ev = collect…(); handleFsm(ev);</code></p></div></div>
+</section>
+<section class="part" id="check">
+  <div class="parthead"><span class="tag">Check</span><h2>Check yourself</h2></div>
+  <div class="col stack"><ol class="num" data-check>
+    <li data-kind="open" data-see="#concepts">What must appear in the sketch header for Gate B?
+      <details><summary>Model answer</summary><p>The state diagram (and wiring).</p></details></li>
+    <li data-kind="open" data-see="#structure">Why keep loop thin?
+      <details><summary>Model answer</summary><p>Orchestration stays obvious; details live in named helpers.</p></details></li>
+    <li data-kind="choice" data-choices="True|False" data-correct="1" data-see="#structure" data-hint="Banners are enough." data-why-0="TC uses one panel." data-why-1="Correct — false.">Tinkercad requires multiple IDE tabs to organize an FSM.</li>
+    <li data-kind="open" data-see="#structure">Where should shared enum types live in multi-tab sketches?
+      <details><summary>Model answer</summary><p>In the main / early tab so all tabs see the types when concatenated.</p></details></li>
+  </ol></div>
+</section>
+<section class="part" id="mistakes">
+  <div class="parthead"><span class="tag">Watch outs</span><h2>Common mistakes</h2></div>
+  <div class="col stack">
+    <div class="scroll"><table><thead><tr><th>Mistake</th><th>Fix</th></tr></thead><tbody>
+      <tr><td>Diagram only in a notebook</td><td>Paste into header comments</td></tr>
+      <tr><td>Types in a late alphabet tab</td><td>Enums in main sketch tab</td></tr>
+      <tr><td>10-line sketch split into 5 tabs</td><td>Sections first; tabs when long</td></tr>
+    </tbody></table></div>
+  </div>
+</section>
+
+<nav class="pager" aria-label="Lessons">
+<a href="04-events-vs-polling.html"><span class="dir">Previous</span><span class="name">5.4 Events</span></a>
+<a class="next" href="06-washing-machine-or-lock-fsm.html"><span class="dir">Next</span><span class="name">5.6 Build &rarr;</span></a>
+</nav>
+</div>
+<footer class="bihfoot"><div class="wrap">
+  <p class="pagenote">Lesson 5.5 &nbsp;&middot;&nbsp; Module 5 &nbsp;&middot;&nbsp; Arduino Coding.</p>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a class="lockup" href="../../home.html"><img src="../../../assets/brand/logo-mark-white.png" alt="" width="42" height="42"><span>Arduino Coding<small>Bozoma Innovation Hub</small></span></a>
+      <p>A Bozoma Innovation Hub programme.</p>
+    </div>
+    <div><h4>The course</h4><ul>
+      <li><a href="../../home.html">Course home</a></li>
+      <li><a href="home.html">Module 5</a></li>
+      <li><a href="../list.html">All modules</a></li>
+    </ul></div>
+    <div><h4>Bozoma Innovation Hub</h4><ul>
+      <li><a href="https://bozomainnovationhub.com">bozomainnovationhub.com</a></li>
+    </ul></div>
+  </div>
+  <div class="foot-bottom"><span>&copy; Bozoma Innovation Hub, Aiyinasi, Ghana</span><span class="tagline">World-class begins at home.</span></div>
+</div></footer>
+</body>
+</html>

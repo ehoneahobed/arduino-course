@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en" data-course="arduino-code" data-band="6">
+<head>
+  <meta charset="utf-8">
+  <script src="../../../assets/theme.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href="https://iot.bozomainnovationhub.com/arduino-code/modules/module-06/06-lap-counter-or-reaction-timer">
+  <title>Build: Lap counter or reaction timer · Module 6 · Arduino Coding</title>
+  <meta name="description" content="Module 6 spine: lap or reaction timer with debounce, optional ISR, display/Serial, FSM.">
+  <meta name="theme-color" content="#24182E">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../../assets/brand/icon-192.png">
+  <link rel="apple-touch-icon" href="../../../assets/brand/icon-180.png">
+  <!-- app + link previews (tools/inject_head.py) -->
+  <link rel="manifest" href="../../../manifest.webmanifest">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="IoT at Bozoma Innovation Hub">
+  <meta property="og:title" content="Build: Lap counter or reaction timer · Module 6 · Arduino Coding">
+  <meta property="og:description" content="Module 6 spine: lap or reaction timer with debounce, optional ISR, display/Serial, FSM.">
+  <meta property="og:url" content="https://iot.bozomainnovationhub.com/arduino-code/modules/module-06/06-lap-counter-or-reaction-timer">
+  <meta property="og:image" content="https://iot.bozomainnovationhub.com/assets/og/arduino-code-modules-module-06-06-lap-counter-or-reaction-timer.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Build: Lap counter or reaction timer · Module 6 · Arduino Coding">
+  <meta property="og:locale" content="en_GB">
+  <meta name="twitter:card" content="summary_large_image">
+  <script defer src="../../../assets/app.js"></script>
+  <!-- /app + link previews -->
+  <link rel="stylesheet" href="../../../assets/course.css">
+  <link rel="stylesheet" href="../../../assets/progress.css">
+  <script defer src="../../../assets/pager.js"></script>
+  <script defer src="../../../assets/check.js" data-profile="../../profile.html"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to the lesson</a>
+<div class="topbar">
+  <a class="home" href="../../home.html"><img src="../../../assets/brand/logo-mark-white.png" alt="" width="36" height="36"><span class="lock"><b>Arduino Coding</b><small>Bozoma Innovation Hub</small></span></a>
+  <a class="hub" href="../../../index.html" title="All courses: IoT at Bozoma Innovation Hub">&larr; IoT at BIH</a>
+  <nav class="bandlinks" aria-label="Modules"><a href="../module-00/home.html">0</a><a href="../module-01/home.html">1</a><a href="../module-02/home.html">2</a><a href="../module-03/home.html">3</a><a href="../module-04/home.html">4</a><a href="../module-05/home.html">5</a><a href="home.html" aria-current="page">6</a><a href="../list.html">⋯</a></nav>
+  <a class="bih" href="https://bozomainnovationhub.com"><span class="long">bozomainnovationhub.com</span><span class="short">BIH website</span></a>
+</div>
+<div class="wrap" id="main">
+
+<nav aria-label="Sections">
+  <a href="#outcomes">Outcomes</a>
+  <a href="#brief">Brief</a>
+  <a href="#wire">Wire</a>
+  <a href="#build">Build</a>
+  <a href="#checklist">Checklist</a>
+  <a href="#patterns">Patterns</a>
+  <a href="#check">Check yourself</a>
+  <a href="#mistakes">Mistakes</a>
+</nav>
+<header style="padding:3rem 0 1rem">
+  <p class="eyebrow">Arduino Coding &nbsp;·&nbsp; Module 6 &nbsp;·&nbsp; Lesson 6.6 &nbsp;·&nbsp; <span class="tag">HW</span> · Build</p>
+  <h1 style="margin:.8rem 0">Build: Lap counter or reaction timer</h1>
+  <p class="col sub" style="font-size:1.1em">Spine build: a lap counter <em>or</em> reaction timer — robust edges, optional ISR, display (or Serial), FSM for ready/go/foul. Pick <strong>one</strong> path.</p>
+  <p class="col note" style="margin-top:.8rem">About 60–75 minutes. Gate A + Gate B.</p>
+</header>
+<section class="part" id="outcomes">
+  <div class="parthead"><span class="tag">Start here</span><h2>Learning outcomes</h2></div>
+  <div class="col stack"><ol class="num">
+    <li>Build a lap counter or reaction timer with interrupt/edge detect, debounce, display, and FSM.</li>
+    <li>Keep ISRs tiny with volatile flags; timing and UX in loop with millis.</li>
+    <li>Document wiring, state diagram, TC†/HW path, and pin/address choices.</li>
+  </ol></div>
+</section>
+<section class="part" id="brief">
+  <div class="parthead"><span class="tag">Brief</span><h2>Paths</h2></div>
+  <div class="col stack">
+    <div class="scroll"><table><thead><tr><th>Path</th><th>Core states (minimum)</th></tr></thead><tbody>
+      <tr><td>L — Lap</td><td><code>IDLE → ARMED → TIMING → SHOW</code></td></tr>
+      <tr><td>R — Reaction</td><td><code>IDLE → READY → WAIT → GO → RESULT</code> + <strong>FOUL</strong></td></tr>
+    </tbody></table></div>
+    <p><strong>Done:</strong> playable from display/Serial; foul/lap rules match the diagram; ISR (if used) only sets flags; zero interactive <code>delay</code>.</p>
+  </div>
+</section>
+<section class="part" id="wire">
+  <div class="parthead"><span class="tag">Wire</span><h2>M6-L06-Lap or Reaction</h2></div>
+  <div class="col stack">
+    <p>Primary button on <strong>2</strong> (INT0). Reset/arm on 3. Status LED→9; foul LED→8 (Path R). OLED/LCD on SDA/SCL — or <code>USE_SERIAL_UI</code>.</p>
+<pre><code>// Reaction (required FOUL on early press):
+IDLE --arm--> READY --random wait--> GO --press--> RESULT
+               |                      ^
+               +--press too soon------→ FOUL --ack--> IDLE
+</code></pre>
+  </div>
+</section>
+<section class="part" id="build">
+  <div class="parthead"><span class="tag">Build</span><h2>Stack the module</h2><span class="mins">30 min</span></div>
+  <div class="col stack">
+    <div class="sketchbox" style="--bc:var(--accent)"><h2>Shape</h2>
+<pre><code>// optional: attachInterrupt → volatile pressedFlag
+if (consumePress()) { /* feed FSM — not raw edges */ }
+// enter GO: goEnteredAt = millis();
+// RESULT: reactionMs = millis() - goEnteredAt;
+showStatus(stateName(state), value);  // OLED or Serial
+</code></pre></div>
+    <p>Path L: show lap count + last lap ms. Path R: random wait 1.5–4&nbsp;s before GO; press in READY/WAIT → FOUL.</p>
+  </div>
+</section>
+<section class="part" id="checklist">
+  <div class="parthead"><span class="tag">Deliverable</span><h2>Checklist</h2></div>
+  <div class="col stack"><ul class="plain">
+    <li>Explicit enum + diagram in header</li>
+    <li>Robust debounce on primary input (ISR optional on HW)</li>
+    <li>Non-blocking timing; display or Serial shows mode + number</li>
+    <li>Path R: FOUL on early press; Path L: lap count + last ms</li>
+    <li>Clear re-arm / idle path; no interactive delay</li>
+  </ul></div>
+</section>
+<section class="part" id="patterns">
+  <div class="parthead"><span class="tag">Patterns</span><h2>Stack</h2></div>
+  <div class="col stack"><div class="callout"><h5>Pattern</h5>
+  <p>Gate B diagram · enum FSM · consumePress debounce · optional ISR+volatile · display wrappers · Gate A millis.</p></div></div>
+</section>
+<section class="part" id="check">
+  <div class="parthead"><span class="tag">Check</span><h2>Check yourself</h2></div>
+  <div class="col stack"><ol class="num" data-check>
+    <li data-kind="open" data-see="#build">What must the ISR not do in this build?
+      <details><summary>Model answer</summary><p>Heavy work — Serial storms, display I²C, long logic (only flag / minimal stamp).</p></details></li>
+    <li data-kind="open" data-see="#wire">How does Path R detect a foul?
+      <details><summary>Model answer</summary><p>Press while in READY or WAIT (before GO) → FOUL.</p></details></li>
+    <li data-kind="open" data-see="#build">Why keep debounce in loop even with USE_ISR?
+      <details><summary>Model answer</summary><p>Mechanical bounce still multi-fires; stable-window accepts one logical press.</p></details></li>
+    <li data-kind="choice" data-choices="True|False" data-correct="1" data-see="#brief" data-hint="Serial stand-in OK." data-why-0="Document USE_SERIAL_UI." data-why-1="Correct — false for documented stand-in.">Serial stand-in fails the spine if FSM and timing are complete.</li>
+  </ol></div>
+</section>
+<section class="part" id="mistakes">
+  <div class="parthead"><span class="tag">Watch outs</span><h2>Common mistakes</h2></div>
+  <div class="col stack">
+    <div class="scroll"><table><thead><tr><th>Mistake</th><th>Fix</th></tr></thead><tbody>
+      <tr><td>Serial/display inside ISR</td><td>Flag only</td></tr>
+      <tr><td>No FOUL on Path R</td><td>Early press → FOUL state</td></tr>
+      <tr><td>FSM sees bounce</td><td>consumePress gate</td></tr>
+    </tbody></table></div>
+    <div class="callout" style="--bc:var(--copper)"><h5>What’s next</h5><p>Module 6 spine complete. <strong>Module 7</strong> graduates fully to physical boards, power hygiene, and real I²C/SPI buses.</p></div>
+  </div>
+</section>
+
+<nav class="pager" aria-label="Lessons">
+<a href="05-i2c-display-hello-world.html"><span class="dir">Previous</span><span class="name">6.5 I²C display</span></a>
+<a class="next" href="../module-07/home.html"><span class="dir">Next</span><span class="name">Module 7 · Hardware &rarr;</span></a>
+</nav>
+</div>
+<footer class="bihfoot"><div class="wrap">
+  <p class="pagenote">Lesson 6.6 &nbsp;&middot;&nbsp; Module 6 &nbsp;&middot;&nbsp; Arduino Coding.</p>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a class="lockup" href="../../home.html"><img src="../../../assets/brand/logo-mark-white.png" alt="" width="42" height="42"><span>Arduino Coding<small>Bozoma Innovation Hub</small></span></a>
+      <p>A Bozoma Innovation Hub programme.</p>
+    </div>
+    <div><h4>The course</h4><ul>
+      <li><a href="../../home.html">Course home</a></li>
+      <li><a href="home.html">Module 6</a></li>
+      <li><a href="../list.html">All modules</a></li>
+    </ul></div>
+    <div><h4>Bozoma Innovation Hub</h4><ul>
+      <li><a href="https://bozomainnovationhub.com">bozomainnovationhub.com</a></li>
+    </ul></div>
+  </div>
+  <div class="foot-bottom"><span>&copy; Bozoma Innovation Hub, Aiyinasi, Ghana</span><span class="tagline">World-class begins at home.</span></div>
+</div></footer>
+</body>
+</html>

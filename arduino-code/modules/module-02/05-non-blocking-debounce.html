@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en" data-course="arduino-code" data-band="2">
+<head>
+  <meta charset="utf-8">
+  <script src="../../../assets/theme.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href="https://iot.bozomainnovationhub.com/arduino-code/modules/module-02/05-non-blocking-debounce">
+  <title>Pattern: non-blocking debounce · Module 2 · Arduino Coding</title>
+  <meta name="description" content="Replace delay(50) debounce with millis lockout so heartbeats keep running.">
+  <meta name="theme-color" content="#24182E">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../../assets/brand/icon-192.png">
+  <link rel="apple-touch-icon" href="../../../assets/brand/icon-180.png">
+  <!-- app + link previews (tools/inject_head.py) -->
+  <link rel="manifest" href="../../../manifest.webmanifest">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="IoT at Bozoma Innovation Hub">
+  <meta property="og:title" content="Pattern: non-blocking debounce · Module 2 · Arduino Coding">
+  <meta property="og:description" content="Replace delay(50) debounce with millis lockout so heartbeats keep running.">
+  <meta property="og:url" content="https://iot.bozomainnovationhub.com/arduino-code/modules/module-02/05-non-blocking-debounce">
+  <meta property="og:image" content="https://iot.bozomainnovationhub.com/assets/og/arduino-code-modules-module-02-05-non-blocking-debounce.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Pattern: non-blocking debounce · Module 2 · Arduino Coding">
+  <meta property="og:locale" content="en_GB">
+  <meta name="twitter:card" content="summary_large_image">
+  <script defer src="../../../assets/app.js"></script>
+  <!-- /app + link previews -->
+  <link rel="stylesheet" href="../../../assets/course.css">
+  <link rel="stylesheet" href="../../../assets/progress.css">
+  <script defer src="../../../assets/pager.js"></script>
+  <script defer src="../../../assets/check.js" data-profile="../../profile.html"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to the lesson</a>
+<div class="topbar">
+  <a class="home" href="../../home.html"><img src="../../../assets/brand/logo-mark-white.png" alt="" width="36" height="36"><span class="lock"><b>Arduino Coding</b><small>Bozoma Innovation Hub</small></span></a>
+  <a class="hub" href="../../../index.html" title="All courses: IoT at Bozoma Innovation Hub">&larr; IoT at BIH</a>
+  <nav class="bandlinks" aria-label="Modules"><a href="../module-00/home.html">0</a><a href="../module-01/home.html">1</a><a href="home.html" aria-current="page">2</a><a href="../list.html">⋯</a></nav>
+  <a class="bih" href="https://bozomainnovationhub.com"><span class="long">bozomainnovationhub.com</span><span class="short">BIH website</span></a>
+</div>
+<div class="wrap" id="main">
+<nav aria-label="Sections">
+  <a href="#outcomes">Outcomes</a>
+  <a href="#concepts">Concepts</a>
+  <a href="#strategies">Strategies</a>
+  <a href="#lab">Lab</a>
+  <a href="#patterns">Patterns</a>
+  <a href="#check">Check yourself</a>
+  <a href="#mistakes">Mistakes</a>
+</nav>
+<header style="padding:3rem 0 1rem">
+  <p class="eyebrow">Arduino Coding &nbsp;·&nbsp; Module 2 &nbsp;·&nbsp; Lesson 2.5 &nbsp;·&nbsp; <span class="tag">TC</span></p>
+  <h1 style="margin:.8rem 0">Pattern: non-blocking debounce</h1>
+
+  <p class="col sub" style="font-size:1.1em">Upgrade Module 1 debounce: timestamp lockout (or stable-window) with <code>millis()</code> so other timers never freeze.</p>
+  <p class="col note" style="margin-top:.8rem">About 40 minutes.</p>
+</header>
+<section class="part" id="outcomes">
+  <div class="parthead"><span class="tag">Start here</span><h2>Learning outcomes</h2></div>
+  <div class="col stack"><ol class="num">
+    <li>Replace <code>delay(50)</code> debounce with a millis lockout or stable-window check.</li>
+    <li>Accept one press → one event while a heartbeat keeps running.</li>
+    <li>Explain why non-blocking debounce is required once you multi-task.</li>
+  </ol></div>
+</section>
+<section class="part" id="concepts">
+  <div class="parthead"><span class="tag">Concept</span><h2>Wait without sleeping</h2></div>
+  <div class="col stack">
+    <div class="callout" style="--bc:var(--accent)"><h5>Concept</h5>
+    <p>Debounce still ignores chatter. Module 1 slept with <code>delay(40)</code>. Module 2 remembers <code>lastAcceptMs</code> and keeps looping.</p></div>
+  </div>
+</section>
+<section class="part" id="strategies">
+  <div class="parthead"><span class="tag">Part</span><h2>Lockout (simplest)</h2></div>
+  <div class="col stack">
+<pre><code>// on raw HIGH→LOW edge:
+if (now - lastAcceptMs &gt;= debounceMs) {
+  lastAcceptMs = now;
+  // accept one event
+}
+</code></pre>
+    <p><strong>Stable-reading</strong> (Arduino tutorial style): restart a clock whenever the raw pin changes; accept only after it stays the same for <code>debounceMs</code>.</p>
+    <p class="note">Do <strong>not</strong> <code>while (digitalRead == LOW) {}</code> — that still blocks.</p>
+  </div>
+</section>
+<section class="part" id="lab">
+  <div class="parthead"><span class="tag">Lab</span><h2>Heartbeat + toggle</h2><span class="mins">18 min</span></div>
+  <div class="col stack">
+    <p>Circuit <code>M2-L05-DebounceMillis</code>: heartbeat 13, toggle 8, button 2. One click → one toggle; heartbeat never stalls; no <code>delay()</code>.</p>
+    <div class="sketchbox" style="--bc:var(--accent)"><h2>Lockout complete</h2>
+<pre><code>int raw = digitalRead(buttonPin);
+if (raw == LOW &amp;&amp; lastRaw == HIGH) {
+  if (now - lastAcceptMs &gt;= debounceMs) {
+    lastAcceptMs = now;
+    toggleState = !toggleState;
+    digitalWrite(togglePin, toggleState ? HIGH : LOW);
+  }
+}
+lastRaw = raw;
+</code></pre></div>
+  </div>
+</section>
+<section class="part" id="patterns">
+  <div class="parthead"><span class="tag">Patterns</span><h2>Gate A input path</h2></div>
+  <div class="col stack"><div class="callout"><h5>Pattern</h5>
+  <p>Keep debounce even if Tinkercad looks bounce-free — rubric and hardware demand it.</p></div></div>
+</section>
+<section class="part" id="check">
+  <div class="parthead"><span class="tag">Check</span><h2>Check yourself</h2></div>
+  <div class="col stack"><ol class="num" data-check>
+    <li data-kind="open" data-see="#concepts">What does non-blocking debounce <em>not</em> do that Lesson 1.5 often did?
+      <details><summary>Model answer</summary><p>It does not call <code>delay()</code> or spin until release.</p></details></li>
+    <li data-kind="open" data-see="#strategies">What does <code>lastAcceptMs</code> represent in lockout debounce?
+      <details><summary>Model answer</summary><p>The time the last event was accepted — start of the ignore window.</p></details></li>
+    <li data-kind="open" data-see="#lab">Why keep a heartbeat LED in this lab?
+      <details><summary>Model answer</summary><p>To prove other tasks keep running during the debounce window.</p></details></li>
+    <li data-kind="choice" data-choices="True|False" data-correct="1" data-see="#strategies" data-hint="while still blocks." data-why-0="while still freezes the world." data-why-1="Correct — false."><code>while (digitalRead == LOW) {}</code> is OK if blink uses millis.</li>
+  </ol></div>
+</section>
+<section class="part" id="mistakes">
+  <div class="parthead"><span class="tag">Watch outs</span><h2>Common mistakes</h2></div>
+  <div class="col stack">
+    <div class="scroll"><table><thead><tr><th>Mistake</th><th>Fix</th></tr></thead><tbody>
+      <tr><td><code>debounceMs</code> of 1–2</td><td>Use ~40–50&nbsp;ms</td></tr>
+      <tr><td>Updating <code>lastAcceptMs</code> before accept</td><td>Update only when you accept</td></tr>
+      <tr><td><code>int</code> for timestamps</td><td><code>unsigned long</code></td></tr>
+    </tbody></table></div>
+    <div class="callout" style="--bc:var(--copper)"><h5>Stretch</h5><p>Port Module 1.8 button handling to millis debounce; free-run a second LED at 5&nbsp;Hz.</p></div>
+  </div>
+</section>
+
+<nav class="pager" aria-label="Lessons">
+<a href="04-one-shot-and-repeating-timers.html"><span class="dir">Previous</span><span class="name">2.4 One-shot timers</span></a>
+<a class="next" href="06-desk-status-light.html"><span class="dir">Next</span><span class="name">2.6 Desk status light &rarr;</span></a>
+</nav>
+</div>
+<footer class="bihfoot"><div class="wrap">
+  <p class="pagenote">Lesson 2.5 &nbsp;&middot;&nbsp; Module 2 &nbsp;&middot;&nbsp; Arduino Coding.</p>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a class="lockup" href="../../home.html"><img src="../../../assets/brand/logo-mark-white.png" alt="" width="42" height="42"><span>Arduino Coding<small>Bozoma Innovation Hub</small></span></a>
+      <p>A Bozoma Innovation Hub programme.</p>
+    </div>
+    <div><h4>The course</h4><ul>
+      <li><a href="../../home.html">Course home</a></li>
+      <li><a href="home.html">Module 2</a></li>
+      <li><a href="../list.html">All modules</a></li>
+    </ul></div>
+    <div><h4>Bozoma Innovation Hub</h4><ul>
+      <li><a href="https://bozomainnovationhub.com">bozomainnovationhub.com</a></li>
+    </ul></div>
+  </div>
+  <div class="foot-bottom"><span>&copy; Bozoma Innovation Hub, Aiyinasi, Ghana</span><span class="tagline">World-class begins at home.</span></div>
+</div></footer>
+</body>
+</html>

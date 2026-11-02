@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en" data-course="arduino-code" data-band="0">
+<head>
+  <meta charset="utf-8">
+  <script src="../../../assets/theme.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href="https://iot.bozomainnovationhub.com/arduino-code/modules/module-00/05-digital-write-and-blink">
+  <title>Digital write & Blink · Module 0 · Arduino Coding</title>
+  <meta name="description" content="digitalWrite, delay, named pins, and your first visible blink — change pin and rate.">
+  <meta name="theme-color" content="#24182E">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../../assets/brand/icon-192.png">
+  <link rel="apple-touch-icon" href="../../../assets/brand/icon-180.png">
+  <!-- app + link previews (tools/inject_head.py) -->
+  <link rel="manifest" href="../../../manifest.webmanifest">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="IoT at Bozoma Innovation Hub">
+  <meta property="og:title" content="Digital write & Blink · Module 0 · Arduino Coding">
+  <meta property="og:description" content="digitalWrite, delay, named pins, and your first visible blink — change pin and rate.">
+  <meta property="og:url" content="https://iot.bozomainnovationhub.com/arduino-code/modules/module-00/05-digital-write-and-blink">
+  <meta property="og:image" content="https://iot.bozomainnovationhub.com/assets/og/arduino-code-modules-module-00-05-digital-write-and-blink.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Digital write & Blink · Module 0 · Arduino Coding">
+  <meta property="og:locale" content="en_GB">
+  <meta name="twitter:card" content="summary_large_image">
+  <script defer src="../../../assets/app.js"></script>
+  <!-- /app + link previews -->
+  <link rel="stylesheet" href="../../../assets/course.css">
+  <link rel="stylesheet" href="../../../assets/progress.css">
+  <script defer src="../../../assets/pager.js"></script>
+  <script defer src="../../../assets/check.js" data-profile="../../profile.html"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to the lesson</a>
+<div class="topbar">
+  <a class="home" href="../../home.html"><img src="../../../assets/brand/logo-mark-white.png" alt="" width="36" height="36"><span class="lock"><b>Arduino Coding</b><small>Bozoma Innovation Hub</small></span></a>
+  <a class="hub" href="../../../index.html" title="All courses: IoT at Bozoma Innovation Hub">&larr; IoT at BIH</a>
+  <nav class="bandlinks" aria-label="Modules"><a href="home.html" aria-current="page">0</a><a href="../list.html">⋯</a></nav>
+  <a class="bih" href="https://bozomainnovationhub.com"><span class="long">bozomainnovationhub.com</span><span class="short">BIH website</span></a>
+</div>
+<div class="wrap" id="main">
+<nav aria-label="Sections">
+  <a href="#outcomes">Outcomes</a>
+  <a href="#concepts">Concepts</a>
+  <a href="#blink">Blink</a>
+  <a href="#named">Named pins</a>
+  <a href="#lab">Lab</a>
+  <a href="#patterns">Patterns</a>
+  <a href="#check">Check yourself</a>
+  <a href="#mistakes">Mistakes</a>
+</nav>
+
+<header style="padding:3rem 0 1rem">
+  <p class="eyebrow">Arduino Coding &nbsp;·&nbsp; Module 0 &nbsp;·&nbsp; Lesson 0.5 &nbsp;·&nbsp; <span class="tag">TC</span></p>
+  <h1 style="margin:.8rem 0">Digital write & Blink</h1>
+
+  <p class="col sub" style="font-size:1.1em"><code>digitalWrite</code>, <code>delay</code>, named pins, and your first visible blink — then change pin and rate on purpose.</p>
+  <p class="col note" style="margin-top:.8rem">About 35 minutes. Reuse the Lesson 0.3 LED circuit.</p>
+</header>
+
+<section class="part" id="reminders">
+  <div class="parthead"><span class="tag">Before you code</span><h2>Circuit reminder</h2></div>
+  <div class="col stack">
+    <div class="callout" style="--bc:var(--copper)"><h5>Same topology as 0.3</h5>
+    <p>Pin → resistor → LED → GND. Breadboard rows/rails: <a href="../../guides/breadboard-basics.html">breadboard basics</a>. Dark LED? <a href="../../guides/debugging-playbook.html">Debugging playbook</a> before changing lots of code.</p></div>
+  </div>
+</section>
+
+<section class="part" id="outcomes">
+  <div class="parthead"><span class="tag">Start here</span><h2>Learning outcomes</h2></div>
+  <div class="col stack">
+    <ol class="num">
+      <li>Use <code>digitalWrite</code> with <code>HIGH</code> / <code>LOW</code> to control an LED.</li>
+      <li>Use <code>delay</code> to create a visible blink (and know we will outgrow it).</li>
+      <li>Change the <strong>pin number</strong> and <strong>blink rate</strong>, matching wires to code.</li>
+    </ol>
+  </div>
+</section>
+
+<section class="part" id="concepts">
+  <div class="parthead"><span class="tag">Concept</span><h2>HIGH, LOW, and delay</h2></div>
+  <div class="col stack">
+    <div class="callout" style="--bc:var(--accent)">
+      <h5>Concept</h5>
+      <p>A digital output pin has two main software levels: <strong><code>HIGH</code></strong> (~5&nbsp;V on a classic Uno) and <strong><code>LOW</code></strong> (0&nbsp;V). <code>delay(milliseconds)</code> pauses the board — simple for Blink, but it <strong>blocks</strong> all other work. Module 2 replaces most <code>delay</code> use with <code>millis()</code>.</p>
+    </div>
+  </div>
+</section>
+
+<section class="part" id="blink">
+  <div class="parthead"><span class="tag">Part 1</span><h2>The classic Blink pattern</h2><span class="mins">8 min</span></div>
+  <div class="col stack">
+    <ol class="num">
+      <li>Turn LED on.</li>
+      <li>Wait a bit.</li>
+      <li>Turn LED off.</li>
+      <li>Wait a bit.</li>
+      <li>Repeat forever (<code>loop</code>).</li>
+    </ol>
+<pre><code>digitalWrite(ledPin, HIGH);
+delay(1000);              // 1000 ms = 1 second
+digitalWrite(ledPin, LOW);
+delay(1000);
+</code></pre>
+  </div>
+</section>
+
+<section class="part" id="named">
+  <div class="parthead"><span class="tag">Part 2</span><h2>Named pins</h2></div>
+  <div class="col stack">
+    <p>Avoid magic numbers scattered everywhere. Prefer:</p>
+<pre><code>const int ledPin = 13;
+pinMode(ledPin, OUTPUT);
+digitalWrite(ledPin, HIGH);
+</code></pre>
+    <p>Change the number in <strong>one</strong> place when you move the wire.</p>
+  </div>
+</section>
+
+<section class="part" id="lab">
+  <div class="parthead"><span class="tag">Lab</span><h2>Tinkercad steps</h2><span class="mins">15 min</span></div>
+  <div class="col stack">
+    <ol class="num">
+      <li>Duplicate your LED circuit; name it <code>M0-L05-Blink</code>.</li>
+      <li>Paste the starter; Start Simulation — 1&nbsp;s on / 1&nbsp;s off.</li>
+      <li>Change both delays to <code>200</code> — faster blink.</li>
+      <li>Change <code>ledPin</code> to <code>8</code> <strong>and</strong> move the wire from 13 to 8.</li>
+    </ol>
+    <p><strong>Success:</strong> LED rhythm matches your delays; moving the pin works only when <strong>code and wire</strong> agree.</p>
+    <div class="sketchbox" style="--bc:var(--accent)">
+      <h2>Starter sketch</h2>
+<pre><code>const int ledPin = 13;
+
+void setup() {
+  pinMode(ledPin, OUTPUT);
+}
+
+void loop() {
+  digitalWrite(ledPin, HIGH);
+  delay(1000);
+  digitalWrite(ledPin, LOW);
+  delay(1000);
+}
+</code></pre>
+    </div>
+    <div class="sketchbox">
+      <h2>Complete sketch — named timings</h2>
+<pre><code>const int ledPin = 13;
+const int onMs   = 500;
+const int offMs  = 500;
+
+void setup() {
+  pinMode(ledPin, OUTPUT);
+}
+
+void loop() {
+  digitalWrite(ledPin, HIGH);
+  delay(onMs);
+  digitalWrite(ledPin, LOW);
+  delay(offMs);
+}
+</code></pre>
+    </div>
+  </div>
+</section>
+
+<section class="part" id="patterns">
+  <div class="parthead"><span class="tag">Patterns</span><h2>One source of truth</h2></div>
+  <div class="col stack">
+    <div class="callout">
+      <h5>Pattern</h5>
+      <p><strong>One source of truth for pin numbers</strong> — <code>const int ledPin</code> at the top. Blink-with-<code>delay</code> is a teaching pattern; retire it for multi-task projects after Module 2.</p>
+    </div>
+  </div>
+</section>
+
+<section class="part" id="check">
+  <div class="parthead"><span class="tag">Check</span><h2>Check yourself</h2></div>
+  <div class="col stack">
+    <ol class="num" data-check>
+      <li data-kind="open" data-see="#blink">What two arguments does <code>digitalWrite</code> need?
+        <details><summary>Model answer</summary><p>Pin number and <code>HIGH</code> or <code>LOW</code>.</p></details>
+      </li>
+      <li data-kind="number" data-correct="0.25" data-see="#blink" data-hint="1000 ms = 1 second." data-tolerance="0.01"> <code>delay(250)</code> pauses for how many seconds?</li>
+      <li data-kind="open" data-see="#lab">You change <code>ledPin</code> to <code>8</code> but leave the wire on <code>13</code>. What happens?
+        <details><summary>Model answer</summary><p>The LED on 13 stays dark (pin 8 wiggles with nothing attached).</p></details>
+      </li>
+      <li data-kind="open" data-see="#concepts">Why will we eventually stop using <code>delay</code> for big projects?
+        <details><summary>Model answer</summary><p>It blocks the board from doing other work (buttons, extra LEDs, network later).</p></details>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section class="part" id="mistakes">
+  <div class="parthead"><span class="tag">Watch outs</span><h2>Common mistakes</h2></div>
+  <div class="col stack">
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Mistake</th><th>Symptom</th><th>Fix</th></tr></thead>
+        <tbody>
+          <tr><td>Forgot <code>pinMode(..., OUTPUT)</code></td><td>No control</td><td>Add it in <code>setup</code></td></tr>
+          <tr><td>Only one delay (no off)</td><td>Looks always on</td><td>Need HIGH <em>and</em> LOW with delays</td></tr>
+          <tr><td>Delays of 1 or 2</td><td>Looks steady</td><td>Use hundreds of ms</td></tr>
+          <tr><td>Wire/code pin mismatch</td><td>“Code is broken!”</td><td>Match them</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout" style="--bc:var(--copper)">
+      <h5>Stretch (optional)</h5>
+      <p>Heartbeat: on 100&nbsp;ms, off 100&nbsp;ms, on 100&nbsp;ms, off 700&nbsp;ms, repeat. Save as <code>M0-L05-Heartbeat</code>.</p>
+    </div>
+  </div>
+</section>
+
+<nav class="pager" aria-label="Lessons">
+<a href="04-anatomy-of-a-sketch.html"><span class="dir">Previous</span><span class="name">0.4 Anatomy of a sketch</span></a>
+<a class="next" href="06-custom-blink-signature.html"><span class="dir">Next</span><span class="name">0.6 Custom blink signature &rarr;</span></a>
+</nav>
+
+</div>
+<footer class="bihfoot">
+<div class="wrap">
+  <p class="pagenote">Lesson 0.5 &nbsp;&middot;&nbsp; Module 0 &nbsp;&middot;&nbsp; Arduino Coding.</p>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a class="lockup" href="../../home.html"><img src="../../../assets/brand/logo-mark-white.png" alt="" width="42" height="42"><span>Arduino Coding<small>Bozoma Innovation Hub</small></span></a>
+      <p>A Bozoma Innovation Hub programme.</p>
+    </div>
+    <div><h4>The course</h4><ul>
+      <li><a href="../../home.html">Course home</a></li>
+      <li><a href="home.html">Module 0</a></li>
+      <li><a href="../list.html">All modules</a></li>
+    </ul></div>
+    <div><h4>Bozoma Innovation Hub</h4><ul>
+      <li><a href="https://bozomainnovationhub.com">bozomainnovationhub.com</a></li>
+    </ul></div>
+  </div>
+  <div class="foot-bottom"><span>&copy; Bozoma Innovation Hub, Aiyinasi, Ghana</span><span class="tagline">World-class begins at home.</span></div>
+</div>
+</footer>
+</body>
+</html>

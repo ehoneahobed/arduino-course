@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en" data-course="arduino-code" data-band="9">
+<head>
+  <meta charset="utf-8">
+  <script src="../../../assets/theme.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href="https://iot.bozomainnovationhub.com/arduino-code/modules/module-09/01-requirements-and-state-diagram">
+  <title>Requirements &amp; state diagram · Module 9 · Arduino Coding</title>
+  <meta name="description" content="User stories, I/O list, success criteria, and FSM diagram before feature code.">
+  <meta name="theme-color" content="#24182E">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../../assets/brand/icon-192.png">
+  <link rel="apple-touch-icon" href="../../../assets/brand/icon-180.png">
+  <!-- app + link previews (tools/inject_head.py) -->
+  <link rel="manifest" href="../../../manifest.webmanifest">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="IoT at Bozoma Innovation Hub">
+  <meta property="og:title" content="Requirements &amp; state diagram · Module 9 · Arduino Coding">
+  <meta property="og:description" content="User stories, I/O list, success criteria, and FSM diagram before feature code.">
+  <meta property="og:url" content="https://iot.bozomainnovationhub.com/arduino-code/modules/module-09/01-requirements-and-state-diagram">
+  <meta property="og:image" content="https://iot.bozomainnovationhub.com/assets/og/arduino-code-modules-module-09-01-requirements-and-state-diagram.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Requirements &amp; state diagram · Module 9 · Arduino Coding">
+  <meta property="og:locale" content="en_GB">
+  <meta name="twitter:card" content="summary_large_image">
+  <script defer src="../../../assets/app.js"></script>
+  <!-- /app + link previews -->
+  <link rel="stylesheet" href="../../../assets/course.css">
+  <link rel="stylesheet" href="../../../assets/progress.css">
+  <script defer src="../../../assets/pager.js"></script>
+  <script defer src="../../../assets/check.js" data-profile="../../profile.html"></script>
+
+</head>
+<body>
+<a class="skip" href="#main">Skip to the lesson</a>
+<div class="topbar">
+  <a class="home" href="../../home.html"><img src="../../../assets/brand/logo-mark-white.png" alt="" width="36" height="36"><span class="lock"><b>Arduino Coding</b><small>Bozoma Innovation Hub</small></span></a>
+  <a class="hub" href="../../../index.html" title="All courses: IoT at Bozoma Innovation Hub">&larr; IoT at BIH</a>
+  <nav class="bandlinks" aria-label="Modules"><a href="../module-00/home.html">0</a><a href="../module-01/home.html">1</a><a href="../module-02/home.html">2</a><a href="../module-03/home.html">3</a><a href="../module-04/home.html">4</a><a href="../module-05/home.html">5</a><a href="../module-06/home.html">6</a><a href="../module-07/home.html">7</a><a href="../module-08/home.html">8</a><a href="home.html" aria-current="page">9</a><a href="../list.html">⋯</a></nav>
+  <a class="bih" href="https://bozomainnovationhub.com"><span class="long">bozomainnovationhub.com</span><span class="short">BIH website</span></a>
+</div>
+<div class="wrap" id="main">
+
+<nav aria-label="Sections">
+  <a href="#outcomes">Outcomes</a>
+  <a href="#concepts">Concepts</a>
+  <a href="#packet">Design packet</a>
+  <a href="#lab">Lab</a>
+  <a href="#patterns">Patterns</a>
+  <a href="#check">Check yourself</a>
+  <a href="#mistakes">Mistakes</a>
+</nav>
+<header style="padding:3rem 0 1rem">
+  <p class="eyebrow">Arduino Coding &nbsp;·&nbsp; Module 9 &nbsp;·&nbsp; Lesson 9.1 &nbsp;·&nbsp; <span class="tag">Design</span></p>
+  <h1 style="margin:.8rem 0">Requirements &amp; state diagram</h1>
+  <p class="col sub" style="font-size:1.1em">Choose one primary capstone. Write testable requirements and a complete state diagram before adding features. The design packet is the contract reviewers open first.</p>
+  <p class="col note" style="margin-top:.8rem">About 45–60 minutes. Mostly writing/drawing — little or no upload yet.</p>
+</header>
+
+<section class="part" id="outcomes">
+  <div class="parthead"><span class="tag">Start here</span><h2>Learning outcomes</h2></div>
+  <div class="col stack"><ol class="num">
+    <li>Write user stories, an I/O list, and success criteria for one capstone (A–E).</li>
+    <li>Draw a complete FSM state diagram (states, triggers, outputs) before features.</li>
+    <li>Package those artifacts in a project README / sketch header.</li>
+  </ol></div>
+</section>
+<section class="part" id="concepts">
+  <div class="parthead"><span class="tag">Concept</span><h2>Requirements, not wishes</h2></div>
+  <div class="col stack">
+    <div class="callout" style="--bc:var(--accent)"><h5>Concept</h5>
+    <p>A <strong>requirement</strong> is a testable promise. Capstone grades weigh <strong>behavior &amp; requirements at 35%</strong> — write them first. User stories: <em>As a … I want … so that …</em> (3–7 for MVP). The I/O list names every pin role and safe defaults.</p></div>
+  </div>
+</section>
+<section class="part" id="packet">
+  <div class="parthead"><span class="tag">Part</span><h2>Design packet</h2></div>
+  <div class="col stack">
+    <p>README top: primary letter, board, IoT path (none / MQTT / HTTP). Then MVP stories, I/O table with <code>SAFE_LEVEL</code>, and a diagram where every circle is a future enum, every arrow a labeled trigger, outputs noted per state.</p>
+    <div class="scroll"><table><thead><tr><th>Capstone</th><th>Example MVP story</th></tr></thead><tbody>
+      <tr><td>A Plant</td><td>Dry-soil reminder; pump/relay off when idle</td></tr>
+      <tr><td>B Guardian</td><td>Arm/disarm; intrusion → ALARM with ack</td></tr>
+      <tr><td>C Weather</td><td>JSON telemetry; command one LED over MQTT</td></tr>
+      <tr><td>D Reaction</td><td>Ready/go/foul FSM; high score on display</td></tr>
+      <tr><td>E Pointer</td><td>Pots move pan/tilt within soft limits</td></tr>
+    </tbody></table></div>
+    <p>Success criteria (all): state diagram in README/header; no long interactive <code>delay</code>; debounced inputs; hardware demo evidence (TC share ≠ Module 9 credit).</p>
+  </div>
+</section>
+<section class="part" id="lab">
+  <div class="parthead"><span class="tag">Lab</span><h2>Design packet only</h2><span class="mins">40 min</span></div>
+  <div class="col stack">
+    <p>Project folder <code>M9-Capstone-&lt;Letter&gt;-&lt;ShortName&gt;/</code>. Fill README: letter, stories (≥3), I/O, ASCII diagram, success checklist. Optional stub <code>.ino</code> with header comments only — no feature rush. Design review: mutually exclusive states, every arrow labeled, SAFE idle clear.</p>
+  </div>
+</section>
+<section class="part" id="patterns">
+  <div class="parthead"><span class="tag">Patterns</span><h2>Choose → specify → diagram → then code</h2></div>
+  <div class="col stack"><div class="callout"><h5>Pattern</h5>
+  <p>One primary capstone. Header/README as contract: wiring, diagram, SAFE defaults, and (if IoT) topic/URL plan.</p></div></div>
+</section>
+<section class="part" id="check">
+  <div class="parthead"><span class="tag">Check</span><h2>Check yourself</h2></div>
+  <div class="col stack"><ol class="num" data-check>
+    <li data-kind="open" data-see="#patterns">How many primary capstones should you ship in Module 9?
+      <details><summary>Model answer</summary><p>One (optional second only after the first passes).</p></details></li>
+    <li data-kind="open" data-see="#packet">What three artifacts belong in the design packet before feature code?
+      <details><summary>Model answer</summary><p>User stories, I/O list, state diagram (plus success criteria).</p></details></li>
+    <li data-kind="open" data-see="#concepts">Why separate stretch from MVP stories?
+      <details><summary>Model answer</summary><p>Protects the vertical slice from feature creep; stretch stays optional.</p></details></li>
+    <li data-kind="choice" data-choices="True|False" data-correct="1" data-see="#packet" data-hint="Hardware demo required." data-why-0="TC may help design; 9.5 needs hardware." data-why-1="Correct — false.">A Tinkercad-only design packet can replace the hardware demo in 9.5.</li>
+  </ol></div>
+</section>
+<section class="part" id="mistakes">
+  <div class="parthead"><span class="tag">Watch outs</span><h2>Common mistakes</h2></div>
+  <div class="col stack">
+    <div class="scroll"><table><thead><tr><th>Mistake</th><th>Fix</th></tr></thead><tbody>
+      <tr><td>Coding features on day one</td><td>Finish README + diagram first</td></tr>
+      <tr><td>Vague stories</td><td>Rewrite with observable verbs</td></tr>
+      <tr><td>Overlapping states</td><td>Mutually exclusive enum names</td></tr>
+      <tr><td>I/O missing SAFE_LEVEL</td><td>Document idle actuator levels</td></tr>
+      <tr><td>Choosing C without ESP32 / Gate D</td><td>Switch primary or finish Module 8</td></tr>
+      <tr><td>Two primaries at once</td><td>Park the second on stretch</td></tr>
+    </tbody></table></div>
+  </div>
+</section>
+
+<nav class="pager" aria-label="Lessons">
+<a href="home.html"><span class="dir">Previous</span><span class="name">Module 9</span></a>
+<a class="next" href="02-vertical-slice.html"><span class="dir">Next</span><span class="name">9.2 Vertical slice &rarr;</span></a>
+</nav>
+</div>
+<footer class="bihfoot"><div class="wrap">
+  <p class="pagenote">Lesson 9.1 &nbsp;&middot;&nbsp; Module 9 &nbsp;&middot;&nbsp; Arduino Coding.</p>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a class="lockup" href="../../home.html"><img src="../../../assets/brand/logo-mark-white.png" alt="" width="42" height="42"><span>Arduino Coding<small>Bozoma Innovation Hub</small></span></a>
+      <p>A Bozoma Innovation Hub programme.</p>
+    </div>
+    <div><h4>The course</h4><ul>
+      <li><a href="../../home.html">Course home</a></li>
+      <li><a href="home.html">Module 9</a></li>
+      <li><a href="../list.html">All modules</a></li>
+    </ul></div>
+    <div><h4>Bozoma Innovation Hub</h4><ul>
+      <li><a href="https://bozomainnovationhub.com">bozomainnovationhub.com</a></li>
+    </ul></div>
+  </div>
+  <div class="foot-bottom"><span>&copy; Bozoma Innovation Hub, Aiyinasi, Ghana</span><span class="tagline">World-class begins at home.</span></div>
+</div></footer>
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en" data-course="arduino-code" data-band="7">
+<head>
+  <meta charset="utf-8">
+  <script src="../../../assets/theme.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href="https://iot.bozomainnovationhub.com/arduino-code/modules/module-07/01-from-tinkercad-to-desk">
+  <title>From Tinkercad to desk · Module 7 · Arduino Coding</title>
+  <meta name="description" content="Rebuild blink+button on breadboard; Board/Port upload checklist; compare sim vs desk.">
+  <meta name="theme-color" content="#24182E">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../../assets/brand/icon-192.png">
+  <link rel="apple-touch-icon" href="../../../assets/brand/icon-180.png">
+  <!-- app + link previews (tools/inject_head.py) -->
+  <link rel="manifest" href="../../../manifest.webmanifest">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="IoT at Bozoma Innovation Hub">
+  <meta property="og:title" content="From Tinkercad to desk · Module 7 · Arduino Coding">
+  <meta property="og:description" content="Rebuild blink+button on breadboard; Board/Port upload checklist; compare sim vs desk.">
+  <meta property="og:url" content="https://iot.bozomainnovationhub.com/arduino-code/modules/module-07/01-from-tinkercad-to-desk">
+  <meta property="og:image" content="https://iot.bozomainnovationhub.com/assets/og/arduino-code-modules-module-07-01-from-tinkercad-to-desk.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="From Tinkercad to desk · Module 7 · Arduino Coding">
+  <meta property="og:locale" content="en_GB">
+  <meta name="twitter:card" content="summary_large_image">
+  <script defer src="../../../assets/app.js"></script>
+  <!-- /app + link previews -->
+  <link rel="stylesheet" href="../../../assets/course.css">
+  <link rel="stylesheet" href="../../../assets/progress.css">
+  <script defer src="../../../assets/pager.js"></script>
+  <script defer src="../../../assets/check.js" data-profile="../../profile.html"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to the lesson</a>
+<div class="topbar">
+  <a class="home" href="../../home.html"><img src="../../../assets/brand/logo-mark-white.png" alt="" width="36" height="36"><span class="lock"><b>Arduino Coding</b><small>Bozoma Innovation Hub</small></span></a>
+  <a class="hub" href="../../../index.html" title="All courses: IoT at Bozoma Innovation Hub">&larr; IoT at BIH</a>
+  <nav class="bandlinks" aria-label="Modules"><a href="../module-00/home.html">0</a><a href="../module-01/home.html">1</a><a href="../module-02/home.html">2</a><a href="../module-03/home.html">3</a><a href="../module-04/home.html">4</a><a href="../module-05/home.html">5</a><a href="../module-06/home.html">6</a><a href="home.html" aria-current="page">7</a><a href="../list.html">⋯</a></nav>
+  <a class="bih" href="https://bozomainnovationhub.com"><span class="long">bozomainnovationhub.com</span><span class="short">BIH website</span></a>
+</div>
+<div class="wrap" id="main">
+
+<nav aria-label="Sections">
+  <a href="#outcomes">Outcomes</a>
+  <a href="#concepts">Concepts</a>
+  <a href="#checklist">Checklist</a>
+  <a href="#lab">Lab</a>
+  <a href="#patterns">Patterns</a>
+  <a href="#check">Check yourself</a>
+  <a href="#mistakes">Mistakes</a>
+</nav>
+<header style="padding:3rem 0 1rem">
+  <p class="eyebrow">Arduino Coding &nbsp;·&nbsp; Module 7 &nbsp;·&nbsp; Lesson 7.1 &nbsp;·&nbsp; <span class="tag">HW</span></p>
+  <h1 style="margin:.8rem 0">From Tinkercad to desk</h1>
+  <p class="col sub" style="font-size:1.1em">The sketch API is the same. The desk adds USB ports, charge-only cables, real bounce, and LEDs that look different. Re-wire a circuit you already understand before adding new sensors.</p>
+  <p class="col note" style="margin-top:.8rem">About 45 minutes. No Tinkercad lab path — diagram reference only.</p>
+</header>
+<section class="part" id="outcomes">
+  <div class="parthead"><span class="tag">Start here</span><h2>Learning outcomes</h2></div>
+  <div class="col stack"><ol class="num">
+    <li>Rebuild blink + button on a breadboard; choose Board and Port; Upload.</li>
+    <li>Compare sim vs desk behavior (bounce, brightness, baud) in a short note.</li>
+    <li>Use a repeatable upload checklist instead of panic.</li>
+  </ol></div>
+</section>
+<section class="part" id="concepts">
+  <div class="parthead"><span class="tag">Concept</span><h2>Same API, new failure modes</h2></div>
+  <div class="col stack">
+    <div class="callout" style="--bc:var(--accent)"><h5>Concept</h5>
+    <p><strong>Board</strong> must match silicon; <strong>Port</strong> must match the cable that just plugged in. Verify compiles; Upload needs both correct. Serial at matching baud is your first proof of life.</p></div>
+    <div class="scroll"><table><thead><tr><th>Part</th><th>Connection</th></tr></thead><tbody>
+      <tr><td>LED anode</td><td>Pin <strong>9</strong> via <strong>220&nbsp;Ω</strong></td></tr>
+      <tr><td>LED cathode</td><td>GND</td></tr>
+      <tr><td>Button</td><td>Pin <strong>2</strong> to GND (<code>INPUT_PULLUP</code>)</td></tr>
+    </tbody></table></div>
+  </div>
+</section>
+<section class="part" id="checklist">
+  <div class="parthead"><span class="tag">Part</span><h2>IDE upload checklist</h2></div>
+  <div class="col stack">
+    <ol class="num">
+      <li>Data-capable USB cable, seated firmly</li>
+      <li>Tools → <strong>Board</strong> → Uno (or compatible)</li>
+      <li>Tools → <strong>Port</strong> → new COM/tty on plug-in</li>
+      <li><strong>Verify</strong>, then <strong>Upload</strong> → “Done uploading”</li>
+      <li>Serial Monitor at matching baud (9600)</li>
+      <li>If fail: unplug/replug, other cable/port, close port lockers, check CH340 drivers</li>
+    </ol>
+  </div>
+</section>
+<section class="part" id="lab">
+  <div class="parthead"><span class="tag">Lab</span><h2>Desk parity</h2><span class="mins">20 min</span></div>
+  <div class="col stack">
+    <p>Project <code>M7-L01-DeskParity</code>. Upload starter; confirm boot banner. Note bounce multi-fires. Move to complete (non-blocking debounce + millis heartbeat). Comment 2–3 sim-vs-desk differences.</p>
+  </div>
+</section>
+<section class="part" id="patterns">
+  <div class="parthead"><span class="tag">Patterns</span><h2>Same circuit, two worlds</h2></div>
+  <div class="col stack"><div class="callout"><h5>Pattern</h5>
+  <p>Isolate upload/wiring bugs from new-API bugs. Run the checklist top-to-bottom before rewriting code. Serial as truth.</p></div></div>
+</section>
+<section class="part" id="check">
+  <div class="parthead"><span class="tag">Check</span><h2>Check yourself</h2></div>
+  <div class="col stack"><ol class="num" data-check>
+    <li data-kind="open" data-see="#checklist">What two IDE settings must be correct for Upload (not just Verify)?
+      <details><summary>Model answer</summary><p>Board and Port.</p></details></li>
+    <li data-kind="open" data-see="#concepts">Why might a Tinkercad sketch print multiple lines per click on the desk?
+      <details><summary>Model answer</summary><p>Real contact bounce (and/or no debounce).</p></details></li>
+    <li data-kind="open" data-see="#checklist">Name three items on the upload checklist.
+      <details><summary>Model answer</summary><p>Any three: data cable, Board, Port, Verify, Upload, Serial baud, unplug/replug, close port lockers.</p></details></li>
+    <li data-kind="choice" data-choices="True|False" data-correct="1" data-see="#checklist" data-hint="Need data lines." data-why-0="Charge-only fails Upload." data-why-1="Correct — false.">A charge-only USB cable is fine for Arduino Upload.</li>
+  </ol></div>
+</section>
+<section class="part" id="mistakes">
+  <div class="parthead"><span class="tag">Watch outs</span><h2>Common mistakes</h2></div>
+  <div class="col stack">
+    <div class="scroll"><table><thead><tr><th>Mistake</th><th>Fix</th></tr></thead><tbody>
+      <tr><td>Wrong Port</td><td>Re-select after plug-in</td></tr>
+      <tr><td>Charge-only cable</td><td>Swap to data cable</td></tr>
+      <tr><td>Debugging logic before Serial banner</td><td>Prove Upload + Serial first</td></tr>
+    </tbody></table></div>
+  </div>
+</section>
+
+<nav class="pager" aria-label="Lessons">
+<a href="home.html"><span class="dir">Previous</span><span class="name">Module 7</span></a>
+<a class="next" href="02-power-ground-and-smoke-free-habits.html"><span class="dir">Next</span><span class="name">7.2 Power habits &rarr;</span></a>
+</nav>
+</div>
+<footer class="bihfoot"><div class="wrap">
+  <p class="pagenote">Lesson 7.1 &nbsp;&middot;&nbsp; Module 7 &nbsp;&middot;&nbsp; Arduino Coding.</p>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a class="lockup" href="../../home.html"><img src="../../../assets/brand/logo-mark-white.png" alt="" width="42" height="42"><span>Arduino Coding<small>Bozoma Innovation Hub</small></span></a>
+      <p>A Bozoma Innovation Hub programme.</p>
+    </div>
+    <div><h4>The course</h4><ul>
+      <li><a href="../../home.html">Course home</a></li>
+      <li><a href="home.html">Module 7</a></li>
+      <li><a href="../list.html">All modules</a></li>
+    </ul></div>
+    <div><h4>Bozoma Innovation Hub</h4><ul>
+      <li><a href="https://bozomainnovationhub.com">bozomainnovationhub.com</a></li>
+    </ul></div>
+  </div>
+  <div class="foot-bottom"><span>&copy; Bozoma Innovation Hub, Aiyinasi, Ghana</span><span class="tagline">World-class begins at home.</span></div>
+</div></footer>
+</body>
+</html>

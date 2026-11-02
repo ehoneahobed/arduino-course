@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en" data-course="arduino-code" data-band="4">
+<head>
+  <meta charset="utf-8">
+  <script src="../../../assets/theme.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href="https://iot.bozomainnovationhub.com/arduino-code/modules/module-04/03-temperature-sensor">
+  <title>Temperature sensor sketch · Module 4 · Arduino Coding</title>
+  <meta name="description" content="DHT via library (HW preferred); format Serial columns; handle NaN failed reads.">
+  <meta name="theme-color" content="#24182E">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../../assets/brand/icon-192.png">
+  <link rel="apple-touch-icon" href="../../../assets/brand/icon-180.png">
+  <!-- app + link previews (tools/inject_head.py) -->
+  <link rel="manifest" href="../../../manifest.webmanifest">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="IoT at Bozoma Innovation Hub">
+  <meta property="og:title" content="Temperature sensor sketch · Module 4 · Arduino Coding">
+  <meta property="og:description" content="DHT via library (HW preferred); format Serial columns; handle NaN failed reads.">
+  <meta property="og:url" content="https://iot.bozomainnovationhub.com/arduino-code/modules/module-04/03-temperature-sensor">
+  <meta property="og:image" content="https://iot.bozomainnovationhub.com/assets/og/arduino-code-modules-module-04-03-temperature-sensor.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Temperature sensor sketch · Module 4 · Arduino Coding">
+  <meta property="og:locale" content="en_GB">
+  <meta name="twitter:card" content="summary_large_image">
+  <script defer src="../../../assets/app.js"></script>
+  <!-- /app + link previews -->
+  <link rel="stylesheet" href="../../../assets/course.css">
+  <link rel="stylesheet" href="../../../assets/progress.css">
+  <script defer src="../../../assets/pager.js"></script>
+  <script defer src="../../../assets/check.js" data-profile="../../profile.html"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to the lesson</a>
+<div class="topbar">
+  <a class="home" href="../../home.html"><img src="../../../assets/brand/logo-mark-white.png" alt="" width="36" height="36"><span class="lock"><b>Arduino Coding</b><small>Bozoma Innovation Hub</small></span></a>
+  <a class="hub" href="../../../index.html" title="All courses: IoT at Bozoma Innovation Hub">&larr; IoT at BIH</a>
+  <nav class="bandlinks" aria-label="Modules"><a href="../module-00/home.html">0</a><a href="../module-01/home.html">1</a><a href="../module-02/home.html">2</a><a href="../module-03/home.html">3</a><a href="home.html" aria-current="page">4</a><a href="../list.html">⋯</a></nav>
+  <a class="bih" href="https://bozomainnovationhub.com"><span class="long">bozomainnovationhub.com</span><span class="short">BIH website</span></a>
+</div>
+<div class="wrap" id="main">
+
+<nav aria-label="Sections">
+  <a href="#outcomes">Outcomes</a>
+  <a href="#concepts">Concepts</a>
+  <a href="#api">API</a>
+  <a href="#lab">Lab</a>
+  <a href="#patterns">Patterns</a>
+  <a href="#check">Check yourself</a>
+  <a href="#mistakes">Mistakes</a>
+</nav>
+<header style="padding:3rem 0 1rem">
+  <p class="eyebrow">Arduino Coding &nbsp;·&nbsp; Module 4 &nbsp;·&nbsp; Lesson 4.3 &nbsp;·&nbsp; <span class="tag">HW</span> preferred · <span class="tag">TC†</span></p>
+  <h1 style="margin:.8rem 0">Temperature sensor sketch</h1>
+  <p class="col sub" style="font-size:1.1em">Read DHT11/22 via a library, print labeled Serial columns, and treat failed reads as faults — never as 0&nbsp;°C.</p>
+  <p class="col note" style="margin-top:.8rem">About 45 minutes. Pot stand-in OK in sim for formatting practice.</p>
+</header>
+<section class="part" id="outcomes">
+  <div class="parthead"><span class="tag">Start here</span><h2>Learning outcomes</h2></div>
+  <div class="col stack"><ol class="num">
+    <li>Read a DHT (or TMP-style stand-in) via a library and print temp / humidity.</li>
+    <li>Format Serial with units and clear labels (display-ready columns).</li>
+    <li>Handle failed reads (<code>NaN</code>) without crashing control logic.</li>
+  </ol></div>
+</section>
+<section class="part" id="concepts">
+  <div class="parthead"><span class="tag">Concept</span><h2>One-wire timing — use a library</h2></div>
+  <div class="col stack">
+    <div class="callout" style="--bc:var(--accent)"><h5>Concept</h5>
+    <p>DHT sensors need precise timing and checksums. Beginners should not bit-bang this first. A library’s <code>begin()</code> + <code>readTemperature()</code> / <code>readHumidity()</code> return floats in °C and %RH.</p></div>
+    <p>Wire DATA→pin&nbsp;2, VCC→5V, GND→GND. Bare packs need ~4.7–10&nbsp;kΩ pull-up DATA→VCC; many modules include it. Pace reads ≥1–2&nbsp;s with <code>millis</code>.</p>
+  </div>
+</section>
+<section class="part" id="api">
+  <div class="parthead"><span class="tag">Part</span><h2>Adafruit-style API</h2></div>
+  <div class="col stack">
+    <p><strong>[HW]</strong>: install DHT sensor library + Adafruit Unified Sensor; open DHTtester; set type and pin.</p>
+<pre><code>#include &lt;DHT.h&gt;
+#define DHTPIN 2
+#define DHTTYPE DHT11
+DHT dht(DHTPIN, DHTTYPE);
+// setup: dht.begin();
+float t = dht.readTemperature();
+float h = dht.readHumidity();
+if (isnan(t) || isnan(h)) { /* FAIL — skip actuation */ }
+</code></pre>
+    <p><strong>[TC†]</strong> stand-in: map pot A0 → 15–35 “°C” with the <em>same</em> Serial columns, then swap the sensor function on hardware.</p>
+  </div>
+</section>
+<section class="part" id="lab">
+  <div class="parthead"><span class="tag">Lab</span><h2>Climate columns</h2><span class="mins">18 min</span></div>
+  <div class="col stack">
+    <p>Header once: <code>temp_C&nbsp;&nbsp;humid_%</code>. Then one paced line per sample. On fail print <code>FAIL</code> — keep last good or idle.</p>
+    <div class="sketchbox" style="--bc:var(--accent)"><h2>Complete shape (DHT)</h2>
+<pre><code>if (now - prevSample &lt; 2000) return;
+prevSample = now;
+float t = dht.readTemperature();
+float h = dht.readHumidity();
+if (isnan(t) || isnan(h)) { Serial.println("FAIL\t---"); return; }
+Serial.print(t, 1); Serial.print('\t'); Serial.println(h, 1);
+</code></pre></div>
+  </div>
+</section>
+<section class="part" id="patterns">
+  <div class="parthead"><span class="tag">Patterns</span><h2>Library read → validate → format</h2></div>
+  <div class="col stack"><div class="callout"><h5>Pattern</h5>
+  <p>Check failed reads before alerts. Stable column headers in <code>setup</code>. Pace with <code>millis</code>, not a forever <code>delay(2000)</code> if anything else must stay alive. Lesson 4.5 wraps these fields in a struct.</p></div></div>
+</section>
+<section class="part" id="check">
+  <div class="parthead"><span class="tag">Check</span><h2>Check yourself</h2></div>
+  <div class="col stack"><ol class="num" data-check>
+    <li data-kind="open" data-see="#concepts">Why is a library the default for DHT on day one?
+      <details><summary>Model answer</summary><p>Timing + checksum protocol is easy to get wrong; libraries encapsulate it.</p></details></li>
+    <li data-kind="open" data-see="#api">About how often should you poll a DHT11/22?
+      <details><summary>Model answer</summary><p>Roughly every 1–2+ seconds, not every loop pass.</p></details></li>
+    <li data-kind="open" data-see="#lab">What if <code>readTemperature()</code> returns <code>nan</code>?
+      <details><summary>Model answer</summary><p>Report failure; skip using the value (keep last good or idle).</p></details></li>
+    <li data-kind="choice" data-choices="True|False" data-correct="1" data-see="#concepts" data-hint="HW preferred." data-why-0="HW is primary." data-why-1="Correct — false; [HW] preferred.">Tinkercad is the primary recommended path for this lesson.</li>
+  </ol></div>
+</section>
+<section class="part" id="mistakes">
+  <div class="parthead"><span class="tag">Watch outs</span><h2>Common mistakes</h2></div>
+  <div class="col stack">
+    <div class="scroll"><table><thead><tr><th>Mistake</th><th>Fix</th></tr></thead><tbody>
+      <tr><td>Wrong <code>DHTTYPE</code></td><td>Match DHT11 vs DHT22</td></tr>
+      <tr><td>Treating FAIL as 0&nbsp;°C</td><td>Check <code>isnan</code> first</td></tr>
+      <tr><td><code>delay(2000)</code> in multi-task sketch</td><td><code>millis</code> sample interval</td></tr>
+    </tbody></table></div>
+  </div>
+</section>
+
+<nav class="pager" aria-label="Lessons">
+<a href="02-ultrasonic-distance.html"><span class="dir">Previous</span><span class="name">4.2 Ultrasonic</span></a>
+<a class="next" href="04-servo-positioning.html"><span class="dir">Next</span><span class="name">4.4 Servo positioning &rarr;</span></a>
+</nav>
+</div>
+<footer class="bihfoot"><div class="wrap">
+  <p class="pagenote">Lesson 4.3 &nbsp;&middot;&nbsp; Module 4 &nbsp;&middot;&nbsp; Arduino Coding.</p>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a class="lockup" href="../../home.html"><img src="../../../assets/brand/logo-mark-white.png" alt="" width="42" height="42"><span>Arduino Coding<small>Bozoma Innovation Hub</small></span></a>
+      <p>A Bozoma Innovation Hub programme.</p>
+    </div>
+    <div><h4>The course</h4><ul>
+      <li><a href="../../home.html">Course home</a></li>
+      <li><a href="home.html">Module 4</a></li>
+      <li><a href="../list.html">All modules</a></li>
+    </ul></div>
+    <div><h4>Bozoma Innovation Hub</h4><ul>
+      <li><a href="https://bozomainnovationhub.com">bozomainnovationhub.com</a></li>
+    </ul></div>
+  </div>
+  <div class="foot-bottom"><span>&copy; Bozoma Innovation Hub, Aiyinasi, Ghana</span><span class="tagline">World-class begins at home.</span></div>
+</div></footer>
+</body>
+</html>

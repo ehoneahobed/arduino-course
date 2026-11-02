@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en" data-course="arduino-code" data-band="0">
+<head>
+  <meta charset="utf-8">
+  <script src="../../../assets/theme.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href="https://iot.bozomainnovationhub.com/arduino-code/modules/module-00/03-tinkercad-lab-setup">
+  <title>Tinkercad Circuits lab setup · Module 0 · Arduino Coding</title>
+  <meta name="description" content="Wire Uno, 220 ohm resistor, and LED in Tinkercad; Text code and Start Simulation.">
+  <meta name="theme-color" content="#24182E">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../../assets/brand/icon-192.png">
+  <link rel="apple-touch-icon" href="../../../assets/brand/icon-180.png">
+  <!-- app + link previews (tools/inject_head.py) -->
+  <link rel="manifest" href="../../../manifest.webmanifest">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="IoT at Bozoma Innovation Hub">
+  <meta property="og:title" content="Tinkercad Circuits lab setup · Module 0 · Arduino Coding">
+  <meta property="og:description" content="Wire Uno, 220 ohm resistor, and LED in Tinkercad; Text code and Start Simulation.">
+  <meta property="og:url" content="https://iot.bozomainnovationhub.com/arduino-code/modules/module-00/03-tinkercad-lab-setup">
+  <meta property="og:image" content="https://iot.bozomainnovationhub.com/assets/og/arduino-code-modules-module-00-03-tinkercad-lab-setup.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Tinkercad Circuits lab setup · Module 0 · Arduino Coding">
+  <meta property="og:locale" content="en_GB">
+  <meta name="twitter:card" content="summary_large_image">
+  <script defer src="../../../assets/app.js"></script>
+  <!-- /app + link previews -->
+  <link rel="stylesheet" href="../../../assets/course.css">
+  <link rel="stylesheet" href="../../../assets/progress.css">
+  <script defer src="../../../assets/pager.js"></script>
+  <script defer src="../../../assets/check.js" data-profile="../../profile.html"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to the lesson</a>
+<div class="topbar">
+  <a class="home" href="../../home.html"><img src="../../../assets/brand/logo-mark-white.png" alt="" width="36" height="36"><span class="lock"><b>Arduino Coding</b><small>Bozoma Innovation Hub</small></span></a>
+  <a class="hub" href="../../../index.html" title="All courses: IoT at Bozoma Innovation Hub">&larr; IoT at BIH</a>
+  <nav class="bandlinks" aria-label="Modules"><a href="home.html" aria-current="page">0</a><a href="../list.html">⋯</a></nav>
+  <a class="bih" href="https://bozomainnovationhub.com"><span class="long">bozomainnovationhub.com</span><span class="short">BIH website</span></a>
+</div>
+<div class="wrap" id="main">
+<nav aria-label="Sections">
+  <a href="#outcomes">Outcomes</a>
+  <a href="#concepts">Concepts</a>
+  <a href="#create">Create</a>
+  <a href="#wire">Wire</a>
+  <a href="#code">Code & sim</a>
+  <a href="#patterns">Patterns</a>
+  <a href="#check">Check yourself</a>
+  <a href="#mistakes">Mistakes</a>
+</nav>
+
+<header style="padding:3rem 0 1rem">
+  <p class="eyebrow">Arduino Coding &nbsp;·&nbsp; Module 0 &nbsp;·&nbsp; Lesson 0.3 &nbsp;·&nbsp; <span class="tag">TC</span></p>
+  <h1 style="margin:.8rem 0">Tinkercad Circuits lab setup</h1>
+
+  <p class="col sub" style="font-size:1.1em">Build a safe LED circuit in Tinkercad: Uno, 220&nbsp;Ω resistor, LED, Text code, and Start Simulation.</p>
+  <p class="col note" style="margin-top:.8rem">About 35 minutes. This lesson’s job is wiring + sim runs — a full blink arrives in Lesson 0.5.</p>
+</header>
+
+<section class="part" id="outcomes">
+  <div class="parthead"><span class="tag">Start here</span><h2>Learning outcomes</h2></div>
+  <div class="col stack">
+    <ol class="num">
+      <li>Create a Tinkercad Circuits project and place an <strong>Arduino Uno</strong>, <strong>LED</strong>, and <strong>resistor</strong>.</li>
+      <li>Wire a safe LED circuit (pin → resistor → LED → GND) and explain why the resistor matters.</li>
+      <li>Open the <strong>Code</strong> panel in Text mode and <strong>Start Simulation</strong> without errors.</li>
+    </ol>
+  </div>
+</section>
+
+<section class="part" id="concepts">
+  <div class="parthead"><span class="tag">Concept</span><h2>Current must be limited</h2></div>
+  <div class="col stack">
+    <div class="callout" style="--bc:var(--accent)">
+      <h5>Concept</h5>
+      <p>An LED only lights when current flows through it in the correct direction, and that current must be <strong>limited</strong> by a resistor. Too much current can destroy a real LED. Simulation is forgiving; good habits still matter.</p>
+    </div>
+  </div>
+</section>
+
+<section class="part" id="create">
+  <div class="parthead"><span class="tag">Part 1</span><h2>Create the circuit workspace</h2><span class="mins">8 min</span></div>
+  <div class="col stack">
+    <ol class="num">
+      <li>Sign in to Tinkercad → <strong>Circuits</strong> → <strong>Create new Circuit</strong>.</li>
+      <li>Rename the circuit to <code>M0-L03-FirstLed</code>.</li>
+      <li>Drag: <strong>Arduino Uno R3</strong>, optional small breadboard, <strong>LED</strong>, <strong>Resistor</strong>.</li>
+      <li>Click the resistor and set resistance to <strong>220&nbsp;Ω</strong>.</li>
+    </ol>
+  </div>
+</section>
+
+<section class="part" id="wire">
+  <div class="parthead"><span class="tag">Part 2</span><h2>Wire the standard blink circuit</h2><span class="mins">12 min</span></div>
+  <div class="col stack">
+    <pre><code>Arduino digital pin 13  →  resistor  →  LED anode (+)  →  LED cathode (−)  →  GND</code></pre>
+    <ol class="num">
+      <li>Wire Uno <strong>pin 13</strong> to one end of the <strong>220&nbsp;Ω</strong> resistor.</li>
+      <li>Other end of the resistor to the LED <strong>anode</strong>.</li>
+      <li>LED <strong>cathode</strong> to Uno <strong>GND</strong>.</li>
+      <li>Double-check: no wire from 5V straight into the LED without a resistor.</li>
+    </ol>
+    <p class="note"><strong>Why pin 13?</strong> It is the classic Blink pin. You will change pins in Lessons 0.5–0.6.</p>
+    <div class="callout" style="--bc:var(--copper)"><h5>Check this before you blame the code</h5>
+    <ul class="plain">
+      <li>Resistor in series (not bypassed)</li>
+      <li>LED anode toward the resistor / pin side; cathode toward GND</li>
+      <li>GND wire actually on <strong>GND</strong></li>
+      <li>Same pin number in the wire and in the sketch</li>
+    </ul>
+    <p class="note" style="margin-top:.4rem">Wiring metaphor: <a href="../../guides/electricity-primer.html">electricity primer</a>. Breadboard rows/rails: <a href="../../guides/breadboard-basics.html">breadboard basics</a>. Click-path: <a href="../../guides/how-to-tinkercad.html">How to Tinkercad</a>. Still dark? <a href="../../guides/debugging-playbook.html">Debugging playbook</a> (steps 1–3) then <a href="../../guides/troubleshooting-faq.html">Troubleshooting FAQ</a>.</p></div>
+  </div>
+</section>
+
+<section class="part" id="code">
+  <div class="parthead"><span class="tag">Part 3</span><h2>Code panel and simulation</h2><span class="mins">10 min</span></div>
+  <div class="col stack">
+    <ol class="num">
+      <li>Click <strong>Code</strong> → choose <strong>Text</strong> mode (not Blocks).</li>
+      <li>Paste the starter sketch below.</li>
+      <li>Click <strong>Start Simulation</strong>.</li>
+    </ol>
+    <p><strong>What you should see:</strong> the LED turns on and stays on (steady light proves the circuit).</p>
+    <h3 style="margin-top:.5rem">Simulation checklist (before you blame the code)</h3>
+    <ol class="num">
+      <li>Is simulation actually running (not paused)?</li>
+      <li>Is the LED oriented correctly?</li>
+      <li>Is the resistor in series in the path?</li>
+      <li>Is ground on <strong>GND</strong>, not 5V?</li>
+      <li>Do <code>pinMode</code> / <code>digitalWrite</code> use the <strong>same pin</strong> as your wire?</li>
+    </ol>
+  </div>
+</section>
+
+<section class="part" id="patterns">
+  <div class="parthead"><span class="tag">Patterns</span><h2>One change at a time</h2></div>
+  <div class="col stack">
+    <div class="callout">
+      <h5>Pattern</h5>
+      <p><strong>Change one thing at a time.</strong> First get a steady ON. Then blink. Then change pin. Then change timing.</p>
+    </div>
+    <div class="sketchbox" style="--bc:var(--accent)">
+      <h2>Starter sketch — LED stays ON</h2>
+<pre><code>/*
+ * Lesson 0.3 — Tinkercad lab setup STARTER
+ * Circuit: pin 13 → 220Ω → LED → GND
+ */
+
+void setup() {
+  pinMode(13, OUTPUT);
+  digitalWrite(13, HIGH); // HIGH ≈ 5 V on Uno → LED on
+}
+
+void loop() {
+  // Nothing yet — steady light proves the circuit.
+}
+</code></pre>
+    </div>
+    <div class="sketchbox">
+      <h2>Complete sketch — named pin preview</h2>
+<pre><code>const int ledPin = 13;
+
+void setup() {
+  pinMode(ledPin, OUTPUT);
+  digitalWrite(ledPin, HIGH);
+}
+
+void loop() {
+  // Still steady — blinking arrives in Lesson 0.5
+}
+</code></pre>
+    </div>
+  </div>
+</section>
+
+<section class="part" id="check">
+  <div class="parthead"><span class="tag">Check</span><h2>Check yourself</h2></div>
+  <div class="col stack">
+    <ol class="num" data-check>
+      <li data-kind="open" data-see="#concepts">Why put a resistor in series with the LED?
+        <details><summary>Model answer</summary><p>Limit current; protect LED and pin.</p></details>
+      </li>
+      <li data-kind="choice" data-choices="Anode|Cathode" data-correct="1" data-see="#wire" data-hint="Toward ground." data-why-0="Anode faces the pin/resistor." data-why-1="Correct — cathode toward GND.">Which LED side should face <strong>GND</strong>?</li>
+      <li data-kind="choice" data-choices="Add more code features|Check wiring, polarity, sim" data-correct="1" data-see="#code" data-hint="Verify succeeded but LED is dark." data-why-0="Code that Verifies can still be wired wrong." data-why-1="Correct — check wiring first.">If the LED never lights but the sketch Verifies, what first?</li>
+      <li data-kind="open" data-see="#wire">Draw from memory: pin → ? → LED → ?
+        <details><summary>Model answer</summary><p>pin → resistor → LED → GND.</p></details>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section class="part" id="mistakes">
+  <div class="parthead"><span class="tag">Watch outs</span><h2>Common mistakes</h2></div>
+  <div class="col stack">
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Mistake</th><th>What you see</th><th>Fix</th></tr></thead>
+        <tbody>
+          <tr><td>LED backwards</td><td>Dark LED</td><td>Flip LED</td></tr>
+          <tr><td>No resistor (hardware)</td><td>Dim/dead LED risk</td><td>Always add 220&nbsp;Ω–1&nbsp;kΩ</td></tr>
+          <tr><td>Wire to 5V instead of pin 13</td><td>Always on, ignores code</td><td>Drive from the digital pin in code</td></tr>
+          <tr><td>Resistor 220 <strong>kΩ</strong> by typo</td><td>Very dim</td><td>Use <strong>220&nbsp;Ω</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout" style="--bc:var(--copper)">
+      <h5>Stretch (optional)</h5>
+      <p>Add a second LED on pin <strong>12</strong> with its own 220&nbsp;Ω to GND. Modify the sketch so both stay on. Save as <code>M0-L03-TwoLeds</code>.</p>
+    </div>
+  </div>
+</section>
+
+<nav class="pager" aria-label="Lessons">
+<a href="02-arduino-ide-tour.html"><span class="dir">Previous</span><span class="name">0.2 Arduino IDE tour</span></a>
+<a class="next" href="04-anatomy-of-a-sketch.html"><span class="dir">Next</span><span class="name">0.4 Anatomy of a sketch &rarr;</span></a>
+</nav>
+
+</div>
+<footer class="bihfoot">
+<div class="wrap">
+  <p class="pagenote">Lesson 0.3 &nbsp;&middot;&nbsp; Module 0 &nbsp;&middot;&nbsp; Arduino Coding.</p>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a class="lockup" href="../../home.html"><img src="../../../assets/brand/logo-mark-white.png" alt="" width="42" height="42"><span>Arduino Coding<small>Bozoma Innovation Hub</small></span></a>
+      <p>A Bozoma Innovation Hub programme.</p>
+    </div>
+    <div><h4>The course</h4><ul>
+      <li><a href="../../home.html">Course home</a></li>
+      <li><a href="home.html">Module 0</a></li>
+      <li><a href="../list.html">All modules</a></li>
+    </ul></div>
+    <div><h4>Bozoma Innovation Hub</h4><ul>
+      <li><a href="https://bozomainnovationhub.com">bozomainnovationhub.com</a></li>
+    </ul></div>
+  </div>
+  <div class="foot-bottom"><span>&copy; Bozoma Innovation Hub, Aiyinasi, Ghana</span><span class="tagline">World-class begins at home.</span></div>
+</div>
+</footer>
+</body>
+</html>

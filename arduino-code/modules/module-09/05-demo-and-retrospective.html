@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en" data-course="arduino-code" data-band="9">
+<head>
+  <meta charset="utf-8">
+  <script src="../../../assets/theme.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href="https://iot.bozomainnovationhub.com/arduino-code/modules/module-09/05-demo-and-retrospective">
+  <title>Demo &amp; retrospective · Module 9 · Arduino Coding</title>
+  <meta name="description" content="Record hardware demo evidence, pattern inventory, package sketch folder for review.">
+  <meta name="theme-color" content="#24182E">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../../assets/brand/icon-192.png">
+  <link rel="apple-touch-icon" href="../../../assets/brand/icon-180.png">
+  <!-- app + link previews (tools/inject_head.py) -->
+  <link rel="manifest" href="../../../manifest.webmanifest">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="IoT at Bozoma Innovation Hub">
+  <meta property="og:title" content="Demo &amp; retrospective · Module 9 · Arduino Coding">
+  <meta property="og:description" content="Record hardware demo evidence, pattern inventory, package sketch folder for review.">
+  <meta property="og:url" content="https://iot.bozomainnovationhub.com/arduino-code/modules/module-09/05-demo-and-retrospective">
+  <meta property="og:image" content="https://iot.bozomainnovationhub.com/assets/og/arduino-code-modules-module-09-05-demo-and-retrospective.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Demo &amp; retrospective · Module 9 · Arduino Coding">
+  <meta property="og:locale" content="en_GB">
+  <meta name="twitter:card" content="summary_large_image">
+  <script defer src="../../../assets/app.js"></script>
+  <!-- /app + link previews -->
+  <link rel="stylesheet" href="../../../assets/course.css">
+  <link rel="stylesheet" href="../../../assets/progress.css">
+  <script defer src="../../../assets/pager.js"></script>
+  <script defer src="../../../assets/check.js" data-profile="../../profile.html"></script>
+
+</head>
+<body>
+<a class="skip" href="#main">Skip to the lesson</a>
+<div class="topbar">
+  <a class="home" href="../../home.html"><img src="../../../assets/brand/logo-mark-white.png" alt="" width="36" height="36"><span class="lock"><b>Arduino Coding</b><small>Bozoma Innovation Hub</small></span></a>
+  <a class="hub" href="../../../index.html" title="All courses: IoT at Bozoma Innovation Hub">&larr; IoT at BIH</a>
+  <nav class="bandlinks" aria-label="Modules"><a href="../module-00/home.html">0</a><a href="../module-01/home.html">1</a><a href="../module-02/home.html">2</a><a href="../module-03/home.html">3</a><a href="../module-04/home.html">4</a><a href="../module-05/home.html">5</a><a href="../module-06/home.html">6</a><a href="../module-07/home.html">7</a><a href="../module-08/home.html">8</a><a href="home.html" aria-current="page">9</a><a href="../list.html">⋯</a></nav>
+  <a class="bih" href="https://bozomainnovationhub.com"><span class="long">bozomainnovationhub.com</span><span class="short">BIH website</span></a>
+</div>
+<div class="wrap" id="main">
+
+<nav aria-label="Sections">
+  <a href="#outcomes">Outcomes</a>
+  <a href="#concepts">Concepts</a>
+  <a href="#demo">Demo</a>
+  <a href="#package">Package</a>
+  <a href="#lab">Lab</a>
+  <a href="#patterns">Patterns</a>
+  <a href="#check">Check yourself</a>
+  <a href="#mistakes">Mistakes</a>
+</nav>
+<header style="padding:3rem 0 1rem">
+  <p class="eyebrow">Arduino Coding &nbsp;·&nbsp; Module 9 &nbsp;·&nbsp; Lesson 9.5 &nbsp;·&nbsp; <span class="tag">HW · ESP · Ship</span></p>
+  <h1 style="margin:.8rem 0">Demo &amp; retrospective</h1>
+  <p class="col sub" style="font-size:1.1em">A demo is evidence, not theater. Inventory patterns you actually used. Package so a reviewer can open the folder and Verify.</p>
+  <p class="col note" style="margin-top:.8rem">About 45–60 minutes plus leftover polish. Course close.</p>
+</header>
+
+<section class="part" id="outcomes">
+  <div class="parthead"><span class="tag">Start here</span><h2>Learning outcomes</h2></div>
+  <div class="col stack"><ol class="num">
+    <li>Record a short demo (video/GIF/photos) that proves MVP stories on hardware.</li>
+    <li>Complete a pattern retrospective (debounce, FSM, non-blocking, ISR, and/or net).</li>
+    <li>Package the sketch folder: README, diagram, modules, secrets example, checklists.</li>
+  </ol></div>
+</section>
+<section class="part" id="concepts">
+  <div class="parthead"><span class="tag">Concept</span><h2>Evidence and honesty</h2></div>
+  <div class="col stack">
+    <div class="callout" style="--bc:var(--accent)"><h5>Concept</h5>
+    <p>Show sensing → decision → actuation, one resilience moment, and where the diagram lives. Retrospective names patterns you <strong>actually</strong> used — honesty beats buzzword stuffing.</p></div>
+  </div>
+</section>
+<section class="part" id="demo">
+  <div class="parthead"><span class="tag">Part</span><h2>60–90 s demo script</h2></div>
+  <div class="col stack">
+    <ol class="num">
+      <li>Name capstone letter + board</li>
+      <li>Point to wiring / SAFE idle</li>
+      <li>Run MVP happy path</li>
+      <li>Show one resilience moment (mash / timeout / offline)</li>
+      <li>Flash Serial or OLED state names</li>
+      <li>Open README diagram on camera ~3 s</li>
+    </ol>
+  </div>
+</section>
+<section class="part" id="package">
+  <div class="parthead"><span class="tag">Part</span><h2>Hand-in tree</h2></div>
+  <div class="col stack">
+    <pre><code>M9-Capstone-&lt;Letter&gt;-&lt;ShortName&gt;/
+  README.md
+  &lt;MainSketch&gt;.ino
+  ButtonDebounce.h / .cpp   (or src/…)
+  secrets.h.example         (IoT)
+  .gitignore
+  media/demo.mp4 | wiring.jpg</code></pre>
+    <p>README: letter, board, stories, I/O, diagram, build notes, demo link, pattern inventory table, rubric self-score. Ship <code>secrets.h.example</code> — never real passwords.</p>
+  </div>
+</section>
+<section class="part" id="lab">
+  <div class="parthead"><span class="tag">Lab</span><h2>Ship the package</h2><span class="mins">30 min</span></div>
+  <div class="col stack">
+    <p>Record demo; fill pattern retrospective (tick only what exists); Verify one last time; zip/folder for review. Optional: half-page “next appliance” plan.</p>
+    <div class="callout" style="--bc:var(--copper)"><h5>Course close</h5>
+    <p>When 9.5 is done, you have completed the Arduino Coding project spine: one polished capstone using patterns from Modules 0–8. You are ready to build your own appliances beyond the syllabus.</p></div>
+  </div>
+</section>
+<section class="part" id="patterns">
+  <div class="parthead"><span class="tag">Patterns</span><h2>Demo script + inventory</h2></div>
+  <div class="col stack"><div class="callout"><h5>Pattern</h5>
+  <p>Rehearse before recording. One inventory row per pattern with “where in code.” Predictable hand-in tree. Secrets stay out.</p></div></div>
+</section>
+<section class="part" id="check">
+  <div class="parthead"><span class="tag">Check</span><h2>Check yourself</h2></div>
+  <div class="col stack"><ol class="num" data-check>
+    <li data-kind="open" data-see="#demo">What four things should a Module 9 demo show?
+      <details><summary>Model answer</summary><p>Identity/wiring, happy path, one resilience moment, diagram evidence.</p></details></li>
+    <li data-kind="open" data-see="#concepts">Why inventory patterns you did not use as well?
+      <details><summary>Model answer</summary><p>Honesty for reviewers — proves you know the difference; avoids fake claims.</p></details></li>
+    <li data-kind="open" data-see="#package">What file replaces real Wi‑Fi passwords in the hand-in?
+      <details><summary>Model answer</summary><p><code>secrets.h.example</code>.</p></details></li>
+    <li data-kind="choice" data-choices="True|False" data-correct="1" data-see="#lab" data-hint="Hardware media required." data-why-0="TC link ≠ Module 9 ship." data-why-1="Correct — false.">Module 9 credit allows a Tinkercad share link instead of hardware media.</li>
+  </ol></div>
+</section>
+<section class="part" id="mistakes">
+  <div class="parthead"><span class="tag">Watch outs</span><h2>Common mistakes</h2></div>
+  <div class="col stack">
+    <div class="scroll"><table><thead><tr><th>Mistake</th><th>Fix</th></tr></thead><tbody>
+      <tr><td>Unscripted five-minute ramble</td><td>60–90 s script</td></tr>
+      <tr><td>Demo without resilience</td><td>Mash / timeout / offline clip</td></tr>
+      <tr><td>Pattern table all “yes”</td><td>Tick only what exists</td></tr>
+      <tr><td>Missing diagram</td><td>ASCII in README</td></tr>
+      <tr><td>Secrets in zip</td><td>Example file + gitignore</td></tr>
+      <tr><td>Shipping broken Verify</td><td>Compile before zip</td></tr>
+    </tbody></table></div>
+    <div class="callout" style="--bc:var(--copper)"><h5>What’s next</h5><p>Course spine complete. Keep building — the choose → diagram → slice → resilience → structure → demo loop works beyond the syllabus.</p></div>
+  </div>
+</section>
+
+<nav class="pager" aria-label="Lessons">
+<a href="04-code-structure-and-reuse.html"><span class="dir">Previous</span><span class="name">9.4 Structure</span></a>
+<a class="next" href="home.html"><span class="dir">Next</span><span class="name">Module 9 complete &rarr;</span></a>
+</nav>
+</div>
+<footer class="bihfoot"><div class="wrap">
+  <p class="pagenote">Lesson 9.5 &nbsp;&middot;&nbsp; Module 9 &nbsp;&middot;&nbsp; Arduino Coding.</p>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a class="lockup" href="../../home.html"><img src="../../../assets/brand/logo-mark-white.png" alt="" width="42" height="42"><span>Arduino Coding<small>Bozoma Innovation Hub</small></span></a>
+      <p>A Bozoma Innovation Hub programme.</p>
+    </div>
+    <div><h4>The course</h4><ul>
+      <li><a href="../../home.html">Course home</a></li>
+      <li><a href="home.html">Module 9</a></li>
+      <li><a href="../list.html">All modules</a></li>
+    </ul></div>
+    <div><h4>Bozoma Innovation Hub</h4><ul>
+      <li><a href="https://bozomainnovationhub.com">bozomainnovationhub.com</a></li>
+    </ul></div>
+  </div>
+  <div class="foot-bottom"><span>&copy; Bozoma Innovation Hub, Aiyinasi, Ghana</span><span class="tagline">World-class begins at home.</span></div>
+</div></footer>
+</body>
+</html>

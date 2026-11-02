@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en" data-course="arduino-code">
+<head>
+  <meta charset="utf-8">
+  <script src="../../assets/theme.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href="https://iot.bozomainnovationhub.com/arduino-code/guides/how-to-practice-with-tinkercad">
+  <title>Practice with Tinkercad · Arduino Coding</title>
+  <meta name="description" content="Study habits, saving circuits, what simulation can and cannot prove.">
+  <meta name="theme-color" content="#24182E">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../assets/brand/icon-192.png">
+  <link rel="apple-touch-icon" href="../../assets/brand/icon-180.png">
+  <!-- app + link previews (tools/inject_head.py) -->
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="IoT at Bozoma Innovation Hub">
+  <meta property="og:title" content="Practice with Tinkercad · Arduino Coding">
+  <meta property="og:description" content="Study habits, saving circuits, what simulation can and cannot prove.">
+  <meta property="og:url" content="https://iot.bozomainnovationhub.com/arduino-code/guides/how-to-practice-with-tinkercad">
+  <meta property="og:image" content="https://iot.bozomainnovationhub.com/assets/og/arduino-code-guides-how-to-practice-with-tinkercad.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Practice with Tinkercad · Arduino Coding">
+  <meta property="og:locale" content="en_GB">
+  <meta name="twitter:card" content="summary_large_image">
+  <script defer src="../../assets/app.js"></script>
+  <!-- /app + link previews -->
+  <link rel="stylesheet" href="../../assets/course.css">
+  <link rel="stylesheet" href="../../assets/progress.css">
+  <script defer src="../../assets/pager.js"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to the guide</a>
+<div class="topbar">
+  <a class="home" href="../home.html"><img src="../../assets/brand/logo-mark-white.png" alt="" width="36" height="36"><span class="lock"><b>Arduino Coding</b><small>Bozoma Innovation Hub</small></span></a>
+  <a class="hub" href="../../index.html" title="All courses: IoT at Bozoma Innovation Hub">&larr; IoT at BIH</a>
+  <nav class="bandlinks" aria-label="Modules"><a href="../modules/module-00/home.html">0</a><a href="../modules/module-01/home.html">1</a><a href="../modules/module-02/home.html">2</a><a href="../modules/module-03/home.html">3</a><a href="../modules/module-04/home.html">4</a><a href="../modules/module-05/home.html">5</a><a href="../modules/module-06/home.html">6</a><a href="../modules/module-07/home.html">7</a><a href="../modules/module-08/home.html">8</a><a href="../modules/module-09/home.html">9</a><a href="../modules/list.html">⋯</a></nav>
+  <a class="bih" href="https://bozomainnovationhub.com"><span class="long">bozomainnovationhub.com</span><span class="short">BIH website</span></a>
+</div>
+<div class="wrap" id="main">
+<nav aria-label="Sections">
+  <a href="#1-mindset">Mindset</a>
+  <a href="#2-always-text-mode-not-blocks">Always Text mode (not Blocks)</a>
+  <a href="#3-starter-experiment-complete-only-when-stuck">Starter → experiment → complete (only when stuck)</a>
+  <a href="#4-one-change-at-a-time">One change at a time</a>
+  <a href="#5-saving-and-naming-circuits">Saving and naming circuits</a>
+  <a href="#6-what-to-trust-vs-what-not-to-trust">What to trust vs what not to trust</a>
+  <a href="#7-comparing-a-sim-circuit-to-a-desk-twin">Comparing a sim circuit to a desk twin</a>
+  <a href="#8-portfolio-habits-lightweight">Portfolio habits (lightweight)</a>
+  <a href="#9-session-recipe-30-45-minutes">Session recipe (30–45 minutes)</a>
+  <a href="#related-guides">Related guides</a>
+</nav>
+<header style="padding:3.2rem 0 1rem">
+  <p class="eyebrow">Arduino Coding &nbsp;&middot;&nbsp; Guides</p>
+  <h1 style="margin:.8rem 0">Practice with Tinkercad</h1>
+  <p class="col sub" style="font-size:1.12em">Study habits, saving circuits, what simulation can and cannot prove.</p>
+</header>
+<p>Tinkercad Circuits is your early classroom: free, undo-friendly, and good enough to learn sketches and wiring metaphors. This page is about <strong>habits</strong> — how to study so simulation helps instead of quietly teaching bad assumptions.</p>
+<section class="part" id="1-mindset"><div class="parthead"><span class="tag">Guide</span><h2>1. Mindset</h2></div><div class="col stack">
+<div class="scroll"><table><thead><tr><th>Treat Tinkercad as…</th><th>Do not treat it as…</th></tr></thead><tbody><tr><td>A safe place to try one idea at a time</td><td>A perfect twin of every real sensor</td></tr><tr><td>A way to finish Modules <strong>0–3</strong> online</td><td>A full Module <strong>8</strong> Wi‑Fi lab</td></tr><tr><td>Something that can <strong>lie</strong> (see <strong>[TC†]</strong>)</td><td>Proof that hardware will behave identically</td></tr></tbody></table></div>
+<p>When a lesson marks <strong>[TC†]</strong>, believe the footnote. Simulation may be cleaner, quieter, or missing a feature.</p>
+</div></section>
+<section class="part" id="2-always-text-mode-not-blocks"><div class="parthead"><span class="tag">Guide</span><h2>2. Always Text mode (not Blocks)</h2></div><div class="col stack">
+<p>This course’s language is Arduino <strong>Text</strong> sketches (<code>setup</code> / <code>loop</code>, C++-style).</p>
+<ol class="num"><li>Open <strong>Code</strong>.</li><li>Switch dropdown to <strong>Text</strong>.</li><li>Confirm replace if prompted.</li><li>Stay in Text for every lesson.</li></ol>
+<p>Blocks can “work” and still leave you unable to read starter/complete sketches in the modules.</p>
+<p>Details: <a href="how-to-tinkercad.html">how-to-tinkercad.md</a>.</p>
+</div></section>
+<section class="part" id="3-starter-experiment-complete-only-when-stuck"><div class="parthead"><span class="tag">Guide</span><h2>3. Starter → experiment → complete (only when stuck)</h2></div><div class="col stack">
+<p>For each lab:</p>
+<ol class="num"><li>Build the <strong>wiring</strong> the lesson describes.</li><li>Paste the <strong>starter</strong> sketch — not the complete.</li><li>Change <strong>one</strong> thing (one pin, one delay, one <code>if</code>).</li><li>Run simulation; observe.</li><li>Open <strong>complete</strong> only after a real stuck point (or to compare after you finish).</li></ol>
+<p>Reading the complete sketch first turns the course into copying. The checkpoint questions exist to prove <em>you</em> can explain the behavior.</p>
+</div></section>
+<section class="part" id="4-one-change-at-a-time"><div class="parthead"><span class="tag">Guide</span><h2>4. One change at a time</h2></div><div class="col stack">
+<p>When something fails, do not rewire <em>and</em> rewrite <em>and</em> rename pins in one step.</p>
+<p><strong>Debug order:</strong></p>
+<ol class="num"><li>Simulation running?</li><li>Wiring / polarity / resistor value?</li><li>Pin numbers match code?</li><li>Then code logic</li><li>Then Serial prints (<a href="how-to-serial-monitor.html">how-to</a>)</li></ol>
+<p>Same idea on hardware later — Module 7’s upload checklist grows from this seed.</p>
+</div></section>
+<section class="part" id="5-saving-and-naming-circuits"><div class="parthead"><span class="tag">Guide</span><h2>5. Saving and naming circuits</h2></div><div class="col stack">
+<p><strong>Rename every circuit</strong> with module + lesson:</p>
+<pre><code>M0-L03-FirstLed
+M0-L05-Blink
+M1-L03-ButtonPullup
+M3-L06-NightLight</code></pre>
+<p><strong>Duplicate</strong> before a stretch challenge or “I’m going to rip this apart” moment. Keep the last known-good copy untouched.</p>
+<p>If your account supports <strong>share links</strong>, save one for portfolio or for asking a human — a link beats “it doesn’t work” with no circuit.</p>
+</div></section>
+<section class="part" id="6-what-to-trust-vs-what-not-to-trust"><div class="parthead"><span class="tag">Guide</span><h2>6. What to trust vs what not to trust</h2></div><div class="col stack">
+<div class="scroll"><table><thead><tr><th>Topic</th><th>In Tinkercad</th><th>On real hardware</th></tr></thead><tbody><tr><td>LED + resistor + <code>digitalWrite</code></td><td>Trust for learning</td><td>Same idea; resistor still required</td></tr><tr><td>Basic <code>if</code> / variables / functions</td><td>Trust</td><td>Trust</td></tr><tr><td>Button pull-up polarity</td><td>Trust the logic</td><td>Same polarity habit</td></tr><tr><td>Contact <strong>bounce</strong></td><td>Often <strong>too clean</strong> <strong>[TC†]</strong></td><td>Messy — debounce matters more</td></tr><tr><td>Precise <strong>timing</strong> / <code>millis</code> feel</td><td>Approximate <strong>[TC†]</strong></td><td>Real crystal / USB timing differs</td></tr><tr><td>DHT / ultrasonic / some libraries</td><td>Spotty or absent <strong>[TC†]</strong></td><td>Prefer desk kit (Module 4+)</td></tr><tr><td>I²C displays, interrupts deep dive</td><td>Limited <strong>[TC†]</strong></td><td>Module 6–7 hardware path</td></tr><tr><td>Wi‑Fi / MQTT / ESP32</td><td><strong>Not</strong> a TC substitute</td><td>Module 8 hardware</td></tr></tbody></table></div>
+<p><strong>Practical rule:</strong> through Module 5, TC is primary for <em>logic</em>. From Module 6, plan on a board. Module 8 is not a Tinkercad module.</p>
+</div></section>
+<section class="part" id="7-comparing-a-sim-circuit-to-a-desk-twin"><div class="parthead"><span class="tag">Guide</span><h2>7. Comparing a sim circuit to a desk twin</h2></div><div class="col stack">
+<p>When you get a kit (order during Module 3 — <a href="getting-started.html">getting started</a> §6):</p>
+<ol class="num"><li>Photograph or keep the TC wiring list: <code>pin → resistor → LED → GND</code>.</li><li>Rebuild the <strong>same topology</strong> on the breadboard (rails for GND/5V help).</li><li>Upload the <strong>same sketch</strong> (IDE).</li><li>Expect: same <em>logic</em>, possibly different <em>feel</em> (bounce, brightness, timing).</li><li>If hardware fails but TC worked: check cable, port, board select, polarity, series resistor — <a href="troubleshooting-faq.html">FAQ</a>.</li></ol>
+<p>Do not assume pin silk-screen art matches every clone board — verify labels.</p>
+</div></section>
+<section class="part" id="8-portfolio-habits-lightweight"><div class="parthead"><span class="tag">Guide</span><h2>8. Portfolio habits (lightweight)</h2></div><div class="col stack">
+<p>Without turning practice into bureaucracy:</p>
+<ul class="plain"><li>Keep one renamed circuit per lesson build.</li><li>For Module spine projects (0.6, 1.8, 2.6, 3.6, …), duplicate a final <code>…-SUBMIT</code> copy.</li><li>Optional: paste Serial sample output into your notes (thresholds you measured for the night-light, etc.).</li></ul>
+</div></section>
+<section class="part" id="9-session-recipe-30-45-minutes"><div class="parthead"><span class="tag">Guide</span><h2>9. Session recipe (30–45 minutes)</h2></div><div class="col stack">
+<ol class="num"><li>Read lesson outcomes (2 min).</li><li>Skim electricity / glossary only if a word is new (5 min).</li><li>Wire + starter (15–20 min).</li><li>Checkpoint questions <strong>before</strong> stretch (5 min).</li><li>Duplicate + stretch only if energy remains.</li></ol>
+<p>Stop while the circuit still works — tomorrow’s you will thank you.</p>
+</div></section>
+<section class="part" id="related-guides"><div class="parthead"><span class="tag">Guide</span><h2>Related guides</h2></div><div class="col stack">
+<ul class="plain"><li><a href="getting-started.html">Getting started</a>  </li><li><a href="how-to-tinkercad.html">How to Tinkercad</a>  </li><li><a href="how-to-serial-monitor.html">Serial Monitor</a>  </li><li><a href="troubleshooting-faq.html">Troubleshooting FAQ</a>  </li></ul>
+</div></section>
+<section class="part">
+  <div class="parthead"><span class="tag">More</span><h2>Related</h2></div>
+  <div class="col stack">
+    <p><a href="home.html">All guides</a> · <a href="getting-started.html">Getting started</a> · <a href="debugging-playbook.html">Debugging playbook</a> · <a href="troubleshooting-faq.html">Troubleshooting</a> · <a href="../modules/module-00/home.html">Module 0</a></p>
+  </div>
+</section>
+
+</div>
+<footer class="bihfoot"><div class="wrap">
+  <p class="pagenote">Guides &nbsp;&middot;&nbsp; Arduino Coding</p>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a class="lockup" href="../home.html"><img src="../../assets/brand/logo-mark-white.png" alt="" width="42" height="42"><span>Arduino Coding<small>Bozoma Innovation Hub</small></span></a>
+      <p>A Bozoma Innovation Hub programme.</p>
+    </div>
+    <div><h4>The course</h4><ul>
+      <li><a href="../home.html">Course home</a></li>
+      <li><a href="home.html">Guides index</a></li>
+      <li><a href="getting-started.html">Getting started</a></li>
+      <li><a href="debugging-playbook.html">Debugging playbook</a></li>
+      <li><a href="../modules/module-00/home.html">Module 0</a></li>
+    </ul></div>
+    <div><h4>Bozoma Innovation Hub</h4><ul>
+      <li><a href="https://bozomainnovationhub.com">bozomainnovationhub.com</a></li>
+    </ul></div>
+  </div>
+  <div class="foot-bottom"><span>&copy; Bozoma Innovation Hub, Aiyinasi, Ghana</span><span class="tagline">World-class begins at home.</span></div>
+</div></footer>
+</body>
+</html>

@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en" data-course="arduino-code" data-band="4">
+<head>
+  <meta charset="utf-8">
+  <script src="../../../assets/theme.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href="https://iot.bozomainnovationhub.com/arduino-code/modules/module-04/05-structs-for-sensor-packets">
+  <title>Structs for sensor packets · Module 4 · Arduino Coding</title>
+  <meta name="description" content="C++ struct packets {value, unit, timestamp, valid}; print consistently for Serial UI.">
+  <meta name="theme-color" content="#24182E">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../../assets/brand/icon-192.png">
+  <link rel="apple-touch-icon" href="../../../assets/brand/icon-180.png">
+  <!-- app + link previews (tools/inject_head.py) -->
+  <link rel="manifest" href="../../../manifest.webmanifest">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="IoT at Bozoma Innovation Hub">
+  <meta property="og:title" content="Structs for sensor packets · Module 4 · Arduino Coding">
+  <meta property="og:description" content="C++ struct packets {value, unit, timestamp, valid}; print consistently for Serial UI.">
+  <meta property="og:url" content="https://iot.bozomainnovationhub.com/arduino-code/modules/module-04/05-structs-for-sensor-packets">
+  <meta property="og:image" content="https://iot.bozomainnovationhub.com/assets/og/arduino-code-modules-module-04-05-structs-for-sensor-packets.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Structs for sensor packets · Module 4 · Arduino Coding">
+  <meta property="og:locale" content="en_GB">
+  <meta name="twitter:card" content="summary_large_image">
+  <script defer src="../../../assets/app.js"></script>
+  <!-- /app + link previews -->
+  <link rel="stylesheet" href="../../../assets/course.css">
+  <link rel="stylesheet" href="../../../assets/progress.css">
+  <script defer src="../../../assets/pager.js"></script>
+  <script defer src="../../../assets/check.js" data-profile="../../profile.html"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to the lesson</a>
+<div class="topbar">
+  <a class="home" href="../../home.html"><img src="../../../assets/brand/logo-mark-white.png" alt="" width="36" height="36"><span class="lock"><b>Arduino Coding</b><small>Bozoma Innovation Hub</small></span></a>
+  <a class="hub" href="../../../index.html" title="All courses: IoT at Bozoma Innovation Hub">&larr; IoT at BIH</a>
+  <nav class="bandlinks" aria-label="Modules"><a href="../module-00/home.html">0</a><a href="../module-01/home.html">1</a><a href="../module-02/home.html">2</a><a href="../module-03/home.html">3</a><a href="home.html" aria-current="page">4</a><a href="../list.html">⋯</a></nav>
+  <a class="bih" href="https://bozomainnovationhub.com"><span class="long">bozomainnovationhub.com</span><span class="short">BIH website</span></a>
+</div>
+<div class="wrap" id="main">
+
+<nav aria-label="Sections">
+  <a href="#outcomes">Outcomes</a>
+  <a href="#concepts">Concepts</a>
+  <a href="#packet">Packet</a>
+  <a href="#lab">Lab</a>
+  <a href="#patterns">Patterns</a>
+  <a href="#check">Check yourself</a>
+  <a href="#mistakes">Mistakes</a>
+</nav>
+<header style="padding:3rem 0 1rem">
+  <p class="eyebrow">Arduino Coding &nbsp;·&nbsp; Module 4 &nbsp;·&nbsp; Lesson 4.5 &nbsp;·&nbsp; <span class="tag">TC</span></p>
+  <h1 style="margin:.8rem 0">Structs for sensor packets</h1>
+  <p class="col sub" style="font-size:1.1em">Bundle related fields — value, unit, timestamp, valid — into one typed packet you can print, pass, and alert from.</p>
+  <p class="col note" style="margin-top:.8rem">About 40 minutes. Pure language skill; pot stand-in is enough.</p>
+</header>
+<section class="part" id="outcomes">
+  <div class="parthead"><span class="tag">Start here</span><h2>Learning outcomes</h2></div>
+  <div class="col stack"><ol class="num">
+    <li>Define a C++ <code>struct</code> that bundles sensor fields.</li>
+    <li>Fill and print packets consistently so Serial looks like a tiny UI.</li>
+    <li>Pass structs into helpers to keep <code>loop</code> readable for the spine build.</li>
+  </ol></div>
+</section>
+<section class="part" id="concepts">
+  <div class="parthead"><span class="tag">Concept</span><h2>One packet, not three globals</h2></div>
+  <div class="col stack">
+    <div class="callout" style="--bc:var(--accent)"><h5>Concept</h5>
+    <p>A <code>struct</code> groups related variables under one type. Carry the reading, its unit label, <code>millis()</code> when sampled, and whether it is trustworthy.</p></div>
+<pre><code>struct SensorPacket {
+  float value;
+  const char* unit;       // "cm", "C", "%"
+  unsigned long timestamp;
+  bool valid;
+};
+</code></pre>
+  </div>
+</section>
+<section class="part" id="packet">
+  <div class="parthead"><span class="tag">Part</span><h2>Fill and print</h2></div>
+  <div class="col stack">
+<pre><code>SensorPacket readFakeDistance() {
+  SensorPacket p;
+  p.timestamp = millis();
+  p.unit = "cm";
+  int raw = analogRead(A0);
+  if (raw &lt; 15) { p.valid = false; return p; }
+  p.value = map(raw, 15, 1023, 5, 150);
+  p.valid = true;
+  return p;
+}
+void printPacket(const SensorPacket&amp; p) {
+  Serial.print(p.timestamp); Serial.print('\t');
+  if (!p.valid) { Serial.println("INVALID\t---"); return; }
+  Serial.print(p.value, 1); Serial.print('\t'); Serial.println(p.unit);
+}
+</code></pre>
+    <p>Pass <code>const SensorPacket&amp;</code> — read-only, no copy. Separate <code>ClimatePacket</code> when fields differ.</p>
+  </div>
+</section>
+<section class="part" id="lab">
+  <div class="parthead"><span class="tag">Lab</span><h2>Fake distance packets</h2><span class="mins">15 min</span></div>
+  <div class="col stack">
+    <p>Circuit <code>M4-L05-Structs</code>: Uno + pot on A0. Headers: <code>ms&nbsp;&nbsp;value&nbsp;&nbsp;unit</code>. Mark <code>valid = false</code> for a fault demo (e.g. raw &lt; 15).</p>
+  </div>
+</section>
+<section class="part" id="patterns">
+  <div class="parthead"><span class="tag">Patterns</span><h2>Sensor packet</h2></div>
+  <div class="col stack"><div class="callout"><h5>Pattern</h5>
+  <p>Fill in <code>read…()</code>; print in <code>printPacket</code>; decide alerts from fields — not scavenger-hunted globals. Stable Serial columns → future OLED/MQTT (Modules 6–8).</p></div></div>
+</section>
+<section class="part" id="check">
+  <div class="parthead"><span class="tag">Check</span><h2>Check yourself</h2></div>
+  <div class="col stack"><ol class="num" data-check>
+    <li data-kind="open" data-see="#concepts">What problem do structs solve vs three unrelated globals?
+      <details><summary>Model answer</summary><p>They bundle related fields into one typed value you can pass and print together.</p></details></li>
+    <li data-kind="open" data-see="#concepts">Why include a <code>valid</code> flag?
+      <details><summary>Model answer</summary><p>So callers know whether <code>value</code> is trustworthy.</p></details></li>
+    <li data-kind="open" data-see="#concepts">What does <code>timestamp</code> usually store?
+      <details><summary>Model answer</summary><p>Typically <code>millis()</code> when the sample was taken.</p></details></li>
+    <li data-kind="choice" data-choices="True|False" data-correct="1" data-see="#lab" data-hint="Pot is enough." data-why-0="No DHT required." data-why-1="Correct — false; pot stand-in works.">You need a DHT sensor to practice structs.</li>
+  </ol></div>
+</section>
+<section class="part" id="mistakes">
+  <div class="parthead"><span class="tag">Watch outs</span><h2>Common mistakes</h2></div>
+  <div class="col stack">
+    <div class="scroll"><table><thead><tr><th>Mistake</th><th>Fix</th></tr></thead><tbody>
+      <tr><td>Forgot semicolon after struct</td><td>Close with <code>};</code></td></tr>
+      <tr><td>Printing without checking <code>valid</code></td><td>Branch on <code>valid</code> first</td></tr>
+      <tr><td>One bloated struct for every sensor</td><td>Separate types when shapes differ</td></tr>
+    </tbody></table></div>
+  </div>
+</section>
+
+<nav class="pager" aria-label="Lessons">
+<a href="04-servo-positioning.html"><span class="dir">Previous</span><span class="name">4.4 Servo</span></a>
+<a class="next" href="06-parking-assist-or-climate-alert.html"><span class="dir">Next</span><span class="name">4.6 Build &rarr;</span></a>
+</nav>
+</div>
+<footer class="bihfoot"><div class="wrap">
+  <p class="pagenote">Lesson 4.5 &nbsp;&middot;&nbsp; Module 4 &nbsp;&middot;&nbsp; Arduino Coding.</p>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a class="lockup" href="../../home.html"><img src="../../../assets/brand/logo-mark-white.png" alt="" width="42" height="42"><span>Arduino Coding<small>Bozoma Innovation Hub</small></span></a>
+      <p>A Bozoma Innovation Hub programme.</p>
+    </div>
+    <div><h4>The course</h4><ul>
+      <li><a href="../../home.html">Course home</a></li>
+      <li><a href="home.html">Module 4</a></li>
+      <li><a href="../list.html">All modules</a></li>
+    </ul></div>
+    <div><h4>Bozoma Innovation Hub</h4><ul>
+      <li><a href="https://bozomainnovationhub.com">bozomainnovationhub.com</a></li>
+    </ul></div>
+  </div>
+  <div class="foot-bottom"><span>&copy; Bozoma Innovation Hub, Aiyinasi, Ghana</span><span class="tagline">World-class begins at home.</span></div>
+</div></footer>
+</body>
+</html>

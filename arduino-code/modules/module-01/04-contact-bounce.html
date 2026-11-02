@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en" data-course="arduino-code" data-band="1">
+<head>
+  <meta charset="utf-8">
+  <script src="../../../assets/theme.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href="https://iot.bozomainnovationhub.com/arduino-code/modules/module-01/04-contact-bounce">
+  <title>Pattern: contact bounce · Module 1 · Arduino Coding</title>
+  <meta name="description" content="Why one press can look like many — edge counting and [TC†] bounce honesty.">
+  <meta name="theme-color" content="#24182E">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../../assets/brand/icon-192.png">
+  <link rel="apple-touch-icon" href="../../../assets/brand/icon-180.png">
+  <!-- app + link previews (tools/inject_head.py) -->
+  <link rel="manifest" href="../../../manifest.webmanifest">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="IoT at Bozoma Innovation Hub">
+  <meta property="og:title" content="Pattern: contact bounce · Module 1 · Arduino Coding">
+  <meta property="og:description" content="Why one press can look like many — edge counting and [TC†] bounce honesty.">
+  <meta property="og:url" content="https://iot.bozomainnovationhub.com/arduino-code/modules/module-01/04-contact-bounce">
+  <meta property="og:image" content="https://iot.bozomainnovationhub.com/assets/og/arduino-code-modules-module-01-04-contact-bounce.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Pattern: contact bounce · Module 1 · Arduino Coding">
+  <meta property="og:locale" content="en_GB">
+  <meta name="twitter:card" content="summary_large_image">
+  <script defer src="../../../assets/app.js"></script>
+  <!-- /app + link previews -->
+  <link rel="stylesheet" href="../../../assets/course.css">
+  <link rel="stylesheet" href="../../../assets/progress.css">
+  <script defer src="../../../assets/pager.js"></script>
+  <script defer src="../../../assets/check.js" data-profile="../../profile.html"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to the lesson</a>
+<div class="topbar">
+  <a class="home" href="../../home.html"><img src="../../../assets/brand/logo-mark-white.png" alt="" width="36" height="36"><span class="lock"><b>Arduino Coding</b><small>Bozoma Innovation Hub</small></span></a>
+  <a class="hub" href="../../../index.html" title="All courses: IoT at Bozoma Innovation Hub">&larr; IoT at BIH</a>
+  <nav class="bandlinks" aria-label="Modules"><a href="../module-00/home.html">0</a><a href="home.html" aria-current="page">1</a><a href="../list.html">⋯</a></nav>
+  <a class="bih" href="https://bozomainnovationhub.com"><span class="long">bozomainnovationhub.com</span><span class="short">BIH website</span></a>
+</div>
+<div class="wrap" id="main">
+<nav aria-label="Sections">
+  <a href="#outcomes">Outcomes</a>
+  <a href="#concepts">Concepts</a>
+  <a href="#edge">Edge vs level</a>
+  <a href="#lab">Lab</a>
+  <a href="#patterns">Patterns</a>
+  <a href="#check">Check yourself</a>
+  <a href="#mistakes">Mistakes</a>
+</nav>
+
+<header style="padding:3rem 0 1rem">
+  <p class="eyebrow">Arduino Coding &nbsp;·&nbsp; Module 1 &nbsp;·&nbsp; Lesson 1.4 &nbsp;·&nbsp; <span class="tag">TC†</span></p>
+  <h1 style="margin:.8rem 0">Pattern: contact bounce</h1>
+
+  <p class="col sub" style="font-size:1.1em">Contact bounce: why a single press can look like many presses in software — and why Tinkercad under-models it.</p>
+  <p class="col note" style="margin-top:.8rem">About 30 minutes. Hardware makes bounce clearer; simulation may look too clean.</p>
+</header>
+
+<section class="part" id="outcomes">
+  <div class="parthead"><span class="tag">Start here</span><h2>Learning outcomes</h2></div>
+  <div class="col stack">
+    <ol class="num">
+      <li>Describe <strong>contact bounce</strong>.</li>
+      <li>Observe (or prepare for) multiple false edges with a naïve press counter.</li>
+      <li>Explain why Tinkercad under-models bounce and why hardware still needs debounce.</li>
+    </ol>
+  </div>
+</section>
+
+<section class="part" id="concepts">
+  <div class="parthead"><span class="tag">Concept</span><h2>Metal contacts chatter</h2></div>
+  <div class="col stack">
+    <div class="callout" style="--bc:var(--accent)"><h5>Concept</h5><p>For a few milliseconds contacts make-break-make before settling. Your loop is fast enough to see that as <strong>extra presses</strong>.</p></div>
+<pre><code>Ideal:  ----________----
+Real:   ----_‾_‾___‾_----   (several edges in ~1–20 ms)
+</code></pre>
+  </div>
+</section>
+
+<section class="part" id="edge">
+  <div class="parthead"><span class="tag">Part</span><h2>Edge vs level</h2></div>
+  <div class="col stack">
+    <ul class="plain">
+      <li><strong>Level:</strong> “Is the button down right now?” (Lesson 1.3)</li>
+      <li><strong>Edge:</strong> “Did it <em>just</em> become pressed?” (counting, toggling)</li>
+    </ul>
+    <p>Bounce hurts <strong>edge</strong> detection hardest.</p>
+  </div>
+</section>
+
+<section class="part" id="lab">
+  <div class="parthead"><span class="tag">Lab</span><h2>Naïve press counter</h2><span class="mins">12 min</span></div>
+  <div class="col stack">
+    <p>Circuit <code>M1-L04-Bounce</code>. Open Serial. Click once. On hardware one click often adds 2–10 counts.</p>
+    <div class="sketchbox" style="--bc:var(--accent)">
+      <h2>Complete naïve edge detector</h2>
+<pre><code>int lastReading = HIGH, pressCount = 0;
+void loop() {
+  int reading = digitalRead(buttonPin);
+  if (reading == LOW &amp;&amp; lastReading == HIGH) {
+    pressCount = pressCount + 1;
+    Serial.println(pressCount);
+  }
+  lastReading = reading;
+}
+</code></pre>
+    </div>
+    <p class="note"><strong>[TC†]:</strong> Simulation may count 1:1. Trust the explanation; verify on hardware when you can.</p>
+  </div>
+</section>
+
+<section class="part" id="patterns">
+  <div class="parthead"><span class="tag">Patterns</span><h2>Recognize the failure</h2></div>
+  <div class="col stack">
+    <div class="callout"><h5>Pattern (awareness)</h5><p>Before debounce code (1.5), recognize: one human press → many software edges. Otherwise debounce feels like superstition.</p></div>
+  </div>
+</section>
+
+<section class="part" id="check">
+  <div class="parthead"><span class="tag">Check</span><h2>Check yourself</h2></div>
+  <div class="col stack">
+    <ol class="num" data-check>
+      <li data-kind="open" data-see="#concepts">What is contact bounce in one sentence?
+        <details><summary>Model answer</summary><p>Mechanical contacts chatter for milliseconds, creating extra edges.</p></details></li>
+      <li data-kind="open" data-see="#edge">Why do edge counters suffer more than “LED while held” sketches?
+        <details><summary>Model answer</summary><p>They react to every transition; bounce is extra transitions.</p></details></li>
+      <li data-kind="open" data-see="#lab">Why is this lesson tagged <strong>[TC†]</strong>?
+        <details><summary>Model answer</summary><p>Simulation often under-models bounce — concept still required.</p></details></li>
+      <li data-kind="choice" data-choices="True|False" data-correct="1" data-see="#lab" data-hint="Real switches bounce." data-why-0="You still need debounce on hardware." data-why-1="Correct — false; real switches bounce.">If Tinkercad counts perfectly, you can skip debounce forever.</li>
+    </ol>
+  </div>
+</section>
+
+<section class="part" id="mistakes">
+  <div class="parthead"><span class="tag">Watch outs</span><h2>Common mistakes</h2></div>
+  <div class="col stack">
+    <div class="scroll"><table><thead><tr><th>Mistake</th><th>Fix</th></tr></thead><tbody>
+      <tr><td>Blaming “random code” for double counts on HW</td><td>Suspect bounce first</td></tr>
+      <tr><td>Thinking pull-ups eliminate bounce</td><td>Pull-ups fix floating; bounce is mechanical</td></tr>
+      <tr><td>Huge <code>delay</code> after every read as “done”</td><td>Learn the pattern in 1.5</td></tr>
+    </tbody></table></div>
+    <div class="callout" style="--bc:var(--copper)"><h5>Stretch (HW)</h5><p>Record counts from 10 careful clicks; note ratio in a header comment. Retest after 1.5.</p></div>
+  </div>
+</section>
+
+<nav class="pager" aria-label="Lessons">
+<a href="03-reading-a-button.html"><span class="dir">Previous</span><span class="name">1.3 Reading a button</span></a>
+<a class="next" href="05-simple-software-debounce.html"><span class="dir">Next</span><span class="name">1.5 Debounce &rarr;</span></a>
+</nav>
+
+</div>
+<footer class="bihfoot">
+<div class="wrap">
+  <p class="pagenote">Lesson 1.4 &nbsp;&middot;&nbsp; Module 1 &nbsp;&middot;&nbsp; Arduino Coding.</p>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a class="lockup" href="../../home.html"><img src="../../../assets/brand/logo-mark-white.png" alt="" width="42" height="42"><span>Arduino Coding<small>Bozoma Innovation Hub</small></span></a>
+      <p>A Bozoma Innovation Hub programme.</p>
+    </div>
+    <div><h4>The course</h4><ul>
+      <li><a href="../../home.html">Course home</a></li>
+      <li><a href="home.html">Module 1</a></li>
+      <li><a href="../list.html">All modules</a></li>
+    </ul></div>
+    <div><h4>Bozoma Innovation Hub</h4><ul>
+      <li><a href="https://bozomainnovationhub.com">bozomainnovationhub.com</a></li>
+    </ul></div>
+  </div>
+  <div class="foot-bottom"><span>&copy; Bozoma Innovation Hub, Aiyinasi, Ghana</span><span class="tagline">World-class begins at home.</span></div>
+</div>
+</footer>
+</body>
+</html>

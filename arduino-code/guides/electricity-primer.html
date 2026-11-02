@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en" data-course="arduino-code">
+<head>
+  <meta charset="utf-8">
+  <script src="../../assets/theme.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href="https://iot.bozomainnovationhub.com/arduino-code/guides/electricity-primer">
+  <title>Electricity primer · Arduino Coding</title>
+  <meta name="description" content="Voltage, current, ground, LED polarity, resistor role — no engineering degree.">
+  <meta name="theme-color" content="#24182E">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../assets/brand/icon-192.png">
+  <link rel="apple-touch-icon" href="../../assets/brand/icon-180.png">
+  <!-- app + link previews (tools/inject_head.py) -->
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="IoT at Bozoma Innovation Hub">
+  <meta property="og:title" content="Electricity primer · Arduino Coding">
+  <meta property="og:description" content="Voltage, current, ground, LED polarity, resistor role — no engineering degree.">
+  <meta property="og:url" content="https://iot.bozomainnovationhub.com/arduino-code/guides/electricity-primer">
+  <meta property="og:image" content="https://iot.bozomainnovationhub.com/assets/og/arduino-code-guides-electricity-primer.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Electricity primer · Arduino Coding">
+  <meta property="og:locale" content="en_GB">
+  <meta name="twitter:card" content="summary_large_image">
+  <script defer src="../../assets/app.js"></script>
+  <!-- /app + link previews -->
+  <link rel="stylesheet" href="../../assets/course.css">
+  <link rel="stylesheet" href="../../assets/progress.css">
+  <script defer src="../../assets/pager.js"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to the guide</a>
+<div class="topbar">
+  <a class="home" href="../home.html"><img src="../../assets/brand/logo-mark-white.png" alt="" width="36" height="36"><span class="lock"><b>Arduino Coding</b><small>Bozoma Innovation Hub</small></span></a>
+  <a class="hub" href="../../index.html" title="All courses: IoT at Bozoma Innovation Hub">&larr; IoT at BIH</a>
+  <nav class="bandlinks" aria-label="Modules"><a href="../modules/module-00/home.html">0</a><a href="../modules/module-01/home.html">1</a><a href="../modules/module-02/home.html">2</a><a href="../modules/module-03/home.html">3</a><a href="../modules/module-04/home.html">4</a><a href="../modules/module-05/home.html">5</a><a href="../modules/module-06/home.html">6</a><a href="../modules/module-07/home.html">7</a><a href="../modules/module-08/home.html">8</a><a href="../modules/module-09/home.html">9</a><a href="../modules/list.html">⋯</a></nav>
+  <a class="bih" href="https://bozomainnovationhub.com"><span class="long">bozomainnovationhub.com</span><span class="short">BIH website</span></a>
+</div>
+<div class="wrap" id="main">
+<nav aria-label="Sections">
+  <a href="#1-three-words-you-actually-need">Three words you actually need</a>
+  <a href="#2-a-circuit-must-be-a-loop-closed-path">A circuit must be a loop (closed path)</a>
+  <a href="#3-why-the-resistor-sits-with-the-led">Why the resistor sits with the LED</a>
+  <a href="#4-led-polarity-one-way-street">LED polarity — one-way street</a>
+  <a href="#5-high-low-and-what-your-sketch-is-doing">HIGH, LOW, and what your sketch is doing</a>
+  <a href="#6-pull-ups-why-a-button-can-read-high-when-nobody-presses">Pull-ups — why a button can read HIGH when nobody presses</a>
+  <a href="#7-preview-voltage-divider-for-later-night-light-ldr">Preview: voltage divider (for later night-light / LDR)</a>
+  <a href="#8-5-v-vs-3-3-v-future-you-note">5 V vs 3.3 V (future-you note)</a>
+  <a href="#9-tinkercad-will-not-smoke-habits-still-matter">Tinkercad will not smoke — habits still matter</a>
+  <a href="#10-checkpoint-no-board-needed">Checkpoint (no board needed)</a>
+  <a href="#related-guides">Related guides</a>
+</nav>
+<header style="padding:3.2rem 0 1rem">
+  <p class="eyebrow">Arduino Coding &nbsp;&middot;&nbsp; Guides</p>
+  <h1 style="margin:.8rem 0">Electricity primer</h1>
+  <p class="col sub" style="font-size:1.12em">Voltage, current, ground, LED polarity, resistor role — no engineering degree.</p>
+</header>
+<p><strong>Goal:</strong> Enough intuition to wire Module 0–3 labs without panic.   <strong>Not a goal:</strong> Equations, circuit theory, or a physics exam.</p>
+<p>Read this once before Lesson 0.3. Revisit when pull-ups or the night-light divider feel mysterious.</p>
+<section class="part" id="1-three-words-you-actually-need"><div class="parthead"><span class="tag">Guide</span><h2>1. Three words you actually need</h2></div><div class="col stack">
+<div class="scroll"><table><thead><tr><th>Word</th><th>Water metaphor</th><th>Arduino meaning</th></tr></thead><tbody><tr><td><strong>Voltage</strong></td><td>Pressure</td><td>How hard the electricity is “pushed” (Uno logic often ~<strong>5 V</strong>)</td></tr><tr><td><strong>Current</strong></td><td>Flow rate</td><td>How much charge moves through a part (too much can fry an LED)</td></tr><tr><td><strong>Resistance</strong></td><td>A narrower pipe</td><td>Something that <strong>limits</strong> current (a <strong>resistor</strong>)</td></tr></tbody></table></div>
+<p>You do not need formulas for this course’s early labs. Remember the relationship in one sentence:</p>
+<div class="callout" style="--bc:var(--accent)"><h5>Note</h5><p>For a simple path, <strong>more voltage or less resistance → more current</strong>. An LED wants <em>some</em> current, not a firehose.</p></div>
+</div></section>
+<section class="part" id="2-a-circuit-must-be-a-loop-closed-path"><div class="parthead"><span class="tag">Guide</span><h2>2. A circuit must be a loop (closed path)</h2></div><div class="col stack">
+<p>Electricity in these beginner projects needs a <strong>complete path</strong>:</p>
+<ol class="num"><li>Out from a pin or from <strong>5V</strong></li><li>Through parts (resistor, LED, …)</li><li>Back to <strong>GND</strong> (ground)</li></ol>
+<p>If the path is broken — wire not clicked, LED backwards, GND forgotten — <strong>nothing happens</strong>. In Tinkercad a dark LED usually means an open path or wrong direction, not “the computer hates you.”</p>
+<pre><code>   [Uno pin 13] ──► resistor ──► LED ──► GND
+         │                              ▲
+         └──────── return path idea ────┘</code></pre>
+<p><strong>Ground (GND)</strong> is the shared “0 V” reference and the place current returns. When lessons say “share GND,” they mean: every part that needs a return path should meet at the same GND idea (often one GND rail on a breadboard tied to Uno <strong>GND</strong>).</p>
+</div></section>
+<section class="part" id="3-why-the-resistor-sits-with-the-led"><div class="parthead"><span class="tag">Guide</span><h2>3. Why the resistor sits with the LED</h2></div><div class="col stack">
+<p>An LED is not a tiny lightbulb that politely limits itself. Without a resistor, a real LED on 5 V can draw <strong>dangerous current</strong> and die (and stress the pin).</p>
+<p><strong>Habit for this course:</strong></p>
+<pre><code>pin  →  resistor (often 220 Ω)  →  LED  →  GND</code></pre>
+<ul class="plain"><li>The resistor is <strong>in series</strong> (in the same single-file line), not a random side branch that does nothing.</li><li>In Tinkercad, set <strong>220 Ω</strong> — not 220 <strong>kΩ</strong> (a thousand times larger; the LED may look “broken” because almost no current flows).</li><li>Simulation is forgiving; <strong>still use the resistor</strong> so real hardware habits are already correct.</li></ul>
+<p>Common beginner values on 5 V: <strong>220 Ω</strong>, <strong>330 Ω</strong>, or <strong>1 kΩ</strong>.</p>
+</div></section>
+<section class="part" id="4-led-polarity-one-way-street"><div class="parthead"><span class="tag">Guide</span><h2>4. LED polarity — one-way street</h2></div><div class="col stack">
+<p>An LED is a <strong>diode</strong>: current through it mainly works in <strong>one direction</strong>.</p>
+<div class="scroll"><table><thead><tr><th>Name</th><th>Role in the simple story</th><th>Typical physical clue (real LED)</th></tr></thead><tbody><tr><td><strong>Anode (+)</strong></td><td>Faces toward the pin / resistor</td><td>Longer lead</td></tr><tr><td><strong>Cathode (−)</strong></td><td>Faces toward <strong>GND</strong></td><td>Shorter lead; flat spot on the plastic</td></tr></tbody></table></div>
+<p><strong>If the LED is backwards:</strong> the sketch can be perfect and the LED stays dark. Always check polarity before rewriting code.</p>
+<p>In Tinkercad: select the LED and use the <strong>inspector</strong> (side panel) — confirm which lead is anode vs cathode — then match the wiring above. Full click-path: <a href="how-to-tinkercad.html">how-to-tinkercad.md</a>.</p>
+</div></section>
+<section class="part" id="5-high-low-and-what-your-sketch-is-doing"><div class="parthead"><span class="tag">Guide</span><h2>5. HIGH, LOW, and what your sketch is doing</h2></div><div class="col stack">
+<p>When code does <code>digitalWrite(ledPin, HIGH)</code> on a Uno digital pin, that pin is driven toward the board’s logic supply (about 5 V) — “on pressure.”   <code>LOW</code> ties the idea toward ground — “off / 0 V.”</p>
+<p>So Blink is literally: connect pressure through resistor+LED to GND, then remove it, again and again.</p>
+<p>You do not need to measure volts for Module 0. You <em>do</em> need the mental picture: <strong>pin → parts → GND</strong>.</p>
+</div></section>
+<section class="part" id="6-pull-ups-why-a-button-can-read-high-when-nobody-presses"><div class="parthead"><span class="tag">Guide</span><h2>6. Pull-ups — why a button can read HIGH when nobody presses</h2></div><div class="col stack">
+<p>A floating pin (wired to nothing) can read random nonsense. A <strong>pull-up</strong> gently holds the pin at HIGH until something stronger pulls it down.</p>
+<p>Arduino’s <code>pinMode(buttonPin, INPUT_PULLUP)</code> turns on a built-in pull-up. The usual beginner wiring:</p>
+<pre><code>Uno pin (INPUT_PULLUP) ── button ── GND</code></pre>
+<div class="scroll"><table><thead><tr><th>Button</th><th>Pin tends to read</th></tr></thead><tbody><tr><td>Not pressed</td><td><strong>HIGH</strong> (pull-up wins)</td></tr><tr><td>Pressed</td><td><strong>LOW</strong> (path to GND wins)</td></tr></tbody></table></div>
+<p>That “pressed = LOW” polarity surprises everyone once. Lesson 1.3 teaches it on purpose. If your LED logic feels inverted, check this table before flipping random <code>if</code> conditions — or print the raw reading with Serial (<a href="how-to-serial-monitor.html">how-to</a>).</p>
+<p><em>(Pull-down is the mirror image: default LOW, press to 5V → HIGH. This course standardizes on pull-up + button to GND.)</em></p>
+</div></section>
+<section class="part" id="7-preview-voltage-divider-for-later-night-light-ldr"><div class="parthead"><span class="tag">Guide</span><h2>7. Preview: voltage divider (for later night-light / LDR)</h2></div><div class="col stack">
+<p>Two resistances in a line across 5V and GND make a <strong>middle voltage</strong> you can measure:</p>
+<pre><code>5V ── R1 ──●── R2 ── GND
+           │
+        analog pin reads here</code></pre>
+<ul class="plain"><li>If R1 and R2 change (or one is a light-dependent resistor), the voltage at <strong>●</strong> moves.</li><li>Your sketch reads that with <code>analogRead</code> as a number (~0–1023 on Uno).</li><li>Module 3 uses this idea; a <strong>potentiometer</strong> is a ready-made adjustable divider and is the friendliest practice stand-in.</li></ul>
+<p>You do not need to calculate the voltage. You need: <strong>middle node goes to an analog pin; ends go to 5V and GND; never omit the series idea for LEDs on digital pins.</strong></p>
+</div></section>
+<section class="part" id="8-5-v-vs-3-3-v-future-you-note"><div class="parthead"><span class="tag">Guide</span><h2>8. 5 V vs 3.3 V (future-you note)</h2></div><div class="col stack">
+<ul class="plain"><li>Classic <strong>Arduino Uno</strong> labs in this course: think <strong>5 V</strong> logic.</li><li><strong>ESP32</strong> (Module 8): many pins are <strong>3.3 V</strong>. Feeding 5 V into a 3.3 V-only pin can damage it.</li></ul>
+<p>Ignore this until you leave Uno fundamentals — then re-read Module 7 power habits before mixing boards.</p>
+</div></section>
+<section class="part" id="9-tinkercad-will-not-smoke-habits-still-matter"><div class="parthead"><span class="tag">Guide</span><h2>9. Tinkercad will not smoke — habits still matter</h2></div><div class="col stack">
+<p>In simulation, wrong wiring often just fails silently (dark LED). On a desk:</p>
+<ul class="plain"><li>Always series-resistor LEDs</li><li>Do not short <strong>5V</strong> straight to <strong>GND</strong></li><li>Use a <strong>data</strong> USB cable for Upload</li><li>Module 7 deepens “smoke-free” habits when hardware becomes required</li></ul>
+</div></section>
+<section class="part" id="10-checkpoint-no-board-needed"><div class="parthead"><span class="tag">Guide</span><h2>10. Checkpoint (no board needed)</h2></div><div class="col stack">
+<ol class="num"><li>Why does an LED need a path back to <strong>GND</strong>?  </li><li>What job does the <strong>220 Ω</strong> resistor do?  </li><li>If the LED is flipped, can perfect Blink code still look “broken”?  </li><li>With <code>INPUT_PULLUP</code> and a button to GND, does “pressed” read HIGH or LOW?</li></ol>
+<p><strong>Answers:</strong> (1) Current needs a closed loop / return. (2) Limit current. (3) Yes — polarity. (4) LOW.</p>
+</div></section>
+<section class="part" id="related-guides"><div class="parthead"><span class="tag">Guide</span><h2>Related guides</h2></div><div class="col stack">
+<ul class="plain"><li><a href="getting-started.html">Getting started</a> — course path and kit timing  </li><li><a href="breadboard-basics.html">Breadboard basics</a> — rows, rails, shared GND  </li><li><a href="how-to-tinkercad.html">How to Tinkercad</a> — click-by-click first circuit  </li><li><a href="glossary.html">Glossary</a> — GND, anode, PWM, divider, …  </li><li><a href="debugging-playbook.html">Debugging playbook</a> — ordered “it should work” steps  </li><li><a href="troubleshooting-faq.html">Troubleshooting FAQ</a> — dark LED checklist  </li></ul>
+</div></section>
+<section class="part">
+  <div class="parthead"><span class="tag">More</span><h2>Related</h2></div>
+  <div class="col stack">
+    <p><a href="home.html">All guides</a> · <a href="getting-started.html">Getting started</a> · <a href="debugging-playbook.html">Debugging playbook</a> · <a href="troubleshooting-faq.html">Troubleshooting</a> · <a href="../modules/module-00/home.html">Module 0</a></p>
+  </div>
+</section>
+
+</div>
+<footer class="bihfoot"><div class="wrap">
+  <p class="pagenote">Guides &nbsp;&middot;&nbsp; Arduino Coding</p>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a class="lockup" href="../home.html"><img src="../../assets/brand/logo-mark-white.png" alt="" width="42" height="42"><span>Arduino Coding<small>Bozoma Innovation Hub</small></span></a>
+      <p>A Bozoma Innovation Hub programme.</p>
+    </div>
+    <div><h4>The course</h4><ul>
+      <li><a href="../home.html">Course home</a></li>
+      <li><a href="home.html">Guides index</a></li>
+      <li><a href="getting-started.html">Getting started</a></li>
+      <li><a href="debugging-playbook.html">Debugging playbook</a></li>
+      <li><a href="../modules/module-00/home.html">Module 0</a></li>
+    </ul></div>
+    <div><h4>Bozoma Innovation Hub</h4><ul>
+      <li><a href="https://bozomainnovationhub.com">bozomainnovationhub.com</a></li>
+    </ul></div>
+  </div>
+  <div class="foot-bottom"><span>&copy; Bozoma Innovation Hub, Aiyinasi, Ghana</span><span class="tagline">World-class begins at home.</span></div>
+</div></footer>
+</body>
+</html>

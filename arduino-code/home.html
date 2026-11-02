@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en" data-course="arduino-code">
+<head>
+  <meta charset="utf-8">
+  <script src="../assets/theme.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href="https://iot.bozomainnovationhub.com/arduino-code/home">
+  <title>Arduino Coding · Bozoma Innovation Hub</title>
+  <meta name="description" content="Write Arduino C++ sketches from zero. Tinkercad-first labs, then real boards: variables, sensors, timing, state machines, and a path toward networked devices.">
+  <meta name="theme-color" content="#24182E">
+  <link rel="icon" type="image/png" sizes="192x192" href="../assets/brand/icon-192.png">
+  <link rel="apple-touch-icon" href="../assets/brand/icon-180.png">
+  <!-- app + link previews (tools/inject_head.py) -->
+  <link rel="manifest" href="../manifest.webmanifest">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="IoT at Bozoma Innovation Hub">
+  <meta property="og:title" content="Arduino Coding · Bozoma Innovation Hub">
+  <meta property="og:description" content="Write Arduino C++ sketches from zero. Tinkercad-first labs, then real boards: variables, sensors, timing, state machines, and a path toward networked devices.">
+  <meta property="og:url" content="https://iot.bozomainnovationhub.com/arduino-code/home">
+  <meta property="og:image" content="https://iot.bozomainnovationhub.com/assets/og/arduino-code-home.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Arduino Coding · Bozoma Innovation Hub">
+  <meta property="og:locale" content="en_GB">
+  <meta name="twitter:card" content="summary_large_image">
+  <script defer src="../assets/app.js"></script>
+  <!-- /app + link previews -->
+  <link rel="stylesheet" href="../assets/course.css">
+  <link rel="stylesheet" href="../assets/progress.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the lesson</a>
+<div class="topbar">
+  <a class="home" href="home.html"><img src="../assets/brand/logo-mark-white.png" alt="" width="36" height="36"><span class="lock"><b>Arduino Coding</b><small>Bozoma Innovation Hub</small></span></a>
+  <a class="hub" href="../index.html" title="All courses: IoT at Bozoma Innovation Hub">&larr; IoT at BIH</a>
+  <nav class="bandlinks" aria-label="Modules"><a href="modules/module-00/home.html">0</a><a href="modules/module-01/home.html">1</a><a href="modules/module-02/home.html">2</a><a href="modules/module-03/home.html">3</a><a href="modules/module-04/home.html">4</a><a href="modules/module-05/home.html">5</a><a href="modules/module-06/home.html">6</a><a href="modules/module-07/home.html">7</a><a href="modules/module-08/home.html">8</a><a href="modules/module-09/home.html">9</a><a href="modules/list.html" title="All modules">⋯</a></nav>
+  <a class="bih" href="https://bozomainnovationhub.com"><span class="long">bozomainnovationhub.com</span><span class="short">BIH website</span></a>
+</div>
+<header class="hero" id="main">
+<div class="wrap">
+  <p class="eyebrow"><i>&#9679;</i> Bozoma Innovation Hub &nbsp;&middot;&nbsp; Aiyinasi, Ghana</p>
+  <h1 style="margin:1.1rem 0 .9rem">Arduino <em>Coding</em></h1>
+  <p class="col sub" style="font-size:1.15em">Write Arduino C++ sketches from zero. Practice in Tinkercad first, then on a real board when you are ready: variables, sensors, timing, state machines, and a clear path toward devices that talk on a network.</p>
+  <p style="margin-top:1.4rem; display:flex; flex-wrap:wrap; gap:.6rem"><a class="startbtn" href="guides/getting-started.html">Getting started &rarr;</a> <a class="startbtn" href="modules/module-00/01-what-is-a-microcontroller.html" style="background:rgba(255,255,255,.08); border:1.5px solid rgba(255,255,255,.4); box-shadow:none">Start Module 0</a> <a class="startbtn" href="modules/list.html" style="background:rgba(255,255,255,.08); border:1.5px solid rgba(255,255,255,.4); box-shadow:none">See every module</a></p>
+  <p class="col note" style="margin-top:.9rem">Free to use. Nothing to sign up for. Companion to the Arduino Ladder — coding spine, same IoT programme.</p>
+</div>
+</header>
+<div class="wrap">
+
+<section class="part">
+  <div class="parthead"><span class="tag">About</span><h2>What this course is</h2></div>
+  <div class="col stack">
+    <p>This course teaches you to <strong>program</strong> an Arduino. It assumes you have never written code. Early labs run in <strong>Tinkercad Circuits</strong> so you can practice without a kit; optional hardware runs in parallel when you have a board.</p>
+    <p>It sits alongside <a href="../arduino/home.html">The Arduino Ladder</a> on the same hub. The Ladder is a project-and-electronics spine (nine builds). Arduino Coding is a sketch-and-patterns spine (modules). You can take either first, or both.</p>
+    <div class="callout" style="--bc:var(--accent)">
+      <h5>Two tracks in every module</h5>
+      <p><strong>Concepts</strong> — syntax, pins, sensors, buses, networking. <strong>Patterns</strong> — debounce, non-blocking <code>millis()</code>, state machines, interrupts, clean structure. You meet both as soon as the next project needs them.</p>
+    </div>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">The course</span><h2>Modules from first light to IoT</h2></div>
+  <div class="col stack" style="margin-bottom:1.2rem">
+    <p>Work through them in order. Modules 0–9 are all open — the full course path from first blink to polished capstone.</p>
+  </div>
+  <div class="bandgrid">
+    <a class="bandcard" href="modules/module-00/home.html" data-band="0">
+      <div class="row"><span class="tag">Module 0</span><h3>Setup &amp; First Light</h3><span class="mins">≈3.5 h</span></div>
+      <p>Tools, sketch anatomy, Blink in Tinkercad, and a blink pattern that is yours.</p>
+      <span class="go">Open Module 0 &rarr;</span>
+    </a>
+    <a class="bandcard" href="modules/module-01/home.html" data-band="1">
+      <div class="row"><span class="tag">Module 1</span><h3>Digital Output &amp; Inputs</h3><span class="mins">≈5.5 h</span></div>
+      <p>Multiple LEDs, buttons, bounce, debounce, helpers, and a crosswalk or quiz buzzer spine build.</p>
+      <span class="go">Open Module 1 &rarr;</span>
+    </a>
+    <a class="bandcard" href="modules/module-02/home.html" data-band="2">
+      <div class="row"><span class="tag">Module 2</span><h3>Timing Without Delay</h3><span class="mins">≈4.5 h</span></div>
+      <p><code>millis()</code> heartbeats, multi-timers, one-shots, non-blocking debounce, and a desk status light (Gate A).</p>
+      <span class="go">Open Module 2 &rarr;</span>
+    </a>
+    <a class="bandcard" href="modules/module-03/home.html" data-band="3">
+      <div class="row"><span class="tag">Module 3</span><h3>Analog World</h3><span class="mins">≈4.5 h</span></div>
+      <p><code>analogRead</code> / PWM, Serial debug, thresholds, smoothing, and an auto night-light spine build.</p>
+      <span class="go">Open Module 3 &rarr;</span>
+    </a>
+    <a class="bandcard" href="modules/module-04/home.html" data-band="4">
+      <div class="row"><span class="tag">Module 4</span><h3>Sensing Projects &amp; Libraries</h3><span class="mins">≈5 h</span></div>
+      <p>Libraries, ultrasonic/DHT, Servo, structs, and a parking assist or climate alert spine.</p>
+      <span class="go">Open Module 4 &rarr;</span>
+    </a>
+    <a class="bandcard" href="modules/module-05/home.html" data-band="5">
+      <div class="row"><span class="tag">Module 5</span><h3>State Machines &amp; Clean Structure</h3><span class="mins">≈5 h</span></div>
+      <p>FSMs with enum + switch, entry/exit, events, modular sketches, and a washer or lock spine (Gate B).</p>
+      <span class="go">Open Module 5 &rarr;</span>
+    </a>
+    <a class="bandcard" href="modules/module-06/home.html" data-band="6">
+      <div class="row"><span class="tag">Module 6</span><h3>Interrupts, Debounce &amp; Displays</h3><span class="mins">≈5 h</span></div>
+      <p>External interrupts, volatile flags, robust debounce, I²C display, and a lap or reaction timer spine.</p>
+      <span class="go">Open Module 6 &rarr;</span>
+    </a>
+    <a class="bandcard" href="modules/module-07/home.html" data-band="7">
+      <div class="row"><span class="tag">Module 7</span><h3>Hardware Graduation &amp; Buses</h3><span class="mins">≈5.5 h</span></div>
+      <p>Desk boards, power hygiene, I²C scan, SPI overview, datasheets, and a local weather or distance station (Gate C).</p>
+      <span class="go">Open Module 7 &rarr;</span>
+    </a>
+    <a class="bandcard" href="modules/module-08/home.html" data-band="8">
+      <div class="row"><span class="tag">Module 8</span><h3>ESP32 IoT Layer</h3><span class="mins">≈6.5 h</span></div>
+      <p>Wi‑Fi, HTTP or MQTT, reconnect FSM, ops basics, and a remote environment node (Gate D).</p>
+      <span class="go">Open Module 8 &rarr;</span>
+    </a>
+    <a class="bandcard" href="modules/module-09/home.html" data-band="9">
+      <div class="row"><span class="tag">Module 9</span><h3>Capstones &amp; Polish</h3><span class="mins">≈6 h</span></div>
+      <p>Choose one capstone, diagram first, vertical slice, resilience, structure, demo &amp; retrospective.</p>
+      <span class="go">Open Module 9 &rarr;</span>
+    </a>
+  </div>
+  <p class="note col" style="margin-top:1.2rem"><a href="modules/list.html">Full module list</a> · <a href="sketches/README.txt">Sketches folder</a> · <a href="../arduino/home.html">Prefer builds first? Open the Arduino Ladder</a></p>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">New here?</span><h2>Getting started &amp; guides</h2></div>
+  <div class="col stack">
+    <p>Absolute beginners: read <strong><a href="guides/getting-started.html">Getting started</a></strong> before fighting IDE install. Bookmark the <a href="guides/home.html">guides index</a> (glossary, electricity primer, <a href="guides/breadboard-basics.html">breadboard basics</a>, Tinkercad &amp; Serial how-tos, <a href="guides/debugging-playbook.html">debugging playbook</a>, troubleshooting).</p>
+    <p style="margin-top:.4rem"><a class="startbtn" href="guides/getting-started.html">Open Getting started &rarr;</a></p>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Before you start</span><h2>What you need</h2></div>
+  <div class="col stack">
+    <div class="grid-2">
+      <div class="card stack-sm">
+        <h4>Software (required)</h4>
+        <ul class="plain">
+          <li>A free <strong>Tinkercad</strong> account for early labs (day-one minimum)</li>
+          <li><strong>Arduino IDE 2.x</strong> (or Web Editor) when you can — parallel for Module 0</li>
+          <li>A laptop or computer with a browser</li>
+        </ul>
+      </div>
+      <div class="card stack-sm">
+        <h4>Hardware (optional at first)</h4>
+        <ul class="plain">
+          <li>Arduino Uno (or compatible) and USB cable</li>
+          <li>Breadboard, LEDs, resistors, buttons — order during Module 3 if aiming for Module 6–9</li>
+          <li>ESP32 later for Module 8 / IoT capstones</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card stack-sm" data-offline hidden>
+      <h4>Use it with no internet</h4>
+      <p data-offline-web hidden>Every page you open is kept on this device. To keep <strong>the whole course</strong> once more lessons ship<span data-offline-size></span>, press this while you have a good connection.</p>
+      <p data-offline-file hidden>You opened the course from files on this computer, so it already works with no internet.</p>
+      <p class="pf-acts" data-offline-web hidden><button type="button" class="pf-btn main" data-save-all>Save the whole course on this device</button></p>
+      <div class="offline-bar" data-save-bar hidden><span></span></div>
+      <p class="offline-status" data-save-status role="status" aria-live="polite"></p>
+      <p class="pf-acts" data-install hidden><button type="button" class="pf-btn" data-install-btn>Install this course</button><span class="note">It opens in its own window, like an app.</span></p>
+      <p class="note" data-ios hidden>On an iPhone or iPad: tap <strong>Share</strong>, then <strong>Add to Home Screen</strong>.</p>
+    </div>
+  </div>
+</section>
+
+<section class="part">
+  <div class="parthead"><span class="tag">Teaching it</span><h2>Running this with a group</h2></div>
+  <div class="col stack">
+    <p>Facilitators: short notes on how this course relates to the Ladder and what to collect as modules open.</p>
+    <p style="margin-top:.4rem"><strong><a href="guide.html">Open the facilitator guide &rarr;</a></strong></p>
+  </div>
+</section>
+
+</div>
+<footer class="bihfoot">
+<div class="wrap">
+  <p class="pagenote">Arduino Coding &nbsp;&middot;&nbsp; Bozoma Innovation Hub, Aiyinasi, Ellembelle District, Western Region, Ghana. Part of IoT at BIH — same programme as the Arduino Ladder.</p>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a class="lockup" href="home.html"><img src="../assets/brand/logo-mark-white.png" alt="" width="42" height="42"><span>Arduino Coding<small>Bozoma Innovation Hub</small></span></a>
+      <p>A Bozoma Innovation Hub programme. Free to use, nothing to sign up for, at your own speed.</p>
+    </div>
+    <div><h4>The course</h4><ul>
+      <li><a href="home.html">Course home</a></li>
+      <li><a href="guides/getting-started.html">Getting started</a></li>
+      <li><a href="guides/home.html">Guides</a></li>
+      <li><a href="modules/module-00/01-what-is-a-microcontroller.html">Start Module 0</a></li>
+      <li><a href="profile.html">My progress</a></li>
+      <li><a href="guide.html">Facilitator guide</a></li>
+      <li><a href="../arduino/home.html">The Arduino Ladder</a></li>
+    </ul></div>
+    <div><h4>Bozoma Innovation Hub</h4><ul>
+      <li>Aiyinasi, Ellembelle District, Western Region, Ghana</li>
+      <li><a href="https://bozomainnovationhub.com">bozomainnovationhub.com</a></li>
+      <li><a href="mailto:info@bozomainnovationhub.com">info@bozomainnovationhub.com</a></li>
+    </ul></div>
+  </div>
+  <div class="foot-bottom"><span>&copy; Bozoma Innovation Hub, Aiyinasi, Ghana</span><span class="tagline">World-class begins at home.</span></div>
+</div>
+</footer>
+</body>
+</html>

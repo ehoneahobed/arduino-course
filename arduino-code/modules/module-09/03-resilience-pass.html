@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en" data-course="arduino-code" data-band="9">
+<head>
+  <meta charset="utf-8">
+  <script src="../../../assets/theme.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href="https://iot.bozomainnovationhub.com/arduino-code/modules/module-09/03-resilience-pass">
+  <title>Resilience pass · Module 9 · Arduino Coding</title>
+  <meta name="description" content="Debounce, timeouts, Serial errors, offline/fail-safe hardening on the working slice.">
+  <meta name="theme-color" content="#24182E">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../../assets/brand/icon-192.png">
+  <link rel="apple-touch-icon" href="../../../assets/brand/icon-180.png">
+  <!-- app + link previews (tools/inject_head.py) -->
+  <link rel="manifest" href="../../../manifest.webmanifest">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="IoT at Bozoma Innovation Hub">
+  <meta property="og:title" content="Resilience pass · Module 9 · Arduino Coding">
+  <meta property="og:description" content="Debounce, timeouts, Serial errors, offline/fail-safe hardening on the working slice.">
+  <meta property="og:url" content="https://iot.bozomainnovationhub.com/arduino-code/modules/module-09/03-resilience-pass">
+  <meta property="og:image" content="https://iot.bozomainnovationhub.com/assets/og/arduino-code-modules-module-09-03-resilience-pass.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Resilience pass · Module 9 · Arduino Coding">
+  <meta property="og:locale" content="en_GB">
+  <meta name="twitter:card" content="summary_large_image">
+  <script defer src="../../../assets/app.js"></script>
+  <!-- /app + link previews -->
+  <link rel="stylesheet" href="../../../assets/course.css">
+  <link rel="stylesheet" href="../../../assets/progress.css">
+  <script defer src="../../../assets/pager.js"></script>
+  <script defer src="../../../assets/check.js" data-profile="../../profile.html"></script>
+
+</head>
+<body>
+<a class="skip" href="#main">Skip to the lesson</a>
+<div class="topbar">
+  <a class="home" href="../../home.html"><img src="../../../assets/brand/logo-mark-white.png" alt="" width="36" height="36"><span class="lock"><b>Arduino Coding</b><small>Bozoma Innovation Hub</small></span></a>
+  <a class="hub" href="../../../index.html" title="All courses: IoT at Bozoma Innovation Hub">&larr; IoT at BIH</a>
+  <nav class="bandlinks" aria-label="Modules"><a href="../module-00/home.html">0</a><a href="../module-01/home.html">1</a><a href="../module-02/home.html">2</a><a href="../module-03/home.html">3</a><a href="../module-04/home.html">4</a><a href="../module-05/home.html">5</a><a href="../module-06/home.html">6</a><a href="../module-07/home.html">7</a><a href="../module-08/home.html">8</a><a href="home.html" aria-current="page">9</a><a href="../list.html">⋯</a></nav>
+  <a class="bih" href="https://bozomainnovationhub.com"><span class="long">bozomainnovationhub.com</span><span class="short">BIH website</span></a>
+</div>
+<div class="wrap" id="main">
+
+<nav aria-label="Sections">
+  <a href="#outcomes">Outcomes</a>
+  <a href="#concepts">Concepts</a>
+  <a href="#checklist">Checklist</a>
+  <a href="#lab">Lab</a>
+  <a href="#patterns">Patterns</a>
+  <a href="#check">Check yourself</a>
+  <a href="#mistakes">Mistakes</a>
+</nav>
+<header style="padding:3rem 0 1rem">
+  <p class="eyebrow">Arduino Coding &nbsp;·&nbsp; Module 9 &nbsp;·&nbsp; Lesson 9.3 &nbsp;·&nbsp; <span class="tag">HW · ESP</span></p>
+  <h1 style="margin:.8rem 0">Resilience pass</h1>
+  <p class="col sub" style="font-size:1.1em">Demos that only work when the user is gentle are toys. Harden bounce, hangs, and unclear failures without adding new features.</p>
+  <p class="col note" style="margin-top:.8rem">About 50–70 minutes. Harden the 9.2 slice on the desk.</p>
+</header>
+
+<section class="part" id="outcomes">
+  <div class="parthead"><span class="tag">Start here</span><h2>Learning outcomes</h2></div>
+  <div class="col stack"><ol class="num">
+    <li>Upgrade inputs to robust debounce (and note ISR + loop rules if Capstone D).</li>
+    <li>Add timeouts / software watchdogs so modes cannot hang forever.</li>
+    <li>Make Serial (or OLED) errors clear when sensors or links fail.</li>
+  </ol></div>
+</section>
+<section class="part" id="concepts">
+  <div class="parthead"><span class="tag">Concept</span><h2>Harden, don’t feature</h2></div>
+  <div class="col stack">
+    <div class="callout" style="--bc:var(--accent)"><h5>Concept</h5>
+    <p>Resilience is product behavior under abuse and failure: mash the button, unplug the sensor, kill Wi‑Fi. Patterns weight is 35% — bounce, timeouts, and honest errors count.</p></div>
+  </div>
+</section>
+<section class="part" id="checklist">
+  <div class="parthead"><span class="tag">Part</span><h2>Resilience checklist</h2></div>
+  <div class="col stack">
+    <ol class="num">
+      <li>Every button / trip edge debounced (or documented ISR + loop debounce)</li>
+      <li>Alarm / remind / connect modes have a timeout or ack path</li>
+      <li>Sensor read failures print a clear Serial line (not silent zeros)</li>
+      <li>Actuators return to SAFE on boot and on known fault paths</li>
+      <li>IoT (C): reconnect FSM + fail-safe from Module 8 still present</li>
+      <li>No new MVP stories sneaked in during this pass</li>
+    </ol>
+    <p>Debounce: rising/falling edges with millis quiet window. Timeouts: ALARM auto-mute, REMIND blink budget, WIFI connect window. Errors: <code>DHT_FAIL</code>, <code>I2C_NACK</code>, <code>WIFI_DOWN</code> — not mysterious zeros.</p>
+  </div>
+</section>
+<section class="part" id="lab">
+  <div class="parthead"><span class="tag">Lab</span><h2>Abuse the slice</h2><span class="mins">35 min</span></div>
+  <div class="col stack">
+    <p>Mash buttons; unplug/cover sensors; for C kill the AP. Confirm debounce holds, timeouts fire, Serial names the fault, actuators go SAFE. Update the diagram if you add timeout states.</p>
+  </div>
+</section>
+<section class="part" id="patterns">
+  <div class="parthead"><span class="tag">Patterns</span><h2>Checklist-driven pass</h2></div>
+  <div class="col stack"><div class="callout"><h5>Pattern</h5>
+  <p>One resilience commit (or clearly marked section) separate from features. Fail-safe on fault enter. Clear error vocabulary on Serial.</p></div></div>
+</section>
+<section class="part" id="check">
+  <div class="parthead"><span class="tag">Check</span><h2>Check yourself</h2></div>
+  <div class="col stack"><ol class="num" data-check>
+    <li data-kind="open" data-see="#checklist">Name three items on the resilience checklist.
+      <details><summary>Model answer</summary><p>Any three: debounce, timeouts, clear Serial errors, SAFE actuators, IoT reconnect/fail-safe, no new features.</p></details></li>
+    <li data-kind="open" data-see="#concepts">Why separate resilience from new features?
+      <details><summary>Model answer</summary><p>So hardening is visible and regressions are easier to spot.</p></details></li>
+    <li data-kind="open" data-see="#checklist">What should a failed DHT read print instead of fake zeros?
+      <details><summary>Model answer</summary><p>A clear error token / line (e.g. DHT_FAIL) and keep last-good or SAFE policy.</p></details></li>
+    <li data-kind="choice" data-choices="True|False" data-correct="1" data-see="#lab" data-hint="Harden first." data-why-0="No new MVP stories in 9.3." data-why-1="Correct — false.">Lesson 9.3 is the right time to add a second sensor and OLED layout.</li>
+  </ol></div>
+</section>
+<section class="part" id="mistakes">
+  <div class="parthead"><span class="tag">Watch outs</span><h2>Common mistakes</h2></div>
+  <div class="col stack">
+    <div class="scroll"><table><thead><tr><th>Mistake</th><th>Fix</th></tr></thead><tbody>
+      <tr><td>Skipping mash tests</td><td>Deliberate bounce abuse</td></tr>
+      <tr><td>Alarm that never ends</td><td>Timeout or ack path</td></tr>
+      <tr><td>Silent sensor fail</td><td>Named Serial errors</td></tr>
+      <tr><td>Feature creep mid-pass</td><td>Park ideas for stretch</td></tr>
+      <tr><td>IoT without fail-safe</td><td>Reapply Module 8 ops</td></tr>
+    </tbody></table></div>
+  </div>
+</section>
+
+<nav class="pager" aria-label="Lessons">
+<a href="02-vertical-slice.html"><span class="dir">Previous</span><span class="name">9.2 Vertical slice</span></a>
+<a class="next" href="04-code-structure-and-reuse.html"><span class="dir">Next</span><span class="name">9.4 Structure &rarr;</span></a>
+</nav>
+</div>
+<footer class="bihfoot"><div class="wrap">
+  <p class="pagenote">Lesson 9.3 &nbsp;&middot;&nbsp; Module 9 &nbsp;&middot;&nbsp; Arduino Coding.</p>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a class="lockup" href="../../home.html"><img src="../../../assets/brand/logo-mark-white.png" alt="" width="42" height="42"><span>Arduino Coding<small>Bozoma Innovation Hub</small></span></a>
+      <p>A Bozoma Innovation Hub programme.</p>
+    </div>
+    <div><h4>The course</h4><ul>
+      <li><a href="../../home.html">Course home</a></li>
+      <li><a href="home.html">Module 9</a></li>
+      <li><a href="../list.html">All modules</a></li>
+    </ul></div>
+    <div><h4>Bozoma Innovation Hub</h4><ul>
+      <li><a href="https://bozomainnovationhub.com">bozomainnovationhub.com</a></li>
+    </ul></div>
+  </div>
+  <div class="foot-bottom"><span>&copy; Bozoma Innovation Hub, Aiyinasi, Ghana</span><span class="tagline">World-class begins at home.</span></div>
+</div></footer>
+</body>
+</html>

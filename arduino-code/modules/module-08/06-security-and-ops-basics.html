@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en" data-course="arduino-code" data-band="8">
+<head>
+  <meta charset="utf-8">
+  <script src="../../../assets/theme.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href="https://iot.bozomainnovationhub.com/arduino-code/modules/module-08/06-security-and-ops-basics">
+  <title>Security &amp; ops basics · Module 8 · Arduino Coding</title>
+  <meta name="description" content="secrets vs config, publish rate limits, fail-safe offline actuator defaults.">
+  <meta name="theme-color" content="#24182E">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../../assets/brand/icon-192.png">
+  <link rel="apple-touch-icon" href="../../../assets/brand/icon-180.png">
+  <!-- app + link previews (tools/inject_head.py) -->
+  <link rel="manifest" href="../../../manifest.webmanifest">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="IoT at Bozoma Innovation Hub">
+  <meta property="og:title" content="Security &amp; ops basics · Module 8 · Arduino Coding">
+  <meta property="og:description" content="secrets vs config, publish rate limits, fail-safe offline actuator defaults.">
+  <meta property="og:url" content="https://iot.bozomainnovationhub.com/arduino-code/modules/module-08/06-security-and-ops-basics">
+  <meta property="og:image" content="https://iot.bozomainnovationhub.com/assets/og/arduino-code-modules-module-08-06-security-and-ops-basics.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Security &amp; ops basics · Module 8 · Arduino Coding">
+  <meta property="og:locale" content="en_GB">
+  <meta name="twitter:card" content="summary_large_image">
+  <script defer src="../../../assets/app.js"></script>
+  <!-- /app + link previews -->
+  <link rel="stylesheet" href="../../../assets/course.css">
+  <link rel="stylesheet" href="../../../assets/progress.css">
+  <script defer src="../../../assets/pager.js"></script>
+  <script defer src="../../../assets/check.js" data-profile="../../profile.html"></script>
+
+</head>
+<body>
+<a class="skip" href="#main">Skip to the lesson</a>
+<div class="topbar">
+  <a class="home" href="../../home.html"><img src="../../../assets/brand/logo-mark-white.png" alt="" width="36" height="36"><span class="lock"><b>Arduino Coding</b><small>Bozoma Innovation Hub</small></span></a>
+  <a class="hub" href="../../../index.html" title="All courses: IoT at Bozoma Innovation Hub">&larr; IoT at BIH</a>
+  <nav class="bandlinks" aria-label="Modules"><a href="../module-00/home.html">0</a><a href="../module-01/home.html">1</a><a href="../module-02/home.html">2</a><a href="../module-03/home.html">3</a><a href="../module-04/home.html">4</a><a href="../module-05/home.html">5</a><a href="../module-06/home.html">6</a><a href="../module-07/home.html">7</a><a href="home.html" aria-current="page">8</a><a href="../list.html">⋯</a></nav>
+  <a class="bih" href="https://bozomainnovationhub.com"><span class="long">bozomainnovationhub.com</span><span class="short">BIH website</span></a>
+</div>
+<div class="wrap" id="main">
+
+<nav aria-label="Sections">
+  <a href="#outcomes">Outcomes</a>
+  <a href="#concepts">Concepts</a>
+  <a href="#ops">Ops</a>
+  <a href="#lab">Lab</a>
+  <a href="#patterns">Patterns</a>
+  <a href="#check">Check yourself</a>
+  <a href="#mistakes">Mistakes</a>
+</nav>
+<header style="padding:3rem 0 1rem">
+  <p class="eyebrow">Arduino Coding &nbsp;·&nbsp; Module 8 &nbsp;·&nbsp; Lesson 8.6 &nbsp;·&nbsp; <span class="tag">ESP · HW</span></p>
+  <h1 style="margin:.8rem 0">Security &amp; ops basics</h1>
+  <p class="col sub" style="font-size:1.1em">Ops basics for Gate D: don’t leak passwords, don’t flood brokers, don’t leave actuators undefined when the network dies. Full TLS / OTA → future esp32/ course.</p>
+  <p class="col note" style="margin-top:.8rem">About 40 minutes. Extend 8.2 / 8.4 / 8.5 on the desk.</p>
+</header>
+
+<section class="part" id="outcomes">
+  <div class="parthead"><span class="tag">Start here</span><h2>Learning outcomes</h2></div>
+  <div class="col stack"><ol class="num">
+    <li>Separate secrets/config from sketch logic; know what must never be committed.</li>
+    <li>Apply simple rate limits on publish/POST.</li>
+    <li>Define a fail-safe offline mode for one actuator.</li>
+  </ol></div>
+</section>
+<section class="part" id="concepts">
+  <div class="parthead"><span class="tag">Concept</span><h2>Config vs code</h2></div>
+  <div class="col stack">
+    <div class="callout" style="--bc:var(--accent)"><h5>Concept</h5>
+    <p>Security at Module 8 depth: don’t leak passwords, don’t expose raw command topics for real locks, don’t leave actuators undefined when RF dies. Rate limits protect you and shared brokers.</p></div>
+    <div class="scroll"><table><thead><tr><th>File</th><th>Commit?</th><th>Contents</th></tr></thead><tbody>
+      <tr><td><code>secrets.h</code></td><td><strong>No</strong></td><td>SSID, passwords, tokens</td></tr>
+      <tr><td><code>secrets.h.example</code></td><td>Yes</td><td>Placeholders only</td></tr>
+      <tr><td><code>config.h</code> (optional)</td><td>Yes if non-secret</td><td>Intervals, topic prefix, pins</td></tr>
+      <tr><td><code>.ino</code></td><td>Yes</td><td>FSM, sampling — no raw passwords</td></tr>
+    </tbody></table></div>
+  </div>
+</section>
+<section class="part" id="ops">
+  <div class="parthead"><span class="tag">Part</span><h2>Rate limits &amp; fail-safe</h2></div>
+  <div class="col stack">
+    <p>Starting intervals: MQTT telemetry <strong>5–30&nbsp;s</strong>; HTTP POST <strong>10–60&nbsp;s</strong>. Enforce <code>minPublishMs</code>. On enter offline / reconnect wait: <code>digitalWrite(actuator, SAFE_LEVEL)</code>. Document SAFE_LEVEL in the header. Unique DEVICE_ID on public brokers; no home security / PII on plaintext.</p>
+  </div>
+</section>
+<section class="part" id="lab">
+  <div class="parthead"><span class="tag">Lab</span><h2>Ops hygiene demo</h2><span class="mins">25 min</span></div>
+  <div class="col stack">
+    <p>Project <code>M8-L06-OpsBasics</code> (or extend 8.5). Audit passwords into <code>secrets.h</code>; enforce <code>minPublishMs</code>; implement <code>applyFailSafe()</code> when leaving ONLINE; pull Wi‑Fi and confirm actuator goes safe while samples continue.</p>
+  </div>
+</section>
+<section class="part" id="patterns">
+  <div class="parthead"><span class="tag">Patterns</span><h2>Least surprise</h2></div>
+  <div class="col stack"><div class="callout"><h5>Pattern</h5>
+  <p>Config vs code. Minimum publish interval. Offline policy function. Ignore malformed MQTT/HTTP payloads — don’t toggle on garbage.</p></div></div>
+</section>
+<section class="part" id="check">
+  <div class="parthead"><span class="tag">Check</span><h2>Check yourself</h2></div>
+  <div class="col stack"><ol class="num" data-check>
+    <li data-kind="open" data-see="#concepts">Name two items that belong in secrets.h, not the committed .ino.
+      <details><summary>Model answer</summary><p>e.g. Wi‑Fi password, webhook token / broker password.</p></details></li>
+    <li data-kind="open" data-see="#ops">What is a fail-safe for a heater relay when MQTT drops?
+      <details><summary>Model answer</summary><p>Drive relay to safe OFF (de-energize).</p></details></li>
+    <li data-kind="open" data-see="#ops">Why rate-limit publishes on a classroom public broker?
+      <details><summary>Model answer</summary><p>Avoid flooding, bans, and useless battery/CPU use.</p></details></li>
+    <li data-kind="choice" data-choices="True|False" data-correct="1" data-see="#concepts" data-hint="Ops basics only." data-why-0="Soft-link deeper security to esp32/." data-why-1="Correct — false.">Module 8 replaces the need for the future <code>esp32/</code> security curriculum.</li>
+  </ol></div>
+</section>
+<section class="part" id="mistakes">
+  <div class="parthead"><span class="tag">Watch outs</span><h2>Common mistakes</h2></div>
+  <div class="col stack">
+    <div class="scroll"><table><thead><tr><th>Mistake</th><th>Fix</th></tr></thead><tbody>
+      <tr><td>Committing <code>secrets.h</code></td><td>gitignore + rotate password</td></tr>
+      <tr><td>Publish every loop</td><td><code>minPublishMs</code> gate</td></tr>
+      <tr><td>Actuator holds last ON offline</td><td><code>applyFailSafe()</code> on offline enter</td></tr>
+      <tr><td>Trusting any MQTT string</td><td>Strict parse (<code>on</code>/<code>off</code>)</td></tr>
+      <tr><td>Assuming TLS is “done”</td><td>Gate D ≠ production hardening</td></tr>
+    </tbody></table></div>
+  </div>
+</section>
+
+<nav class="pager" aria-label="Lessons">
+<a href="05-non-blocking-networking-and-fsm.html"><span class="dir">Previous</span><span class="name">8.5 Net FSM</span></a>
+<a class="next" href="07-remote-environment-node.html"><span class="dir">Next</span><span class="name">8.7 Env node &rarr;</span></a>
+</nav>
+</div>
+<footer class="bihfoot"><div class="wrap">
+  <p class="pagenote">Lesson 8.6 &nbsp;&middot;&nbsp; Module 8 &nbsp;&middot;&nbsp; Arduino Coding.</p>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a class="lockup" href="../../home.html"><img src="../../../assets/brand/logo-mark-white.png" alt="" width="42" height="42"><span>Arduino Coding<small>Bozoma Innovation Hub</small></span></a>
+      <p>A Bozoma Innovation Hub programme.</p>
+    </div>
+    <div><h4>The course</h4><ul>
+      <li><a href="../../home.html">Course home</a></li>
+      <li><a href="home.html">Module 8</a></li>
+      <li><a href="../list.html">All modules</a></li>
+    </ul></div>
+    <div><h4>Bozoma Innovation Hub</h4><ul>
+      <li><a href="https://bozomainnovationhub.com">bozomainnovationhub.com</a></li>
+    </ul></div>
+  </div>
+  <div class="foot-bottom"><span>&copy; Bozoma Innovation Hub, Aiyinasi, Ghana</span><span class="tagline">World-class begins at home.</span></div>
+</div></footer>
+</body>
+</html>

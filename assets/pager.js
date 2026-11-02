@@ -14,9 +14,15 @@
 
   // Each course keeps its own progress: <html data-course="esp32" data-band="3">. The Arduino
   // Ladder has no data-course and keeps its original "ladder-…" names, so nobody loses progress.
-  var band = document.documentElement.getAttribute('data-band') || location.pathname;
-  var course = document.documentElement.getAttribute('data-course') || 'ladder';
-  var KEY = course + '-read-' + band;
+  // Arduino Coding reuses data-band per module across many lesson HTML files, so those keys
+  // must also include this page — otherwise finishing Mistakes on 0.5 restores #mistakes on
+  // 0.6 and the learner thinks Next did nothing.
+  var courseAttr = document.documentElement.getAttribute('data-course');
+  var band = document.documentElement.getAttribute('data-band') || '';
+  var course = courseAttr || 'ladder';
+  var page = (location.pathname.split('/').pop() || location.pathname).replace(/\.html$/, '');
+  var scope = band !== '' ? (band + ':' + page) : page;
+  var KEY = courseAttr ? (course + '-read-' + scope) : (course + '-read-' + (band || page));
   var PREF = course + '-one-page';
   function load(k, d) { try { var v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } }
   function save(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
@@ -31,6 +37,8 @@
     if (i < first) intro.push(el);
     else if (i > last) outro.push(el);
   });
+  // Cross-page prev/next (lesson → lesson, or band → band). Lives after the last section.
+  var lessonPager = wrap.querySelector(':scope > nav.pager');
 
   var titles = sections.map(function (s) {
     var a = bar.querySelector('a[href="#' + s.id + '"]');
@@ -49,7 +57,11 @@
   // so every section starts at the top of the screen like a new page.
   var header = wrap.querySelector(':scope > header');
   var h1 = header && header.querySelector('h1');
-  var bandName = 'Band ' + (document.documentElement.getAttribute('data-band') || '') + (h1 ? ' · ' + h1.textContent.trim() : '');
+  // Ladder / module pages have data-band; guide pages do not — use the page title alone.
+  var bandAttr = document.documentElement.getAttribute('data-band');
+  var bandName = (bandAttr !== null && bandAttr !== '')
+    ? ('Band ' + bandAttr + (h1 ? ' · ' + h1.textContent.trim() : ''))
+    : (h1 ? h1.textContent.trim() : 'Sections');
   var head = document.createElement('div');
   head.className = 'pg-head';
   wrap.insertBefore(head, intro[0] || sections[0]);
@@ -87,10 +99,35 @@
       titles[i].replace(/"/g, '&quot;') + '">' + (dir === 'prev' ? '‹' : '›') + '</a>';
   }
 
+  function lessonNextAnchor() {
+    if (!lessonPager) return null;
+    return lessonPager.querySelector('a.next') || lessonPager.querySelector('a:last-of-type');
+  }
+
+  function arrowNext() {
+    if (cur + 1 < sections.length) return arrow(cur + 1, 'next');
+    var a = lessonNextAnchor();
+    if (!a) return arrow(cur + 1, 'next');
+    var label = ((a.querySelector('.name') || a).textContent || 'Next lesson').trim();
+    return '<a class="pg-arrow" href="' + a.getAttribute('href') + '" aria-label="Next: ' +
+      label.replace(/"/g, '&quot;') + '">›</a>';
+  }
+
   function link(i, dir) {
     if (i < 0 || i >= sections.length) return '<span></span>';
     return '<a class="pg-' + dir + '" href="#' + sections[i].id + '"><small>' + (dir === 'prev' ? '← Previous' : 'Next →') +
       '</small><b>' + titles[i].replace(/</g, '&lt;') + '</b></a>';
+  }
+
+  /** On the last section, section-Next becomes the next lesson/band (clear advance). */
+  function linkNext() {
+    if (cur + 1 < sections.length) return link(cur + 1, 'next');
+    var a = lessonNextAnchor();
+    if (!a) return '<span></span>';
+    var dir = ((a.querySelector('.dir') || {}).textContent || 'Next lesson').trim();
+    var name = ((a.querySelector('.name') || a).textContent || 'Continue').trim();
+    return '<a class="pg-next" href="' + a.getAttribute('href') + '"><small>' +
+      dir.replace(/</g, '&lt;') + '</small><b>' + name.replace(/</g, '&lt;') + '</b></a>';
   }
 
   function render() {
@@ -101,6 +138,7 @@
     if (!paged) {
       sections.concat(intro, outro).forEach(function (el) { el.hidden = false; });
       if (header) header.hidden = false;
+      if (lessonPager) lessonPager.hidden = false;
       head.hidden = true;
       foot.hidden = true;
       strip.querySelector('.pg-count').textContent = done + ' of ' + sections.length + ' sections read';
@@ -112,11 +150,17 @@
     if (header) header.hidden = cur !== 0;
     head.hidden = cur === 0;
     head.innerHTML = '<a class="pg-band" href="#' + sections[0].id + '">' + bandName.replace(/</g, '&lt;') + '</a>' +
-      '<span class="pg-step">' + arrow(cur - 1, 'prev') + '<b>Section ' + (cur + 1) + ' of ' + sections.length + '</b>' + arrow(cur + 1, 'next') + '</span>';
+      '<span class="pg-step">' + arrow(cur - 1, 'prev') + '<b>Section ' + (cur + 1) + ' of ' + sections.length + '</b>' + arrowNext() + '</span>';
     intro.forEach(function (el) { el.hidden = cur !== 0; });
-    outro.forEach(function (el) { el.hidden = cur !== sections.length - 1; });
+    // In one-section mode the foot carries next-lesson; hide the duplicate lesson pager
+    // so learners do not see two Prev targets (section vs previous lesson).
+    outro.forEach(function (el) {
+      if (el === lessonPager) { el.hidden = true; return; }
+      el.hidden = cur !== sections.length - 1;
+    });
+    if (lessonPager) lessonPager.hidden = true;
     foot.hidden = false;
-    foot.innerHTML = link(cur - 1, 'prev') + link(cur + 1, 'next');
+    foot.innerHTML = link(cur - 1, 'prev') + linkNext();
     strip.querySelector('.pg-count').textContent = done + ' of ' + sections.length + ' sections read';
     markBar();
     if (typeof renderSide === 'function') renderSide();

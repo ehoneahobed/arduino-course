@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en" data-course="arduino-code">
+<head>
+  <meta charset="utf-8">
+  <script src="../../assets/theme.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href="https://iot.bozomainnovationhub.com/arduino-code/guides/breadboard-basics">
+  <title>Breadboard basics · Arduino Coding</title>
+  <meta name="description" content="Rows vs rails, shared GND, mental model for Module 0–1 wiring.">
+  <meta name="theme-color" content="#24182E">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../assets/brand/icon-192.png">
+  <link rel="apple-touch-icon" href="../../assets/brand/icon-180.png">
+  <!-- app + link previews (tools/inject_head.py) -->
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="IoT at Bozoma Innovation Hub">
+  <meta property="og:title" content="Breadboard basics · Arduino Coding">
+  <meta property="og:description" content="Rows vs rails, shared GND, mental model for Module 0–1 wiring.">
+  <meta property="og:url" content="https://iot.bozomainnovationhub.com/arduino-code/guides/breadboard-basics">
+  <meta property="og:image" content="https://iot.bozomainnovationhub.com/assets/og/arduino-code-guides-breadboard-basics.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Breadboard basics · Arduino Coding">
+  <meta property="og:locale" content="en_GB">
+  <meta name="twitter:card" content="summary_large_image">
+  <script defer src="../../assets/app.js"></script>
+  <!-- /app + link previews -->
+  <link rel="stylesheet" href="../../assets/course.css">
+  <link rel="stylesheet" href="../../assets/progress.css">
+  <script defer src="../../assets/pager.js"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to the guide</a>
+<div class="topbar">
+  <a class="home" href="../home.html"><img src="../../assets/brand/logo-mark-white.png" alt="" width="36" height="36"><span class="lock"><b>Arduino Coding</b><small>Bozoma Innovation Hub</small></span></a>
+  <a class="hub" href="../../index.html" title="All courses: IoT at Bozoma Innovation Hub">&larr; IoT at BIH</a>
+  <nav class="bandlinks" aria-label="Modules"><a href="../modules/module-00/home.html">0</a><a href="../modules/module-01/home.html">1</a><a href="../modules/module-02/home.html">2</a><a href="../modules/module-03/home.html">3</a><a href="../modules/module-04/home.html">4</a><a href="../modules/module-05/home.html">5</a><a href="../modules/module-06/home.html">6</a><a href="../modules/module-07/home.html">7</a><a href="../modules/module-08/home.html">8</a><a href="../modules/module-09/home.html">9</a><a href="../modules/list.html">⋯</a></nav>
+  <a class="bih" href="https://bozomainnovationhub.com"><span class="long">bozomainnovationhub.com</span><span class="short">BIH website</span></a>
+</div>
+<div class="wrap" id="main">
+<nav aria-label="Sections">
+  <a href="#1-what-a-breadboard-is">What a breadboard is</a>
+  <a href="#2-the-only-rules-that-matter">The only rules that matter</a>
+  <a href="#3-picture-one-led-on-a-breadboard">Picture: one LED on a breadboard</a>
+  <a href="#4-why-module-1-loves-one-gnd-rail">Why Module 1 loves one GND rail</a>
+  <a href="#5-common-breadboard-footguns">Common breadboard footguns</a>
+  <a href="#6-tinkercad-vs-real-board">Tinkercad vs real board</a>
+  <a href="#7-mini-checklist-before-start-simulation-upload">Mini checklist before Start Simulation / Upload</a>
+  <a href="#related-guides">Related guides</a>
+</nav>
+<header style="padding:3.2rem 0 1rem">
+  <p class="eyebrow">Arduino Coding &nbsp;&middot;&nbsp; Guides</p>
+  <h1 style="margin:.8rem 0">Breadboard basics</h1>
+  <p class="col sub" style="font-size:1.12em">Rows vs rails, shared GND, mental model for Module 0–1 wiring.</p>
+</header>
+<p><strong>Goal:</strong> Know <em>which holes are connected</em> before you place your first LED.   <strong>Not a goal:</strong> Fancy multi-board layouts or proto-PCB design.</p>
+<p>Read this when Lesson 0.3 mentions a breadboard, or before wiring several LEDs in Module 1. Pair with the <a href="electricity-primer.html">electricity primer</a> for voltage / GND / polarity.</p>
+<section class="part" id="1-what-a-breadboard-is"><div class="parthead"><span class="tag">Guide</span><h2>1. What a breadboard is</h2></div><div class="col stack">
+<p>A <strong>solderless breadboard</strong> is a plastic grid of holes with metal clips underneath. You push component legs and jumper wires into the holes. No soldering — move parts until the circuit works.</p>
+<p>In <strong>Tinkercad</strong>, the on-screen breadboard follows the same connection rules as a real one. Learn the rules once; they transfer to a desk kit later.</p>
+</div></section>
+<section class="part" id="2-the-only-rules-that-matter"><div class="parthead"><span class="tag">Guide</span><h2>2. The only rules that matter</h2></div><div class="col stack">
+<h3 id="rows-the-short-strips">Rows (the short strips)</h3>
+<p>On each <strong>half</strong> of the board, five holes in a row (often labeled <strong>a–e</strong> or <strong>f–j</strong>) share one metal clip.</p>
+<pre><code>a3  b3  c3  d3  e3   ← all connected to each other</code></pre>
+<ul class="plain"><li>Put a resistor leg in <code>c3</code> and a wire in <code>e3</code> → they touch electrically.</li><li>Different <strong>row numbers</strong> (<code>3</code> vs <code>4</code>) are <strong>not</strong> connected unless you add a jumper.</li></ul>
+<h3 id="the-center-gap">The center gap</h3>
+<p>The board is split down the middle.</p>
+<pre><code>a3 b3 c3 d3 e3   |gap|   f3 g3 h3 i3 j3</code></pre>
+<ul class="plain"><li><code>e3</code> does <strong>not</strong> connect across to <code>f3</code>.</li><li>That gap is where DIP chips sit (legs on each side). For beginner LED labs, treat halves as separate until you bridge them with a wire.</li></ul>
+<h3 id="power-rails-the-long-strips">Power rails (the long strips)</h3>
+<p>Along the long edges you usually see <strong>+</strong> (red) and <strong>−</strong> / blue lines. Those holes connect <strong>along the length</strong> of the board (sometimes broken in the middle on longer boards — check continuity if a rail “dies” halfway).</p>
+<p><strong>Beginner habit:</strong></p>
+<ol class="num"><li>Uno <strong>5V</strong> → <strong>+</strong> rail (once).  </li><li>Uno <strong>GND</strong> → <strong>−</strong> rail (once).  </li><li>Every LED cathode, button-to-GND, and sensor ground taps the <strong>−</strong> rail.  </li><li>Parts that need 5 V tap the <strong>+</strong> rail.</li></ol>
+<p>That is <strong>shared GND</strong> in practice: one return path idea for the whole project.</p>
+</div></section>
+<section class="part" id="3-picture-one-led-on-a-breadboard"><div class="parthead"><span class="tag">Guide</span><h2>3. Picture: one LED on a breadboard</h2></div><div class="col stack">
+<p>Same electrical path as “direct to the Uno,” just using rows and rails:</p>
+<pre><code>Uno pin 13 ──jumper──► row 3 (one end of 220 Ω)
+                         other end of 220 Ω in row 5
+                         LED anode in row 5
+                         LED cathode in row 7
+                         jumper from row 7 ──► GND (−) rail
+Uno GND ─────────────────────────────────────► GND (−) rail</code></pre>
+<p>ASCII of the <em>idea</em> (ignore exact hole letters):</p>
+<pre><code>[pin 13] → [resistor] → [LED anode → cathode] → [GND rail] → Uno GND</code></pre>
+<p><strong>Check understanding</strong></p>
+<div class="callout" style="--bc:var(--accent)"><h5>Note</h5><p>You plug the LED anode and one resistor leg into the <strong>same</strong> row. Are they connected? <strong>Yes</strong> — same row number on the same half = same clip. That is how “pin → resistor → LED” becomes physical.</p></div>
+</div></section>
+<section class="part" id="4-why-module-1-loves-one-gnd-rail"><div class="parthead"><span class="tag">Guide</span><h2>4. Why Module 1 loves one GND rail</h2></div><div class="col stack">
+<p>Three LEDs do <strong>not</strong> each need their own wire back to a different Uno GND pin. They can all return to the <strong>same − rail</strong>, and that rail has <strong>one</strong> jumper to Uno <strong>GND</strong>.</p>
+<pre><code>Pin 8  → R → LED → GND rail ─┐
+Pin 9  → R → LED → GND rail ─┼─→ Uno GND
+Pin 10 → R → LED → GND rail ─┘</code></pre>
+<p>If one LED stays dark, ask: is its cathode on the <strong>GND rail</strong>, and is that rail actually jumpered to Uno <strong>GND</strong>?</p>
+</div></section>
+<section class="part" id="5-common-breadboard-footguns"><div class="parthead"><span class="tag">Guide</span><h2>5. Common breadboard footguns</h2></div><div class="col stack">
+<div class="scroll"><table><thead><tr><th>Mistake</th><th>What you see</th><th>Fix</th></tr></thead><tbody><tr><td>Bridging the center gap in your head</td><td>“I wired it” but halves don’t meet</td><td>Add an explicit jumper across the gap if needed</td></tr><tr><td>Using adjacent <strong>row numbers</strong> thinking they’re linked</td><td>Open circuit / dark LED</td><td>Same <strong>number</strong> on a–e (or f–j), or add a jumper</td></tr><tr><td>+ and − rails swapped</td><td>Weird always-on / stress risk</td><td>Red/+ to 5V, blue/− to GND — label once</td></tr><tr><td>Forgetting the rail-to-Uno GND jumper</td><td>Whole strip of LEDs dark</td><td>One wire: − rail → Uno GND</td></tr><tr><td>Crowding one row with 5V and GND</td><td>Short</td><td>Keep power and ground on <strong>rails</strong>, signals on <strong>rows</strong></td></tr><tr><td>Bent legs not seated</td><td>Intermittent</td><td>Push until the part sits flat; re-seat jumpers</td></tr></tbody></table></div>
+</div></section>
+<section class="part" id="6-tinkercad-vs-real-board"><div class="parthead"><span class="tag">Guide</span><h2>6. Tinkercad vs real board</h2></div><div class="col stack">
+<div class="scroll"><table><thead><tr><th>Topic</th><th>Tinkercad</th><th>Desk breadboard</th></tr></thead><tbody><tr><td>Connection rules</td><td>Same mental model</td><td>Same</td></tr><tr><td>Mistakes</td><td>Usually silent (dark LED)</td><td>Same + possible loose jumpers</td></tr><tr><td>Rails</td><td>Drawn clearly</td><td>Follow the printed + / − lines</td></tr><tr><td>Smoke</td><td>Won’t</td><td>Still use series resistors — habits transfer</td></tr></tbody></table></div>
+</div></section>
+<section class="part" id="7-mini-checklist-before-start-simulation-upload"><div class="parthead"><span class="tag">Guide</span><h2>7. Mini checklist before Start Simulation / Upload</h2></div><div class="col stack">
+<ul class="plain"><li>[ ] Each series path is <strong>pin → resistor → LED anode → cathode → GND</strong> (or rail → Uno GND).  </li><li>[ ] Shared returns meet on the <strong>GND (−) rail</strong>.  </li><li>[ ] No accidental 5V-to-GND short on one row.  </li><li>[ ] Resistors are <strong>220 Ω</strong>, not 220 <strong>kΩ</strong>.  </li><li>[ ] LED polarity: anode toward the pin/resistor; cathode toward GND.</li></ul>
+</div></section>
+<section class="part" id="related-guides"><div class="parthead"><span class="tag">Guide</span><h2>Related guides</h2></div><div class="col stack">
+<ul class="plain"><li><a href="electricity-primer.html">Electricity primer</a> — why GND and the resistor matter  </li><li><a href="how-to-tinkercad.html">How to Tinkercad</a> — placing parts in Circuits  </li><li><a href="debugging-playbook.html">Debugging playbook</a> — ordered “it should work” steps  </li><li><a href="getting-started.html">Getting started</a> — course path and kit timing  </li></ul>
+<p><strong>Next lab:</strong> Lesson <a href="../../modules/module-00/03-tinkercad-lab-setup.html">0.3 Tinkercad lab setup</a> or <a href="../../modules/module-01/01-multiple-leds-and-variables.html">1.1 Multiple LEDs</a>.</p>
+</div></section>
+<section class="part">
+  <div class="parthead"><span class="tag">More</span><h2>Related</h2></div>
+  <div class="col stack">
+    <p><a href="home.html">All guides</a> · <a href="getting-started.html">Getting started</a> · <a href="debugging-playbook.html">Debugging playbook</a> · <a href="troubleshooting-faq.html">Troubleshooting</a> · <a href="../modules/module-00/home.html">Module 0</a></p>
+  </div>
+</section>
+
+</div>
+<footer class="bihfoot"><div class="wrap">
+  <p class="pagenote">Guides &nbsp;&middot;&nbsp; Arduino Coding</p>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a class="lockup" href="../home.html"><img src="../../assets/brand/logo-mark-white.png" alt="" width="42" height="42"><span>Arduino Coding<small>Bozoma Innovation Hub</small></span></a>
+      <p>A Bozoma Innovation Hub programme.</p>
+    </div>
+    <div><h4>The course</h4><ul>
+      <li><a href="../home.html">Course home</a></li>
+      <li><a href="home.html">Guides index</a></li>
+      <li><a href="getting-started.html">Getting started</a></li>
+      <li><a href="debugging-playbook.html">Debugging playbook</a></li>
+      <li><a href="../modules/module-00/home.html">Module 0</a></li>
+    </ul></div>
+    <div><h4>Bozoma Innovation Hub</h4><ul>
+      <li><a href="https://bozomainnovationhub.com">bozomainnovationhub.com</a></li>
+    </ul></div>
+  </div>
+  <div class="foot-bottom"><span>&copy; Bozoma Innovation Hub, Aiyinasi, Ghana</span><span class="tagline">World-class begins at home.</span></div>
+</div></footer>
+</body>
+</html>

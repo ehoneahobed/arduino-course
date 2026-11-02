@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="en" data-course="arduino-code" data-band="0">
+<head>
+  <meta charset="utf-8">
+  <script src="../../../assets/theme.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href="https://iot.bozomainnovationhub.com/arduino-code/modules/module-00/02-arduino-ide-tour">
+  <title>Arduino IDE tour · Module 0 · Arduino Coding</title>
+  <meta name="description" content="Install Arduino IDE 2.x, learn Verify vs Upload, and map the IDE to Tinkercad Text mode.">
+  <meta name="theme-color" content="#24182E">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../../assets/brand/icon-192.png">
+  <link rel="apple-touch-icon" href="../../../assets/brand/icon-180.png">
+  <!-- app + link previews (tools/inject_head.py) -->
+  <link rel="manifest" href="../../../manifest.webmanifest">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="IoT at Bozoma Innovation Hub">
+  <meta property="og:title" content="Arduino IDE tour · Module 0 · Arduino Coding">
+  <meta property="og:description" content="Install Arduino IDE 2.x, learn Verify vs Upload, and map the IDE to Tinkercad Text mode.">
+  <meta property="og:url" content="https://iot.bozomainnovationhub.com/arduino-code/modules/module-00/02-arduino-ide-tour">
+  <meta property="og:image" content="https://iot.bozomainnovationhub.com/assets/og/arduino-code-modules-module-00-02-arduino-ide-tour.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Arduino IDE tour · Module 0 · Arduino Coding">
+  <meta property="og:locale" content="en_GB">
+  <meta name="twitter:card" content="summary_large_image">
+  <script defer src="../../../assets/app.js"></script>
+  <!-- /app + link previews -->
+  <link rel="stylesheet" href="../../../assets/course.css">
+  <link rel="stylesheet" href="../../../assets/progress.css">
+  <script defer src="../../../assets/pager.js"></script>
+  <script defer src="../../../assets/check.js" data-profile="../../profile.html"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to the lesson</a>
+<div class="topbar">
+  <a class="home" href="../../home.html"><img src="../../../assets/brand/logo-mark-white.png" alt="" width="36" height="36"><span class="lock"><b>Arduino Coding</b><small>Bozoma Innovation Hub</small></span></a>
+  <a class="hub" href="../../../index.html" title="All courses: IoT at Bozoma Innovation Hub">&larr; IoT at BIH</a>
+  <nav class="bandlinks" aria-label="Modules"><a href="home.html" aria-current="page">0</a><a href="../list.html">⋯</a></nav>
+  <a class="bih" href="https://bozomainnovationhub.com"><span class="long">bozomainnovationhub.com</span><span class="short">BIH website</span></a>
+</div>
+<div class="wrap" id="main">
+<nav aria-label="Sections">
+  <a href="#outcomes">Outcomes</a>
+  <a href="#concepts">Concepts</a>
+  <a href="#decide">Decide</a>
+  <a href="#install">Install</a>
+  <a href="#tour">Tour</a>
+  <a href="#save">Save & Verify</a>
+  <a href="#verify">Verify vs Upload</a>
+  <a href="#tinkercad">Tinkercad</a>
+  <a href="#hardware">Hardware</a>
+  <a href="#patterns">Patterns</a>
+  <a href="#check">Check yourself</a>
+  <a href="#mistakes">Mistakes</a>
+</nav>
+
+<header style="padding:3rem 0 1rem">
+  <p class="eyebrow">Arduino Coding &nbsp;·&nbsp; Module 0 &nbsp;·&nbsp; Lesson 0.2 &nbsp;·&nbsp; <span class="tag">TC</span> / IDE</p>
+  <h1 style="margin:.8rem 0">Arduino IDE tour</h1>
+
+  <p class="col sub" style="font-size:1.1em">Install Arduino IDE 2.x (or the Web Editor), learn Verify vs Upload, and see how Tinkercad’s Code panel speaks the same language.</p>
+  <p class="col note" style="margin-top:.8rem">About 30 minutes. <strong>Parallel / optional for Module 0</strong> — you can finish 0.1 → 0.3 → 0.4 → 0.5 → 0.6 in Tinkercad only.</p>
+</header>
+
+<section class="part" id="outcomes">
+  <div class="parthead"><span class="tag">Start here</span><h2>Learning outcomes</h2></div>
+  <div class="col stack">
+    <div class="callout" style="--bc:var(--copper)"><h5>You can finish Module 0 in Tinkercad only</h5>
+    <p>This IDE tour is <strong>parallel / optional</strong> until you want hardware or Module 7. If install stalls, skip ahead to Lesson 0.3 and come back. See <a href="../../guides/getting-started.html">Getting started</a>.</p></div>
+    <ol class="num">
+      <li>Install <strong>Arduino IDE 2.x</strong> <em>or</em> open the <strong>Arduino Web Editor</strong>, and create a new sketch.</li>
+      <li>Distinguish <strong>Verify</strong> (compile/check) from <strong>Upload</strong> (send to a board).</li>
+      <li>Find the Serial Monitor button and know when you will need it (Module 1+).</li>
+      <li>Know how Tinkercad’s Code panel relates to the same sketch language.</li>
+    </ol>
+    <h3 style="margin-top:.5rem">Tools</h3>
+    <ul class="plain">
+      <li><strong>Arduino IDE 2.x</strong> (optional now) — write, verify, and later upload</li>
+      <li><em>or</em> Arduino Web Editor if install is blocked</li>
+      <li><strong>Tinkercad</strong> — same C++-style language for Module 0 labs</li>
+      <li>USB board (optional) — only if you want a real Upload today</li>
+    </ul>
+    <p class="note"><strong>Dual path:</strong> Prefer Tinkercad first for Module 0 success. Install the IDE when you can (or before hardware / Module 7). Verify-before-Upload habits still matter.</p>
+  </div>
+</section>
+
+<section class="part" id="concepts">
+  <div class="parthead"><span class="tag">Concept</span><h2>The IDE is your workshop</h2></div>
+  <div class="col stack">
+    <div class="callout" style="--bc:var(--accent)">
+      <h5>Concept</h5>
+      <p><strong>Verify</strong> asks “Does this sketch compile?” <strong>Upload</strong> asks “Put it on the connected board.” In Tinkercad, <strong>Start Simulation</strong> is closer to Upload: it runs the sketch against the circuit. Always Verify (or fix red errors) before you hunt wiring bugs.</p>
+    </div>
+  </div>
+</section>
+
+<section class="part" id="decide">
+  <div class="parthead"><span class="tag">Part</span><h2>Decide: install now or stay in Tinkercad?</h2></div>
+  <div class="col stack">
+    <div class="scroll"><table><thead><tr><th>Situation</th><th>Do this</th></tr></thead><tbody>
+      <tr><td>Want first LED win today</td><td>Skip to <a href="03-tinkercad-lab-setup.html">Lesson 0.3</a>; return here later</td></tr>
+      <tr><td>Machine allows install</td><td>Continue — Verify practice helps even without a board</td></tr>
+      <tr><td>School PC blocks install</td><td>Arduino Web Editor, or Tinkercad-only for Module 0</td></tr>
+    </tbody></table></div>
+  </div>
+</section>
+
+<section class="part" id="install">
+  <div class="parthead"><span class="tag">Part 1</span><h2>Install Arduino IDE 2.x (when ready)</h2><span class="mins">10 min</span></div>
+  <div class="col stack">
+    <ol class="num">
+      <li>Visit the official Arduino software download page and get <strong>IDE 2.x</strong> for your OS.</li>
+      <li>Install with default options. On Windows, allow USB driver installation if prompted.</li>
+      <li>Open the IDE. You should see a blank sketch with two empty functions: <code>setup()</code> and <code>loop()</code>.</li>
+    </ol>
+    <p>If your school computer blocks installs, use the <strong>Arduino Web Editor</strong> or stay in <strong>Tinkercad Code</strong> for Module 0 and install later before Module 7.</p>
+  </div>
+</section>
+
+<section class="part" id="tour">
+  <div class="parthead"><span class="tag">Part 2</span><h2>Tour the main window</h2><span class="mins">5 min</span></div>
+  <div class="col stack">
+    <div class="scroll">
+      <table>
+        <thead><tr><th>UI piece</th><th>What it does</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Sketch editor</strong></td><td>Where you type code</td></tr>
+          <tr><td><strong>Verify</strong> (✓)</td><td>Compiles the sketch; reports errors without needing a board</td></tr>
+          <tr><td><strong>Upload</strong> (→)</td><td>Compiles <em>and</em> sends to a connected board</td></tr>
+          <tr><td><strong>Board / Port</strong></td><td>Which board and USB port (hardware only)</td></tr>
+          <tr><td><strong>Serial Monitor</strong></td><td>Text your sketch prints — essential from Module 1</td></tr>
+          <tr><td><strong>Library Manager</strong></td><td>Extra packages later (Module 4+)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="part" id="save">
+  <div class="parthead"><span class="tag">Part 3</span><h2>Create, save, and Verify</h2><span class="mins">8 min</span></div>
+  <div class="col stack">
+    <ol class="num">
+      <li><strong>File → New Sketch</strong> (or use the empty one that opened).</li>
+      <li><strong>File → Save</strong> and name it <code>Module0_IdeTour</code>.</li>
+      <li>Notice the folder: Arduino saves <code>Module0_IdeTour/Module0_IdeTour.ino</code>. The folder name and <code>.ino</code> name must match.</li>
+    </ol>
+    <p>Paste the starter sketch below, then click <strong>Verify</strong>.</p>
+    <p><strong>Success:</strong> “Done compiling” with no red errors. <strong>Failure:</strong> red text — read the <em>first</em> error; fix that before the rest.</p>
+  </div>
+</section>
+
+<section class="part" id="verify">
+  <div class="parthead"><span class="tag">Part 4</span><h2>Verify vs Upload</h2><span class="mins">5 min</span></div>
+  <div class="col stack">
+    <pre><code>Write code  →  Verify (compile)  →  Upload (to hardware)
+                  ↑
+           Fix errors here first</code></pre>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Action</th><th>Needs a board?</th><th>Purpose</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Verify</strong></td><td>No</td><td>Catch typos and syntax mistakes</td></tr>
+          <tr><td><strong>Upload</strong></td><td>Yes (USB + correct Port)</td><td>Run on real hardware</td></tr>
+          <tr><td><strong>Tinkercad Start Simulation</strong></td><td>No</td><td>Run against a virtual circuit</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">If Upload fails with “port not found,” you are not broken as a programmer — cable, drivers, or Port menu need attention. Module 7 covers hardware graduation in depth.</p>
+  </div>
+</section>
+
+<section class="part" id="tinkercad">
+  <div class="parthead"><span class="tag">Part 5</span><h2>How this maps to Tinkercad</h2></div>
+  <div class="col stack">
+    <ol class="num">
+      <li>Open a circuit → <strong>Code</strong> panel → choose <strong>Text</strong> mode (not only Blocks).</li>
+      <li>You write the <strong>same style</strong> of Arduino C++ (<code>setup</code>, <code>loop</code>, <code>pinMode</code>, …).</li>
+      <li>There is no separate Upload — <strong>Start Simulation</strong> runs it.</li>
+    </ol>
+    <p><strong>Habit:</strong> Prefer Text mode for this course so skills transfer straight to the IDE.</p>
+  </div>
+</section>
+
+<section class="part" id="hardware">
+  <div class="parthead"><span class="tag">Optional</span><h2>Hardware smoke test</h2></div>
+  <div class="col stack">
+    <p>If you have an Uno and USB cable:</p>
+    <ol class="num">
+      <li>Connect the board.</li>
+      <li>Tools → Board → <strong>Arduino Uno</strong>.</li>
+      <li>Tools → Port → select the new COM/tty port.</li>
+      <li>File → Examples → 01.Basics → <strong>Blink</strong>.</li>
+      <li>Click <strong>Upload</strong>. Pin 13’s on-board LED should blink.</li>
+    </ol>
+    <p class="note">If that works, you have completed a full write → verify → upload loop. If not, continue with Tinkercad; we will debug hardware carefully later.</p>
+  </div>
+</section>
+
+<section class="part" id="patterns">
+  <div class="parthead"><span class="tag">Patterns</span><h2>Verify early</h2></div>
+  <div class="col stack">
+    <div class="callout">
+      <h5>Pattern</h5>
+      <p><strong>Verify early, verify often.</strong> Do not change ten lines and then Upload. Change a little, Verify, then proceed.</p>
+    </div>
+    <div class="sketchbox" style="--bc:var(--accent)">
+      <h2>Starter sketch</h2>
+<pre><code>/*
+ * Lesson 0.2 — IDE tour starter
+ * Goal: practice Verify. No LED wiring required.
+ */
+
+void setup() {
+  // This runs once when the board starts (or sim starts).
+}
+
+void loop() {
+  // This runs forever after setup().
+  // Empty on purpose for this lesson.
+}
+</code></pre>
+    </div>
+    <div class="sketchbox">
+      <h2>Complete sketch</h2>
+<pre><code>/*
+ * Lesson 0.2 — IDE tour complete
+ * Verifies cleanly. Teaches setup vs loop by comment only.
+ */
+
+void setup() {
+  // CONCEPT: one-time configuration belongs here
+}
+
+void loop() {
+  // CONCEPT: repeating behavior belongs here
+}
+</code></pre>
+    </div>
+  </div>
+</section>
+
+<section class="part" id="check">
+  <div class="parthead"><span class="tag">Check</span><h2>Check yourself</h2></div>
+  <div class="col stack">
+    <ol class="num" data-check>
+      <li data-kind="choice" data-choices="Yes|No" data-correct="1" data-see="#verify" data-hint="Verify only compiles." data-why-0="Verify does not need a board or cable." data-why-1="Correct — Verify compiles without a USB cable.">Does <strong>Verify</strong> require a USB cable?</li>
+      <li data-kind="open" data-see="#save">What must match when you save a sketch: folder name or only the title in the window?
+        <details><summary>Model answer</summary><p>The sketch folder name and the <code>.ino</code> filename should match.</p></details>
+      </li>
+      <li data-kind="choice" data-choices="Verify|Start Simulation|Library Manager" data-correct="1" data-see="#tinkercad" data-hint="Think of running against a virtual circuit." data-why-0="Verify is compile-only." data-why-1="Correct — Start Simulation is Upload’s cousin in Tinkercad." data-why-2="That adds packages, it does not run the sketch.">In Tinkercad, which button is the closest cousin of Upload?</li>
+      <li data-kind="open" data-see="#verify">Why might Upload fail even when Verify succeeds?
+        <details><summary>Model answer</summary><p>Wrong or missing Port, bad cable, wrong board selected, or drivers — not necessarily bad code.</p></details>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section class="part" id="mistakes">
+  <div class="parthead"><span class="tag">Watch outs</span><h2>Common mistakes</h2></div>
+  <div class="col stack">
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Mistake</th><th>Fix</th></tr></thead>
+        <tbody>
+          <tr><td>Editing Blocks mode only in Tinkercad</td><td>Switch to <strong>Text</strong> for this course</td></tr>
+          <tr><td>Ignoring the first compiler error</td><td>Fix line 1 of the error list first</td></tr>
+          <tr><td>Choosing the wrong Board type</td><td>Pick Uno for now</td></tr>
+          <tr><td>Charge-only USB cable on hardware</td><td>Use a data-capable cable</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout" style="--bc:var(--copper)">
+      <h5>Stretch (optional)</h5>
+      <p>In the IDE, open <strong>File → Examples → 01.Basics → Blink</strong>. Read it without uploading. In a comment at the top, write what you think <code>delay(1000)</code> does. You will confirm in Lesson 0.5.</p>
+    </div>
+  </div>
+</section>
+
+<nav class="pager" aria-label="Lessons">
+<a href="01-what-is-a-microcontroller.html"><span class="dir">Previous</span><span class="name">0.1 What is a microcontroller?</span></a>
+<a class="next" href="03-tinkercad-lab-setup.html"><span class="dir">Next</span><span class="name">0.3 Tinkercad lab setup &rarr;</span></a>
+</nav>
+
+</div>
+<footer class="bihfoot">
+<div class="wrap">
+  <p class="pagenote">Lesson 0.2 &nbsp;&middot;&nbsp; Module 0 &nbsp;&middot;&nbsp; Arduino Coding.</p>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a class="lockup" href="../../home.html"><img src="../../../assets/brand/logo-mark-white.png" alt="" width="42" height="42"><span>Arduino Coding<small>Bozoma Innovation Hub</small></span></a>
+      <p>A Bozoma Innovation Hub programme.</p>
+    </div>
+    <div><h4>The course</h4><ul>
+      <li><a href="../../home.html">Course home</a></li>
+      <li><a href="home.html">Module 0</a></li>
+      <li><a href="../list.html">All modules</a></li>
+    </ul></div>
+    <div><h4>Bozoma Innovation Hub</h4><ul>
+      <li><a href="https://bozomainnovationhub.com">bozomainnovationhub.com</a></li>
+    </ul></div>
+  </div>
+  <div class="foot-bottom"><span>&copy; Bozoma Innovation Hub, Aiyinasi, Ghana</span><span class="tagline">World-class begins at home.</span></div>
+</div>
+</footer>
+</body>
+</html>

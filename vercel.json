@@ -9,6 +9,71 @@
       "permanent": false
     },
     {
+      "source": "/arduino-code",
+      "destination": "/arduino-code/home",
+      "permanent": false
+    },
+    {
+      "source": "/arduino-code/modules",
+      "destination": "/arduino-code/modules/list",
+      "permanent": false
+    },
+    {
+      "source": "/arduino-code/modules/module-00",
+      "destination": "/arduino-code/modules/module-00/home",
+      "permanent": false
+    },
+    {
+      "source": "/arduino-code/modules/module-01",
+      "destination": "/arduino-code/modules/module-01/home",
+      "permanent": false
+    },
+    {
+      "source": "/arduino-code/modules/module-02",
+      "destination": "/arduino-code/modules/module-02/home",
+      "permanent": false
+    },
+    {
+      "source": "/arduino-code/modules/module-03",
+      "destination": "/arduino-code/modules/module-03/home",
+      "permanent": false
+    },
+    {
+      "source": "/arduino-code/modules/module-04",
+      "destination": "/arduino-code/modules/module-04/home",
+      "permanent": false
+    },
+    {
+      "source": "/arduino-code/modules/module-05",
+      "destination": "/arduino-code/modules/module-05/home",
+      "permanent": false
+    },
+    {
+      "source": "/arduino-code/modules/module-06",
+      "destination": "/arduino-code/modules/module-06/home",
+      "permanent": false
+    },
+    {
+      "source": "/arduino-code/modules/module-07",
+      "destination": "/arduino-code/modules/module-07/home",
+      "permanent": false
+    },
+    {
+      "source": "/arduino-code/modules/module-08",
+      "destination": "/arduino-code/modules/module-08/home",
+      "permanent": false
+    },
+    {
+      "source": "/arduino-code/modules/module-09",
+      "destination": "/arduino-code/modules/module-09/home",
+      "permanent": false
+    },
+    {
+      "source": "/arduino-code/guides",
+      "destination": "/arduino-code/guides/home",
+      "permanent": false
+    },
+    {
       "source": "/bands/:path*",
       "destination": "/arduino/bands/:path*",
       "permanent": true
