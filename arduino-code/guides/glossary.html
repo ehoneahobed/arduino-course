@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en" data-course="arduino-code">
+<head>
+  <meta charset="utf-8">
+  <script src="../../assets/theme.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href="https://iot.bozomainnovationhub.com/arduino-code/guides/glossary">
+  <title>Glossary · Arduino Coding</title>
+  <meta name="description" content="Plain-language terms: pin, sketch, GND, PWM, debounce, FSM, Serial, and more.">
+  <meta name="theme-color" content="#24182E">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../assets/brand/icon-192.png">
+  <link rel="apple-touch-icon" href="../../assets/brand/icon-180.png">
+  <!-- app + link previews (tools/inject_head.py) -->
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="IoT at Bozoma Innovation Hub">
+  <meta property="og:title" content="Glossary · Arduino Coding">
+  <meta property="og:description" content="Plain-language terms: pin, sketch, GND, PWM, debounce, FSM, Serial, and more.">
+  <meta property="og:url" content="https://iot.bozomainnovationhub.com/arduino-code/guides/glossary">
+  <meta property="og:image" content="https://iot.bozomainnovationhub.com/assets/og/arduino-code-guides-glossary.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Glossary · Arduino Coding">
+  <meta property="og:locale" content="en_GB">
+  <meta name="twitter:card" content="summary_large_image">
+  <script defer src="../../assets/app.js"></script>
+  <!-- /app + link previews -->
+  <link rel="stylesheet" href="../../assets/course.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the guide</a>
+<div class="topbar">
+  <a class="home" href="../home.html"><img src="../../assets/brand/logo-mark-white.png" alt="" width="36" height="36"><span class="lock"><b>Arduino Coding</b><small>Bozoma Innovation Hub</small></span></a>
+  <a class="hub" href="../../index.html" title="All courses: IoT at Bozoma Innovation Hub">&larr; IoT at BIH</a>
+  <nav class="bandlinks" aria-label="Modules"><a href="../modules/module-00/home.html">0</a><a href="../modules/module-01/home.html">1</a><a href="../modules/module-02/home.html">2</a><a href="../modules/module-03/home.html">3</a><a href="../modules/module-04/home.html">4</a><a href="../modules/module-05/home.html">5</a><a href="../modules/module-06/home.html">6</a><a href="../modules/module-07/home.html">7</a><a href="../modules/module-08/home.html">8</a><a href="../modules/module-09/home.html">9</a><a href="../modules/list.html">⋯</a></nav>
+  <a class="bih" href="https://bozomainnovationhub.com"><span class="long">bozomainnovationhub.com</span><span class="short">BIH website</span></a>
+</div>
+<div class="wrap" id="main">
+<nav aria-label="Sections">
+  <a href="#a-b">A–B</a>
+  <a href="#c-d">C–D</a>
+  <a href="#e-g">E–G</a>
+  <a href="#h-l">H–L</a>
+  <a href="#m-p">M–P</a>
+  <a href="#r-s">R–S</a>
+  <a href="#t-v">T–V</a>
+  <a href="#quick-i-saw-this-symbol-table">Quick “I saw this symbol” table</a>
+  <a href="#related-guides">Related guides</a>
+</nav>
+<header style="padding:3.2rem 0 1rem">
+  <p class="eyebrow">Arduino Coding &nbsp;&middot;&nbsp; Guides</p>
+  <h1 style="margin:.8rem 0">Glossary</h1>
+  <p class="col sub" style="font-size:1.12em">Plain-language terms: pin, sketch, GND, PWM, debounce, FSM, Serial, and more.</p>
+</header>
+<p>Use this page whenever a lesson drops a word you have not lived with yet.   <strong>“Introduced in”</strong> means the first lesson where the idea is taught for real (not only mentioned).</p>
+<section class="part" id="a-b"><div class="parthead"><span class="tag">Guide</span><h2>A–B</h2></div><div class="col stack">
+<p><strong>ADC (Analog-to-Digital Converter)</strong>   Hardware on the board that turns a smooth voltage (like from a potentiometer) into a whole number your sketch can read — on classic Uno analog pins, roughly <strong>0–1023</strong>.   <em>Introduced in:</em> Module 3 · Lesson 3.1–3.2</p>
+<p><strong>Anode</strong>   The <strong>+</strong> side of an LED (current enters here in the simple story). In wiring diagrams it faces the pin/resistor side of the path.   <em>Introduced in:</em> Module 0 · Lesson 0.3 · see also <a href="electricity-primer.html">electricity primer</a></p>
+<p><strong>Arduino IDE</strong>   The desktop app (or Web Editor) where you write sketches, click <strong>Verify</strong>, and later <strong>Upload</strong> to a real board.   <em>Introduced in:</em> Module 0 · Lesson 0.2</p>
+<p><strong>Baud (baud rate)</strong>   How fast Serial text is sent, in bits per second. The sketch (<code>Serial.begin(9600)</code>) and the Serial Monitor dropdown must <strong>match</strong>. Wrong baud → garbage characters.   <em>Introduced in:</em> <a href="how-to-serial-monitor.html">Serial Monitor how-to</a>; reinforced Module 3 · 3.2</p>
+<p><strong>Blocking</strong>   Code that stops everything else until it finishes — classic example: <code>delay(1000)</code> freezes the whole <code>loop</code> for one second.   <em>Introduced in:</em> Module 2 · Lesson 2.1</p>
+<p><strong>Board</strong>   The physical (or simulated) microcontroller circuit — e.g. Arduino Uno — with pins you can wire to.   <em>Introduced in:</em> Module 0 · Lesson 0.1</p>
+<p><strong>Bounce (contact bounce)</strong>   A mechanical button does not switch cleanly once; it chatters HIGH/LOW for a few milliseconds. Your sketch can see many “presses.”   <em>Introduced in:</em> Module 1 · Lesson 1.4</p>
+<p><strong>Breadboard</strong>   A plastic board with hidden metal strips so you can plug wires and parts without soldering. Rows share connections; edge rails are for power/GND.   <em>Introduced in:</em> <a href="getting-started.html">Getting started</a> §7; used Module 0 · 0.3</p>
+<p><strong>BSP (Board Support Package)</strong>   Extra software you install in the IDE so it knows a board family (for example ESP32).   <em>Introduced in:</em> Module 8 · Lesson 8.1</p>
+</div></section>
+<section class="part" id="c-d"><div class="parthead"><span class="tag">Guide</span><h2>C–D</h2></div><div class="col stack">
+<p><strong>Cathode</strong>   The <strong>−</strong> side of an LED (current leaves toward GND in the simple story). Often the flatter edge / shorter lead on a real LED.   <em>Introduced in:</em> Module 0 · Lesson 0.3</p>
+<p><strong>Compile / Verify</strong>   The IDE checks your sketch for language errors and builds machine code. <strong>Verify</strong> does this without needing a board attached.   <em>Introduced in:</em> Module 0 · Lesson 0.2</p>
+<p><strong>Current</strong>   How much electric charge is flowing — think “flow rate.” Too much through an LED can destroy it; a <strong>resistor</strong> limits current.   <em>Introduced in:</em> <a href="electricity-primer.html">Electricity primer</a></p>
+<p><strong>Debounce</strong>   Ignoring bounce so one physical press counts as one logical press (wait a short stable time, or similar).   <em>Introduced in:</em> Module 1 · Lesson 1.5; non-blocking form Module 2 · 2.5</p>
+<p><strong><code>delay()</code></strong>   Pauses the board for a number of milliseconds. Easy for Blink; harmful when you need buttons and LEDs to “listen” at the same time.   <em>Introduced in:</em> Module 0 · Lesson 0.5; problems Module 2 · 2.1</p>
+<p><strong>Digital pin</strong>   A pin that is mainly <strong>HIGH</strong> or <strong>LOW</strong> (on/off thinking), used with <code>digitalRead</code> / <code>digitalWrite</code>.   <em>Introduced in:</em> Module 0 · Lesson 0.1 / 0.5</p>
+<p><strong>Duty cycle</strong>   In PWM, the fraction of time the signal is ON within each cycle — higher duty ≈ brighter LED (on average).   <em>Introduced in:</em> Module 3 · Lesson 3.3</p>
+</div></section>
+<section class="part" id="e-g"><div class="parthead"><span class="tag">Guide</span><h2>E–G</h2></div><div class="col stack">
+<p><strong>Edge (rising / falling)</strong>   A <em>change</em> from LOW→HIGH (rising) or HIGH→LOW (falling). Useful for “was just pressed” logic, not “is still held.”   <em>Introduced in:</em> Module 1 · Lesson 1.4</p>
+<p><strong>Enum</strong>   A way to name a small set of states (e.g. <code>IDLE</code>, <code>RUNNING</code>) instead of magic numbers. Common in state machines.   <em>Introduced in:</em> Module 5 · Lesson 5.2</p>
+<p><strong>ESP32</strong>   A different microcontroller board with built-in Wi‑Fi (and more). Used in Module 8 — not required for Modules 0–3.   <em>Introduced in:</em> Module 8 · Lesson 8.1</p>
+<p><strong>Event</strong>   Something that happened (button edge, timer fired) that may cause a state change — as opposed to constantly re-checking levels.   <em>Introduced in:</em> Module 5 · Lesson 5.4</p>
+<p><strong>FSM (Finite State Machine)</strong>   A design where the program is in exactly one <strong>state</strong> at a time, and <strong>events</strong> cause transitions. Beats tangled <code>if</code> spaghetti for modes.   <em>Introduced in:</em> Module 5 (preview language in Module 2); Lesson 5.1–5.2</p>
+<p><strong>GND (Ground)</strong>   The <strong>0 V reference</strong> and the return path for current. Almost every simple circuit needs a wire back to GND. “Shared GND” = everything returns to the same ground idea.   <em>Introduced in:</em> Module 0 · Lesson 0.1; <a href="electricity-primer.html">electricity primer</a></p>
+</div></section>
+<section class="part" id="h-l"><div class="parthead"><span class="tag">Guide</span><h2>H–L</h2></div><div class="col stack">
+<p><strong>HIGH / LOW</strong>   Digital levels your sketch writes or reads. On a 5 V Uno, HIGH is “about 5 V worth of on,” LOW is “about 0 V / grounded.” Exact volts are a physics detail — treat them as on/off labels first.   <em>Introduced in:</em> Module 0 · Lesson 0.5</p>
+<p><strong>Hysteresis</strong>   Using <em>two</em> thresholds (e.g. turn lamp on below 300, off above 400) so a noisy sensor does not flicker at one borderline value.   <em>Introduced in:</em> Module 3 · Lesson 3.4</p>
+<p><strong>I²C (I2C)</strong>   A two-wire communication style (clock + data) used by many displays and sensors. Devices share the bus and have addresses.   <em>Introduced in:</em> Module 6–7 (display / scan lessons)</p>
+<p><strong>INPUT_PULLUP</strong>   <code>pinMode</code> mode that enables an internal resistor pulling the pin toward HIGH when nothing presses it to GND. With a button to GND, <strong>pressed reads LOW</strong>.   <em>Introduced in:</em> Module 1 · Lesson 1.3</p>
+<p><strong>ISR (Interrupt Service Routine)</strong>   A short function that runs when a hardware interrupt fires (e.g. pin change). Advanced — keep ISRs tiny; Module 6 rules apply.   <em>Introduced in:</em> Module 6 · Lesson 6.2</p>
+<p><strong>Library</strong>   Reusable code someone else wrote that you <code>#include</code> (e.g. Servo). Installed via Library Manager on the IDE; support varies in Tinkercad.   <em>Introduced in:</em> Module 4 · Lesson 4.1</p>
+<p><strong>Level</strong>   The current HIGH or LOW value — “is the button held?” — vs an <strong>edge</strong> (“did it just change?”).   <em>Introduced in:</em> Module 1 · Lesson 1.3–1.4</p>
+</div></section>
+<section class="part" id="m-p"><div class="parthead"><span class="tag">Guide</span><h2>M–P</h2></div><div class="col stack">
+<p><strong><code>millis()</code></strong>   Returns how many milliseconds since the board started (an always-counting “odometer”). Used for non-blocking timing: check whether enough time passed instead of freezing with <code>delay</code>.   <em>Introduced in:</em> Module 2 · Lesson 2.2</p>
+<p><strong>MQTT</strong>   A lightweight publish/subscribe messaging style used in IoT (topics, brokers). Module 8 territory.   <em>Introduced in:</em> Module 8 · Lesson 8.4</p>
+<p><strong>Microcontroller</strong>   A tiny computer on a chip: runs your sketch, talks to pins, repeats <code>loop</code> forever.   <em>Introduced in:</em> Module 0 · Lesson 0.1</p>
+<p><strong>Non-blocking</strong>   Design that keeps <code>loop</code> cycling so you can blink, read buttons, and time events together — usually with <code>millis()</code> timestamps.   <em>Introduced in:</em> Module 2 · Lesson 2.1–2.2</p>
+<p><strong>Ohm (Ω)</strong>   Unit of <strong>resistance</strong>. A <strong>220 Ω</strong> resistor is very different from <strong>220 kΩ</strong> (220,000 Ω) — always check the unit in Tinkercad.   <em>Introduced in:</em> Module 0 · Lesson 0.3</p>
+<p><strong>Pin</strong>   A numbered connection on the board where you attach wires (digital, analog, power, GND). Always use the <strong>same number</strong> in code and on the wire.   <em>Introduced in:</em> Module 0 · Lesson 0.1</p>
+<p><strong>Potentiometer (pot)</strong>   A knob that acts as an adjustable voltage divider — three legs: ends to 5V and GND, middle (wiper) to an analog pin. Great beginner stand-in for light sensors.   <em>Introduced in:</em> Module 3 · Lesson 3.2 / 3.6</p>
+<p><strong>Pull-up / pull-down</strong>   A resistor that gently forces a pin to a default HIGH (pull-up) or LOW (pull-down) when a button is not connecting it elsewhere.   <em>Introduced in:</em> Module 1 · Lesson 1.3; <a href="electricity-primer.html">electricity primer</a></p>
+<p><strong>PWM (Pulse Width Modulation)</strong>   Faking “in-between” brightness or speed by switching HIGH/LOW very fast. On Uno, pins marked <strong>~</strong> support <code>analogWrite</code> PWM.   <em>Introduced in:</em> Module 3 · Lesson 3.3   <strong>Note:</strong> <code>analogWrite</code> is <strong>not</strong> the inverse of <code>analogRead</code> — different jobs.</p>
+</div></section>
+<section class="part" id="r-s"><div class="parthead"><span class="tag">Guide</span><h2>R–S</h2></div><div class="col stack">
+<p><strong>Resistance / resistor</strong>   Opposition to current. A series resistor with an LED <strong>limits current</strong> so the LED (and pin) stay safe.   <em>Introduced in:</em> Module 0 · Lesson 0.3; <a href="electricity-primer.html">electricity primer</a></p>
+<p><strong>Serial</strong>   A text channel between your sketch and the computer (or Tinkercad’s Serial Monitor). Use <code>Serial.println(...)</code> to print debug values.   <em>Introduced in:</em> <a href="how-to-serial-monitor.html">how-to-serial-monitor.md</a>; Module 1+; required Module 3 · 3.2</p>
+<p><strong>Sketch</strong>   Your Arduino program — usually one <code>.ino</code> file with <code>setup()</code> and <code>loop()</code>.   <em>Introduced in:</em> Module 0 · Lesson 0.1 / 0.4</p>
+<p><strong>SPI</strong>   Another wired communication style (faster, more wires than I²C). Light touch in Module 7 — skip without guilt if overloaded.   <em>Introduced in:</em> Module 7 · Lesson 7.4</p>
+<p><strong>State</strong>   “Which mode am I in right now?” (idle, waiting, alarm…). Core FSM idea.   <em>Introduced in:</em> Module 5 · Lesson 5.1</p>
+</div></section>
+<section class="part" id="t-v"><div class="parthead"><span class="tag">Guide</span><h2>T–V</h2></div><div class="col stack">
+<p><strong>Tinkercad Circuits</strong>   Browser simulator for Arduino + common parts. Primary early-lab environment for this course.   <em>Introduced in:</em> Module 0 · Lesson 0.3; <a href="how-to-tinkercad.html">how-to-tinkercad.md</a></p>
+<p><strong><code>[TC†]</code></strong>   Lesson marker: Tinkercad is incomplete or misleading for this topic (bounce cleanliness, some sensors, Wi‑Fi, etc.).   <em>Introduced in:</em> throughout; habits in <a href="how-to-practice-with-tinkercad.html">practice guide</a></p>
+<p><strong>Upload</strong>   Send a compiled sketch to a <strong>real</strong> board over USB. Different from Verify and from Tinkercad’s Start Simulation.   <em>Introduced in:</em> Module 0 · Lesson 0.2; checklist Module 7 · 7.1</p>
+<p><strong><code>volatile</code></strong>   A keyword telling the compiler a variable can change outside normal <code>loop</code> flow (e.g. in an ISR). Advanced Module 6 topic.   <em>Introduced in:</em> Module 6 · Lesson 6.3</p>
+<p><strong>Voltage</strong>   Electrical “pressure” difference — think water pressure. Uno logic is commonly <strong>5 V</strong>; many ESP32 pins are <strong>3.3 V</strong> (do not mix carelessly).   <em>Introduced in:</em> <a href="electricity-primer.html">electricity primer</a></p>
+<p><strong>Voltage divider</strong>   Two resistances in series across a voltage; the middle point is a voltage in between. Used with LDRs and explained for night-light wiring.   <em>Introduced in:</em> <a href="electricity-primer.html">electricity primer</a> preview; Module 3 · Lesson 3.6</p>
+</div></section>
+<section class="part" id="quick-i-saw-this-symbol-table"><div class="parthead"><span class="tag">Guide</span><h2>Quick “I saw this symbol” table</h2></div><div class="col stack">
+<div class="scroll"><table><thead><tr><th>You see</th><th>Plain meaning</th></tr></thead><tbody><tr><td><code>GND</code></td><td>Ground / 0 V return</td></tr><tr><td><code>5V</code></td><td>Five-volt supply pin on Uno</td></tr><tr><td><code>~</code> on a pin label</td><td>PWM-capable digital pin</td></tr><tr><td><code>Ω</code></td><td>Ohms (resistance)</td></tr><tr><td><code>HIGH</code> / <code>LOW</code></td><td>Digital on / off levels</td></tr><tr><td><code>#include &lt;…&gt;</code></td><td>Pull in a library</td></tr><tr><td><code>setup()</code></td><td>Runs once at start</td></tr><tr><td><code>loop()</code></td><td>Runs again and again forever</td></tr></tbody></table></div>
+</div></section>
+<section class="part" id="related-guides"><div class="parthead"><span class="tag">Guide</span><h2>Related guides</h2></div><div class="col stack">
+<ul class="plain"><li><a href="getting-started.html">Getting started</a></li><li><a href="electricity-primer.html">Electricity primer</a></li><li><a href="troubleshooting-faq.html">Troubleshooting FAQ</a></li></ul>
+</div></section>
+<section class="part">
+  <div class="parthead"><span class="tag">More</span><h2>Related</h2></div>
+  <div class="col stack">
+    <p><a href="home.html">All guides</a> · <a href="getting-started.html">Getting started</a> · <a href="../modules/module-00/home.html">Module 0</a> · <a href="troubleshooting-faq.html">Troubleshooting</a></p>
+  </div>
+</section>
+
+</div>
+<footer class="bihfoot"><div class="wrap">
+  <p class="pagenote">Guides &nbsp;&middot;&nbsp; Arduino Coding</p>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a class="lockup" href="../home.html"><img src="../../assets/brand/logo-mark-white.png" alt="" width="42" height="42"><span>Arduino Coding<small>Bozoma Innovation Hub</small></span></a>
+      <p>A Bozoma Innovation Hub programme.</p>
+    </div>
+    <div><h4>The course</h4><ul>
+      <li><a href="../home.html">Course home</a></li>
+      <li><a href="home.html">Guides index</a></li>
+      <li><a href="getting-started.html">Getting started</a></li>
+      <li><a href="../modules/module-00/home.html">Module 0</a></li>
+    </ul></div>
+    <div><h4>Bozoma Innovation Hub</h4><ul>
+      <li><a href="https://bozomainnovationhub.com">bozomainnovationhub.com</a></li>
+    </ul></div>
+  </div>
+  <div class="foot-bottom"><span>&copy; Bozoma Innovation Hub, Aiyinasi, Ghana</span><span class="tagline">World-class begins at home.</span></div>
+</div></footer>
+</body>
+</html>

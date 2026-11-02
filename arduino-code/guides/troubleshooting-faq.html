@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en" data-course="arduino-code">
+<head>
+  <meta charset="utf-8">
+  <script src="../../assets/theme.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href="https://iot.bozomainnovationhub.com/arduino-code/guides/troubleshooting-faq">
+  <title>Troubleshooting FAQ · Arduino Coding</title>
+  <meta name="description" content="Ordered playbook: dark LED, Verify errors, board not found, button stuck.">
+  <meta name="theme-color" content="#24182E">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../assets/brand/icon-192.png">
+  <link rel="apple-touch-icon" href="../../assets/brand/icon-180.png">
+  <!-- app + link previews (tools/inject_head.py) -->
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="IoT at Bozoma Innovation Hub">
+  <meta property="og:title" content="Troubleshooting FAQ · Arduino Coding">
+  <meta property="og:description" content="Ordered playbook: dark LED, Verify errors, board not found, button stuck.">
+  <meta property="og:url" content="https://iot.bozomainnovationhub.com/arduino-code/guides/troubleshooting-faq">
+  <meta property="og:image" content="https://iot.bozomainnovationhub.com/assets/og/arduino-code-guides-troubleshooting-faq.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Troubleshooting FAQ · Arduino Coding">
+  <meta property="og:locale" content="en_GB">
+  <meta name="twitter:card" content="summary_large_image">
+  <script defer src="../../assets/app.js"></script>
+  <!-- /app + link previews -->
+  <link rel="stylesheet" href="../../assets/course.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the guide</a>
+<div class="topbar">
+  <a class="home" href="../home.html"><img src="../../assets/brand/logo-mark-white.png" alt="" width="36" height="36"><span class="lock"><b>Arduino Coding</b><small>Bozoma Innovation Hub</small></span></a>
+  <a class="hub" href="../../index.html" title="All courses: IoT at Bozoma Innovation Hub">&larr; IoT at BIH</a>
+  <nav class="bandlinks" aria-label="Modules"><a href="../modules/module-00/home.html">0</a><a href="../modules/module-01/home.html">1</a><a href="../modules/module-02/home.html">2</a><a href="../modules/module-03/home.html">3</a><a href="../modules/module-04/home.html">4</a><a href="../modules/module-05/home.html">5</a><a href="../modules/module-06/home.html">6</a><a href="../modules/module-07/home.html">7</a><a href="../modules/module-08/home.html">8</a><a href="../modules/module-09/home.html">9</a><a href="../modules/list.html">⋯</a></nav>
+  <a class="bih" href="https://bozomainnovationhub.com"><span class="long">bozomainnovationhub.com</span><span class="short">BIH website</span></a>
+</div>
+<div class="wrap" id="main">
+<nav aria-label="Sections">
+  <a href="#1-master-order-do-not-skip">Master order (do not skip)</a>
+  <a href="#2-led-will-not-light">LED will not light</a>
+  <a href="#3-code-will-not-verify-compile-errors">Code will not Verify (compile errors)</a>
+  <a href="#4-board-not-found-upload-fails-hardware">Board not found / Upload fails (hardware)</a>
+  <a href="#5-button-always-high-or-always-low">Button always HIGH or always LOW</a>
+  <a href="#6-button-feels-like-many-presses-multi-trigger">Button feels like many presses / multi-trigger</a>
+  <a href="#7-everything-freezes-ui-ignores-the-button-while-blinking">Everything freezes / UI ignores the button while blinking</a>
+  <a href="#8-serial-monitor-problems">Serial Monitor problems</a>
+  <a href="#9-analog-night-light-weirdness-module-3">Analog / night-light weirdness (Module 3)</a>
+  <a href="#10-tinkercad-specific-gotchas">Tinkercad-specific gotchas</a>
+  <a href="#11-symptom-where-to-learn-more">Symptom → where to learn more</a>
+  <a href="#12-still-stuck-after-the-playbook">Still stuck after the playbook?</a>
+</nav>
+<header style="padding:3.2rem 0 1rem">
+  <p class="eyebrow">Arduino Coding &nbsp;&middot;&nbsp; Guides</p>
+  <h1 style="margin:.8rem 0">Troubleshooting FAQ</h1>
+  <p class="col sub" style="font-size:1.12em">Ordered playbook: dark LED, Verify errors, board not found, button stuck.</p>
+</header>
+<p><strong>How to use this page:</strong> Run the <strong><a href="debugging-playbook.html">Debugging playbook</a></strong> first (ordered steps). Then jump to the symptom table that matches. Fix <strong>one</strong> thing, re-test, then continue.</p>
+<p>This aggregates the silent failures absolute beginners hit in Modules 0–3 (and early hardware). Lesson “Common mistakes” tables still matter — the playbook is the procedure; these tables are the detail.</p>
+<section class="part" id="1-master-order-do-not-skip"><div class="parthead"><span class="tag">Guide</span><h2>1. Master order (do not skip)</h2></div><div class="col stack">
+<p>Full procedure with Module 0–3 fast paths: <strong><a href="debugging-playbook.html">Debugging playbook</a></strong>. Short reminder:</p>
+<ol class="num"><li><strong>Is the sim running?</strong> (Tinkercad: Start Simulation — not paused.) On hardware: did <strong>Upload</strong> succeed, not only Verify?</li><li><strong>Wiring / polarity / resistor?</strong> Pin → resistor → LED anode → cathode → <strong>GND</strong>. Resistor <strong>220 Ω</strong>, not 220 kΩ. Breadboard: <a href="breadboard-basics.html">breadboard basics</a>.</li><li><strong>Do pin numbers match?</strong> The wire’s pin, <code>pinMode</code>, and <code>digitalWrite</code>/<code>digitalRead</code> must agree. Prefer named constants (<code>const int ledPin = 13;</code>).</li><li><strong>Did Verify/compile succeed?</strong> Read the <strong>first</strong> red error; fix that before the rest.</li><li><strong>Serial baud / Monitor open?</strong> Sketch <code>Serial.begin(n)</code> matches Monitor baud; Monitor actually visible. See <a href="how-to-serial-monitor.html">Serial how-to</a>.</li><li><strong>Logic / blocking / polarity of <code>if</code>?</strong> Pull-up buttons read <strong>LOW</strong> when pressed. Long <code>delay</code> freezes everything else. Print values before blaming the LED.</li></ol>
+</div></section>
+<section class="part" id="2-led-will-not-light"><div class="parthead"><span class="tag">Guide</span><h2>2. LED will not light</h2></div><div class="col stack">
+<div class="scroll"><table><thead><tr><th>Check</th><th>What to do</th></tr></thead><tbody><tr><td>Simulation paused</td><td>Click <strong>Start Simulation</strong> again</td></tr><tr><td>LED backwards</td><td>Flip anode/cathode; see <a href="electricity-primer.html">electricity primer</a> §4</td></tr><tr><td>No GND return</td><td>Cathode (or circuit return) must reach Uno <strong>GND</strong></td></tr><tr><td>Missing / wrong resistor</td><td>Series <strong>220 Ω</strong>; avoid 220 <strong>kΩ</strong></td></tr><tr><td>Wrong pin in code</td><td>Code says 13, wire on 8 → dark pin 13 LED</td></tr><tr><td>Never set pinMode</td><td><code>pinMode(ledPin, OUTPUT)</code> in <code>setup</code></td></tr><tr><td>Stuck writing LOW</td><td>Starter may force LOW; try temporary <code>digitalWrite(ledPin, HIGH)</code></td></tr><tr><td>Hardware only: dead LED / bad jumper</td><td>Swap LED; wiggle breadboard row</td></tr></tbody></table></div>
+<p><strong>Lesson refs:</strong> 0.3 simulation checklist; 0.5 Blink.</p>
+</div></section>
+<section class="part" id="3-code-will-not-verify-compile-errors"><div class="parthead"><span class="tag">Guide</span><h2>3. Code will not Verify (compile errors)</h2></div><div class="col stack">
+<div class="scroll"><table><thead><tr><th>You see something like…</th><th>Likely meaning</th></tr></thead><tbody><tr><td><code>was not declared in this scope</code></td><td>Typo in name; forgot to declare variable; wrong capitalization (<code>LedPin</code> ≠ <code>ledPin</code>)</td></tr><tr><td><code>expected &#x27;;&#x27; before…</code></td><td>Missing semicolon on the line <strong>above</strong> the reported line often</td></tr><tr><td>Brace / “does not name a type” chaos</td><td>Mismatched <code>{</code> <code>}</code> — count them; copy starter again if lost</td></tr><tr><td>Folder / <code>.ino</code> name warnings</td><td>Sketch folder name must match <code>.ino</code> name (IDE)</td></tr><tr><td>Library header not found</td><td><code>#include</code> library not installed (IDE Library Manager) — or unsupported in Tinkercad</td></tr></tbody></table></div>
+<p><strong>Habits:</strong></p>
+<ul class="plain"><li>Fix the <strong>first</strong> error first; later errors are often cascading noise.</li><li>Change one identifier spelling at a time.</li><li>Compare with the lesson starter’s structure (<code>setup</code> / <code>loop</code> present?).</li></ul>
+<p><strong>Lesson refs:</strong> 0.2 Verify vs Upload; 0.4 anatomy of a sketch.</p>
+</div></section>
+<section class="part" id="4-board-not-found-upload-fails-hardware"><div class="parthead"><span class="tag">Guide</span><h2>4. Board not found / Upload fails (hardware)</h2></div><div class="col stack">
+<div class="scroll"><table><thead><tr><th>Symptom</th><th>Try this</th></tr></thead><tbody><tr><td>No Port in IDE</td><td>Cable seated; try another USB port; <strong>data</strong> cable not charge-only</td></tr><tr><td>Board not selectable / unknown</td><td>Install correct board package; pick <strong>Arduino Uno</strong> (or your real board) under Tools → Board</td></tr><tr><td>Permission denied (Linux)</td><td>User in <code>dialout</code> (or equivalent); log out/in after udev changes</td></tr><tr><td>macOS blocks app</td><td>Gatekeeper: open anyway / drag to Applications from the official installer</td></tr><tr><td>Windows SmartScreen / driver</td><td>Allow install; clone boards may need <strong>CH340</strong> (or similar) driver — see Module 7.1 checklist</td></tr><tr><td>Port busy</td><td>Close serial plotters / other IDE windows; unplug/replug</td></tr><tr><td>Upload hangs</td><td>Correct board + port; press reset on Uno once; try again</td></tr></tbody></table></div>
+<p><strong>Escape hatch:</strong> stay in <strong>Tinkercad</strong> for Modules 0–3; use <strong>Arduino Web Editor</strong> if desktop install is blocked. Upload becomes a hard gate around Module 6–7 — <a href="getting-started.html">getting started</a> kit timeline.</p>
+<p><strong>Lesson refs:</strong> 0.2; Module 7.1 upload checklist.</p>
+</div></section>
+<section class="part" id="5-button-always-high-or-always-low"><div class="parthead"><span class="tag">Guide</span><h2>5. Button always HIGH or always LOW</h2></div><div class="col stack">
+<p>Remember <strong><code>INPUT_PULLUP</code></strong> + button to <strong>GND</strong>:</p>
+<div class="scroll"><table><thead><tr><th>Physical</th><th><code>digitalRead</code></th></tr></thead><tbody><tr><td>Not pressed</td><td><strong>HIGH</strong></td></tr><tr><td>Pressed</td><td><strong>LOW</strong></td></tr></tbody></table></div>
+<div class="scroll"><table><thead><tr><th>Symptom</th><th>Likely cause</th></tr></thead><tbody><tr><td>Always HIGH</td><td>Button not connected to GND; wrong pin; not really closing</td></tr><tr><td>Always LOW</td><td>Pin shorted to GND; wired as if pull-down but code uses pull-up; stuck button</td></tr><tr><td>Inverted lamp logic</td><td><code>if (reading == HIGH)</code> when you meant “pressed” — pressed is LOW</td></tr><tr><td>Floating nonsense (random)</td><td>Missing <code>INPUT_PULLUP</code> (or external pull)</td></tr></tbody></table></div>
+<p><strong>Debug:</strong> <code>Serial.println(digitalRead(buttonPin));</code> while pressing — do not guess.   <strong>Lesson refs:</strong> 1.3 reading a button.</p>
+</div></section>
+<section class="part" id="6-button-feels-like-many-presses-multi-trigger"><div class="parthead"><span class="tag">Guide</span><h2>6. Button feels like many presses / multi-trigger</h2></div><div class="col stack">
+<ul class="plain"><li><strong>Contact bounce</strong> — real buttons chatter. Lesson 1.4–1.5.</li><li>In Tinkercad bounce may be <strong>too clean</strong> <strong>[TC†]</strong> — your desk kit will look worse; still learn debounce.</li><li>Using <strong>level</strong> (“is LOW”) instead of <strong>edge</strong> (“just became LOW”) can repeat actions while held.</li><li>Need <strong>one <code>lastReading</code> (or equivalent) per button</strong> — sharing one variable across two buttons causes ghosts.</li></ul>
+<p><strong>Lesson refs:</strong> 1.4, 1.5, 2.5.</p>
+</div></section>
+<section class="part" id="7-everything-freezes-ui-ignores-the-button-while-blinking"><div class="parthead"><span class="tag">Guide</span><h2>7. Everything freezes / UI ignores the button while blinking</h2></div><div class="col stack">
+<p>Classic cause: long <strong><code>delay(...)</code></strong> chains. The board is busy waiting; it is not reading inputs.</p>
+<ul class="plain"><li>Module 2 exists to replace that habit with <strong><code>millis()</code></strong> timing.</li><li>Temporary <code>delay</code> for Blink (Module 0) is OK; do not build Module 1–2 projects out of multi-second delays.</li></ul>
+<p><strong>Lesson refs:</strong> 2.1 why delay blocks; 2.2 millis heartbeat.</p>
+</div></section>
+<section class="part" id="8-serial-monitor-problems"><div class="parthead"><span class="tag">Guide</span><h2>8. Serial Monitor problems</h2></div><div class="col stack">
+<div class="scroll"><table><thead><tr><th>Symptom</th><th>Fix</th></tr></thead><tbody><tr><td>Garbage characters</td><td>Match baud (<code>9600</code> with <code>9600</code>)</td></tr><tr><td>Blank</td><td>Open Monitor; Start Simulation / Upload; call <code>Serial.begin</code></td></tr><tr><td>Flood / unreadably fast</td><td>Pace prints (<code>delay(200)</code> early, or millis later)</td></tr><tr><td>Works in TC only</td><td>Hardware port/board/cable path</td></tr></tbody></table></div>
+<p>Full walkthrough: <a href="how-to-serial-monitor.html">how-to-serial-monitor.md</a>.</p>
+</div></section>
+<section class="part" id="9-analog-night-light-weirdness-module-3"><div class="parthead"><span class="tag">Guide</span><h2>9. Analog / night-light weirdness (Module 3)</h2></div><div class="col stack">
+<div class="scroll"><table><thead><tr><th>Symptom</th><th>Fix</th></tr></thead><tbody><tr><td>Values stuck near 0 or 1023</td><td>Pot wiring: ends to 5V & GND, wiper to <code>A0</code>; LDR divider incomplete</td></tr><tr><td>Flickering on/off at threshold</td><td>Add <strong>hysteresis</strong> (two thresholds) — Lesson 3.4</td></tr><tr><td><code>analogWrite</code> “doesn’t undo” <code>analogRead</code></td><td>Different features — Lesson 3.1 callout</td></tr><tr><td>PWM “not working”</td><td>Use a <strong><code>~</code></strong> PWM pin for <code>analogWrite</code></td></tr><tr><td>Map never hits 0 or 1023</td><td>Pots often don’t; calibrate with Serial first (3.6 advice)</td></tr></tbody></table></div>
+</div></section>
+<section class="part" id="10-tinkercad-specific-gotchas"><div class="parthead"><span class="tag">Guide</span><h2>10. Tinkercad-specific gotchas</h2></div><div class="col stack">
+<div class="scroll"><table><thead><tr><th>Issue</th><th>What to do</th></tr></thead><tbody><tr><td>Still on Blocks</td><td>Switch Code dropdown to <strong>Text</strong></td></tr><tr><td>Part won’t connect</td><td>Zoom in; click true terminal dots; rotate part</td></tr><tr><td>Library / sensor missing</td><td>Use the lesson’s TC-supported parts or TC-only alternate path (Module 4 README)</td></tr><tr><td>Bounce too perfect <strong>[TC†]</strong></td><td>Trust the lesson; practice debounce anyway</td></tr><tr><td>Share/duplicate confusion</td><td>Rename + duplicate before big edits — <a href="how-to-practice-with-tinkercad.html">practice guide</a></td></tr></tbody></table></div>
+<p>UI click-path: <a href="how-to-tinkercad.html">how-to-tinkercad.md</a>.</p>
+</div></section>
+<section class="part" id="11-symptom-where-to-learn-more"><div class="parthead"><span class="tag">Guide</span><h2>11. Symptom → where to learn more</h2></div><div class="col stack">
+<div class="scroll"><table><thead><tr><th>Symptom</th><th>Guide / lesson</th></tr></thead><tbody><tr><td>Anything “should work”</td><td><strong><a href="debugging-playbook.html">Debugging playbook</a></strong> first</td></tr><tr><td>Dark LED / polarity / GND</td><td><a href="electricity-primer.html">Electricity primer</a>; 0.3</td></tr><tr><td>Rows / rails / shared GND</td><td><a href="breadboard-basics.html">Breadboard basics</a></td></tr><tr><td>“What does this word mean?”</td><td><a href="glossary.html">Glossary</a></td></tr><tr><td>IDE vs TC vs kit timing</td><td><a href="getting-started.html">Getting started</a></td></tr><tr><td>Serial / baud</td><td><a href="how-to-serial-monitor.html">Serial how-to</a>; 3.2</td></tr><tr><td>Upload / drivers / cable</td><td>0.2; Module 7.1</td></tr><tr><td>Pull-up polarity</td><td>1.3</td></tr><tr><td>Bounce / debounce</td><td>1.4–1.5; 2.5</td></tr><tr><td><code>delay</code> freeze</td><td>2.1–2.2</td></tr><tr><td>PWM / analog confusion</td><td>3.1–3.3</td></tr><tr><td>TC trust limits</td><td><a href="how-to-practice-with-tinkercad.html">Practice with Tinkercad</a></td></tr></tbody></table></div>
+</div></section>
+<section class="part" id="12-still-stuck-after-the-playbook"><div class="parthead"><span class="tag">Guide</span><h2>12. Still stuck after the playbook?</h2></div><div class="col stack">
+<ol class="num"><li>Duplicate the circuit; strip down to Lesson 0.3 LED-only.  </li><li>Prove HIGH lights the LED.  </li><li>Add back one feature at a time.  </li><li>Paste Serial output and your pin map when asking a human for help.</li></ol>
+<p>You are not expected to memorize hardware lore on day one — you <em>are</em> expected to run §1 before rewriting the whole sketch.</p>
+</div></section>
+<section class="part">
+  <div class="parthead"><span class="tag">More</span><h2>Related</h2></div>
+  <div class="col stack">
+    <p><a href="home.html">All guides</a> · <a href="getting-started.html">Getting started</a> · <a href="../modules/module-00/home.html">Module 0</a> · <a href="troubleshooting-faq.html">Troubleshooting</a></p>
+  </div>
+</section>
+
+</div>
+<footer class="bihfoot"><div class="wrap">
+  <p class="pagenote">Guides &nbsp;&middot;&nbsp; Arduino Coding</p>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a class="lockup" href="../home.html"><img src="../../assets/brand/logo-mark-white.png" alt="" width="42" height="42"><span>Arduino Coding<small>Bozoma Innovation Hub</small></span></a>
+      <p>A Bozoma Innovation Hub programme.</p>
+    </div>
+    <div><h4>The course</h4><ul>
+      <li><a href="../home.html">Course home</a></li>
+      <li><a href="home.html">Guides index</a></li>
+      <li><a href="getting-started.html">Getting started</a></li>
+      <li><a href="../modules/module-00/home.html">Module 0</a></li>
+    </ul></div>
+    <div><h4>Bozoma Innovation Hub</h4><ul>
+      <li><a href="https://bozomainnovationhub.com">bozomainnovationhub.com</a></li>
+    </ul></div>
+  </div>
+  <div class="foot-bottom"><span>&copy; Bozoma Innovation Hub, Aiyinasi, Ghana</span><span class="tagline">World-class begins at home.</span></div>
+</div></footer>
+</body>
+</html>

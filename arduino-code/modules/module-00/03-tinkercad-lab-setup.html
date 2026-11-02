@@ -102,6 +102,14 @@
       <li>Double-check: no wire from 5V straight into the LED without a resistor.</li>
     </ol>
     <p class="note"><strong>Why pin 13?</strong> It is the classic Blink pin. You will change pins in Lessons 0.5–0.6.</p>
+    <div class="callout" style="--bc:var(--copper)"><h5>Check this before you blame the code</h5>
+    <ul class="plain">
+      <li>Resistor in series (not bypassed)</li>
+      <li>LED anode toward the resistor / pin side; cathode toward GND</li>
+      <li>GND wire actually on <strong>GND</strong></li>
+      <li>Same pin number in the wire and in the sketch</li>
+    </ul>
+    <p class="note" style="margin-top:.4rem">Click-path screenshots: <a href="../../guides/how-to-tinkercad.html">How to Tinkercad</a>. Dark LED playbook: <a href="../../guides/troubleshooting-faq.html">Troubleshooting FAQ</a>.</p></div>
   </div>
 </section>
 
@@ -109,12 +117,12 @@
   <div class="parthead"><span class="tag">Part 3</span><h2>Code panel and simulation</h2><span class="mins">10 min</span></div>
   <div class="col stack">
     <ol class="num">
-      <li>Click <strong>Code</strong> → choose <strong>Text</strong> mode.</li>
+      <li>Click <strong>Code</strong> → choose <strong>Text</strong> mode (not Blocks).</li>
       <li>Paste the starter sketch below.</li>
       <li>Click <strong>Start Simulation</strong>.</li>
     </ol>
     <p><strong>What you should see:</strong> the LED turns on and stays on (steady light proves the circuit).</p>
-    <h3 style="margin-top:.5rem">Simulation checklist</h3>
+    <h3 style="margin-top:.5rem">Simulation checklist (before you blame the code)</h3>
     <ol class="num">
       <li>Is simulation actually running (not paused)?</li>
       <li>Is the LED oriented correctly?</li>

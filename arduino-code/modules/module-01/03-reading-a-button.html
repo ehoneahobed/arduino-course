@@ -54,12 +54,14 @@
   <h1 style="margin:.8rem 0">Reading a button</h1>
 
   <p class="col sub" style="font-size:1.1em">Sense a pushbutton with <code>digitalRead</code>, prefer <code>INPUT_PULLUP</code>, and light an LED while the button is held.</p>
-  <p class="col note" style="margin-top:.8rem">About 40 minutes.</p>
+  <p class="col note" style="margin-top:.8rem">About 40 minutes. Open Serial before you decide the wiring is wrong.</p>
 </header>
 
 <section class="part" id="outcomes">
   <div class="parthead"><span class="tag">Start here</span><h2>Learning outcomes</h2></div>
   <div class="col stack">
+    <div class="callout" style="--bc:var(--copper)"><h5>Open Serial first</h5>
+    <p>This lesson prints button readings — open the <strong>Serial Monitor</strong> and set baud to <strong>9600</strong> before you decide the wiring is wrong. How-to: <a href="../../guides/how-to-serial-monitor.html">How to use the Serial Monitor</a>. Stuck HIGH/LOW? <a href="../../guides/troubleshooting-faq.html">Troubleshooting FAQ</a>.</p></div>
     <ol class="num">
       <li>Use <code>digitalRead</code> to sense a pushbutton.</li>
       <li>Wire with <strong><code>INPUT_PULLUP</code></strong> (preferred) and explain HIGH/LOW polarity.</li>

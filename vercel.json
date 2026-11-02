@@ -69,6 +69,11 @@
       "permanent": false
     },
     {
+      "source": "/arduino-code/guides",
+      "destination": "/arduino-code/guides/home",
+      "permanent": false
+    },
+    {
       "source": "/bands/:path*",
       "destination": "/arduino/bands/:path*",
       "permanent": true

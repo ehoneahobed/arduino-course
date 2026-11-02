@@ -79,6 +79,7 @@
 <section class="part" id="for">
   <div class="parthead"><span class="tag">Part</span><h2>for — counted repetition</h2></div>
   <div class="col stack">
+    <p>You can chase three named pins without arrays (<code>digitalWrite(redPin…)</code> three times). Optional shortcut:</p>
 <pre><code>const int ledPins[3] = {8, 9, 10};
 for (int i = 0; i &lt; 3; i++) {
   digitalWrite(ledPins[i], HIGH);
@@ -86,6 +87,8 @@ for (int i = 0; i &lt; 3; i++) {
   digitalWrite(ledPins[i], LOW);
 }
 </code></pre>
+    <div class="callout"><h5>Mini-primer (optional)</h5>
+    <p>An <strong>array</strong> is a numbered list: <code>ledPins[0]</code> is pin 8, <code>ledPins[1]</code> is 9, <code>ledPins[2]</code> is 10. Module 3 deepens arrays for samples — here it is only a tidy chaser.</p></div>
   </div>
 </section>
 
